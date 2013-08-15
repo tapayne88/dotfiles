@@ -1,0 +1,185 @@
+"" ==================== Vundle ====================
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Include Vundle
+Bundle 'gmarik/vundle'
+
+" Include github plugins
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'wincent/Command-T'
+Bundle 'scrooloose/nerdtree'
+Bundle 'bogado/file-line'
+Bundle 'majutsushi/tagbar'
+Bundle 'godlygeek/tabular'
+Bundle 'kien/ctrlp.vim'
+Bundle 'myusuf3/numbers.vim'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-characterize'
+Bundle 'tpope/vim-commentary'
+Bundle 'tpope/vim-eunuch'
+Bundle 'tpope/vim-obsession'
+Bundle 'bling/vim-airline'
+
+
+"" ==================== General ====================
+filetype plugin indent on
+set number                      "Adds line numbers
+set shiftwidth=4                "Determines indentation in normal mode (using '>>' or '<<')
+set tabstop=8                   "Changes tabs to 4 spaces
+set softtabstop=4               "Let backspace delete indent
+set expandtab                   "Expands tabs to spaces, better for formatting
+set ls=2                        "Show filename perminently
+set autoindent                  "Sets up auto indent (copies indentation from line above)
+set backspace=2                 "Makes backspace key behave properly in insert mode
+set ruler                       "Adds line and column number in status bar and shows progress through file
+set hlsearch                    "Highlight search
+set incsearch                   "Highlight dynamically as pattern is typed
+set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set wildignorecase              "Ignore case when opening files
+set cursorline                  "Highlight line the cursor is on
+set t_Co=16                     "Set to 16 for best compatibility with solarized
+
+" Remove escape delay
+if ! has('gui_running')
+    set ttimeoutlen=10
+    augroup FastEscape
+        autocmd!
+        au InsertEnter * set timeoutlen=0
+        au InsertLeave * set timeoutlen=1000
+    augroup END
+endif
+
+" Centralise backups, swapsfiles and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+    set undodir=~/.vim/undo
+endif
+
+autocmd BufWinLeave ?* mkview
+autocmd BufWinEnter ?* silent loadview
+
+
+"" ==================== Solarized ====================
+" Solarized colour scheme, depends on Pathogen
+syntax enable
+set background=dark
+
+let g:solarized_termcolors = 16
+let g:solarized_termtrans=1
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+
+colorscheme solarized
+
+
+"" ==================== Airline ====================
+let g:airline_theme='solarized'
+let g:airline_detect_whitespace=0 "disabled
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_branch_prefix = '⎇  '
+let g:airline_readonly_symbol = ''
+let g:airline_linecolumn_prefix = ' '
+
+
+"" ==================== CommandT ====================
+" Similar to CtrlP, regex file opener
+
+let g:CommandTMaxHeight=20                      "Sets max no. of lines for commandT
+let g:CommandTAcceptSelectionTabMap='<Enter>'   "Sets 'return' key to open new tab by default
+let g:CommandTAcceptSelectionMap='<C-o>'        "Adds shortcut for old default behaviour to allow CommandT to still of in the current window
+
+
+"" ==================== CtrlP ====================
+" Similar to CommandT, regex file opener
+
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_open_new_file = 't'
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': [],
+    \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
+    \ }
+
+
+"" ==================== Fugitive ====================
+autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
+
+
+"" ==================== Mapping Syntax ==================== 
+autocmd BufRead,BufNewFile *.tache setfiletype html
+
+
+"" ==================== MacVim ====================
+" Customisations for MacVim (GUI Mode)
+set guioptions-=T      "Removes top toolbar
+
+
+"" ==================== Key (re)Mappings ====================
+" 3 lines below can mess with buffer commands, watch out!
+"cmap gedit      Gtabedit
+"cmap gvsplit    Gvsplit
+"cmap ct<CR>     CommandT<CR>
+
+" Makes up/down on line wrapped lines work better (more intuitive)
+nmap j gj
+nmap k gk
+" Best tab navigation shorcuts
+nmap <C-h> gT
+nmap <C-l> gt
+" Open last file with Ctrl+e
+nmap <C-e> :e#<CR>
+"Shows and hides invisible characters
+nmap <leader>e :set list!<CR>
+
+" Split resizing
+nmap <leader>- :res -5<CR>
+nmap <leader>= :res +5<CR>
+nmap <leader>. :vertical resize -5<CR>
+nmap <leader>, :vertical resize +5<CR>
+
+"Toggle search highlighting
+nmap <leader>h :set hlsearch!<CR>
+"Displays files in buffer and quickly swap with regex matching or number
+nnoremap <leader>l :ls<CR>:b<space>
+"Toggle line numbers
+nnoremap <leader>n :set number!<CR>
+"Toggle line number mode
+nnoremap <F3> :NumbersToggle<CR>
+
+map <F6> :Gblame<CR>
+map <F7> :NERDTreeToggle<CR>
+map <F8> :TagbarToggle<CR>
+map <F9> :call <SID>align()<CR>
+"Ctags - Open definitions in new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+"Ctags - Open definitions in vertical split - doesn't seem to work
+"map <C-/> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+
+"" ==================== Location Dependant ====================
+" Location specific stuff
+if $LOCATION == 'work'
+    set tag=~/code/skybetdev/tags   "Sets up ctags to allow easy navigation of work code base
+endif
+
+
+"" ==================== Misc ====================
+" Miscellaneous config
+
+au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
+set wildmode=longest,list           " Simulate bash tab completion
+set scrolloff=4                     " Number of lines from vertical edge to start scrolling
+
+if exists('+colorcolumn')
+    " Add column line at 80 characters
+    set colorcolumn=100
+
+    " Colour all columns > 80
+    " execute "set colorcolumn=" . join(range(81,335), ',')
+endif

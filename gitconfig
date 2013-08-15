@@ -1,0 +1,35 @@
+[user]
+    name = Thomas Payne
+    email = Thomas.Payne@bskyb.com
+[core]
+    editor = vim
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+[push]
+    default = current
+[alias]
+    st = status
+    cm = commit
+    co = checkout
+    pl = pull
+    ft = fetch
+    mg = merge 
+    rb = rebase
+    ps = push
+    br = branch
+    df = diff
+    d = difftool
+    l = log --oneline --decorate
+    lg = log
+    lp = log -p
+    qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
+    h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
+    hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+[bash]
+    showDirtyState = true

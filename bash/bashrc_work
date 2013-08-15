@@ -1,0 +1,11 @@
+# WORKRC
+# Contains work related setup
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+# ============================== Aliases ==============================
+alias grp='grep -Isnr --exclude="tags" --exclude="*.txt" --exclude="*.sql" --exclude="*.min.js" --exclude-dir=".git" --exclude-dir="amd-build"'
+alias grp_notest='grep -Isnr --exclude="tags" --exclude="*.txt" --exclude="*.sql" --exclude="*.min.js" --exclude-dir=".git" --exclude-dir="amd-build" --exclude-dir="acceptance_tests" --exclude-dir="node" --exclude-dir="tests"'
+
+# ============================== Variables ==============================
+export devvm='192.168.56.101'

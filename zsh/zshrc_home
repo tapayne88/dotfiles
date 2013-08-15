@@ -1,0 +1,22 @@
+# HOMERC
+# Contains home related setup
+
+# ============================== Variables ==============================
+# Amazon EC2 instance static IP
+export EUWEST='176.34.230.172'
+
+# Home Server IP
+export HS='192.168.1.143'
+# Laptop IP
+export LT='192.168.1.22'
+# Desktop IP
+export DT='192.168.1.155'
+
+# Setup Amazon EC2 Command-line tools
+if [ -L $HOME/.ec2 ]; then
+    export EC2_HOME=$HOME/.ec2
+    export PATH=$PATH:$EC2_HOME/bin
+    export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
+    export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
+    export EC2_URL=https://ec2.eu-west-1.amazonaws.com
+fi

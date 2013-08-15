@@ -1,0 +1,21 @@
+# HOMERC
+# Contains home related setup
+
+# ============================== Variables ==============================
+export EUWEST='176.34.230.172'
+# Home Server IP
+export HS='172.30.115.111'
+# iMac IP
+export IM='172.30.115.137'
+# MacBook Pro IP
+export MBP='172.30.115.104'
+
+
+# Setup Amazon EC2 Command-line tools
+if [ -f ~/.ec2 ]; then
+    export EC2_HOME=~/.ec2
+    export PATH=$PATH:$EC2_HOME/bin
+    export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
+    export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
+    export EC2_URL=https://ec2.eu-west-1.amazonaws.com
+fi
