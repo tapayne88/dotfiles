@@ -19,4 +19,4 @@ function get_redis_data () { redis-cli -h ${2:-"127.0.0.1"} -n 3 get $1 | php -r
 function zget_redis_data () { redis-cli -h ${2:-"127.0.0.1"} -n 3 get $1 | php -r 'echo "\n\n" . unserialize(gzuncompress(file_get_contents("php://stdin"))) . "\n\n";'; };
 
 # ============================== Variables ==============================
-export devslave1='172.16.2.162'
+export devslave1='172.16.8.183'
