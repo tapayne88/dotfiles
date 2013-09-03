@@ -4,7 +4,7 @@
 #export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 # ============================== Aliases ==============================
-alias grp='grep -Isnr --exclude="tags" --exclude="*.txt" --exclude="*.sql" --exclude="*.min.js" --exclude-dir=".git" --exclude-dir="amd-build"'
+alias grp='grep -Isnr --exclude="tags" --exclude="*.txt" --exclude="*.sql" --exclude="*.min.js" --exclude-dir=".git" --exclude-dir="amd-build" --exclude="*.scssc"'
 alias grp_notest='grep -Isnr --exclude="tags" --exclude="*.txt" --exclude="*.sql" --exclude="*.min.js" --exclude-dir=".git" --exclude-dir="amd-build" --exclude-dir="acceptance_tests" --exclude-dir="node" --exclude-dir="tests"'
 
 alias cc='$HOME/Dropbox/Work/dev-machine/scripts/clearcache.sh'
