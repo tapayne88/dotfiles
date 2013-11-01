@@ -14,19 +14,19 @@ ZSH_THEME="tpayne-vm-simple"
 
 source $ZSH/oh-my-zsh.sh
 
-# Good aliases
-alias ls='ls --color=auto'
-alias ll='ls -alhF'
-alias la='ls -A'
-alias l='ls -CF'
+# # Good aliases
+# alias ls='ls --color=auto'
+# alias ll='ls -alhF'
+# alias la='ls -A'
+# alias l='ls -CF'
 
-# Make some possibly destructive commands more interactive
-alias rm='rm -i'
-alias mv='mv -i'
-alias cp='cp -i'
+# # Make some possibly destructive commands more interactive
+# alias rm='rm -i'
+# alias mv='mv -i'
+# alias cp='cp -i'
 
-alias grep='grep -n --color=auto'
-alias ..='cd ..'
+# alias grep='grep -n --color=auto'
+# alias ..='cd ..'
 
 node=`which node`
 

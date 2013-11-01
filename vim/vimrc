@@ -16,7 +16,7 @@ Bundle 'bogado/file-line'
 Bundle 'majutsushi/tagbar'
 Bundle 'godlygeek/tabular'
 Bundle 'kien/ctrlp.vim'
-Bundle 'myusuf3/numbers.vim'
+"Bundle 'myusuf3/numbers.vim'       " BUGS
 Bundle 'airblade/vim-gitgutter'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-characterize'
