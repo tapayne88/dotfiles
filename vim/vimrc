@@ -143,6 +143,10 @@ nmap <leader>= :res +5<CR>
 nmap <leader>. :vertical resize -5<CR>
 nmap <leader>, :vertical resize +5<CR>
 
+" GitGutter Navigate
+nmap gh <Plug>GitGutterNextHunk
+nmap gH <Plug>GitGutterPrevHunk
+
 "Toggle search highlighting
 nmap <leader>h :set hlsearch!<CR>
 "Displays files in buffer and quickly swap with regex matching or number
