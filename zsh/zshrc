@@ -69,7 +69,7 @@ else
 
     # Start tmux at start of each session (only when local)
     if [[ $TERM != "screen" && -z "$TMUX" ]]; then
-        tmux
+        tmux > /dev/null 2>&1
     fi
 fi
 

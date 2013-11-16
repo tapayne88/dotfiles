@@ -19,7 +19,7 @@ export PATH=$paths:$PATH
 
 export VISUAL=$HOME/.local/bin/vim
 export EDITOR=$HOME/.local/bin/vim
-export TERM=xterm-256color
+export TERM=xterm-color
 
 if [ -L ~/.dir_colors ]; then
     eval `dircolors $HOME/.dir_colors`
