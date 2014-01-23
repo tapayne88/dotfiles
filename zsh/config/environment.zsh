@@ -17,8 +17,15 @@ paths+=:$HOME/dev/android-sdk-linux/platform-tools
 
 export PATH=$paths:$PATH
 
-export VISUAL=$HOME/.local/bin/vim
-export EDITOR=$HOME/.local/bin/vim
+if [ -f  $HOME/.local/bin/vim ]; then
+    VISUAL=$HOME/.local/bin/vim
+    EDITOR=$HOME/.local/bin/vim
+else
+    VISUAL=/usr/local/bin/vim
+    EDITOR=/usr/local/bin/vim
+fi
+export VISUAL=$VISUAL
+export EDITOR=$EDITOR
 export TERM=xterm-color
 
 if [ -L ~/.dir_colors ]; then
