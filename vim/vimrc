@@ -10,7 +10,7 @@ Bundle 'gmarik/vundle'
 
 " Include github plugins
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'wincent/Command-T'
+"Bundle 'wincent/Command-T'
 Bundle 'scrooloose/nerdtree'
 Bundle 'bogado/file-line'
 Bundle 'majutsushi/tagbar'
