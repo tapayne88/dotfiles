@@ -121,11 +121,6 @@ set guioptions-=T      "Removes top toolbar
 
 
 "" ==================== Key (re)Mappings ====================
-" 3 lines below can mess with buffer commands, watch out!
-"cmap gedit      Gtabedit
-"cmap gvsplit    Gvsplit
-"cmap ct<CR>     CommandT<CR>
-
 " Makes up/down on line wrapped lines work better (more intuitive)
 nmap j gj
 nmap k gk
@@ -164,15 +159,6 @@ map <F8> :TagbarToggle<CR>
 map <F9> :call <SID>align()<CR>
 "Ctags - Open definitions in new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-"Ctags - Open definitions in vertical split - doesn't seem to work
-"map <C-/> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-
-
-"" ==================== Location Dependant ====================
-" Location specific stuff
-if $LOCATION == 'work'
-    set tag=~/code/skybetdev/tags   "Sets up ctags to allow easy navigation of work code base
-endif
 
 
 "" ==================== Misc ====================
@@ -185,7 +171,4 @@ set scrolloff=4                     " Number of lines from vertical edge to star
 if exists('+colorcolumn')
     " Add column line at 80 characters
     set colorcolumn=100
-
-    " Colour all columns > 80
-    " execute "set colorcolumn=" . join(range(81,335), ',')
 endif

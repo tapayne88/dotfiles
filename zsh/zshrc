@@ -1,14 +1,10 @@
 # ============================== Loading ==============================
 # Loads different file for each environment, also setting variables
 if [ -f ~/.zshrc_work ]; then
-    echo 'At work...'
-    export LOCATION='work'
     source ~/.zshrc_work
 fi
 
 if [ -f ~/.zshrc_home ]; then
-    echo 'At home...'
-    export LOCATION='home'
     source ~/.zshrc_home
 fi
 
