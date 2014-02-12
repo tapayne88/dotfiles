@@ -2,30 +2,18 @@
 #
 # XDG Base Directory Specification
 # http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-#export XDG_CACHE_HOME="$HOME/.cache"
-#export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
-#mkdir -p $ZSH_CACHE
 export XDG_CONFIG_HOME="$HOME/.config"
 export ZSH_CONFIG="$XDG_CONFIG_HOME/zsh"
 
 # executable search path
-# including Android SDK
 paths=$HOME/.local/bin
 paths+=:$HOME/.local/sbin
-paths+=:$HOME/dev/android-sdk-linux/tools
-paths+=:$HOME/dev/android-sdk-linux/platform-tools
+paths+=:/usr/local/bin
 
 export PATH=$paths:$PATH
 
-if [ -f  $HOME/.local/bin/vim ]; then
-    VISUAL=$HOME/.local/bin/vim
-    EDITOR=$HOME/.local/bin/vim
-else
-    VISUAL=/usr/local/bin/vim
-    EDITOR=/usr/local/bin/vim
-fi
-export VISUAL=$VISUAL
-export EDITOR=$EDITOR
+export VISUAL=vim
+export EDITOR=vim
 export TERM=xterm-color
 
 if [ -L ~/.dir_colors ]; then

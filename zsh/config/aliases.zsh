@@ -1,9 +1,3 @@
-# Good aliases
-# alias ls='ls --color=auto'
-# alias ll='ls -alhF'
-# alias la='ls -A'
-# alias l='ls -CF'
-
 # Make some possibly destructive commands more interactive
 alias rm='rm -i'
 alias mv='mv -i'
