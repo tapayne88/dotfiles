@@ -25,7 +25,7 @@ stty -ixon
 
 KEYTIMEOUT=1
 
-plugins=(git command-not-found tpayne-vi-mode)
+plugins=(git command-not-found)
 
 # Setup special theme for ssh session, no special characters
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
