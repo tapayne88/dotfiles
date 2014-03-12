@@ -13,16 +13,20 @@
     st = status
     cm = commit
     co = checkout
-    pl = pull
+    pl = pull --ff-only
     ft = fetch
     mg = merge 
+    mb = merge --no-ff --no-commit
     rb = rebase
+    ru = reset --hard @{u}
     ps = push
     br = branch
     df = diff
+    dfc = diff --cached
     d = difftool
     l = log --oneline --decorate
     lg = log
+    lgu = log @{u}
     lp = log -p
     qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
     h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
