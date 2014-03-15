@@ -6,8 +6,6 @@ alias cp='cp -i'
 alias grep='grep -n --color=auto'
 alias ..='cd ..'
 
-alias define='~/git/scripts/define.sh'
-
 # For reviewing merge before commit
 # Review flow below:
 #   - git mg --no-ff --no-commit <branch>
