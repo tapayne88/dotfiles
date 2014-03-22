@@ -10,13 +10,11 @@ Bundle 'gmarik/vundle'
 
 " Include github plugins
 Bundle 'altercation/vim-colors-solarized'
-"Bundle 'wincent/Command-T'
 Bundle 'scrooloose/nerdtree'
 Bundle 'bogado/file-line'
 Bundle 'majutsushi/tagbar'
 Bundle 'godlygeek/tabular'
 Bundle 'kien/ctrlp.vim'
-"Bundle 'myusuf3/numbers.vim'       " BUGS
 Bundle 'airblade/vim-gitgutter'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-characterize'
@@ -24,6 +22,8 @@ Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-eunuch'
 Bundle 'tpope/vim-obsession'
 Bundle 'bling/vim-airline'
+Bundle 'tpope/vim-surround'
+Bundle 'mattn/emmet-vim'
 
 
 "" ==================== General ====================
@@ -113,6 +113,11 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 
 "" ==================== Mapping Syntax ==================== 
 autocmd BufRead,BufNewFile *.tache setfiletype html
+
+
+"" ==================== Emmet ====================
+let g:user_emmet_install_global = 0
+autocmd FileType phtml,html,tache,css EmmetInstall
 
 
 "" ==================== MacVim ====================
