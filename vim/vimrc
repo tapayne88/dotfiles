@@ -83,14 +83,19 @@ colorscheme solarized
 let g:lightline = {
       \ 'colorscheme': '16color',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'filename' ] ]
+      \   'left': [ [ 'mode', 'paste' ], [ 'git' ], [ 'filename' ] ],
+      \   'right': [ [ 'percent', 'syntastic', 'lineinfo' ], [ 'fileinfo' ], ['filetype'] ]
       \ },
       \ 'component_function': {
-      \     'fugitive': 'MyFugitive',
-      \     'filename': 'MyFilename'
+      \     'git': 'MyGit',
+      \     'filename': 'MyFilename',
+      \     'fileinfo': 'MyFileInfo'
       \ }
     \}
+
+function! MyFileInfo()
+    return &fileencoding.'['.&fileformat.']'
+endfunction
 
 function! MyReadonly()
     if &filetype == "help"
@@ -120,8 +125,18 @@ function! MyFilename()
          \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-function! MyFugitive()
-    return exists("*fugitive#head") ? "⎇  ".fugitive#head(7) : ""
+function! MyGit()
+    let hunk_symbols = ['+', '~', '-']
+    let string = ''
+    let hunks = exists('*GitGutterGetHunkSummary') ? GitGutterGetHunkSummary() : []
+
+    if !empty(hunks)
+        for i in [0, 1, 2]
+            let string .= printf('%s%s ', hunk_symbols[i], hunks[i])
+        endfor
+    endif
+
+    return exists("*fugitive#head") ? string."⎇  ".fugitive#head(7) : ""
 endfunction
 
 
