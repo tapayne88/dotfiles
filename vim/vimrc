@@ -81,7 +81,7 @@ colorscheme solarized
 
 "" ==================== Lightline ====================
 let g:lightline = {
-      \ 'colorscheme': 'my_solarized',
+      \ 'colorscheme': '16color',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'filename' ] ]
