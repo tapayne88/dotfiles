@@ -33,13 +33,10 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 else
     ZSH_THEME="tpayne"
 
-    # If I am on a mac I will just use iTerm tabs
-    if [ `uname` != "Darwin" ]; then
-        MYTMUX=`which tmux`
-        # Start tmux at start of each session (only when local and tmux exists)
-        if [[ $MYTMUX != "tmux not found" && $TERM != "screen" && -z "$TMUX" ]]; then
-            tmux > /dev/null 2>&1
-        fi
+    MYTMUX=`which tmux`
+    # Start tmux at start of each session (only when local and tmux exists)
+    if [[ $MYTMUX != "tmux not found" && $TERM != "screen" && -z "$TMUX" ]]; then
+        tmux > /dev/null 2>&1
     fi
 fi
 
