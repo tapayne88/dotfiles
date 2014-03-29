@@ -14,7 +14,7 @@ export PATH=$paths:$PATH
 
 export VISUAL=vim
 export EDITOR=vim
-export TERM=xterm-color
+export TERM=xterm-256color
 
 if [ -L ~/.dir_colors ]; then
     eval `dircolors $HOME/.dir_colors`
