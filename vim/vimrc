@@ -43,6 +43,8 @@ set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- b
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
+set listchars=tab:>-,trail:-
+set list
 
 " Remove escape delay
 if ! has('gui_running')
@@ -140,16 +142,8 @@ function! MyGit()
 endfunction
 
 
-"" ==================== CommandT ====================
-" Similar to CtrlP, regex file opener
-
-let g:CommandTMaxHeight=20                      "Sets max no. of lines for commandT
-let g:CommandTAcceptSelectionTabMap='<Enter>'   "Sets 'return' key to open new tab by default
-let g:CommandTAcceptSelectionMap='<C-o>'        "Adds shortcut for old default behaviour to allow CommandT to still of in the current window
-
-
 "" ==================== CtrlP ====================
-" Similar to CommandT, regex file opener
+" Regex file opener
 
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_open_new_file = 't'
@@ -163,7 +157,7 @@ let g:ctrlp_prompt_mappings = {
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
 
-"" ==================== Mapping Syntax ==================== 
+"" ==================== Mapping Syntax ====================
 autocmd BufRead,BufNewFile *.tache setfiletype html
 
 
@@ -179,21 +173,21 @@ set guioptions-=T      "Removes top toolbar
 
 "" ==================== Key (re)Mappings ====================
 " Makes up/down on line wrapped lines work better (more intuitive)
-nmap j gj
-nmap k gk
+nnoremap j gj
+nnoremap k gk
 " Best tab navigation shorcuts
-nmap <C-h> gT
-nmap <C-l> gt
+nnoremap <C-h> gT
+nnoremap <C-l> gt
 " Open last file with Ctrl+e
-nmap <C-e> :e#<CR>
+nnoremap <C-e> :e#<CR>
 "Shows and hides invisible characters
-nmap <leader>e :set list!<CR>
+noremap <leader>e :set list!<CR>
 
 " Split resizing
-nmap <leader>- :res -5<CR>
-nmap <leader>= :res +5<CR>
-nmap <leader>. :vertical resize -5<CR>
-nmap <leader>, :vertical resize +5<CR>
+nnoremap <leader>- :res -5<CR>
+nnoremap <leader>= :res +5<CR>
+nnoremap <leader>. :vertical resize -5<CR>
+nnoremap <leader>, :vertical resize +5<CR>
 
 " GitGutter Navigate
 nmap gh <Plug>GitGutterNextHunk
@@ -202,13 +196,18 @@ nmap <C-j> <Plug>GitGutterNextHunk
 nmap <C-k> <Plug>GitGutterPrevHunk
 
 "Toggle search highlighting
-nmap <leader>h :set hlsearch!<CR>
+nnoremap <leader>h :set hlsearch!<CR>
 "Displays files in buffer and quickly swap with regex matching or number
 nnoremap <leader>l :ls<CR>:b<space>
 "Toggle line numbers
 nnoremap <leader>n :set number!<CR>
 "Toggle line number mode
 nnoremap <F3> :NumbersToggle<CR>
+nnoremap <leader>ev :vsplit ~/.vimrc<CR>
+nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded vimrc"<CR>
+
+nnoremap <leader>" ea"<esc>hbi"<esc>lel
+nnoremap <leader>' ea'<esc>hbi'<esc>lel
 
 map <F6> :Gblame<CR>
 map <F7> :NERDTreeToggle<CR>
@@ -222,7 +221,7 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " Miscellaneous config
 
 au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
-set wildmode=longest,list           " Simulate bash tab completion
+set wildmode=list:longest,list:full " Simulate zsh tab completion
 set scrolloff=4                     " Number of lines from vertical edge to start scrolling
 
 if exists('+colorcolumn')
