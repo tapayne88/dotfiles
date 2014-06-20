@@ -26,7 +26,8 @@ Bundle 'tpope/vim-surround'
 Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
-Bundle 'afternoon/vim-phpunit'
+Bundle 'tapayne88/vim-phpunit'
+Bundle 'tapayne88/vim-mocha'
 
 
 "" ==================== General ====================
