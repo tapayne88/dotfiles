@@ -10,7 +10,6 @@ KEYTIMEOUT=1
 plugins=(git command-not-found)
 
 # Set theme
-ZSH_THEME="tpayne-simple"
 DISABLE_AUTO_TITLE=true
 
 source $ZSH/oh-my-zsh.sh
