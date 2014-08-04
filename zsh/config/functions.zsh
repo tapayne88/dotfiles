@@ -21,8 +21,7 @@ tm() {
         return
     fi
 
-    currentSession=`tmux display-message -p '#S'`
-    hasSession=`tmux has-session -t $1 > /dev/null`
+    tmux has-session -t $1 > /dev/null 2>&1
 
     if [ $? -ne 0 ]; then
         TMUX= tmux new-session -d -s $1
