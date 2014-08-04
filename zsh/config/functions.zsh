@@ -9,6 +9,13 @@ pgk() {
 
 # Idempotent tmux startup function
 tm() {
+    # destroy flag
+    if [ $1 = '-k' ]; then
+        tmux kill-session -t $2
+        return
+    fi
+
+    # list flag
     if [ $1 = '-l' ]; then
         tmux list-session
         return
