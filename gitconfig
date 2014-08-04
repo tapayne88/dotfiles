@@ -24,6 +24,7 @@
     df = diff
     dfc = diff --cached
     d = difftool
+    grp = grep -n
     l = log --oneline --decorate
     lg = log
     lgu = log @{u}

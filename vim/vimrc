@@ -26,8 +26,9 @@ Bundle 'tpope/vim-surround'
 Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
+
 Bundle 'tapayne88/vim-phpunit'
-Bundle 'tapayne88/vim-mocha'
+Bundle 'tapayne88/vim-mochajs'
 
 
 "" ==================== General ====================
@@ -47,8 +48,6 @@ set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- b
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
-set listchars=tab:>-,trail:-
-set list
 
 " Remove escape delay
 if ! has('gui_running')
