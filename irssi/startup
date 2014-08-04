@@ -1,0 +1,8 @@
+/SCRIPT load notifier
+/SET notifier_on_regex TomP
+/SET notifier_on_privmsg 1
+
+/SCRIPT load nicklist
+/nicklist fifo
+/SET nicklist_height 42
+/SET nicklist_width 20
