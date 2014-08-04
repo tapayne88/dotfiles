@@ -9,6 +9,11 @@ pgk() {
 
 # Idempotent tmux startup function
 tm() {
+    if [ $1 = '-l' ]; then
+        tmux list-session
+        return
+    fi
+
     currentSession=`tmux display-message -p '#S'`
     hasSession=`tmux has-session -t $1 > /dev/null`
 
