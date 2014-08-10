@@ -10,7 +10,7 @@ pgk() {
 # Idempotent tmux startup function
 tm() {
     # destroy flag
-    if [ $1 = '-k' ]; then
+    if [ $1 = '-k' ] || [ $1 = '-d' ]; then
         tmux kill-session -t $2
         return
     fi
