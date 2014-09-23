@@ -17,6 +17,7 @@
     ft = fetch
     mg = merge 
     mb = merge --no-ff --no-commit
+    ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
     ps = push

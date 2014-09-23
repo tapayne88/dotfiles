@@ -10,7 +10,7 @@ Bundle 'gmarik/vundle'
 
 " Include github plugins
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/git-nerdtree'
 Bundle 'bogado/file-line'
 Bundle 'majutsushi/tagbar'
 Bundle 'godlygeek/tabular'
@@ -29,6 +29,10 @@ Bundle 'tpope/vim-dispatch'
 
 Bundle 'tapayne88/vim-phpunit'
 Bundle 'tapayne88/vim-mochajs'
+
+
+"" ==================== Testing Area ====================
+let g:NERDTreeUseSimpleIndicator = 1
 
 
 "" ==================== General ====================
