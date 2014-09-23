@@ -170,6 +170,13 @@ statusbar = {
         topicbarend = { priority = "100"; alignment = "right"; };
       };
     };
+    awl_0 = {
+      items = {
+        barstart = { priority = "100"; };
+        awl_0 = { };
+        barend = { priority = "100"; alignment = "right"; };
+      };
+    };
   };
 };
 settings = {
@@ -180,6 +187,8 @@ settings = {
     notifier_on_privmsg = "1";
     nicklist_height = "42";
     nicklist_width = "20";
+    awl_viewer = "no";
+    awl_shared_sbar = "OFF";
   };
 };
 chatnets = { skybet = { type = "IRC"; }; };
