@@ -3,6 +3,11 @@ alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
 
+# Override oh_my_zsh alias if we are using GNU tools
+if test $BREW_PATH; then
+    alias ll='ls -lh --color'
+fi
+
 alias grep='grep -n --color=auto'
 alias ..='cd ..'
 

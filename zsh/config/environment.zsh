@@ -11,6 +11,12 @@ paths+=:$HOME/.local/sbin
 paths+=:/usr/local/bin
 
 export PATH=$paths:$PATH
+export BREW_PATH=`command -v brew`
+
+# Replaces BSD standard commands with GNU
+if test $BREW_PATH; then
+    export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
+fi
 
 export VISUAL=vim
 export EDITOR=vim
@@ -20,10 +26,10 @@ if [ -L ~/.dir_colors ]; then
     eval `dircolors $HOME/.dir_colors`
 fi
 
-node=`which node`
+NODE_PATH=`command -v node`
 
-if [ $node != "node not found" ]; then
-    export NODE_PATH=$node
+if test $NODE_PATH; then
+    export NODE_PATH=$NODE_PATH
 fi
 
 if [ -f /usr/local/bin/virtualenvwrapper ]; then
