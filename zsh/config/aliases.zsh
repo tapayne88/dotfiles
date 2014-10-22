@@ -4,7 +4,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 
 # Override oh_my_zsh alias if we are using GNU tools
-if test $BREW_PATH; then
+if test $HAS_BREW_COREUTILS; then
     alias ll='ls -lh --color'
 fi
 

@@ -15,7 +15,11 @@ export BREW_PATH=`command -v brew`
 
 # Replaces BSD standard commands with GNU
 if test $BREW_PATH; then
-    export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
+    COREUTILS_PATH="$(brew --prefix coreutils)/libexec/gnubin"
+    if [ -d $COREUTILS_PATH ]; then
+        export HAS_BREW_COREUTILS=true
+        export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
+    fi
 fi
 
 export VISUAL=vim
