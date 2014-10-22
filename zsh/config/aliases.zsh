@@ -6,6 +6,7 @@ alias cp='cp -i'
 # Override oh_my_zsh alias if we are using GNU tools
 if test $HAS_BREW_COREUTILS; then
     alias ll='ls -lh --color'
+    alias la='ls -lAh --color'
 fi
 
 alias grep='grep -n --color=auto'
