@@ -52,6 +52,10 @@ set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- b
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
+set ignorecase                  "Case insensitive search
+set smartcase                   "Case sensitive when search contains upper-case characters
+
+let mapleader = ","
 
 " Remove escape delay
 if ! has('gui_running')
