@@ -96,9 +96,12 @@ prompt_dir() {
 prompt_status() {
   local symbols
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
+
+  local BACKGROUND_PROCS=$(jobs -l | wc -l)
+
+  #[[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+  [[ $BACKGROUND_PROCS -gt 0 ]] && symbols+="%{%F{cyan}%}⚙ $BACKGROUND_PROCS"
 
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
@@ -109,8 +112,9 @@ build_prompt() {
   prompt_context
   prompt_dir
   prompt_git
+  prompt_status
   prompt_end
 }
 
 MODE_INDICATOR="%{$fg_bold[red]%}[-- COMMAND --]%{$reset_color%}"
-PROMPT='%{%f%b%k%}$(build_prompt) '
+PROMPT='%{%f%b%k%k%}$(build_prompt) '
