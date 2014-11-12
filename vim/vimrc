@@ -26,6 +26,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
+Bundle 'scrooloose/syntastic'
 
 Bundle 'tapayne88/vim-phpunit'
 Bundle 'tapayne88/vim-mochajs'
@@ -54,6 +55,10 @@ set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
 set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
+
+" Better split defaults
+set splitbelow
+set splitright
 
 let mapleader = ","
 
@@ -156,12 +161,10 @@ endfunction
 "" ==================== CtrlP ====================
 " Regex file opener
 
+let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_open_new_file = 't'
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': [],
-    \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
-    \ }
+let g:ctrlp_open_new_file = 'r'
+let g:ctrlp_custom_ignore = '^\.git'
 
 
 "" ==================== Fugitive ====================
