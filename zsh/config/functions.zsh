@@ -9,14 +9,27 @@ pgk() {
 
 # Idempotent tmux startup function
 tm() {
+    if [ "$1" = "-h" ]; then
+        echo "tm - My handy function for managing tmux sessions"
+        echo ""
+        echo "Usage:"
+        echo "   tm <flags> <args>"
+        echo ""
+        echo "Flags:"
+        echo "   -h      Help, print his help message"
+        echo "   -k,-d   Delete named session (<args>)"
+        echo "   -l      List sessions"
+        return
+    fi
+
     # destroy flag
-    if [ $1 = '-k' ] || [ $1 = '-d' ]; then
+    if [ "$1" = "-k" ] || [ "$1" = "-d" ]; then
         tmux kill-session -t $2
         return
     fi
 
     # list flag
-    if [ $1 = '-l' ]; then
+    if [ "$1" = "-l" ]; then
         tmux list-session
         return
     fi
