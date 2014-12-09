@@ -82,6 +82,9 @@ endif
 autocmd BufWinLeave ?* mkview
 autocmd BufWinEnter ?* silent loadview
 
+" Disable cursorline in ruby file as it causes very slow line skipping
+autocmd FileType ruby set nocursorline
+
 
 "" ==================== Solarized ====================
 " Solarized colour scheme, depends on Pathogen
