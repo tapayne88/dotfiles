@@ -1,0 +1,14 @@
+/SCRIPT load notifier
+/SET notifier_on_regex TomP
+/SET notifier_on_privmsg 1
+
+/SCRIPT load nicklist
+/nicklist fifo
+/SET nicklist_height 42
+/SET nicklist_width 20
+
+/RUN adv_windowlist
+/SET awl_display_key $Q%K|%n$H$C$S
+/TOGGLE awl_viewer
+/SET awl_viewer OFF
+/STATUSBAR window remove

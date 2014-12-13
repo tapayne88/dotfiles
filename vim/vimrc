@@ -10,7 +10,7 @@ Bundle 'gmarik/vundle'
 
 " Include github plugins
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/git-nerdtree'
 Bundle 'bogado/file-line'
 Bundle 'majutsushi/tagbar'
 Bundle 'godlygeek/tabular'
@@ -21,9 +21,19 @@ Bundle 'tpope/vim-characterize'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-eunuch'
 Bundle 'tpope/vim-obsession'
-Bundle 'bling/vim-airline'
+Bundle 'itchyny/lightline.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'mattn/emmet-vim'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'tpope/vim-dispatch'
+Bundle 'scrooloose/syntastic'
+
+Bundle 'tapayne88/vim-phpunit'
+Bundle 'tapayne88/vim-mochajs'
+
+
+"" ==================== Testing Area ====================
+let g:NERDTreeUseSimpleIndicator = 1
 
 
 "" ==================== General ====================
@@ -43,6 +53,14 @@ set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- b
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
+set ignorecase                  "Case insensitive search
+set smartcase                   "Case sensitive when search contains upper-case characters
+
+" Better split defaults
+set splitbelow
+set splitright
+
+let mapleader = ","
 
 " Remove escape delay
 if ! has('gui_running')
@@ -64,54 +82,99 @@ endif
 autocmd BufWinLeave ?* mkview
 autocmd BufWinEnter ?* silent loadview
 
+" Disable cursorline in ruby file as it causes very slow line skipping
+autocmd FileType ruby set nocursorline
+
 
 "" ==================== Solarized ====================
 " Solarized colour scheme, depends on Pathogen
 syntax enable
 set background=dark
 
-let g:solarized_termcolors = 16
+let g:solarized_termcolors=&t_Co
 let g:solarized_termtrans=1
+let g:solarized_degrade=0
 let g:solarized_contrast="high"
 let g:solarized_visibility="high"
 
 colorscheme solarized
 
 
-"" ==================== Airline ====================
-let g:airline_theme='solarized'
-let g:airline_detect_whitespace=0 "disabled
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_branch_prefix = '⎇  '
-let g:airline_readonly_symbol = ''
-let g:airline_linecolumn_prefix = ' '
+"" ==================== Lightline ====================
+let g:lightline = {
+      \ 'colorscheme': '16color',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'git' ], [ 'filename' ] ],
+      \   'right': [ [ 'percent', 'syntastic', 'lineinfo' ], [ 'fileinfo' ], ['filetype'] ]
+      \ },
+      \ 'component_function': {
+      \     'git': 'MyGit',
+      \     'filename': 'MyFilename',
+      \     'fileinfo': 'MyFileInfo'
+      \ }
+    \}
 
+function! MyFileInfo()
+    return &fileencoding.'['.&fileformat.']'
+endfunction
 
-"" ==================== CommandT ====================
-" Similar to CtrlP, regex file opener
+function! MyReadonly()
+    if &filetype == "help"
+        return ""
+    elseif &readonly
+        return ""
+    else
+        return ""
+    endif
+endfunction
 
-let g:CommandTMaxHeight=20                      "Sets max no. of lines for commandT
-let g:CommandTAcceptSelectionTabMap='<Enter>'   "Sets 'return' key to open new tab by default
-let g:CommandTAcceptSelectionMap='<C-o>'        "Adds shortcut for old default behaviour to allow CommandT to still of in the current window
+function! MyModified()
+    if &filetype == "help"
+        return ""
+    elseif &modified
+        return "±"
+    elseif &modifiable
+        return ""
+    else
+        return ""
+    endif
+endfunction
+
+function! MyFilename()
+    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+         \ ('' != expand('%:.') ? expand('%:.') : '[No Name]') .
+         \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyGit()
+    let hunk_symbols = ['+', '~', '-']
+    let string = ''
+    let hunks = exists('*GitGutterGetHunkSummary') ? GitGutterGetHunkSummary() : []
+
+    if !empty(hunks)
+        for i in [0, 1, 2]
+            let string .= printf('%s%s ', hunk_symbols[i], hunks[i])
+        endfor
+    endif
+
+    return exists("*fugitive#head") ? string."⎇  ".fugitive#head(7) : ""
+endfunction
 
 
 "" ==================== CtrlP ====================
-" Similar to CommandT, regex file opener
+" Regex file opener
 
+let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_open_new_file = 't'
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': [],
-    \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
-    \ }
+let g:ctrlp_open_new_file = 'r'
+let g:ctrlp_custom_ignore = '^\.git'
 
 
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
 
-"" ==================== Mapping Syntax ==================== 
+"" ==================== Mapping Syntax ====================
 autocmd BufRead,BufNewFile *.tache setfiletype html
 
 
@@ -127,21 +190,21 @@ set guioptions-=T      "Removes top toolbar
 
 "" ==================== Key (re)Mappings ====================
 " Makes up/down on line wrapped lines work better (more intuitive)
-nmap j gj
-nmap k gk
+nnoremap j gj
+nnoremap k gk
 " Best tab navigation shorcuts
-nmap <C-h> gT
-nmap <C-l> gt
+nnoremap <C-h> gT
+nnoremap <C-l> gt
 " Open last file with Ctrl+e
-nmap <C-e> :e#<CR>
+nnoremap <C-e> :e#<CR>
 "Shows and hides invisible characters
-nmap <leader>e :set list!<CR>
+noremap <leader>e :set list!<CR>
 
 " Split resizing
-nmap <leader>- :res -5<CR>
-nmap <leader>= :res +5<CR>
-nmap <leader>. :vertical resize -5<CR>
-nmap <leader>, :vertical resize +5<CR>
+nnoremap <leader>- :res -5<CR>
+nnoremap <leader>= :res +5<CR>
+nnoremap <leader>. :vertical resize -5<CR>
+nnoremap <leader>, :vertical resize +5<CR>
 
 " GitGutter Navigate
 nmap gh <Plug>GitGutterNextHunk
@@ -150,13 +213,34 @@ nmap <C-j> <Plug>GitGutterNextHunk
 nmap <C-k> <Plug>GitGutterPrevHunk
 
 "Toggle search highlighting
-nmap <leader>h :set hlsearch!<CR>
+nnoremap <leader>h :set hlsearch!<CR>
 "Displays files in buffer and quickly swap with regex matching or number
 nnoremap <leader>l :ls<CR>:b<space>
 "Toggle line numbers
 nnoremap <leader>n :set number!<CR>
 "Toggle line number mode
 nnoremap <F3> :NumbersToggle<CR>
+nnoremap <leader>ev :vsplit ~/.vimrc<CR>
+nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded vimrc"<CR>
+
+nnoremap <leader>" ea"<esc>hbi"<esc>lel
+nnoremap <leader>' ea'<esc>hbi'<esc>lel
+
+nnoremap <leader>ga :Git add %:p<CR><CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit -v -q<CR>
+nnoremap <leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>ge :Gedit<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR><CR>
+nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gp :Ggrep -n<Space>
+nnoremap <leader>gm :Gmove<Space>
+nnoremap <leader>gb :Git branch<Space>
+nnoremap <leader>go :Git checkout<Space>
+nnoremap <leader>gps :Dispatch! git push<CR>
+nnoremap <leader>gpl :Dispatch! git pull<CR>
 
 map <F6> :Gblame<CR>
 map <F7> :NERDTreeToggle<CR>
@@ -170,7 +254,7 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " Miscellaneous config
 
 au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
-set wildmode=longest,list           " Simulate bash tab completion
+set wildmode=list:longest,list:full " Simulate zsh tab completion
 set scrolloff=4                     " Number of lines from vertical edge to start scrolling
 
 if exists('+colorcolumn')
