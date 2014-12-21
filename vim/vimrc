@@ -27,6 +27,7 @@ Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
+Bundle 'sjl/splice.vim'
 
 Bundle 'tapayne88/vim-phpunit'
 Bundle 'tapayne88/vim-mochajs'
@@ -61,6 +62,7 @@ set splitbelow
 set splitright
 
 let mapleader = ","
+let maplocalleader = "-"
 
 " Remove escape delay
 if ! has('gui_running')

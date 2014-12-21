@@ -17,6 +17,7 @@
     ft = fetch
     mg = merge 
     mb = merge --no-ff --no-commit
+    mt = mergetool
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
@@ -24,7 +25,8 @@
     br = branch
     df = diff
     dfc = diff --cached
-    d = difftool
+    dt = difftool
+    review = difftool @{u}
     grp = grep -n
     l = log --oneline --decorate
     lg = log
@@ -34,8 +36,13 @@
     h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
     hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
 [diff]
-    tool = vimdiff
-[difftool]
-    prompt = false
+    tool = fugitive
+[difftool "fugitive"]
+    cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
+[merge]
+    tool = splice
+[mergetool "splice"]
+    cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+    trustExitCode = true
 [bash]
     showDirtyState = true
