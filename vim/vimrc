@@ -87,6 +87,14 @@ autocmd BufWinEnter ?* silent loadview
 " Disable cursorline in ruby file as it causes very slow line skipping
 autocmd FileType ruby set nocursorline
 
+command! -nargs=1 -complete=file Mrun call MochaRunner(<q-args>)
+function! MochaRunner(test)
+    if !filereadable("node_modules/.bin/mocha")
+        echom "Couldn't find mocha binary"
+        return
+    endif
+    execute 'Dispatch node_modules/.bin/mocha --reporter tap ' . a:test
+endfunction
 
 "" ==================== Solarized ====================
 " Solarized colour scheme, depends on Pathogen
