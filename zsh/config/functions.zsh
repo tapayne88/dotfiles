@@ -37,7 +37,7 @@ tm() {
     tmux has-session -t $1 > /dev/null 2>&1
 
     if [ $? -ne 0 ]; then
-        TMUX= tmux new-session -d -s $1
+        TMUX= tmux new-session -d -s $1 -c "$HOME"
     fi
 
     if [ -n "$TMUX" ];then
