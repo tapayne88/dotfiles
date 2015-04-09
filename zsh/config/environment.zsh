@@ -6,12 +6,16 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export ZSH_CONFIG="$XDG_CONFIG_HOME/zsh"
 
 # executable search path
-paths=$HOME/.local/bin
-paths+=:$HOME/.local/sbin
-paths+=:/usr/local/bin
+primaryPaths=$HOME/.local/bin
+primaryPaths+=:$HOME/.local/sbin
+primaryPaths+=:/usr/local/bin
 
-export PATH=$paths:$PATH
+# Need to define new path before establishing if brew is installed, make sense?
+export PATH=$primaryPaths:$PATH
 export BREW_PATH=`command -v brew`
+
+secondaryPaths=$(brew --prefix)/share/python
+export PATH=$PATH:$secondaryPaths
 
 # Replaces BSD standard commands with GNU
 if test $BREW_PATH; then

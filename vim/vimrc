@@ -28,6 +28,7 @@ Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/splice.vim'
+Bundle 'wesQ3/vim-windowswap'
 
 Bundle 'tapayne88/vim-phpunit'
 Bundle 'tapayne88/vim-mochajs'
@@ -86,6 +87,8 @@ autocmd BufWinEnter ?* silent loadview
 
 " Disable cursorline in ruby file as it causes very slow line skipping
 autocmd FileType ruby set nocursorline
+
+"autocmd FileChangedShell * execute 'echo "Reloading file"' | edit | set syntax=on
 
 command! -nargs=1 -complete=file Mrun call MochaRunner(<q-args>)
 function! MochaRunner(test)
