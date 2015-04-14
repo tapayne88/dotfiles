@@ -39,3 +39,9 @@ Setup:
     ln -s vim ~/.vim
     ln -s vim/vimrc ~/.vimrc 
     ln -s misc/terminalrc ~/.config/Terminal/
+
+Keybindings:
+
+    # Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
+    0x02 0x6E   next window
+    0x02 0x70   previous window

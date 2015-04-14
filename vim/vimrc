@@ -2,11 +2,11 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 " Include Vundle
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 
 " Include github plugins
 Bundle 'altercation/vim-colors-solarized'
