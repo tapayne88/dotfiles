@@ -40,6 +40,9 @@ if test $NODE_PATH; then
     export NODE_PATH=$NODE_PATH
 fi
 
+export NVM_DIR="/Users/tpayne/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 if [ -f /usr/local/bin/virtualenvwrapper ]; then
     export WORKON_HOME=~/python
     source /usr/local/bin/virtualenvwrapper.sh
