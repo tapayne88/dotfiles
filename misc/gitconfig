@@ -3,6 +3,7 @@
     email = t.payne@ticketarena.co.uk
 [core]
     editor = vim
+	pager = less -x4
 [color]
     diff = auto
     status = auto
@@ -21,6 +22,7 @@
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
+    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
     ps = push
     br = branch
     df = diff
