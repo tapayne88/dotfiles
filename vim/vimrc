@@ -100,6 +100,9 @@ endif
 autocmd BufWinLeave ?* mkview
 autocmd BufWinEnter ?* silent loadview
 
+" Strip trailing whitespace - sometimes don't want it
+" autocmd BufWritePre * :%s/\s\+$//e
+
 " Disable cursorline in ruby file as it causes very slow line skipping
 autocmd FileType ruby set nocursorline
 
@@ -209,6 +212,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 
 "" ==================== Mapping Syntax ====================
 autocmd BufRead,BufNewFile *.tache setfiletype html
+autocmd BufRead,BufNewFile /etc/nginx/*,/usr/local/nginx/conf/*,*/nginx/* if (&ft == '' || &ft == 'conf') | setfiletype nginx | endif
 
 
 "" ==================== Emmet ====================
@@ -258,6 +262,8 @@ nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded vimrc"<CR>
 
 nnoremap <leader>" ea"<esc>hbi"<esc>lel
 nnoremap <leader>' ea'<esc>hbi'<esc>lel
+
+nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
