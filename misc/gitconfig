@@ -16,7 +16,7 @@
     co = checkout
     pl = pull --ff-only
     ft = fetch
-    mg = merge 
+    mg = merge
     mb = merge --no-ff --no-commit
     mt = mergetool
     ch = cherry-pick
@@ -27,7 +27,7 @@
     br = branch
     df = diff
     dfc = diff --cached
-    dfu = !sh -c 'git diff $0..@{u}'
+    dfu = !sh -c 'git diff $0..@{u} $@'
     dt = difftool
     review = difftool @{u}
     grp = grep -I -n
