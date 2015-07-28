@@ -24,12 +24,21 @@ Bundle 'tpope/vim-obsession'
 Bundle 'itchyny/lightline.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'mattn/emmet-vim'
-Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/splice.vim'
 Bundle 'wesQ3/vim-windowswap'
+Bundle 'ciaranm/detectindent'
+Bundle 'Valloric/YouCompleteMe'
 
+" Syntax stuff
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'mxw/vim-jsx'
+Bundle 'saltstack/salt-vim'
+Bundle 'evanmiller/nginx-vim-syntax'
+Bundle 'leafgarland/typescript-vim'
+
+" My forks
 Bundle 'tapayne88/vim-phpunit'
 Bundle 'tapayne88/vim-mochajs'
 
@@ -42,9 +51,15 @@ let g:NERDTreeUseSimpleIndicator = 1
 filetype plugin indent on
 set number                      "Adds line numbers
 set shiftwidth=4                "Determines indentation in normal mode (using '>>' or '<<')
-set tabstop=8                   "Changes tabs to 4 spaces
-set softtabstop=4               "Let backspace delete indent
-set expandtab                   "Expands tabs to spaces, better for formatting
+"""""""" Tab to space config """"""""
+"set tabstop=8                   "Changes tabs to 4 spaces
+"set softtabstop=4               "Let backspace delete indent
+"set expandtab                   "Expands tabs to spaces, better for formatting
+"""""""""""""""""""""""""""""""""""""
+""""""""" Tab to Tab config """""""""
+set tabstop=4
+set noexpandtab
+"""""""""""""""""""""""""""""""""""""
 set ls=2                        "Show filename perminently
 set autoindent                  "Sets up auto indent (copies indentation from line above)
 set backspace=2                 "Makes backspace key behave properly in insert mode
@@ -111,6 +126,11 @@ let g:solarized_contrast="high"
 let g:solarized_visibility="high"
 
 colorscheme solarized
+
+
+"" ==================== DetectIndent ====================
+let g:detectindent_preferred_indent = 4
+autocmd BufReadPost * :DetectIndent
 
 
 "" ==================== Lightline ====================
