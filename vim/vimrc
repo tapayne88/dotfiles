@@ -1,46 +1,62 @@
-"" ==================== Vundle ====================
-set nocompatible               " be iMproved
-filetype off                   " required!
+"" ==================== NeoBundle ====================
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
 
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#rc()
+  " Required:
+  set runtimepath+=/Users/tpayne/.vim/bundle/neobundle.vim/
+endif
 
-" Include Vundle
-Bundle 'gmarik/Vundle.vim'
+" Required:
+call neobundle#begin(expand('/Users/tpayne/.vim/bundle'))
 
-" Include github plugins
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'Xuyuanp/git-nerdtree'
-Bundle 'bogado/file-line'
-Bundle 'majutsushi/tagbar'
-Bundle 'godlygeek/tabular'
-Bundle 'kien/ctrlp.vim'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-characterize'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-eunuch'
-Bundle 'tpope/vim-obsession'
-Bundle 'itchyny/lightline.vim'
-Bundle 'tpope/vim-surround'
-Bundle 'mattn/emmet-vim'
-Bundle 'tpope/vim-dispatch'
-Bundle 'scrooloose/syntastic'
-Bundle 'sjl/splice.vim'
-Bundle 'wesQ3/vim-windowswap'
-Bundle 'ciaranm/detectindent'
-Bundle 'Valloric/YouCompleteMe'
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Add or remove your Bundles here:
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'Xuyuanp/nerdtree-git-plugin'
+NeoBundle 'bogado/file-line'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-characterize'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'tpope/vim-obsession'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'sjl/splice.vim'
+NeoBundle 'wesQ3/vim-windowswap'
+NeoBundle 'ciaranm/detectindent'
 
 " Syntax stuff
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'mxw/vim-jsx'
-Bundle 'saltstack/salt-vim'
-Bundle 'evanmiller/nginx-vim-syntax'
-Bundle 'leafgarland/typescript-vim'
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'mxw/vim-jsx'
+NeoBundle 'saltstack/salt-vim'
+NeoBundle 'evanmiller/nginx-vim-syntax'
+NeoBundle 'leafgarland/typescript-vim'
 
 " My forks
-Bundle 'tapayne88/vim-phpunit'
-Bundle 'tapayne88/vim-mochajs'
+NeoBundle 'tapayne88/vim-phpunit'
+NeoBundle 'tapayne88/vim-mochajs'
+
+" Required:
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 
 
 "" ==================== Testing Area ====================
@@ -48,7 +64,6 @@ let g:NERDTreeUseSimpleIndicator = 1
 
 
 "" ==================== General ====================
-filetype plugin indent on
 set number                      "Adds line numbers
 set shiftwidth=4                "Determines indentation in normal mode (using '>>' or '<<')
 """""""" Tab to space config """"""""
@@ -283,10 +298,6 @@ nnoremap <leader>gpl :Dispatch! git pull<CR>
 
 map <F6> :Gblame<CR>
 map <F7> :NERDTreeToggle<CR>
-map <F8> :TagbarToggle<CR>
-map <F9> :call <SID>align()<CR>
-"Ctags - Open definitions in new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 
 "" ==================== Misc ====================
