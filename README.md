@@ -1,47 +1,68 @@
 # Dotfiles
 
-### Get em while they're hot!
+Get em while they're hot!
 
-VIM (from source):
-    VIM (from https://gist.github.com/1348303)
-    hg clone https://vim.googlecode.com/hg/ vim
-    cd vim
+#### Vim
+#####[From source](https://gist.github.com/1348303)
+```
+hg clone https://vim.googlecode.com/hg/ vim
+cd vim
 
-    # Build with python 2.7 (path on Xubuntu was '/usr/lib/python2.7/config')
-    # Found when installing Powerline (combination of CommandT configure and python path)
-    ./configure --with-features=huge --enable-rubyinterp --enable-pythoninterp \
-    --with-python-config-dir=/path/to/python/config --prefix=$HOME
+# Build with python 2.7 (path on Xubuntu was '/usr/lib/python2.7/config')
+# Found when installing Powerline (combination of CommandT configure and python path)
+./configure --with-features=huge --enable-rubyinterp --enable-pythoninterp \
+--with-python-config-dir=/path/to/python/config --prefix=$HOME
 
-    make
-    make test (optional)
-    sudo make install
+make
+make test (optional)
+sudo make install
+```
 
-    # Install Vundle and VIM Plugins
-    git clone https://github.com/gmarik/vundle.git ~/git/vundle
-    ln -s ~/git/vundle ~/git/dotfiles/vim/bundle
-    vim +BundleInstall +qall
+#####Alternatively
+```
+brew install vim
+```
 
-Setup:
-    # ZSH
-    ln -s zsh/zshrc ~/.zshrc
-    ln -s zsh/config/* ~/.config/zsh/
-    ln -s zsh/themes/* ~/.oh-my-zsh/themes/
-    # Will probably need to create the custom plugins directory
-    mkdir ~/.oh-my-zsh/custom/plugins
-    ln -s zsh/plugins/* ~/.oh-my-zsh/custom/plugins/
+##### Install NeoBundle and Vim Plugins
+```
+curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
+# Now open Vim and NeoBundle should attempt to install the plugins
+```
 
-    # Fonts required for tpayne.zsh-theme
-    ln -s fonts ~/.fonts
+##### Vim Symlinks
+```
+ln -s "`pwd`/vim" ~/.vim
+ln -s "`pwd`/vim/vimrc" ~/.vimrc
+```
 
-    ln -s misc/tmux.conf ~/.tmux.conf
-    ln -s misc/gitconfig ~/.gitconfig
 
-    ln -s vim ~/.vim
-    ln -s vim/vimrc ~/.vimrc 
-    ln -s misc/terminalrc ~/.config/Terminal/
+#### ZSH
+```
+ln -s "`pwd`/zsh/zshrc" ~/.zshrc
+ln -s "`pwd`/zsh/config/*" ~/.config/zsh/
+ln -s "`pwd`/zsh/themes/*" ~/.oh-my-zsh/themes/
 
-Keybindings:
+# Will probably need to create the custom plugins directory
+mkdir ~/.oh-my-zsh/custom/plugins
+ln -s "`pwd`/zsh/plugins/*" ~/.oh-my-zsh/custom/plugins/
 
-    # Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
-    0x02 0x6E   next window
-    0x02 0x70   previous window
+# Fonts required for tpayne.zsh-theme
+ln -s "`pwd`/fonts" ~/.fonts
+
+ln -s "`pwd`/misc/tmux.conf" ~/.tmux.conf
+ln -s "`pwd`/misc/gitconfig" ~/.gitconfig
+ln -s "`pwd`/misc/terminalrc" ~/.config/Terminal/
+```
+
+#### iTerm2
+Keybindings
+```
+# Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
+0x02 0x6E   next window
+0x02 0x70   previous window
+```
+
+#### OSX
+- Install [Homebrew](http://brew.sh/)
+- Install utilities
+- Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
