@@ -16,33 +16,30 @@ call neobundle#begin(expand('/Users/tpayne/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'Xuyuanp/nerdtree-git-plugin'
-NeoBundle 'bogado/file-line'
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-characterize'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'tpope/vim-obsession'
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'sjl/splice.vim'
-NeoBundle 'wesQ3/vim-windowswap'
-NeoBundle 'ciaranm/detectindent'
+NeoBundle 'altercation/vim-colors-solarized'		" Colour scheme
+NeoBundle 'scrooloose/nerdtree'						" NerdTree (press F7)
+NeoBundle 'Xuyuanp/nerdtree-git-plugin'				" NerdTree Plugin for git stuff
+NeoBundle 'bogado/file-line'						" Handle filenames with line numbers i.e. :20
+NeoBundle 'godlygeek/tabular'						" Adds tabularize command to align rows with characters (put '=' in the same column)
+NeoBundle 'airblade/vim-gitgutter'					" + & - in column for changed lines
+NeoBundle 'tpope/vim-fugitive'						" Git integration ':Gstatus' etc.
+NeoBundle 'tpope/vim-characterize'					" Adds 'ga' command to show character code
+NeoBundle 'tpope/vim-commentary'					" Adds 'gc' & 'gcc' commands for commenting lines
+NeoBundle 'tpope/vim-eunuch'						" Adds unix commands like ':Move' etc.
+NeoBundle 'itchyny/lightline.vim'					" Modified pretty statusline
+NeoBundle 'tpope/vim-surround'						" Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
+NeoBundle 'tpope/vim-dispatch'						" Async vim compiler plugins (used to run mocha test below)
+NeoBundle 'sjl/splice.vim'							" Vim three-way merges
+NeoBundle 'wesQ3/vim-windowswap'					" Swap panes positions
+NeoBundle 'ciaranm/detectindent'					" Detect file indentation
 
 " Syntax stuff
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'mxw/vim-jsx'
-NeoBundle 'saltstack/salt-vim'
-NeoBundle 'evanmiller/nginx-vim-syntax'
-NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'scrooloose/syntastic'					" General syntax checking
+NeoBundle 'jelera/vim-javascript-syntax'			" Javascript
+NeoBundle 'mxw/vim-jsx'								" JSX
+NeoBundle 'saltstack/salt-vim'						" Saltstack
+NeoBundle 'evanmiller/nginx-vim-syntax'				" Nginx
+NeoBundle 'leafgarland/typescript-vim'				" Typescript
 
 " My forks
 NeoBundle 'tapayne88/vim-phpunit'
@@ -212,15 +209,6 @@ function! MyGit()
 endfunction
 
 
-"" ==================== CtrlP ====================
-" Regex file opener
-
-let g:ctrlp_max_files = 0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_open_new_file = 'r'
-let g:ctrlp_custom_ignore = '^\.git'
-
-
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
@@ -228,11 +216,6 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 "" ==================== Mapping Syntax ====================
 autocmd BufRead,BufNewFile *.tache setfiletype html
 autocmd BufRead,BufNewFile /etc/nginx/*,/usr/local/nginx/conf/*,*/nginx/* if (&ft == '' || &ft == 'conf') | setfiletype nginx | endif
-
-
-"" ==================== Emmet ====================
-let g:user_emmet_install_global = 0
-autocmd FileType phtml,html,tache,css EmmetInstall
 
 
 "" ==================== MacVim ====================
