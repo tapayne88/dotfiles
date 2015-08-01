@@ -244,8 +244,7 @@ nnoremap <leader>, :vertical resize +5<CR>
 " GitGutter Navigate
 nmap gh <Plug>GitGutterNextHunk
 nmap gH <Plug>GitGutterPrevHunk
-nmap <C-j> <Plug>GitGutterNextHunk
-nmap <C-k> <Plug>GitGutterPrevHunk
+
 
 "Toggle search highlighting
 nnoremap <leader>h :set hlsearch!<CR>
