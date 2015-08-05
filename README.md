@@ -69,3 +69,38 @@ Keybindings
 - Install [Homebrew](http://brew.sh/)
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
+
+Some brew modules you may want:
+```
+awscli
+brew-cask
+cmake
+colordiff
+coreutils
+flow
+fpp
+gdbm
+git
+gnupg
+gti
+htop-osx
+jmeter
+keybase
+libevent
+maven
+mobile-shell
+mongodb
+node
+nvm
+openssl
+pcre
+pkg-config
+postgresql
+protobuf
+readline
+squid2
+tmux
+vim
+watch
+zsh
+```
