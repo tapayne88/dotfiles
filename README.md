@@ -58,8 +58,11 @@ ln -s "`pwd`/misc/terminalrc" ~/.config/Terminal/
 Keybindings
 ```
 # Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
-0x02 0x6E   next window
-0x02 0x70   previous window
+0x02 0x6E   Cmd + }			next window
+0x02 0x70   Cmd + {			previous window
+
+^[ b		Alt + <-		previous word
+^[ f		Alt + ->		next word
 ```
 
 #### OSX
