@@ -23,7 +23,8 @@ sudo make install
 brew install vim
 ```
 
-##### Install NeoBundle and Vim Plugins
+##### Vim Plugins
+Install [NeoBundle](https://github.com/Shougo/neobundle.vim)
 ```
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
 # Now open Vim and NeoBundle should attempt to install the plugins
@@ -54,7 +55,14 @@ ln -s `pwd`/misc/gitconfig ~/.gitconfig
 ln -s `pwd`/misc/terminalrc ~/.config/Terminal/
 ```
 
-#### iTerm2
+#### Debian
+Clone and run install.sh from:
+```
+git clone https://github.com/Anthony25/gnome-terminal-colors-solarized
+```
+
+#### OSX
+##### iTerm2
 Keybindings
 ```
 # Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
@@ -65,7 +73,7 @@ Keybindings
 ^[ f		Alt + ->		next word
 ```
 
-#### OSX
+##### General
 - Install [Homebrew](http://brew.sh/)
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
