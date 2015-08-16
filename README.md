@@ -31,27 +31,27 @@ curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.s
 
 ##### Vim Symlinks
 ```
-ln -s "`pwd`/vim" ~/.vim
-ln -s "`pwd`/vim/vimrc" ~/.vimrc
+ln -s `pwd`/vim ~/.vim
+ln -s `pwd`/vim/vimrc ~/.vimrc
 ```
 
 
 #### ZSH
 ```
-ln -s "`pwd`/zsh/zshrc" ~/.zshrc
-ln -s "`pwd`/zsh/config/*" ~/.config/zsh/
-ln -s "`pwd`/zsh/themes/*" ~/.oh-my-zsh/themes/
+ln -s `pwd`/zsh/zshrc ~/.zshrc
+ln -s `pwd`/zsh/config/* ~/.config/zsh/
+ln -s `pwd`/zsh/themes/* ~/.oh-my-zsh/themes/
 
 # Will probably need to create the custom plugins directory
 mkdir ~/.oh-my-zsh/custom/plugins
-ln -s "`pwd`/zsh/plugins/*" ~/.oh-my-zsh/custom/plugins/
+ln -s `pwd`/zsh/plugins/* ~/.oh-my-zsh/custom/plugins/
 
 # Fonts required for tpayne.zsh-theme
-ln -s "`pwd`/fonts" ~/.fonts
+ln -s `pwd`/fonts ~/.fonts
 
-ln -s "`pwd`/misc/tmux.conf" ~/.tmux.conf
-ln -s "`pwd`/misc/gitconfig" ~/.gitconfig
-ln -s "`pwd`/misc/terminalrc" ~/.config/Terminal/
+ln -s `pwd`/misc/tmux.conf ~/.tmux.conf
+ln -s `pwd`/misc/gitconfig ~/.gitconfig
+ln -s `pwd`/misc/terminalrc ~/.config/Terminal/
 ```
 
 #### iTerm2

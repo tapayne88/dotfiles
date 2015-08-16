@@ -14,11 +14,11 @@ primaryPaths+=:/usr/local/bin
 export PATH=$primaryPaths:$PATH
 export BREW_PATH=`command -v brew`
 
-secondaryPaths=$(brew --prefix)/share/python
-export PATH=$PATH:$secondaryPaths
-
 # Replaces BSD standard commands with GNU
 if test $BREW_PATH; then
+	secondaryPaths=$(brew --prefix)/share/python
+	export PATH=$PATH:$secondaryPaths
+
     COREUTILS_PATH="$(brew --prefix coreutils)/libexec/gnubin"
     if [ -d $COREUTILS_PATH ]; then
         export HAS_BREW_COREUTILS=true
@@ -40,7 +40,7 @@ if test $NODE_PATH; then
     export NODE_PATH=$NODE_PATH
 fi
 
-export NVM_DIR="/Users/tpayne/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 if [ -f /usr/local/bin/virtualenvwrapper ]; then
