@@ -143,6 +143,14 @@ let g:solarized_visibility="high"
 colorscheme solarized
 
 
+"" ==================== Syntastic ====================
+" Only use eslint if you can find an eslintrc
+" Requires 'eslint' node module
+if filereadable(fnamemodify('.eslintrc', ':p'))
+	let g:syntastic_javascript_checkers = ['eslint']
+endif
+
+
 "" ==================== DetectIndent ====================
 let g:detectindent_preferred_indent = 4
 autocmd BufReadPost * :DetectIndent
