@@ -13,7 +13,8 @@ USER=`whoami`
 if [ $USER = 'tapayne88' ] ||
    [ $USER = 'tapayne' ] ||
    [ $USER = 'tpayne' ] ||
-   [ $USER = 'payneth' ]; then
+   [ $USER = 'payneth' ] ||
+   [ $USER = 'tpa11' ]; then
     DEFAULT_USER=$USER
 fi
 

@@ -23,17 +23,18 @@ sudo make install
 brew install vim
 ```
 
+##### Vim Symlinks
+```
+ln -s `pwd`/vim ~/.vim
+ln -s `pwd`/vim/vimrc ~/.vimrc
+```
+
+
 ##### Vim Plugins
 Install [NeoBundle](https://github.com/Shougo/neobundle.vim)
 ```
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
 # Now open Vim and NeoBundle should attempt to install the plugins
-```
-
-##### Vim Symlinks
-```
-ln -s `pwd`/vim ~/.vim
-ln -s `pwd`/vim/vimrc ~/.vimrc
 ```
 
 
