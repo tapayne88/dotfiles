@@ -22,7 +22,7 @@
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
-    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
+    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --preserve-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
     ps = push
     br = branch
     df = diff
@@ -38,6 +38,7 @@
     qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
     h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
     hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
+	prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
 [diff]
     tool = fugitive
 [difftool "fugitive"]
