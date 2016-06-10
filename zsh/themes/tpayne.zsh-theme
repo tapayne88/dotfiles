@@ -97,7 +97,7 @@ prompt_status() {
   local symbols
   symbols=()
 
-  local BACKGROUND_PROCS=$(jobs -l | wc -l)
+  local BACKGROUND_PROCS="$(jobs -l | wc -l | awk '{$1=$1};1')"
 
   #[[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"

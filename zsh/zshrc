@@ -26,7 +26,7 @@ stty -ixon
 
 KEYTIMEOUT=1
 
-plugins=(git command-not-found)
+plugins=(git command-not-found npm)
 
 # Setup special theme for ssh session, no special characters
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
