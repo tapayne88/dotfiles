@@ -16,30 +16,32 @@ call neobundle#begin(expand('$HOME/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
-NeoBundle 'altercation/vim-colors-solarized'		" Colour scheme
-NeoBundle 'scrooloose/nerdtree'						" NerdTree (press F7)
-NeoBundle 'Xuyuanp/nerdtree-git-plugin'				" NerdTree Plugin for git stuff
-NeoBundle 'bogado/file-line'						" Handle filenames with line numbers i.e. :20
-NeoBundle 'godlygeek/tabular'						" Adds tabularize command to align rows with characters (put '=' in the same column)
-NeoBundle 'airblade/vim-gitgutter'					" + & - in column for changed lines
-NeoBundle 'tpope/vim-fugitive'						" Git integration ':Gstatus' etc.
-NeoBundle 'tpope/vim-characterize'					" Adds 'ga' command to show character code
-NeoBundle 'tpope/vim-commentary'					" Adds 'gc' & 'gcc' commands for commenting lines
-NeoBundle 'tpope/vim-eunuch'						" Adds unix commands like ':Move' etc.
-NeoBundle 'itchyny/lightline.vim'					" Modified pretty statusline
-NeoBundle 'tpope/vim-surround'						" Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-NeoBundle 'tpope/vim-dispatch'						" Async vim compiler plugins (used to run mocha test below)
-NeoBundle 'sjl/splice.vim'							" Vim three-way merges
-NeoBundle 'wesQ3/vim-windowswap'					" Swap panes positions
-NeoBundle 'ciaranm/detectindent'					" Detect file indentation
+NeoBundle 'altercation/vim-colors-solarized'        " Colour scheme
+NeoBundle 'scrooloose/nerdtree'                     " NerdTree (press F7)
+NeoBundle 'Xuyuanp/nerdtree-git-plugin'             " NerdTree Plugin for git stuff
+NeoBundle 'bogado/file-line'                        " Handle filenames with line numbers i.e. :20
+NeoBundle 'godlygeek/tabular'                       " Adds tabularize command to align rows with characters (put '=' in the same column)
+NeoBundle 'airblade/vim-gitgutter'                  " + & - in column for changed lines
+NeoBundle 'tpope/vim-fugitive'                      " Git integration ':Gstatus' etc.
+NeoBundle 'tpope/vim-characterize'                  " Adds 'ga' command to show character code
+NeoBundle 'tpope/vim-commentary'                    " Adds 'gc' & 'gcc' commands for commenting lines
+NeoBundle 'tpope/vim-eunuch'                        " Adds unix commands like ':Move' etc.
+NeoBundle 'itchyny/lightline.vim'                   " Modified pretty statusline
+NeoBundle 'tpope/vim-surround'                      " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
+NeoBundle 'tpope/vim-dispatch'                      " Async vim compiler plugins (used to run mocha test below)
+NeoBundle 'sjl/splice.vim'                          " Vim three-way merges
+NeoBundle 'wesQ3/vim-windowswap'                    " Swap panes positions
+NeoBundle 'ciaranm/detectindent'                    " Detect file indentation
+NeoBundle 'lambdatoast/elm.vim'                     " Elm js stuff
 
 " Syntax stuff
-NeoBundle 'scrooloose/syntastic'					" General syntax checking
-NeoBundle 'jelera/vim-javascript-syntax'			" Javascript
-NeoBundle 'mxw/vim-jsx'								" JSX
-NeoBundle 'saltstack/salt-vim'						" Saltstack
-NeoBundle 'evanmiller/nginx-vim-syntax'				" Nginx
-NeoBundle 'leafgarland/typescript-vim'				" Typescript
+NeoBundle 'scrooloose/syntastic'                    " General syntax checking
+NeoBundle 'jelera/vim-javascript-syntax'            " Javascript
+NeoBundle 'mxw/vim-jsx'                             " JSX
+NeoBundle 'saltstack/salt-vim'                      " Saltstack
+NeoBundle 'evanmiller/nginx-vim-syntax'             " Nginx
+NeoBundle 'leafgarland/typescript-vim'              " Typescript
+NeoBundle 'jdkanani/vim-material-theme'             " Material Theme
 
 " My forks
 NeoBundle 'tapayne88/vim-phpunit'
@@ -64,13 +66,13 @@ let g:NERDTreeUseSimpleIndicator = 1
 set number                      "Adds line numbers
 set shiftwidth=4                "Determines indentation in normal mode (using '>>' or '<<')
 """""""" Tab to space config """"""""
-"set tabstop=8                   "Changes tabs to 4 spaces
-"set softtabstop=4               "Let backspace delete indent
-"set expandtab                   "Expands tabs to spaces, better for formatting
+set tabstop=8                   "Changes tabs to 4 spaces
+set softtabstop=4               "Let backspace delete indent
+set expandtab                   "Expands tabs to spaces, better for formatting
 """""""""""""""""""""""""""""""""""""
 """"""""" Tab to Tab config """""""""
-set tabstop=4
-set noexpandtab
+"set tabstop=4
+"set noexpandtab
 """""""""""""""""""""""""""""""""""""
 set ls=2                        "Show filename perminently
 set autoindent                  "Sets up auto indent (copies indentation from line above)
