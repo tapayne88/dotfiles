@@ -1,63 +1,42 @@
-"" ==================== NeoBundle ====================
-if has('vim_starting')
-  if &compatible
-    set nocompatible               " Be iMproved
-  endif
-
-  " Required:
-  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
-endif
-
-" Required:
-call neobundle#begin(expand('$HOME/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+"" ==================== Vim Plug ====================
+call plug#begin('~/.vim/plugged')
 
 " Add or remove your Bundles here:
-NeoBundle 'altercation/vim-colors-solarized'        " Colour scheme
-NeoBundle 'scrooloose/nerdtree'                     " NerdTree (press F7)
-NeoBundle 'Xuyuanp/nerdtree-git-plugin'             " NerdTree Plugin for git stuff
-NeoBundle 'bogado/file-line'                        " Handle filenames with line numbers i.e. :20
-NeoBundle 'godlygeek/tabular'                       " Adds tabularize command to align rows with characters (put '=' in the same column)
-NeoBundle 'airblade/vim-gitgutter'                  " + & - in column for changed lines
-NeoBundle 'tpope/vim-fugitive'                      " Git integration ':Gstatus' etc.
-NeoBundle 'tpope/vim-characterize'                  " Adds 'ga' command to show character code
-NeoBundle 'tpope/vim-commentary'                    " Adds 'gc' & 'gcc' commands for commenting lines
-NeoBundle 'tpope/vim-eunuch'                        " Adds unix commands like ':Move' etc.
-NeoBundle 'itchyny/lightline.vim'                   " Modified pretty statusline
-NeoBundle 'tpope/vim-surround'                      " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-NeoBundle 'tpope/vim-dispatch'                      " Async vim compiler plugins (used to run mocha test below)
-NeoBundle 'sjl/splice.vim'                          " Vim three-way merges
-NeoBundle 'wesQ3/vim-windowswap'                    " Swap panes positions
-NeoBundle 'ciaranm/detectindent'                    " Detect file indentation
-NeoBundle 'lambdatoast/elm.vim'                     " Elm js stuff
+Plug 'altercation/vim-colors-solarized'        " Colour scheme
+Plug 'scrooloose/nerdtree'                     " NerdTree (press F7)
+Plug 'Xuyuanp/nerdtree-git-plugin'             " NerdTree Plugin for git stuff
+Plug 'bogado/file-line'                        " Handle filenames with line numbers i.e. :20
+Plug 'godlygeek/tabular'                       " Adds tabularize command to align rows with characters (put '=' in the same column)
+Plug 'airblade/vim-gitgutter'                  " + & - in column for changed lines
+Plug 'tpope/vim-fugitive'                      " Git integration ':Gstatus' etc.
+Plug 'tpope/vim-characterize'                  " Adds 'ga' command to show character code
+Plug 'tpope/vim-commentary'                    " Adds 'gc' & 'gcc' commands for commenting lines
+Plug 'tpope/vim-eunuch'                        " Adds unix commands like ':Move' etc.
+Plug 'itchyny/lightline.vim'                   " Modified pretty statusline
+Plug 'tpope/vim-surround'                      " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
+Plug 'tpope/vim-dispatch'                      " Async vim compiler plugins (used to run mocha test below)
+Plug 'sjl/splice.vim'                          " Vim three-way merges
+Plug 'wesQ3/vim-windowswap'                    " Swap panes positions
+Plug 'ciaranm/detectindent'                    " Detect file indentation
+Plug 'lambdatoast/elm.vim'                     " Elm js stuff
+Plug 'kien/ctrlp.vim'                          " Fuzzy finder
 
 " Syntax stuff
-NeoBundle 'scrooloose/syntastic'                    " General syntax checking
-NeoBundle 'jelera/vim-javascript-syntax'            " Javascript
-NeoBundle 'mxw/vim-jsx'                             " JSX
-NeoBundle 'saltstack/salt-vim'                      " Saltstack
-NeoBundle 'evanmiller/nginx-vim-syntax'             " Nginx
-NeoBundle 'leafgarland/typescript-vim'              " Typescript
-NeoBundle 'jdkanani/vim-material-theme'             " Material Theme
-NeoBundle 'derekwyatt/vim-scala'		    " Scala syntax
+Plug 'scrooloose/syntastic'                    " General syntax checking
+Plug 'mtscout6/syntastic-local-eslint.vim'     " Prefer local eslint
+Plug 'jelera/vim-javascript-syntax'            " Javascript
+Plug 'mxw/vim-jsx'                             " JSX
+Plug 'saltstack/salt-vim'                      " Saltstack
+Plug 'evanmiller/nginx-vim-syntax'             " Nginx
+Plug 'leafgarland/typescript-vim'              " Typescript
+Plug 'jdkanani/vim-material-theme'             " Material Theme
+Plug 'derekwyatt/vim-scala'		    " Scala syntax
 
 " My forks
-NeoBundle 'tapayne88/vim-phpunit'
-NeoBundle 'tapayne88/vim-mochajs'
+Plug 'tapayne88/vim-phpunit'
+Plug 'tapayne88/vim-mochajs'
 
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-
+call plug#end()
 
 "" ==================== Testing Area ====================
 let g:NERDTreeUseSimpleIndicator = 1
@@ -150,7 +129,11 @@ colorscheme solarized
 " Only use eslint if you can find an eslintrc
 " Requires 'eslint' node module
 if filereadable(fnamemodify('.eslintrc', ':p'))
-	let g:syntastic_javascript_checkers = ['eslint']
+    let g:syntastic_javascript_checkers = ['eslint']
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
 endif
 
 
@@ -265,7 +248,8 @@ nnoremap <leader>l :ls<CR>:b<space>
 nnoremap <leader>n :set number!<CR>
 "Toggle line number mode
 nnoremap <F3> :NumbersToggle<CR>
-nnoremap <leader>ev :vsplit ~/.vimrc<CR>
+nnoremap <leader>evv :vsplit ~/.vimrc<CR>
+nnoremap <leader>ev :split ~/.vimrc<CR>
 nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded vimrc"<CR>
 
 nnoremap <leader>" ea"<esc>hbi"<esc>lel
