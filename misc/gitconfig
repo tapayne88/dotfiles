@@ -41,6 +41,7 @@
 	prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
 [diff]
     tool = fugitive
+    compactionHeuristic = 1
 [difftool "fugitive"]
     cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 [merge]
@@ -50,3 +51,7 @@
     trustExitCode = true
 [bash]
     showDirtyState = true
+[pager]
+    show = diff-so-fancy | less
+    log = diff-so-fancy | less
+    diff = diff-so-fancy | less
