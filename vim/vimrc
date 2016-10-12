@@ -17,7 +17,6 @@ Plug 'tpope/vim-surround'                      " Adds 'cs' command to change sur
 Plug 'tpope/vim-dispatch'                      " Async vim compiler plugins (used to run mocha test below)
 Plug 'sjl/splice.vim'                          " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                    " Swap panes positions
-Plug 'ciaranm/detectindent'                    " Detect file indentation
 Plug 'lambdatoast/elm.vim'                     " Elm js stuff
 Plug 'kien/ctrlp.vim'                          " Fuzzy finder
 
@@ -135,11 +134,6 @@ if filereadable(fnamemodify('.eslintrc', ':p'))
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
 endif
-
-
-"" ==================== DetectIndent ====================
-let g:detectindent_preferred_indent = 4
-autocmd BufReadPost * :DetectIndent
 
 
 "" ==================== Lightline ====================
