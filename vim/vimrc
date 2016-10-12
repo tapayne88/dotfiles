@@ -42,6 +42,7 @@ NeoBundle 'saltstack/salt-vim'                      " Saltstack
 NeoBundle 'evanmiller/nginx-vim-syntax'             " Nginx
 NeoBundle 'leafgarland/typescript-vim'              " Typescript
 NeoBundle 'jdkanani/vim-material-theme'             " Material Theme
+NeoBundle 'derekwyatt/vim-scala'		    " Scala syntax
 
 " My forks
 NeoBundle 'tapayne88/vim-phpunit'
