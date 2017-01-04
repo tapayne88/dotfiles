@@ -16,8 +16,8 @@ export BREW_PATH=`command -v brew`
 
 # Replaces BSD standard commands with GNU
 if test $BREW_PATH; then
-	secondaryPaths=$(brew --prefix)/share/python
-	export PATH=$PATH:$secondaryPaths
+    secondaryPaths=$(brew --prefix)/share/python
+    export PATH=$PATH:$secondaryPaths
 
     COREUTILS_PATH="$(brew --prefix coreutils)/libexec/gnubin"
     if [ -d $COREUTILS_PATH ]; then
