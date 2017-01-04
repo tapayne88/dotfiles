@@ -17,10 +17,11 @@ Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used t
 Plug 'sjl/splice.vim'                       " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'kien/ctrlp.vim'                       " Fuzzy finder
+Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 
 " Language Stuff
 Plug 'neomake/neomake'                      " General syntax checking
-"Plug 'benjie/neomake-local-eslint.vim'      " Local eslint
+Plug 'jaawerth/neomake-local-eslint-first'  " Local eslint
 Plug 'jelera/vim-javascript-syntax'         " Javascript
 Plug 'mxw/vim-jsx'                          " JSX
 Plug 'leafgarland/typescript-vim'           " Typescript
@@ -56,15 +57,17 @@ set cursorline                  "Highlight line the cursor is on
 set t_Co=16                     "Set to 16 for best compatibility with solarized
 set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
+set splitbelow                  "Better split defaults
+set splitright                  "Better split defaults
+set mouse=                      "Disable mouse mode
 
 syntax enable
 set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
 
-" Better split defaults
-set splitbelow
-set splitright
+let g:ctrlp_working_path_mode = 'c'
+let g:ctrlp_custom_ignore = '\v[\/](\.git|node_(modules|cache|shrinkwrap))$'
 
 let mapleader = ","
 let maplocalleader = "-"
@@ -137,6 +140,24 @@ function! MyGit()
 endfunction
 
 
+"" ==================== NeoMake ====================
+let g:neomake_open_list=2
+let g:neomake_list_height=5
+if findfile('.eslintrc', '.;') !=# ''
+    let g:neomake_javascript_enabled_makers = ['eslint']
+    autocmd BufReadPost,BufWritePost * Neomake
+endif
+
+"noremap <leader>q :something<CR>
+
+" let g:neomake_javascript_jest_maker = {
+"     \ 'exe': 'npm test',
+"     \ 'args': [],
+"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+"     \ }
+" let g:neomake_javascript_enabled_makers = ['jest']
+
+
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
@@ -145,13 +166,23 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 " Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap j gj
 nnoremap k gk
+
 " Best tab navigation shorcuts
 nnoremap <C-h> gT
 nnoremap <C-l> gt
+
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
-"Shows and hides invisible characters
+" Shows and hides invisible characters
 noremap <leader>e :set list!<CR>
+" Toggle search highlighting
+nnoremap <leader>h :set hlsearch!<CR>
+" Displays files in buffer and quickly swap with regex matching or number
+nnoremap <leader>l :ls<CR>:b<space>
+" Toggle line numbers
+nnoremap <leader>n :set number!<CR>
+
+nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 
 " Split resizing
 nnoremap <leader>- :res -5<CR>
@@ -163,23 +194,14 @@ nnoremap <leader>, :vertical resize +5<CR>
 nmap gh <Plug>GitGutterNextHunk
 nmap gH <Plug>GitGutterPrevHunk
 
-
-"Toggle search highlighting
-nnoremap <leader>h :set hlsearch!<CR>
-"Displays files in buffer and quickly swap with regex matching or number
-nnoremap <leader>l :ls<CR>:b<space>
-"Toggle line numbers
-nnoremap <leader>n :set number!<CR>
-"Toggle line number mode
-nnoremap <F3> :NumbersToggle<CR>
+" Editing neovim config
 nnoremap <leader>evv :vsplit ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ev :split ~/.config/nvim/init.vim<CR>
 nnoremap <leader>sv :source ~/.config/nvim/init.vim<CR>:echom "Reloaded init.vim"<CR>
 
+"Wrapping with quotes
 nnoremap <leader>" ea"<esc>hbi"<esc>lel
 nnoremap <leader>' ea'<esc>hbi'<esc>lel
-
-nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>

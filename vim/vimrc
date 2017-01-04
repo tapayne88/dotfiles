@@ -133,6 +133,8 @@ if filereadable(fnamemodify('.eslintrc', ':p'))
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
+
+    noremap <leader>s :SyntasticToggleMode<CR>
 endif
 
 
@@ -269,6 +271,7 @@ nnoremap <leader>gpl :Dispatch! git pull<CR>
 
 map <F6> :Gblame<CR>
 map <F7> :NERDTreeToggle<CR>
+command Jest Dispatch npm test -- %
 
 
 "" ==================== Misc ====================

@@ -26,8 +26,8 @@ if test $BREW_PATH; then
     fi
 fi
 
-export VISUAL=vim
-export EDITOR=vim
+export VISUAL=nvim
+export EDITOR=nvim
 
 if [ -L ~/.dir_colors ]; then
     eval `dircolors $HOME/.dir_colors`
