@@ -2,6 +2,11 @@
 
 Get em while they're hot!
 
+### Directories
+```
+mkdir -p ~/.local/bin
+```
+
 #### Vim
 #####[From source](https://gist.github.com/1348303)
 ```
@@ -39,8 +44,17 @@ vim +PlugInstall
 ```
 
 
+#### [NeoVim](https://neovim.io/)
+```
+brew install neovim/neovim/neovim
+mkdir -p ~/.config/nvim
+ln -s `pwd`/nvim ~/.config/nvim
+```
+
 #### ZSH
 ```
+mkdir -p ~/.config/zsh
+
 ln -s `pwd`/zsh/zshrc ~/.zshrc
 ln -s `pwd`/zsh/config/* ~/.config/zsh/
 ln -s `pwd`/zsh/themes/* ~/.oh-my-zsh/themes/
@@ -87,6 +101,7 @@ brew-cask
 cmake
 colordiff
 coreutils
+diff-so-fancy
 flow
 fpp
 gdbm
