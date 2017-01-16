@@ -12,9 +12,9 @@ fi
 alias grep='grep -n --color=auto'
 alias ..='cd ..'
 
-alias fem='cd $HOME/dev/workstation/repos/SBG/skybetdev/tiny/Mbet/React/FootballEventMarkets'
-alias uil='cd $HOME/dev/@skybet/ui-library'
-alias sbd='cd $HOME/dev/workstation/repos/SBG/skybetdev'
+alias fem='cd $HOME/dev/stash.skybet.net/skybetdev/tiny/Mbet/React/FootballEventMarkets'
+alias uil='cd $HOME/dev/stash.skybet.net/@skybet/ui-library'
+alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
 
 # For reviewing merge before commit
 # Review flow below:
@@ -24,5 +24,3 @@ alias sbd='cd $HOME/dev/workstation/repos/SBG/skybetdev'
 #   - swap back to Gstatus pane
 #   - move cursor to new file and press <Enter> (opens file below status)
 alias vimmg='vim -c Gstatus'
-
-alias vpn='sudo -p "Sudo the fuck up you filthy animal: " sh -c "openconnect -g SKY-MINI-TOKEN -u TPA11 -m 1400 https://skyremoteaccess.bskyb.com"'
