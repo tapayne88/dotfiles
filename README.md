@@ -8,7 +8,7 @@ mkdir -p ~/.local/bin
 ```
 
 #### Vim
-#####[From source](https://gist.github.com/1348303)
+##### [From source](https://gist.github.com/1348303)
 ```
 hg clone https://vim.googlecode.com/hg/ vim
 cd vim
@@ -23,7 +23,7 @@ make test (optional)
 sudo make install
 ```
 
-#####Alternatively
+##### Alternatively
 ```
 brew install vim
 ```
