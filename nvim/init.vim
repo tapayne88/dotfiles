@@ -2,7 +2,7 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Core Bundles
-Plug 'altercation/vim-colors-solarized'
+Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'                  " NerdTree (press F7)
 Plug 'Xuyuanp/nerdtree-git-plugin'          " NerdTree Plugin for git stuff
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
@@ -11,7 +11,8 @@ Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
-Plug 'itchyny/lightline.vim'                " Modified pretty statusline
+Plug 'vim-airline/vim-airline'              " Modified pretty statusline
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
 Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
 Plug 'sjl/splice.vim'                       " Vim three-way merges
@@ -26,10 +27,6 @@ Plug 'mxw/vim-jsx'                          " JSX
 Plug 'leafgarland/typescript-vim'           " Typescript
 Plug 'lambdatoast/elm.vim'                  " Elm js stuff
 Plug 'derekwyatt/vim-scala'                 " Scala syntax
-
-" My forks
-" Plug 'tapayne88/vim-phpunit'
-" Plug 'tapayne88/vim-mochajs'
 
 call plug#end()
 
@@ -53,17 +50,19 @@ set incsearch                   "Highlight dynamically as pattern is typed
 set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
-set t_Co=16                     "Set to 16 for best compatibility with solarized
 set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set splitbelow                  "Better split defaults
 set splitright                  "Better split defaults
 set mouse=                      "Disable mouse mode
 
+"" ==================== Colors ====================
 syntax enable
 set background=dark
-let g:solarized_termtrans=1
-colorscheme solarized
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme base16-default-dark
+let g:airline_theme='base16'
+"" ==================== Colors ====================
 
 let mapleader = ","
 let maplocalleader = "-"
@@ -74,67 +73,6 @@ set directory=~/.config/nvim/swaps
 if exists("&undodir")
     set undodir=~/.config/nvim/undo
 endif
-
-"" ==================== Lightline ====================
-let g:lightline = {
-      \ 'colorscheme': '16color',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'git' ], [ 'filename' ] ],
-      \   'right': [ [ 'percent', 'syntastic', 'lineinfo' ], [ 'fileinfo' ], ['filetype'] ]
-      \ },
-      \ 'component_function': {
-      \     'git': 'MyGit',
-      \     'filename': 'MyFilename',
-      \     'fileinfo': 'MyFileInfo'
-      \ }
-    \}
-
-function! MyFileInfo()
-    return &fileencoding.'['.&fileformat.']'
-endfunction
-
-function! MyReadonly()
-    if &filetype == "help"
-        return ""
-    elseif &readonly
-        return ""
-    else
-        return ""
-    endif
-endfunction
-
-function! MyModified()
-    if &filetype == "help"
-        return ""
-    elseif &modified
-        return "±"
-    elseif &modifiable
-        return ""
-    else
-        return ""
-    endif
-endfunction
-
-function! MyFilename()
-    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-         \ ('' != expand('%:.') ? expand('%:.') : '[No Name]') .
-         \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-
-function! MyGit()
-    let hunk_symbols = ['+', '~', '-']
-    let string = ''
-    let hunks = exists('*GitGutterGetHunkSummary') ? GitGutterGetHunkSummary() : []
-
-    if !empty(hunks)
-        for i in [0, 1, 2]
-            let string .= printf('%s%s ', hunk_symbols[i], hunks[i])
-        endfor
-    endif
-
-    return exists("*fugitive#head") ? string."⎇  ".fugitive#head(7) : ""
-endfunction
-
 
 "" ==================== NeoMake ====================
 let g:neomake_open_list=2
