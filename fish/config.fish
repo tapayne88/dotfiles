@@ -9,7 +9,7 @@ export VISUAL=nvim
 export EDITOR=nvim
 
 # executable search path
-set PATH $HOME/.local/bin $HOME/.local/sbin /usr/local/bin $PATH
+set PATH $HOME/.local/bin /usr/local/bin $PATH
 
 # Make some possibly destructive commands more interactive
 alias rm='rm -i'
