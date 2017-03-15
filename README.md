@@ -5,10 +5,34 @@ Get em while they're hot!
 ### Directories
 ```
 mkdir -p ~/.local/bin
+mkdir -p ~/.config
 ```
 
-#### Vim
-##### [From source](https://gist.github.com/1348303)
+Color Scheme: [base16](https://github.com/chriskempson/base16)
+
+### Fish Shell
+```
+brew install fish
+sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
+```
+
+[oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) - using `default` theme
+
+```
+git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+ln -s `pwd`/fish/config.fish ~/.config/fish/
+ln -s `pwd`/fish/functions/* ~/.config/fish/functions/
+```
+
+### [NeoVim](https://neovim.io/)
+```
+brew install neovim/neovim/neovim
+mkdir -p ~/.config/nvim
+ln -s `pwd`/nvim ~/.config/nvim
+```
+
+### Vim
+[From source](https://gist.github.com/1348303)
 ```
 hg clone https://vim.googlecode.com/hg/ vim
 cd vim
@@ -23,19 +47,18 @@ make test (optional)
 sudo make install
 ```
 
-##### Alternatively
+#### Alternatively
 ```
 brew install vim
 ```
 
-##### Vim Symlinks
+#### Vim Symlinks
 ```
 ln -s `pwd`/vim ~/.vim
 ln -s `pwd`/vim/vimrc ~/.vimrc
 ```
 
-
-##### Vim Plugins
+#### Vim Plugins
 Install [Vim Plug](https://github.com/junegunn/vim-plug)
 ```
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -43,15 +66,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 vim +PlugInstall
 ```
 
-
-#### [NeoVim](https://neovim.io/)
-```
-brew install neovim/neovim/neovim
-mkdir -p ~/.config/nvim
-ln -s `pwd`/nvim ~/.config/nvim
-```
-
-#### ZSH
+### ZSH
 ```
 mkdir -p ~/.config/zsh
 
@@ -71,14 +86,14 @@ ln -s `pwd`/misc/gitconfig ~/.gitconfig
 ln -s `pwd`/misc/terminalrc ~/.config/Terminal/
 ```
 
-#### Debian
+### Debian
 Clone and run install.sh from:
 ```
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized
 ```
 
-#### OSX
-##### iTerm2
+### OSX
+#### iTerm2
 Keybindings
 ```
 # Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
@@ -89,7 +104,7 @@ Keybindings
 ^[ f		Alt + ->		next word
 ```
 
-##### General
+## General
 - Install [Homebrew](http://brew.sh/)
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
