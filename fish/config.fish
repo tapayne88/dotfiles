@@ -31,3 +31,12 @@ alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
 #   - swap back to Gstatus pane
 #   - move cursor to new file and press <Enter> (opens file below status)
 alias vimmg='vim -c Gstatus'
+
+# Setup special theme for ssh session, no special characters
+if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a "$TERM_PROGRAM" = "iTerm.app"
+    set MYTMUX (which tmux)
+    # Start tmux at start of each session (only when local and tmux exists)
+    if test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"
+        tmux > /dev/null 2>&1
+    end
+end
