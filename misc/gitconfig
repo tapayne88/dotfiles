@@ -2,7 +2,6 @@
     name = Tom Payne
     email = thomas.payne@skybettingandgaming.com
 [core]
-    editor = nvim
     pager = less -x4
 [color]
     diff = auto
