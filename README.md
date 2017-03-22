@@ -20,8 +20,7 @@ sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
 
 ```
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-ln -s `pwd`/fish/config.fish ~/.config/fish/
-ln -s `pwd`/fish/functions/* ~/.config/fish/functions/
+ln -s `pwd`/fish/omf ~/.config
 ```
 
 ### [NeoVim](https://neovim.io/)

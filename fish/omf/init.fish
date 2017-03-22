@@ -11,6 +11,8 @@ export EDITOR=nvim
 # executable search path
 set PATH $HOME/.local/bin /usr/local/bin $PATH
 
+set fish_function_path $OMF_CONFIG/functions $fish_function_path
+
 # Make some possibly destructive commands more interactive
 alias rm='rm -i'
 alias mv='mv -i'
