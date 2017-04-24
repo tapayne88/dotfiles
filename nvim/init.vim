@@ -78,7 +78,7 @@ endif
 "" ==================== NeoMake ====================
 let g:neomake_open_list=2
 let g:neomake_list_height=5
-if findfile('.eslintrc', '.;') !=# ''
+if findfile(glob('.eslintrc*'), '.;') !=# ''
     let g:neomake_javascript_enabled_makers = ['eslint']
     autocmd BufReadPost,BufWritePost * Neomake
 endif

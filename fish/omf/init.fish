@@ -22,6 +22,7 @@ alias grep='grep -n --color=auto'
 alias ..='cd ..'
 
 alias fem='cd $HOME/dev/stash.skybet.net/skybetdev/tiny/Mbet/React/FootballEventMarkets'
+alias fsc='cd $HOME/dev/stash.skybet.net/skybetdev/tiny/Mbet/React/ScoreCentre'
 alias uil='cd $HOME/dev/stash.skybet.net/@skybet/ui-library'
 alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
 
