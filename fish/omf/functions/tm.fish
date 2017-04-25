@@ -25,15 +25,15 @@ function tm
         return
     end
 
-    tmux has-session -t $argv[1] > /dev/null 2>&1
+    tmux has-session -t "$argv[1]" > /dev/null 2>&1
 
     if test $status -ne 0
-        set TMUX tmux new-session -d -s $argv[1] -c "$HOME"
+        tmux new -d -s "$argv[1]" -c "~"
     end
 
     if test -n "$TMUX"
-        tmux switch -t $argv[1]
+        tmux switch -t "$argv[1]"
     else
-        tmux attach -t $argv[1]
+        tmux attach -t "$argv[1]"
     end
 end
