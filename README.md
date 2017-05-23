@@ -60,7 +60,7 @@ ln -s `pwd`/vim/vimrc ~/.vimrc
 #### Vim Plugins
 Install [Vim Plug](https://github.com/junegunn/vim-plug)
 ```
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 # Now open Vim and Vim Plug should attempt to install the plugins
 vim +PlugInstall
 ```
