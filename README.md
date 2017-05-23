@@ -16,11 +16,15 @@ brew install fish
 sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
 ```
 
-[oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) - using `default` theme
+[fisherman](https://github.com/fisherman/fisherman)
 
+Functions contains modified version of agnoster theme (`fish_prompt.fish`)
 ```
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-ln -s `pwd`/fish/omf ~/.config
+curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
+
+ln -s `pwd`/fish/config/* ~/.config/fish/
+ln -s `pwd`/fish/functions/* ~/.config/fish/functions/
 ```
 
 ### [NeoVim](https://neovim.io/)
