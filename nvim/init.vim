@@ -22,7 +22,7 @@ Plug 'tpope/vim-sleuth'                     " Detect indentation
 
 " Language Stuff
 Plug 'neomake/neomake'                      " General syntax checking
-Plug 'jaawerth/neomake-local-eslint-first'  " Local eslint
+"Plug 'jaawerth/neomake-local-eslint-first'  " Local eslint
 Plug 'jelera/vim-javascript-syntax'         " Javascript
 Plug 'mxw/vim-jsx'                          " JSX
 Plug 'leafgarland/typescript-vim'           " Typescript
@@ -78,10 +78,10 @@ endif
 "" ==================== NeoMake ====================
 let g:neomake_open_list=2
 let g:neomake_list_height=5
-if findfile(glob('.eslintrc*'), '.;') !=# ''
-    let g:neomake_javascript_enabled_makers = ['eslint']
-    autocmd BufReadPost,BufWritePost * Neomake
-endif
+" if findfile(glob('.eslintrc*'), '.;') !=# ''
+"     let g:neomake_javascript_enabled_makers = ['eslint']
+"     autocmd BufReadPost,BufWritePost * Neomake
+" endif
 
 "noremap <leader>q :something<CR>
 
