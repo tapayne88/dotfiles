@@ -26,6 +26,14 @@ alias fsc='cd $HOME/dev/stash.skybet.net/skybetdev/tiny/Mbet/React/ScoreCentre'
 alias uil='cd $HOME/dev/stash.skybet.net/@skybet/ui-library'
 alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
 
+# fzf defaults
+set -x FZF_DEFAULT_COMMAND 'nvim'
+set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
+
+set -x AWS_ACCESS_KEY_ID AKIAIM4BTY5VWBKK566Q
+set -x AWS_SECRET_ACCESS_KEY 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
+set -x AWS_REGION eu-west-1
+
 # For reviewing merge before commit
 # Review flow below:
 #   - git mg --no-ff --no-commit <branch>

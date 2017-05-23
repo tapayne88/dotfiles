@@ -1,3 +1,6 @@
+package foreign-env
+package fzf
+package nvm
 package z
 theme agnoster
 theme default
