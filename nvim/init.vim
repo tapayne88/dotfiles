@@ -18,6 +18,7 @@ Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used t
 Plug 'sjl/splice.vim'                       " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
+Plug 'tpope/vim-sleuth'                     " Detect indentation
 
 " Language Stuff
 Plug 'neomake/neomake'                      " General syntax checking
@@ -36,13 +37,12 @@ let g:NERDTreeUseSimpleIndicator = 1
 
 "" ==================== General ====================
 set number                      "Adds line numbers
-set shiftwidth=4                "Determines indentation in normal mode (using '>>' or '<<')
-set tabstop=8                   "Changes tabs to 4 spaces
-set softtabstop=4               "Let backspace delete indent
+set shiftwidth=2                "Determines indentation in normal mode (using '>>' or '<<')
+set tabstop=4                   "Changes tabs to 4 spaces
+set softtabstop=2               "Let backspace delete indent
 set expandtab                   "Expands tabs to spaces, better for formatting
 set autoindent                  "Sets up auto indent (copies indentation from line above)
 set ls=2                        "Show filename perminently
-set autoindent                  "Sets up auto indent (copies indentation from line above)
 set backspace=2                 "Makes backspace key behave properly in insert mode
 set ruler                       "Adds line and column number in status bar and shows progress through file
 set hlsearch                    "Highlight search
@@ -142,7 +142,7 @@ nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v -q<CR>
 nnoremap <leader>gt :Gcommit -v -q %:p<CR>
-nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>ge :Gedit<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR><CR>
@@ -156,6 +156,8 @@ nnoremap <leader>gpl :Dispatch! git pull<CR>
 
 map <F6> :Gblame<CR>
 map <F7> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>ff :NERDTreeFind<CR>
 
 
 "" ==================== Misc ====================
