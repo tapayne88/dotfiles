@@ -102,9 +102,11 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 nnoremap j gj
 nnoremap k gk
 
-" Best tab navigation shorcuts
-nnoremap <C-h> gT
-nnoremap <C-l> gt
+" Better pane navigation
+nnoremap <C-l> <C-w><C-h>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
 
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
