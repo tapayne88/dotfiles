@@ -23,6 +23,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Language Stuff
+Plug 'w0rp/ale'                             " Linting
 Plug 'jelera/vim-javascript-syntax'         " Javascript
 Plug 'mxw/vim-jsx'                          " JSX
 
@@ -87,6 +88,12 @@ nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :GFiles<CR>
 nnoremap <c-p> :GFiles<CR>
 
+"" ==================== ALE ====================
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
 
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible

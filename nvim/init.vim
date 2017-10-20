@@ -23,7 +23,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Language Stuff
-Plug 'neomake/neomake'                      " General syntax checking
+Plug 'w0rp/ale'                             " Linting
 Plug 'jelera/vim-javascript-syntax'         " Javascript
 Plug 'mxw/vim-jsx'                          " JSX
 
@@ -88,24 +88,12 @@ nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :GFiles<CR>
 nnoremap <c-p> :GFiles<CR>
 
-"" ==================== NeoMake ====================
-let g:neomake_open_list=2
-let g:neomake_list_height=5
-if globpath('.', '.eslintrc*') !=# '' && globpath('.', 'node_modules/.bin/eslint') !=# ''
-    let g:neomake_javascript_eslint_exe='./node_modules/.bin/eslint'
-    let g:neomake_javascript_enabled_makers = ['eslint']
-    autocmd BufReadPost,BufWritePost * Neomake
-endif
+"" ==================== ALE ====================
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
 
-"noremap <leader>q :something<CR>
-
-" let g:neomake_javascript_jest_maker = {
-"     \ 'exe': 'npm test',
-"     \ 'args': [],
-"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-"     \ }
-" let g:neomake_javascript_enabled_makers = ['jest']
-
+let g:ale_fix_on_save = 1
 
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
