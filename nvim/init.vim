@@ -15,7 +15,6 @@ Plug 'vim-airline/vim-airline'              " Modified pretty statusline
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
 Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
-Plug 'sjl/splice.vim'                       " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 Plug 'tpope/vim-sleuth'                     " Detect indentation
@@ -27,9 +26,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'neomake/neomake'                      " General syntax checking
 Plug 'jelera/vim-javascript-syntax'         " Javascript
 Plug 'mxw/vim-jsx'                          " JSX
-Plug 'leafgarland/typescript-vim'           " Typescript
-Plug 'lambdatoast/elm.vim'                  " Elm js stuff
-Plug 'derekwyatt/vim-scala'                 " Scala syntax
 
 call plug#end()
 

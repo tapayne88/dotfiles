@@ -17,7 +17,6 @@
     ft = fetch
     mg = merge
     mb = merge --no-ff --no-commit
-    mt = mergetool
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
@@ -46,9 +45,6 @@
     cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 [merge]
     tool = splice
-[mergetool "splice"]
-    cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
-    trustExitCode = true
 [bash]
     showDirtyState = true
 [pager]
