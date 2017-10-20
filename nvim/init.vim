@@ -19,6 +19,7 @@ Plug 'sjl/splice.vim'                       " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 Plug 'tpope/vim-sleuth'                     " Detect indentation
+Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -133,12 +134,6 @@ nnoremap <leader>gpl :Dispatch! git pull<CR>
 " Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap j gj
 nnoremap k gk
-
-" Better pane navigation
-nnoremap <C-l> <C-w><C-h>
-nnoremap <C-j> <C-w><C-j>
-nnoremap <C-k> <C-w><C-k>
-nnoremap <C-l> <C-w><C-l>
 
 " Split resizing
 nnoremap <leader>- :res -5<CR>
