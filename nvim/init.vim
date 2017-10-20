@@ -16,7 +16,6 @@ Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surrou
 Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
 Plug 'sjl/splice.vim'                       " Vim three-way merges
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
-Plug 'kien/ctrlp.vim'                       " Fuzzy finder
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 
 " Language Stuff
@@ -65,9 +64,6 @@ syntax enable
 set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
-
-let g:ctrlp_working_path_mode = 'c'
-let g:ctrlp_custom_ignore = '\v[\/](\.git|node_(modules|cache|shrinkwrap))$'
 
 let mapleader = ","
 let maplocalleader = "-"
