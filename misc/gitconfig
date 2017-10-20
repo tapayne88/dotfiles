@@ -2,7 +2,6 @@
     name = Tom Payne
     email = thomas.payne@skybettingandgaming.com
 [core]
-    editor = nvim
     pager = less -x4
 [color]
     diff = auto
@@ -18,7 +17,6 @@
     ft = fetch
     mg = merge
     mb = merge --no-ff --no-commit
-    mt = mergetool
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
@@ -39,6 +37,7 @@
     h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
     hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
     prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
+    git = !exec git
 [diff]
     tool = fugitive
     compactionHeuristic = 1
@@ -46,9 +45,6 @@
     cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 [merge]
     tool = splice
-[mergetool "splice"]
-    cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
-    trustExitCode = true
 [bash]
     showDirtyState = true
 [pager]
