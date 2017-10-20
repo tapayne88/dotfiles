@@ -29,6 +29,7 @@ alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
 # fzf defaults
 set -U FZF_LEGACY_KEYBINDINGS 0
 set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
+set -x FZF_DEFAULT_COMMAND 'ag --nocolor -g ""'
 
 set -x AWS_ACCESS_KEY_ID AKIAIM4BTY5VWBKK566Q
 set -x AWS_SECRET_ACCESS_KEY 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
