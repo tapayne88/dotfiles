@@ -112,7 +112,7 @@ Keybindings
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
 
-Some brew modules you may want:
+Some brew modules you may want (or see [brew_leaves.txt](./brew_leaves.txt)):
 ```
 awscli
 brew-cask
