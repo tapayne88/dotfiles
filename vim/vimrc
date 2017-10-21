@@ -11,8 +11,6 @@ Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
-Plug 'vim-airline/vim-airline'              " Modified pretty statusline
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
 Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
@@ -21,17 +19,15 @@ Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
-" Language Stuff
 Plug 'w0rp/ale'                             " Linting
-Plug 'jelera/vim-javascript-syntax'         " Javascript
-Plug 'mxw/vim-jsx'                          " JSX
+Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
+Plug 'itchyny/lightline.vim'                " Status line plugin
+Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
 
 call plug#end()
 
 "" ==================== Testing Area ====================
 let g:NERDTreeUseSimpleIndicator = 1
-
 
 "" ==================== General ====================
 set number                      "Adds line numbers
@@ -62,8 +58,6 @@ syntax enable
 set background=dark
 let base16colorspace=256  " Access colors present in 256 colorspace
 colorscheme base16-default-dark
-let g:airline_theme='base16'
-let g:airline_extensions=[]
 
 "" ==================== Config ====================
 set backupdir=~/.vim/backups
@@ -100,6 +94,55 @@ let g:gitgutter_sign_added = "•"
 let g:gitgutter_sign_modified = "•"
 let g:gitgutter_sign_removed = "•"
 let g:gitgutter_sign_modified_removed = "•"
+
+"" ==================== Lightline ====================
+let g:lightline = {
+\ 'colorscheme': 'base16',
+\ 'active': {
+\   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
+\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\ },
+\ 'component_function': {
+\   'gitbranch': 'fugitive#head'
+\ },
+\ 'component_expand': {
+\   'linter_warnings': 'LightlineLinterWarnings',
+\   'linter_errors': 'LightlineLinterErrors',
+\   'linter_ok': 'LightlineLinterOk',
+\ },
+\ 'component_type': {
+\   'readonly': 'error',
+\   'linter_warnings': 'warning',
+\   'linter_errors': 'error'
+\ }
+\ }
+
+function! LightlineLinterWarnings() abort
+   let l:counts = ale#statusline#Count(bufnr(''))
+   let l:all_errors = l:counts.error + l:counts.style_error
+   let l:all_non_errors = l:counts.total - l:all_errors
+   return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
+endfunction
+
+function! LightlineLinterErrors() abort
+   let l:counts = ale#statusline#Count(bufnr(''))
+   let l:all_errors = l:counts.error + l:counts.style_error
+   return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+endfunction
+
+function! LightlineLinterOk() abort
+   let l:counts = ale#statusline#Count(bufnr(''))
+   return l:counts.total == 0 ? '✓' : ''
+endfunction
+
+autocmd User ALELint call s:MaybeUpdateLightline()
+
+" Update and show lightline but only if it's visible (e.g., not in Goyo)
+function! s:MaybeUpdateLightline()
+  if exists('#lightline')
+    call lightline#update()
+  end
+endfunction
 
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
