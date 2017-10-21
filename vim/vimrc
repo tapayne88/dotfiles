@@ -95,6 +95,12 @@ let g:ale_fixers = {
 
 let g:ale_fix_on_save = 1
 
+"" ==================== GitGutter ====================
+let g:gitgutter_sign_added = "•"
+let g:gitgutter_sign_modified = "•"
+let g:gitgutter_sign_removed = "•"
+let g:gitgutter_sign_modified_removed = "•"
+
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
