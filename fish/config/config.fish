@@ -5,13 +5,11 @@ if status --is-interactive
     eval sh $HOME/.config/base16-shell/scripts/base16-materia.sh
 end
 
-export VISUAL=nvim
-export EDITOR=nvim
+export VISUAL=vim
+export EDITOR=vim
 
 # executable search path
 set PATH $HOME/.local/bin /usr/local/bin $PATH
-
-set fish_function_path $OMF_CONFIG/functions $fish_function_path
 
 # Make some possibly destructive commands more interactive
 alias rm='rm -i'
@@ -21,9 +19,11 @@ alias cp='cp -i'
 alias grep='grep -n --color=auto'
 
 # fzf defaults
-set -U FZF_LEGACY_KEYBINDINGS 0
 set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
-set -x FZF_DEFAULT_COMMAND 'ag --nocolor -g ""'
+set -x FZF_DEFAULT_COMMAND "ag -l --nocolor --hidden --ignore .git"
+set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
+set -x FZF_ALT_C_COMMAND $FZF_DEFAULT_COMMAND
+set -x FZF_TMUX 1
 
 set -x AWS_ACCESS_KEY_ID AKIAIM4BTY5VWBKK566Q
 set -x AWS_SECRET_ACCESS_KEY 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
