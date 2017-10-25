@@ -20,7 +20,7 @@ alias grep='grep -n --color=auto'
 
 # fzf defaults
 set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
-set -x FZF_DEFAULT_COMMAND "ag -l --nocolor --hidden --ignore .git"
+set -x FZF_DEFAULT_COMMAND "ag --nocolor -g ''"
 set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_ALT_C_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_TMUX 1
