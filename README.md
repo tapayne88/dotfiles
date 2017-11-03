@@ -85,6 +85,7 @@ ln -s `pwd`/zsh/plugins/* ~/.oh-my-zsh/custom/plugins/
 ln -s `pwd`/fonts ~/.fonts
 
 ln -s `pwd`/tmux/tmux.conf ~/.tmux.conf
+ln -s `pwd`/tmux/tmwork.sh ~/.local/bin/tmwork
 
 ln -s `pwd`/misc/gitconfig ~/.gitconfig
 ln -s `pwd`/misc/terminalrc ~/.config/Terminal/
