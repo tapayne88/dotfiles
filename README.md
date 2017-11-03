@@ -18,86 +18,53 @@ sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
 
 [fisherman](https://github.com/fisherman/fisherman)
 
-Functions contains modified version of agnoster theme (`fish_prompt.fish`)
+Functions contains modified version of prompt (`fish_prompt.fish`)
 ```
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
 
-ln -s `pwd`/fish/config/* ~/.config/fish/
-ln -s `pwd`/fish/functions/* ~/.config/fish/functions/
-```
-
-### [NeoVim](https://neovim.io/)
-```
-brew install neovim/neovim/neovim
-mkdir -p ~/.config/nvim
-ln -s `pwd`/nvim ~/.config/nvim
+ln -s (pwd)/fish/config/* ~/.config/fish/
+ln -s (pwd)/fish/functions/* ~/.config/fish/functions/
 ```
 
 ### Vim
-[From source](https://gist.github.com/1348303)
-```
-hg clone https://vim.googlecode.com/hg/ vim
-cd vim
-
-# Build with python 2.7 (path on Xubuntu was '/usr/lib/python2.7/config')
-# Found when installing Powerline (combination of CommandT configure and python path)
-./configure --with-features=huge --enable-rubyinterp --enable-pythoninterp \
---with-python-config-dir=/path/to/python/config --prefix=$HOME
-
-make
-make test (optional)
-sudo make install
-```
-
-#### Alternatively
+We're only interested in > Vim 8
 ```
 brew install vim
 ```
 
 #### Vim Symlinks
 ```
-ln -s `pwd`/vim ~/.vim
-ln -s `pwd`/vim/vimrc ~/.vimrc
+ln -s (pwd)/vim ~/.vim
+ln -s (pwd)/vim/vimrc ~/.vimrc
 ```
 
 #### Vim Plugins
 Install [Vim Plug](https://github.com/junegunn/vim-plug)
 ```
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 # Now open Vim and Vim Plug should attempt to install the plugins
 vim +PlugInstall
 ```
 
-### ZSH
+### Symlinking
 ```
-mkdir -p ~/.config/zsh
-
-ln -s `pwd`/zsh/zshrc ~/.zshrc
-ln -s `pwd`/zsh/config/* ~/.config/zsh/
-ln -s `pwd`/zsh/themes/* ~/.oh-my-zsh/themes/
-
-# Will probably need to create the custom plugins directory
-mkdir ~/.oh-my-zsh/custom/plugins
-ln -s `pwd`/zsh/plugins/* ~/.oh-my-zsh/custom/plugins/
-
 # Fonts required for tpayne.zsh-theme
-ln -s `pwd`/fonts ~/.fonts
+ln -s (pwd)/fonts ~/.fonts
 
-ln -s `pwd`/tmux/tmux.conf ~/.tmux.conf
-ln -s `pwd`/tmux/tmwork.sh ~/.local/bin/tmwork
+ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
+ln -s (pwd)/tmux/tmwork.sh ~/.local/bin/tmwork
 
-ln -s `pwd`/misc/gitconfig ~/.gitconfig
-ln -s `pwd`/misc/terminalrc ~/.config/Terminal/
+ln -s (pwd)/misc/gitconfig ~/.gitconfig
+
+# Git config uses diff-so-fancy
+brew install diff-so-fancy
+# OR
+curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
 ```
 
-### Debian
-Clone and run install.sh from:
-```
-git clone https://github.com/Anthony25/gnome-terminal-colors-solarized
-```
-
-### OSX
+## MacOS Specific
 #### iTerm2
 Keybindings
 ```
@@ -109,7 +76,7 @@ Keybindings
 ^[ f		Alt + ->		next word
 ```
 
-## General
+#### General
 - Install [Homebrew](http://brew.sh/)
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
