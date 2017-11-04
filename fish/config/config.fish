@@ -25,10 +25,6 @@ set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_ALT_C_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_TMUX 1
 
-set -x AWS_ACCESS_KEY_ID AKIAIM4BTY5VWBKK566Q
-set -x AWS_SECRET_ACCESS_KEY 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
-set -x AWS_REGION eu-west-1
-
 # For reviewing merge before commit
 # Review flow below:
 #   - git mg --no-ff --no-commit <branch>
