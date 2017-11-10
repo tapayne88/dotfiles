@@ -76,6 +76,13 @@ Keybindings
 ^[ f		Alt + ->		next word
 ```
 
+## Linux Specific
+#### gnome-terminal
+```
+# custom terminal command
+env TERM_PROGRAM=gnome-terminal /usr/bin/fish
+```
+
 #### General
 - Install [Homebrew](http://brew.sh/)
 - Install utilities

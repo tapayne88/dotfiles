@@ -35,7 +35,8 @@ set -x FZF_TMUX 1
 alias vimmg='vim -c Gstatus'
 
 # Setup special theme for ssh session, no special characters
-if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a "$TERM_PROGRAM" = "iTerm.app"
+set -l approvedTerminal (test "$TERM_PROGRAM" = "iTerm.app" -o "$TERM_PROGRAM" = "gnome-terminal")
+if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal
     set MYTMUX (which tmux)
     # Start tmux at start of each session (only when local and tmux exists)
     if test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"

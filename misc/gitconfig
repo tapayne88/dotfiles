@@ -12,6 +12,7 @@
 [alias]
     st = status
     cm = commit
+    cma = commit --amend
     co = checkout
     pl = pull --ff-only
     ft = fetch
