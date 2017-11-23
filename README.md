@@ -20,11 +20,16 @@ sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
 
 Functions contains modified version of prompt (`fish_prompt.fish`)
 ```
-git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
+fisher
 
 ln -s (pwd)/fish/config/* ~/.config/fish/
 ln -s (pwd)/fish/functions/* ~/.config/fish/functions/
+```
+
+[base16](https://github.com/chriskempson/base16-shell)
+```
+git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 ```
 
 ### Vim
@@ -62,6 +67,7 @@ ln -s (pwd)/misc/gitconfig ~/.gitconfig
 brew install diff-so-fancy
 # OR
 curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
+chmod +x ~/.local/bin/diff-so-fancy
 ```
 
 ## MacOS Specific
