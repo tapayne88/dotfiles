@@ -59,7 +59,9 @@ vim +PlugInstall
 ln -s (pwd)/fonts ~/.fonts
 
 ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
-ln -s (pwd)/tmux/tmwork.sh ~/.local/bin/tmwork
+
+# scripts
+ln -s (pwd)/scripts/* ~/.local/bin
 
 ln -s (pwd)/misc/gitconfig ~/.gitconfig
 
