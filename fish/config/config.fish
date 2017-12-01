@@ -43,3 +43,8 @@ if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal
         tmux > /dev/null 2>&1
     end
 end
+
+set -l LOCAL_FISH ~/.local/config.fish
+if test -e $LOCAL_FISH
+    source $LOCAL_FISH
+end
