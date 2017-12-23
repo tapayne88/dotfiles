@@ -23,11 +23,19 @@ Plug 'w0rp/ale'                             " Linting
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
+Plug 'mileszs/ack.vim'                      " ag searching`
+Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
+Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
+Plug 'haya14busa/is.vim'                    " Enhanced searching
+Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 
 call plug#end()
 
 "" ==================== Testing Area ====================
 let g:NERDTreeUseSimpleIndicator = 1
+let g:ackprg = 'ag --vimgrep'
+let g:vim_current_word#highlight_current_word = 0
+let g:vim_current_word#highlight_twins = 1
 
 "" ==================== General ====================
 set number                      "Adds line numbers
@@ -36,7 +44,7 @@ set tabstop=4                   "Changes tabs to 4 spaces
 set softtabstop=2               "Let backspace delete indent
 set expandtab                   "Expands tabs to spaces, better for formatting
 set autoindent                  "Sets up auto indent (copies indentation from line above)
-set ls=2                        "Show filename perminently
+set ls=2                        "Show filename permanently
 set backspace=2                 "Makes backspace key behave properly in insert mode
 set ruler                       "Adds line and column number in status bar and shows progress through file
 set hlsearch                    "Highlight search
@@ -58,6 +66,9 @@ syntax enable
 set background=dark
 let base16colorspace=256  " Access colors present in 256 colorspace
 colorscheme base16-default-dark
+
+highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
+highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
 
 "" ==================== Config ====================
 set backupdir=~/.vim/backups
@@ -173,6 +184,10 @@ nnoremap <leader>- :res -5<CR>
 nnoremap <leader>= :res +5<CR>
 nnoremap <leader>. :vertical resize -5<CR>
 nnoremap <leader>, :vertical resize +5<CR>
+
+nnoremap <leader>ag :Ack!<CR>
+map n <Plug>(is-nohl)<Plug>(anzu-n-with-echo)
+map N <Plug>(is-nohl)<Plug>(anzu-N-with-echo)
 
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
