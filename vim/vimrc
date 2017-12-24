@@ -158,6 +158,44 @@ endfunction
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
+"" ==================== Key (re)Mappings ====================
+" Makes up/down on line wrapped lines work better (more intuitive)
+nnoremap j gj
+nnoremap k gk
+
+map n <Plug>(is-nohl)<Plug>(anzu-n-with-echo)
+map N <Plug>(is-nohl)<Plug>(anzu-N-with-echo)
+map <F6> :Gblame<CR>
+map <F7> :NERDTreeToggle<CR>
+
+nmap gh <Plug>GitGutterNextHunk
+nmap gH <Plug>GitGutterPrevHunk
+
+" Open last file with Ctrl+e
+nnoremap <C-e> :e#<CR>
+nnoremap <C-s> :w<CR>
+
+" Shows and hides invisible characters
+noremap <leader>e :set list!<CR>
+
+" Split resizing
+nnoremap <leader>- :res -5<CR>
+nnoremap <leader>= :res +5<CR>
+nnoremap <leader>. :vertical resize -5<CR>
+nnoremap <leader>, :vertical resize +5<CR>
+nnoremap <leader>ag :Ack!<CR>
+nnoremap <leader>h :set hlsearch!<CR>
+nnoremap <leader>n :set number!<CR>
+nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
+nnoremap <leader>evv :vsplit ~/.vimrc<CR>
+nnoremap <leader>ev :split ~/.vimrc<CR>
+nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded .vimrc"<CR>
+nnoremap <leader>" ea"<esc>hbi"<esc>lel
+nnoremap <leader>' ea'<esc>hbi'<esc>lel
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>ff :NERDTreeFind<CR>
+nnoremap <leader>t :FZF<CR>
+nnoremap <leader>fp :echo @%<CR>
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v -q<CR>
@@ -173,47 +211,3 @@ nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
 nnoremap <leader>gpl :Dispatch! git pull<CR>
-
-"" ==================== Key (re)Mappings ====================
-" Makes up/down on line wrapped lines work better (more intuitive)
-nnoremap j gj
-nnoremap k gk
-
-" Split resizing
-nnoremap <leader>- :res -5<CR>
-nnoremap <leader>= :res +5<CR>
-nnoremap <leader>. :vertical resize -5<CR>
-nnoremap <leader>, :vertical resize +5<CR>
-
-nnoremap <leader>ag :Ack!<CR>
-map n <Plug>(is-nohl)<Plug>(anzu-n-with-echo)
-map N <Plug>(is-nohl)<Plug>(anzu-N-with-echo)
-
-" Open last file with Ctrl+e
-nnoremap <C-e> :e#<CR>
-" Shows and hides invisible characters
-noremap <leader>e :set list!<CR>
-" Toggle search highlighting
-nnoremap <leader>h :set hlsearch!<CR>
-" Toggle line numbers
-nnoremap <leader>n :set number!<CR>
-
-nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
-
-" GitGutter Navigate
-nmap gh <Plug>GitGutterNextHunk
-nmap gH <Plug>GitGutterPrevHunk
-
-" Editing vim config
-nnoremap <leader>evv :vsplit ~/.vimrc<CR>
-nnoremap <leader>ev :split ~/.vimrc<CR>
-nnoremap <leader>sv :source ~/.vimrc<CR>:echom "Reloaded .vimrc"<CR>
-
-"Wrapping with quotes
-nnoremap <leader>" ea"<esc>hbi"<esc>lel
-nnoremap <leader>' ea'<esc>hbi'<esc>lel
-
-map <F6> :Gblame<CR>
-map <F7> :NERDTreeToggle<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
-nnoremap <leader>ff :NERDTreeFind<CR>
