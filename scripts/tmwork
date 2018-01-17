@@ -9,12 +9,12 @@ fi
 # Start session
 tmux new-session -d -s $SESSION
 
-# Skybetdev tab
+# betdev tab
 tab=${SESSION}:1
-tmux rename-window -t $tab 'skybetdev'
+tmux rename-window -t $tab 'betdev'
 tmux split-window -t $tab -h
-tmux send-keys -t ${tab}.0 'z skybetdev' C-m
-tmux send-keys -t ${tab}.1 'z skybetdev' C-m
+tmux send-keys -t ${tab}.0 'z betdev/application' C-m
+tmux send-keys -t ${tab}.1 'z betdev/application' C-m
 
 # UI-Library tab
 tab=${SESSION}:2
