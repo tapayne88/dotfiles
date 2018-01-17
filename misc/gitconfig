@@ -13,6 +13,7 @@
     st = status
     cm = commit
     cma = commit --amend
+    cmae = commit --amend --no-edit
     co = checkout
     pl = pull --ff-only
     ft = fetch
@@ -23,6 +24,7 @@
     ru = reset --hard @{u}
     inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --preserve-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
     ps = push
+    psf = push --force-with-lease
     br = branch
     df = diff
     dfc = diff --cached
