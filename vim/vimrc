@@ -89,13 +89,21 @@ endif
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
 let g:fzf_statusline = 0 " disable statusline overwriting
+let g:fzf_action = {
+\  'ctrl-s': 'split',
+\  'ctrl-v': 'vsplit'
+\}
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :GFiles<CR>
 nnoremap <c-p> :GFiles<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
-\   'javascript': ['eslint'],
+\  'javascript': ['eslint'],
+\}
+
+let g:ale_linters = {
+\  'javascript': ['eslint'],
 \}
 
 let g:ale_fix_on_save = 1
