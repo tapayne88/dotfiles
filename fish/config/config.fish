@@ -25,6 +25,8 @@ set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_ALT_C_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_TMUX 1
 
+set -x FPP_DISABLE_SPLIT 1
+
 # For reviewing merge before commit
 # Review flow below:
 #   - git mg --no-ff --no-commit <branch>
