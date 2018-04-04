@@ -97,6 +97,7 @@ let g:fzf_action = {
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :GFiles<CR>
 nnoremap <c-p> :GFiles<CR>
+nnoremap <c-t> :GFiles<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
@@ -133,7 +134,7 @@ function! RunBufferOnJest()
 endfunction
 
 function! _get_focused_test_name()
-  let test_name = _jest_test_search('\<test(\|\<it(\|\<test.only(') "note the single quotes
+  let test_name = _jest_test_search('\<describe(\|\<test(\|\<it(\|\<test.only(') "note the single quotes
 
   if test_name == ""
     echoerr "Couldn't find test name to run focused test."
