@@ -58,12 +58,13 @@ vim +PlugInstall
 # Fonts required for tpayne.zsh-theme
 ln -s (pwd)/fonts ~/.fonts
 
-ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
-
 # scripts
 ln -s (pwd)/scripts/* ~/.local/bin
 
-ln -s (pwd)/misc/gitconfig ~/.gitconfig
+# config
+ln -s (pwd)/config/tmux.conf ~/.tmux.conf
+ln -s (pwd)/config/gitconfig ~/.gitconfig
+ln -s (pwd)/config/tern-config ~/.tern-config
 
 # Git config uses diff-so-fancy
 brew install diff-so-fancy
