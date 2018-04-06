@@ -60,7 +60,7 @@ set splitright                  "Better split defaults
 set mouse=                      "Disable mouse mode
 
 let mapleader = ","
-let maplocalleader = "-"
+let maplocalleader = "\\"
 
 "" ==================== Colors ====================
 syntax enable
@@ -235,6 +235,17 @@ function! s:MaybeUpdateLightline()
   end
 endfunction
 
+"" ==================== Ack ====================
+let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
+let g:ackhighlight = 1
+
+"" ==================== NERDTree ====================
+let g:NERDTreeUseSimpleIndicator = 1
+
+"" ==================== vim_current_word ====================
+let g:vim_current_word#highlight_current_word = 0
+let g:vim_current_word#highlight_twins = 1
+
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
@@ -264,6 +275,7 @@ nnoremap <leader>= :res +5<CR>
 nnoremap <leader>. :vertical resize -5<CR>
 nnoremap <leader>, :vertical resize +5<CR>
 nnoremap <leader>ag :Ack!<CR>
+nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>n :set number!<CR>
 nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
