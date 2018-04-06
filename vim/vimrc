@@ -29,14 +29,18 @@ Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
 Plug 'haya14busa/is.vim'                    " Enhanced searching
 Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 
 call plug#end()
 
 "" ==================== Testing Area ====================
-let g:NERDTreeUseSimpleIndicator = 1
-let g:ackprg = 'ag --vimgrep'
-let g:vim_current_word#highlight_current_word = 0
-let g:vim_current_word#highlight_twins = 1
+" Start autocompletion after 4 chars
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_enable_diagnostic_highlighting = 0
+" Don't show YCM's preview window [ I find it really annoying ]
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
 
 "" ==================== General ====================
 set number                      "Adds line numbers
