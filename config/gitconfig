@@ -33,7 +33,7 @@
     dt = difftool
     review = difftool @{u}
     grp = grep -I -n
-    l = log --oneline --decorate
+    l = log --oneline
     lg = log
     lgu = log @{u}
     lp = log -p
