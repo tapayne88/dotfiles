@@ -5,8 +5,8 @@ if status --is-interactive
     eval sh $HOME/.config/base16-shell/scripts/base16-materia.sh
 end
 
-export VISUAL=vim
-export EDITOR=vim
+export VISUAL=nvim
+export EDITOR=nvim
 
 # executable search path
 set PATH $HOME/.local/bin /usr/local/bin $PATH
