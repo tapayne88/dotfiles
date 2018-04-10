@@ -1,5 +1,11 @@
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 "" ==================== Vim Plug ====================
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
@@ -57,11 +63,13 @@ set incsearch                   "Highlight dynamically as pattern is typed
 set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set wildignorecase              "Ignore case when opening files
 set cursorline                  "Highlight line the cursor is on
+set lazyredraw                  "Improve scrolling performance with cursorline
 set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set splitbelow                  "Better split defaults
 set splitright                  "Better split defaults
 set mouse=                      "Disable mouse mode
+set updatetime=100              "Reduce vim's update delay for vim-gutter
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -82,7 +90,7 @@ if exists("&undodir")
     set undodir=~/.config/nvim/undo
 endif
 
-au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
+" au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
 set wildmode=list:longest,list:full " Simulate zsh tab completion
 set scrolloff=4                     " Number of lines from vertical edge to start scrolling
 
@@ -91,7 +99,12 @@ if exists('+colorcolumn')
     set colorcolumn=100
 endif
 
+set shell=sh
 let g:python3_host_prog = '/usr/local/bin/python3'
+" disable sleuth for markdown files due to slowdown caused in combination with
+" vim-polyglot
+autocmd FileType markdown let b:sleuth_automatic = 0
+
 
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
@@ -115,6 +128,7 @@ let g:ale_linters = {
 \}
 
 let g:ale_fix_on_save = 1
+let g:polyglot_disabled = ['markdown', 'md']
 
 "" ==================== GitGutter ====================
 let g:gitgutter_sign_added = "•"
@@ -287,7 +301,7 @@ nnoremap <leader>n :set number!<CR>
 nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 nnoremap <leader>evv :vsplit ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ev :split ~/.config/nvim/init.vim<CR>
-nnoremap <leader>sv :source ~/.config/nvim/init.vim<CR>:echom "Reloaded .vimrc"<CR>
+nnoremap <leader>sv :source ~/.config/nvim/init.vim<CR>:echom "Reloaded nvim/init.vim"<CR>
 nnoremap <leader>" ea"<esc>hbi"<esc>lel
 nnoremap <leader>' ea'<esc>hbi'<esc>lel
 nnoremap <leader>nt :NERDTreeToggle<CR>
