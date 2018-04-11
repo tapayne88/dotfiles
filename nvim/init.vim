@@ -1,11 +1,18 @@
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+let s:vim_path = expand('~/.vim')
+let s:vimrc = expand('~/.vimrc')
+if has("nvim")
+  let s:vim_path = expand('~/.config/nvim')
+  let s:vimrc = expand('~/.config/nvim/init.vim')
+endif
+
+if empty(glob(s:vim_path.'/autoload/plug.vim'))
+  silent !curl -fLo s:vim_path.'/autoload/plug.vim' --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 "" ==================== Vim Plug ====================
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(s:vim_path.'/plugged')
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
@@ -84,10 +91,10 @@ highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
 highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
 
 "" ==================== Config ====================
-set backupdir=~/.config/nvim/backups
-set directory=~/.config/nvim/swaps
+let &backupdir = s:vim_path.'/backups'
+let &directory = s:vim_path.'/swaps'
 if exists("&undodir")
-    set undodir=~/.config/nvim/undo
+  let &undodir = s:vim_path.'/undo'
 endif
 
 " au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
@@ -299,9 +306,9 @@ nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>n :set number!<CR>
 nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
-nnoremap <leader>evv :vsplit ~/.config/nvim/init.vim<CR>
-nnoremap <leader>ev :split ~/.config/nvim/init.vim<CR>
-nnoremap <leader>sv :source ~/.config/nvim/init.vim<CR>:echom "Reloaded nvim/init.vim"<CR>
+nnoremap <leader>evv :vsplit $MYVIMRC<CR>
+nnoremap <leader>ev :split $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
 nnoremap <leader>" ea"<esc>hbi"<esc>lel
 nnoremap <leader>' ea'<esc>hbi'<esc>lel
 nnoremap <leader>nt :NERDTreeToggle<CR>
