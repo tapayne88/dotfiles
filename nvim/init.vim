@@ -5,9 +5,13 @@ if has("nvim")
   let s:vimrc = expand('~/.config/nvim/init.vim')
 endif
 
+function! DownloadVimPlug()
+  execute '!curl -fLo '.s:vim_path.'/autoload/plug.vim --create-dirs'
+    \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+endfunction
+
 if empty(glob(s:vim_path.'/autoload/plug.vim'))
-  silent !curl -fLo s:vim_path.'/autoload/plug.vim' --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent call DownloadVimPlug()
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 

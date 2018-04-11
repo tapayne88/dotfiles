@@ -38,17 +38,37 @@ We're only interested in > Vim 8
 brew install vim
 ```
 
-#### Vim Symlinks
+#### Symlinks
 ```
 ln -s (pwd)/vim ~/.vim
 ln -s (pwd)/vim/vimrc ~/.vimrc
 ```
 
-#### Vim Plugins
-Install [Vim Plug](https://github.com/junegunn/vim-plug)
+#### Plugins
+Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
 ```
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# Now open Vim and Vim Plug should attempt to install the plugins
+vim +PlugInstall
+```
 
+### NeoVim
+*Note.* `nvim/init.vim` is a hard link to `vim/vimrc`, the config is shared across both to ease switching between them.
+```
+brew install neovim/neovim/neovim
+
+# YCM requires python3
+brew install python3
+pip3 install neovim --upgrade
+```
+
+#### Symlinks
+```
+ln -s (pwd)/nvim ~/.config/nvim
+```
+
+#### Plugins
+Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
+```
 # Now open Vim and Vim Plug should attempt to install the plugins
 vim +PlugInstall
 ```
