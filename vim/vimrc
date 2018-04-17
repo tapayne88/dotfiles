@@ -35,7 +35,7 @@ Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+  \| Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'                             " Linting
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'itchyny/lightline.vim'                " Status line plugin
@@ -46,18 +46,20 @@ Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
 Plug 'haya14busa/is.vim'                    " Enhanced searching
 Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+else
+  Plug 'Shougo/deoplete.nvim'
+    \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 call plug#end()
 
 "" ==================== Testing Area ====================
-" Start autocompletion after 4 chars
-let g:ycm_min_num_of_chars_for_completion = 4
-let g:ycm_min_num_identifier_candidate_chars = 4
-let g:ycm_enable_diagnostic_highlighting = 0
-" Don't show YCM's preview window [ I find it really annoying ]
-set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
 
 "" ==================== General ====================
 set number                      "Adds line numbers
@@ -116,6 +118,18 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
 
+"" ==================== Deoplete ====================
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay = 10
+let g:deoplete#auto_refresh_delay = 10
+let g:deoplete#max_list = 50
+set completeopt-=preview
+
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources#ternjs#docs = 1
+
+inoremap <silent><expr> <C-j> "\<C-n>"
+inoremap <silent><expr> <C-k> "\<C-p>"
 
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
