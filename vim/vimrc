@@ -140,8 +140,7 @@ let g:fzf_action = {
 \}
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :GFiles<CR>
-nnoremap <c-p> :GFiles<CR>
-nnoremap <c-t> :GFiles<CR>
+nnoremap <c-t> :Files<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
