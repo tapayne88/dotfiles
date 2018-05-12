@@ -113,7 +113,6 @@ if exists('+colorcolumn')
 endif
 
 set shell=sh
-let g:python3_host_prog = '/usr/local/bin/python3'
 " disable sleuth for markdown files due to slowdown caused in combination with
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
