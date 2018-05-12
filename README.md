@@ -32,6 +32,9 @@ ln -s (pwd)/fish/functions/* ~/.config/fish/functions/
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 ```
 
+### Silver Searcher
+A code-searching tool similar to ack, but faster. [http://geoff.greer.fm/ag/]( http://geoff.greer.fm/ag/)
+
 ### Vim
 We're only interested in > Vim 8
 ```
@@ -67,10 +70,10 @@ ln -s (pwd)/nvim ~/.config/nvim
 ```
 
 #### Plugins
-Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
+Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open nvim for the first time.
 ```
 # Now open Vim and Vim Plug should attempt to install the plugins
-vim +PlugInstall
+nvim +PlugInstall
 ```
 
 ### Symlinking
