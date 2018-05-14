@@ -83,6 +83,7 @@ set splitbelow                  "Better split defaults
 set splitright                  "Better split defaults
 set mouse=                      "Disable mouse mode
 set updatetime=100              "Reduce vim's update delay for vim-gutter
+set spelllang=en                "Set vim's spell check language
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -316,8 +317,8 @@ noremap <leader>e :set list!<CR>
 " Split resizing
 nnoremap <leader>- :res -5<CR>
 nnoremap <leader>= :res +5<CR>
-nnoremap <leader>. :vertical resize -5<CR>
-nnoremap <leader>, :vertical resize +5<CR>
+nnoremap <leader>. :vertical resize -20<CR>
+nnoremap <leader>, :vertical resize +20<CR>
 nnoremap <leader>ag :Ack!<CR>
 nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
