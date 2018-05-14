@@ -8,28 +8,27 @@ mkdir -p ~/.local/bin
 mkdir -p ~/.config
 ```
 
+### Colour scheme
+[base16](https://github.com/chriskempson/base16-shell)
+```
+git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+```
+
 Color Scheme: [base16](https://github.com/chriskempson/base16)
 
 ### Fish Shell
 ```
 brew install fish
 sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
+
+ln -s -f (pwd)/fish/config/* ~/.config/fish/
+ln -s -f (pwd)/fish/functions/* ~/.config/fish/functions/
 ```
 
 [fisherman](https://github.com/fisherman/fisherman)
-
-Functions contains modified version of prompt (`fish_prompt.fish`)
 ```
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
 fisher
-
-ln -s (pwd)/fish/config/* ~/.config/fish/
-ln -s (pwd)/fish/functions/* ~/.config/fish/functions/
-```
-
-[base16](https://github.com/chriskempson/base16-shell)
-```
-git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 ```
 
 ### Silver Searcher
@@ -59,9 +58,12 @@ vim +PlugInstall
 ```
 brew install neovim/neovim/neovim
 
-# YCM requires python3
-brew install python3
+# Python configuration
+pip install neovim --upgrade
 pip3 install neovim --upgrade
+
+# Check health
+nvim +checkhealth
 ```
 
 #### Symlinks
@@ -76,24 +78,26 @@ Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should instal
 nvim +PlugInstall
 ```
 
-### Symlinking
+### Config
 ```
-# Fonts required for tpayne.zsh-theme
-ln -s (pwd)/fonts ~/.fonts
-
-# scripts
-ln -s (pwd)/scripts/* ~/.local/bin
-
-# config
 ln -s (pwd)/config/tmux.conf ~/.tmux.conf
 ln -s (pwd)/config/gitconfig ~/.gitconfig
 ln -s (pwd)/config/tern-config ~/.tern-config
+```
+
+### Misc
+```
+# scripts
+ln -s (pwd)/scripts/* ~/.local/bin
 
 # Git config uses diff-so-fancy
 brew install diff-so-fancy
 # OR
 curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
 chmod +x ~/.local/bin/diff-so-fancy
+
+# Fonts required for tpayne.zsh-theme
+ln -s (pwd)/fonts ~/.fonts
 ```
 
 ## MacOS Specific
