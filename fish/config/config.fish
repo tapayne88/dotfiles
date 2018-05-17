@@ -8,6 +8,8 @@ end
 export VISUAL=nvim
 export EDITOR=nvim
 
+set -x TERM xterm-256color
+
 # executable search path
 set paths /usr/local/bin $HOME/.local/bin
 for p in $paths;
@@ -47,7 +49,6 @@ if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal
     set MYTMUX (which tmux)
     # Start tmux at start of each session (only when local and tmux exists)
     if test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"
-        set -x TERM tmux-256color
         tmux > /dev/null 2>&1
     end
 end
