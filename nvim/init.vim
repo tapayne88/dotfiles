@@ -20,8 +20,8 @@ call plug#begin(s:vim_path.'/plugged')
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/nerdtree'                  " NerdTree (press F7)
-Plug 'Xuyuanp/nerdtree-git-plugin'          " NerdTree Plugin for git stuff
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'airblade/vim-gitgutter'               " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
