@@ -18,10 +18,13 @@ endif
 "" ==================== Vim Plug ====================
 call plug#begin(s:vim_path.'/plugged')
 
+let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
+let fzfCommands = ['Files', 'GFiles']
+
 " Core Bundles
 Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeFind', 'NERDTreeToggle'] }
+Plug 'scrooloose/nerdtree', { 'on': nerdTreeCommands }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': nerdTreeCommands }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'airblade/vim-gitgutter'               " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
@@ -34,8 +37,8 @@ Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  \| Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': fzfCommands }
+  \| Plug 'junegunn/fzf.vim', { 'on': fzfCommands }
 Plug 'w0rp/ale'                             " Linting
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'itchyny/lightline.vim'                " Status line plugin
