@@ -19,7 +19,7 @@ endif
 call plug#begin(s:vim_path.'/plugged')
 
 let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
-let fzfCommands = ['Files', 'GFiles']
+let fzfCommands = ['Files', 'GFiles', 'Buffers']
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
