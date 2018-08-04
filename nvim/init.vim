@@ -49,6 +49,7 @@ Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
 Plug 'haya14busa/is.vim'                    " Enhanced searching
 Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
+Plug 'elmcast/elm-vim'                      " Elm-lang stuff
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
