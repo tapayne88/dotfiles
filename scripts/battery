@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This needs to be in the home folder and needs
 # to be chmod +x so it runs right.
