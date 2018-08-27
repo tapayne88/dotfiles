@@ -95,9 +95,17 @@ brew install diff-so-fancy
 # OR
 curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
 chmod +x ~/.local/bin/diff-so-fancy
+```
 
-# Fonts required for tpayne.zsh-theme
-ln -s (pwd)/fonts ~/.fonts
+### Fonts
+To get ligature/italic font support there are a number of steps.
+- source a font like [Monoid](https://larsenwork.com/monoid/) and install it
+- ensure terminal is configured for italic fonts (iterm2 needs a box checking)
+- configure new terminfo to ensure correct escape characters are used
+
+```
+# for each file in terminfo folder
+tic terminfo/tmux-256color.terminfo
 ```
 
 ## MacOS Specific
