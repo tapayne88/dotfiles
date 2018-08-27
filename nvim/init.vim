@@ -148,7 +148,7 @@ nnoremap <c-t> :Files<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
-\  'javascript': ['eslint'],
+\  'javascript': ['prettier', 'eslint'],
 \}
 
 let g:ale_linters = {
