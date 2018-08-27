@@ -101,6 +101,10 @@ colorscheme base16-default-dark
 highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
 highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
 
+hi htmlArg cterm=italic
+hi Comment cterm=italic
+hi Type    cterm=italic
+
 "" ==================== Config ====================
 let &backupdir = s:vim_path.'/backups'
 let &directory = s:vim_path.'/swaps'

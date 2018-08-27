@@ -8,8 +8,6 @@ end
 export VISUAL=nvim
 export EDITOR=nvim
 
-set -x TERM xterm-256color
-
 # executable search path
 set paths /usr/local/bin $HOME/.local/bin
 for p in $paths;
