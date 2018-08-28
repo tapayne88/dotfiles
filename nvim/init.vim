@@ -101,6 +101,10 @@ colorscheme base16-default-dark
 highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
 highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
 
+hi jsClassKeyword cterm=italic
+hi jsExtendsKeyword cterm=italic
+hi jsReturn cterm=italic
+hi jsThis  cterm=italic
 hi htmlArg cterm=italic
 hi Comment cterm=italic
 hi Type    cterm=italic
