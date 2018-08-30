@@ -46,10 +46,10 @@ Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
 Plug 'mileszs/ack.vim'                      " ag searching`
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
-Plug 'haya14busa/is.vim'                    " Enhanced searching
 Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'elmcast/elm-vim'                      " Elm-lang stuff
+Plug 'wincent/loupe'                        " more searching configuration
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
