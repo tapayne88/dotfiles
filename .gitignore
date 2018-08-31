@@ -6,3 +6,4 @@ nvim/plugged
 fish-shell/fish_history
 fish-shell/fishd.*
 irssi/config.autosave
+.uuid
