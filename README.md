@@ -99,7 +99,7 @@ chmod +x ~/.local/bin/diff-so-fancy
 
 ### Fonts
 To get ligature/italic font support there are a number of steps.
-- source a font like [Monoid](https://larsenwork.com/monoid/) and install it
+- source a font like [Dank Mono](https://dank.sh) and install it
 - ensure terminal is configured for italic fonts (iterm2 needs a box checking)
 - configure new terminfo to ensure correct escape characters are used
 
