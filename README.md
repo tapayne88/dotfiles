@@ -78,9 +78,18 @@ Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should instal
 nvim +PlugInstall
 ```
 
+### Tmux
+```
+# Setup tmux plugin mananger
+mkdir -p ~/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Link config
+ln -s (pwd)/config/tmux.conf ~/.tmux.conf
+```
+
 ### Config
 ```
-ln -s (pwd)/config/tmux.conf ~/.tmux.conf
 ln -s (pwd)/config/gitconfig ~/.gitconfig
 ln -s (pwd)/config/tern-config ~/.tern-config
 ```
