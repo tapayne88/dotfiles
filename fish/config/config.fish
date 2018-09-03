@@ -1,12 +1,11 @@
-set -g theme_short_path yes
-
 # Base16 Shell
 if status --is-interactive
-    eval sh $HOME/.config/base16-shell/scripts/base16-materia.sh
+    set BASE16_SHELL "$HOME/.config/base16-shell/"
+    source "$BASE16_SHELL/profile_helper.fish"
 end
 
-export VISUAL=nvim
-export EDITOR=nvim
+set -x VISUAL nvim
+set -x EDITOR nvim
 
 # executable search path
 set paths /usr/local/bin $HOME/.local/bin
@@ -17,13 +16,17 @@ for p in $paths;
 end
 
 # Make some possibly destructive commands more interactive
-alias rm='rm -i'
-alias mv='mv -i'
-alias cp='cp -i'
+alias rm 'rm -i'
+alias mv 'mv -i'
+alias cp 'cp -i'
 
-alias grep='grep -n --color=auto'
-alias ssh='env TERM=xterm-256color ssh'
-alias opsignin='set -Ux OP_SESSION_my (op signin --output=raw | tee ~/.op_tmux_token_tmp)'
+alias grep 'grep -n --color=auto'
+alias ssh 'env TERM=xterm-256color ssh'
+alias opsignin 'set -Ux OP_SESSION_my (op signin --output=raw | tee ~/.op_tmux_token_tmp)'
+
+function theme
+    echo (string replace -r "\.sh" "" (basename (readlink $HOME/.base16_theme)))
+end
 
 # fzf defaults
 set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
@@ -41,7 +44,7 @@ set -x FPP_DISABLE_SPLIT 1
 #   - :Gdiff ~1 (vim - compare staged copy with repo version)
 #   - swap back to Gstatus pane
 #   - move cursor to new file and press <Enter> (opens file below status)
-alias vimmg='vim -c Gstatus'
+alias vimmg 'vim -c Gstatus'
 
 # Setup special theme for ssh session, no special characters
 set -l approvedTerminal (test "$TERM_PROGRAM" = "iTerm.app" -o "$TERM_PROGRAM" = "gnome-terminal")

@@ -1,22 +1,12 @@
-# You can override some default options with config.fish:
-#
-#  set -g theme_short_path yes
-
 function fish_prompt
   set -l last_command_status $status
-  set -l cwd
+  set -l cwd (basename (prompt_pwd))
 
-  if test "$theme_short_path" = 'yes'
-    set cwd (basename (prompt_pwd))
-  else
-    set cwd (prompt_pwd)
-  end
-
-  set -l fish     "⋊>"
-  set -l ahead    "↑"
-  set -l behind   "↓"
-  set -l diverged "⥄ "
-  set -l dirty    "⨯"
+  set -l fish     "❯"
+  set -l ahead    "⇡"
+  set -l behind   "⇣"
+  set -l diverged "⇡⇣"
+  set -l dirty    "✎"
   set -l none     "◦"
 
   set -l normal_color     (set_color normal)
@@ -26,17 +16,13 @@ function fish_prompt
   set -l repository_color (set_color $fish_color_cwd ^/dev/null; or set_color green)
 
   if test $last_command_status -eq 0
-    echo -n -s $success_color $fish $normal_color
+    echo -n -s $normal_color $fish $normal_color
   else
     echo -n -s $error_color $fish $normal_color
   end
 
   if git_is_repo
-    if test "$theme_short_path" = 'yes'
-      echo -n -s " " $directory_color $cwd $normal_color
-    else
-      echo -n -s " " $directory_color $cwd $normal_color
-    end
+    echo -n -s " " $directory_color $cwd $normal_color
 
     echo -n -s " on " $repository_color (git_branch_name) $normal_color " "
 
