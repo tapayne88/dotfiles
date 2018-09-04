@@ -1,0 +1,33 @@
+session_name: work
+windows:
+- window_name: betdev
+  window_index: 1
+  focus: true
+  layout: even-horizontal
+  shell_command_before:
+    - z betdev/application
+  panes:
+    - shell_command:
+      - null
+      focus: true
+    - null
+
+- window_name: ui-library
+  window_index: 2
+  layout: even-horizontal
+  shell_command_before:
+    - z ui-library
+  panes:
+    - shell_command:
+      - null
+      focus: true
+    - null
+
+- window_name: cosmos
+  window_index: 9
+  shell_command_before:
+    - z cosmos
+  panes:
+    - shell_command:
+      - ctop
+    - null

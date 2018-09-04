@@ -79,13 +79,14 @@ nvim +PlugInstall
 ```
 
 ### Tmux
+Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
 ```
 # Setup tmux plugin mananger
-mkdir -p ~/.tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Link config
-ln -s (pwd)/config/tmux.conf ~/.tmux.conf
+ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
+ln -s (pwd)/tmux/tmuxp ~/.tmuxp
 ```
 
 ### Config
