@@ -19,7 +19,7 @@ endif
 call plug#begin(s:vim_path.'/plugged')
 
 let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
-let fzfCommands = ['Files', 'GFiles', 'Buffers']
+let fzfCommands = ['Files', 'GFiles', 'Buffers', 'Ag']
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
@@ -153,8 +153,9 @@ let g:fzf_action = {
 \  'ctrl-v': 'vsplit'
 \}
 nnoremap <leader>l :Buffers<CR>
-nnoremap <leader>p :GFiles<CR>
-nnoremap <c-t> :Files<CR>
+nnoremap <leader>p :Files<CR>
+nnoremap <c-t> :GFiles<CR>
+nnoremap <c-f> :Ag<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
