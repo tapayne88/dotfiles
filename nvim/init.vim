@@ -168,6 +168,17 @@ let g:ale_linters = {
 
 let g:ale_fix_on_save = 1
 let g:polyglot_disabled = ['markdown', 'md']
+nnoremap <leader>at :call ToggleAleOnSaveBuffer()<CR>
+
+function! ToggleAleOnSaveBuffer()
+  let l:fix_on_save = 0
+  if exists("b:ale_fix_on_save")
+    let l:fix_on_save = b:ale_fix_on_save == 1 ? 0 : 1
+  endif
+
+  let b:ale_fix_on_save = l:fix_on_save
+  echom 'b:ale_fix_on_save=' . l:fix_on_save
+endfunction
 
 "" ==================== GitGutter ====================
 let g:gitgutter_sign_added = "•"
