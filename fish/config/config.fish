@@ -26,6 +26,7 @@ alias opsignin 'set -Ux OP_SESSION_my (op signin --output=raw | tee ~/.op_tmux_t
 
 function theme
     echo (string replace -r "\.sh" "" (basename (readlink $HOME/.base16_theme)))
+    sh "$BASE16_SHELL/colortest"
 end
 
 # fzf defaults
