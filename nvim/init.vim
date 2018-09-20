@@ -156,6 +156,7 @@ nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :Files<CR>
 nnoremap <c-t> :GFiles<CR>
 nnoremap <c-f> :Ag<CR>
+nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
@@ -308,6 +309,7 @@ endfunction
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
 let g:ackhighlight = 1
+nnoremap <leader>ag :Ack!<CR>
 
 "" ==================== NERDTree ====================
 let g:NERDTreeUseSimpleIndicator = 1
@@ -344,7 +346,6 @@ nnoremap <leader>- :res -5<CR>
 nnoremap <leader>= :res +5<CR>
 nnoremap <leader>. :vertical resize -20<CR>
 nnoremap <leader>, :vertical resize +20<CR>
-nnoremap <leader>ag :Ack!<CR>
 nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>n :set number!<CR>
