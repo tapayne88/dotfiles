@@ -2,4 +2,5 @@ edc/bass
 fisherman/getopts
 fisherman/git_util
 fisherman/nvm
+tuvistavie/fish-ssh-agent
 fisherman/z
