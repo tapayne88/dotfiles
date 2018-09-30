@@ -22,7 +22,24 @@ alias cp 'cp -i'
 
 alias grep 'grep -n --color=auto'
 alias ssh 'env TERM=xterm-256color ssh'
-alias opsignin 'set -Ux OP_SESSION_my (op signin --output=raw | tee ~/.op_tmux_token_tmp)'
+
+set OP_TMUX_TOKEN_FILE ~/.op_tmux_token_tmp
+
+function sourceOPSession
+    if test -e $OP_TMUX_TOKEN_FILE
+        set -gx 'OP_SESSION_my' (cat $OP_TMUX_TOKEN_FILE)
+    end
+end
+
+function opsignin
+    sourceOPSession
+    if not test -e $OP_TMUX_TOKEN_FILE
+        op signin my --output=raw | tee $OP_TMUX_TOKEN_FILE
+        sourceOPSession
+    end
+end
+
+sourceOPSession
 
 function theme
     echo (string replace -r "\.sh" "" (basename (readlink $HOME/.base16_theme)))
