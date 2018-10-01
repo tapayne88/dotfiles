@@ -50,6 +50,7 @@ Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'elmcast/elm-vim'                      " Elm-lang stuff
 Plug 'wincent/loupe'                        " more searching configuration
+Plug 'janko-m/vim-test'                     " easy testing
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -189,73 +190,23 @@ let g:gitgutter_sign_modified_removed = "•"
 
 "" ==================== Vimux ====================
 map <Leader>vp :VimuxPromptCommand<CR>
-map <Leader>tw :JestWatch<CR>
-map <Leader>ta :call RunAllOnWatchJest()<CR>
-map <Leader>tf :call RunFocusedOnWatchJest()<CR>
-map <Leader>tb :call RunBufferOnWatchJest()<CR>
 
-" yarn jest runner shamelessly stolen from https://github.com/tyewang/vimux-jest-test (and tweaked)
-command! Jest :call _run_jest("")
-command! JestWatch :call _run_jest(" --watch ")
-command! JestOnBuffer :call RunBufferOnJest()
-command! JestFocused :call RunFocuedOnJest()
 
-function! RunBufferOnJest()
-  call _run_jest(expand("%"))
-endfunction
+"" ==================== Vim-test ====================
+let g:test#runner_commands = ['Jest']
+let g:test#strategy = "vimux"
 
-function! _get_focused_test_name()
-  let test_name = _jest_test_search('\<describe(\|\<test(\|\<it(\|\<test.only(') "note the single quotes
+" Below needed for tests inside spec folder
+let g:test#javascript#jest#file_pattern = '\v((__tests__|spec)/.*|(spec|test))\.(js|jsx|coffee|ts|tsx)$'
+let g:test#javascript#jest#executable = "yarn jest"
 
-  if test_name == ""
-    echoerr "Couldn't find test name to run focused test."
-    return
-  endif
+nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
+nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
+nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
+nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
+nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
+nmap <silent> t<C-w> :Jest --watch<CR>
 
-  return test_name
-endfunction
-
-function! RunFocuedOnJest()
-  let test_name = _get_focused_test_name()
-  call _run_jest(expand("%") . " -t " . "\"" . test_name . "\"")
-endfunction
-
-function! _jest_test_search(fragment)
-  let line_num = search(a:fragment, "bs")
-  if line_num > 0
-    ''
-    let test_string = split(split(getline(line_num), "(")[1], ",")[0]
-    return strpart(test_string, 1, len(test_string) - 2)
-  else
-    return ""
-  endif
-endfunction
-
-function! _run_jest(test)
-  call VimuxRunCommand("yarn jest " . a:test)
-endfunction
-
-function! RunAllOnWatchJest()
-  call _run_on_watch_jest("a")
-endfunction
-
-function! RunFocusedOnWatchJest()
-  let test_name = _get_focused_test_name()
-  call _run_on_watch_jest("t", test_name)
-endfunction
-
-function! RunBufferOnWatchJest()
-  call _run_on_watch_jest("p", expand("%"))
-endfunction
-
-function! _run_on_watch_jest(type, ...)
-  call VimuxSendText(a:type)
-
-  if exists("a:1")
-    call VimuxSendText(a:1)
-    call VimuxSendKeys("Enter")
-  endif
-endfunction
 
 "" ==================== Lightline ====================
 let g:lightline = {
