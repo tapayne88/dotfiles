@@ -40,8 +40,9 @@ Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': fzfCommands }
   \| Plug 'junegunn/fzf.vim', { 'on': fzfCommands }
 Plug 'w0rp/ale'                             " Linting
-Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'itchyny/lightline.vim'                " Status line plugin
+Plug 'maximbaz/lightline-ale'               " Linting status for lightline
+Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
 Plug 'mileszs/ack.vim'                      " ag searching`
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
@@ -209,6 +210,11 @@ nmap <silent> t<C-w> :Jest --watch<CR>
 
 
 "" ==================== Lightline ====================
+let g:lightline#ale#indicator_checking = ""
+let g:lightline#ale#indicator_warnings = "◆ "
+let g:lightline#ale#indicator_errors = "✗ "
+let g:lightline#ale#indicator_ok = "✔"
+
 let g:lightline = {
 \ 'colorscheme': 'base16',
 \ 'active': {
@@ -219,9 +225,10 @@ let g:lightline = {
 \   'gitbranch': 'fugitive#head'
 \ },
 \ 'component_expand': {
-\   'linter_warnings': 'LightlineLinterWarnings',
-\   'linter_errors': 'LightlineLinterErrors',
-\   'linter_ok': 'LightlineLinterOk',
+\   'linter_checking': 'lightline#ale#checking',
+\   'linter_warnings': 'lightline#ale#warnings',
+\   'linter_errors': 'lightline#ale#errors',
+\   'linter_ok': 'lightline#ale#ok',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
@@ -229,33 +236,6 @@ let g:lightline = {
 \   'linter_errors': 'error'
 \ }
 \ }
-
-function! LightlineLinterWarnings() abort
-   let l:counts = ale#statusline#Count(bufnr(''))
-   let l:all_errors = l:counts.error + l:counts.style_error
-   let l:all_non_errors = l:counts.total - l:all_errors
-   return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
-endfunction
-
-function! LightlineLinterErrors() abort
-   let l:counts = ale#statusline#Count(bufnr(''))
-   let l:all_errors = l:counts.error + l:counts.style_error
-   return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
-endfunction
-
-function! LightlineLinterOk() abort
-   let l:counts = ale#statusline#Count(bufnr(''))
-   return l:counts.total == 0 ? '✓' : ''
-endfunction
-
-autocmd User ALELint call s:MaybeUpdateLightline()
-
-" Update and show lightline but only if it's visible (e.g., not in Goyo)
-function! s:MaybeUpdateLightline()
-  if exists('#lightline')
-    call lightline#update()
-  end
-endfunction
 
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
