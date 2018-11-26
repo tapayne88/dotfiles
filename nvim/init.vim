@@ -146,6 +146,7 @@ let g:deoplete#sources#ternjs#docs = 1
 
 inoremap <silent><expr> <C-j> "\<C-n>"
 inoremap <silent><expr> <C-k> "\<C-p>"
+inoremap <C-[> <esc>
 
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
@@ -156,7 +157,7 @@ let g:fzf_action = {
 \}
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :Files<CR>
-nnoremap <c-t> :GFiles<CR>
+nnoremap <c-p> :GFiles<CR>
 nnoremap <c-f> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
