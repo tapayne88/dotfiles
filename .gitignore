@@ -3,6 +3,7 @@ vim/.netrwhist
 vim/plugged
 vim/bundle/vundle
 nvim/plugged
+nvim/.netrwhist
 fish-shell/fish_history
 fish-shell/fishd.*
 irssi/config.autosave
