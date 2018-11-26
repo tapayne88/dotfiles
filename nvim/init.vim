@@ -19,7 +19,6 @@ endif
 call plug#begin(s:vim_path.'/plugged')
 
 let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
-let fzfCommands = ['Files', 'GFiles', 'Buffers', 'Ag']
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
@@ -37,8 +36,8 @@ Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all', 'on': fzfCommands }
-  \| Plug 'junegunn/fzf.vim', { 'on': fzfCommands }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  \| Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'                             " Linting
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'maximbaz/lightline-ale'               " Linting status for lightline
