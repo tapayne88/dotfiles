@@ -156,8 +156,10 @@ let g:fzf_action = {
 \}
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :Files<CR>
+nnoremap <leader>s :Ag<CR>
+nnoremap <c-l> :Buffers<CR>
 nnoremap <c-p> :GFiles<CR>
-nnoremap <c-f> :Ag<CR>
+nnoremap <c-s> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
 "" ==================== ALE ====================
