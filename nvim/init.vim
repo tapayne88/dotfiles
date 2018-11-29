@@ -156,9 +156,11 @@ let g:fzf_action = {
 \}
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>p :Files<CR>
+nnoremap <leader>t :GFiles<CR>
 nnoremap <leader>s :Ag<CR>
 nnoremap <c-l> :Buffers<CR>
 nnoremap <c-p> :GFiles<CR>
+nnoremap <c-t> :GFiles<CR>
 nnoremap <c-s> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
@@ -169,6 +171,7 @@ let g:ale_fixers = {
 
 let g:ale_linters = {
 \  'javascript': ['eslint'],
+\  'typescript': ['tslint'],
 \}
 
 let g:ale_fix_on_save = 1
@@ -270,6 +273,12 @@ nmap gH <Plug>GitGutterPrevHunk
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
 nnoremap <C-s> :w<CR>
+
+" Ctrl-c to escape
+nmap <c-c> <esc>
+imap <c-c> <esc>
+vmap <c-c> <esc>
+omap <c-c> <esc>
 
 " Shows and hides invisible characters
 noremap <leader>e :set list!<CR>
