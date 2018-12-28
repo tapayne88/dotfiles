@@ -154,14 +154,34 @@ let g:fzf_action = {
 \  'ctrl-s': 'split',
 \  'ctrl-v': 'vsplit'
 \}
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment']
+  \ }
+
+function! MyGitFiles()
+  return fzf#run(fzf#wrap({
+  \ 'source': 'git ls-files `pwd`',
+  \ 'options': '-m'
+  \ }))
+endfunction
+
 nnoremap <leader>l :Buffers<CR>
-nnoremap <leader>p :Files<CR>
-nnoremap <leader>t :GFiles<CR>
-nnoremap <leader>s :Ag<CR>
-nnoremap <c-l> :Buffers<CR>
-nnoremap <c-p> :GFiles<CR>
-nnoremap <c-t> :GFiles<CR>
-nnoremap <c-s> :Ag<CR>
+nnoremap <leader>t :call MyGitFiles()<CR>
+nnoremap <leader>f :Ag<CR>
+nnoremap <c-t> :call MyGitFiles()<CR>
+nnoremap <c-f> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
 "" ==================== ALE ====================
@@ -208,7 +228,7 @@ let g:test#javascript#jest#executable = "yarn jest"
 
 nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
 nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
-nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
+"nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
 nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
 nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
 nmap <silent> t<C-w> :Jest --watch<CR>
@@ -272,7 +292,6 @@ nmap gH <Plug>GitGutterPrevHunk
 
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
-nnoremap <C-s> :w<CR>
 
 " Ctrl-c to escape
 nmap <c-c> <esc>
