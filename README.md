@@ -105,7 +105,11 @@ brew install diff-so-fancy
 # OR
 curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
 chmod +x ~/.local/bin/diff-so-fancy
+
+# dir_colors
+ln -s (pwd)/misc/dir_colors ~/.dir_colors
 ```
+(dir_colors from [nord-dircolors](https://github.com/arcticicestudio/nord-dircolors))
 
 ### Fonts
 To get ligature/italic font support there are a number of steps.
