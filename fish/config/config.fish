@@ -1,6 +1,6 @@
 # Base16 Shell
 if status --is-interactive
-    set BASE16_SHELL "$HOME/.config/base16-shell/"
+    set BASE16_SHELL "$HOME/.config/base16-shell"
     source "$BASE16_SHELL/profile_helper.fish"
 end
 
@@ -43,7 +43,7 @@ sourceOPSession
 
 function theme
     echo (string replace -r "\.sh" "" (basename (readlink $HOME/.base16_theme)))
-    sh "$BASE16_SHELL/colortest"
+    bass "$BASE16_SHELL/colortest"
 end
 
 # fzf defaults
