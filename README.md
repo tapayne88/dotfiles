@@ -111,6 +111,12 @@ ln -s (pwd)/misc/dir_colors ~/.dir_colors
 ```
 (dir_colors from [nord-dircolors](https://github.com/arcticicestudio/nord-dircolors))
 
+#### SSH
+Example `~/.ssh/config`
+```
+Include ~/git/dotfiles/misc/ssh_config
+```
+
 ### Fonts
 To get ligature/italic font support there are a number of steps.
 - source a font like [Dank Mono](https://dank.sh) and install it
