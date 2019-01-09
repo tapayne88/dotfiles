@@ -334,3 +334,7 @@ nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
 nnoremap <leader>gpl :Dispatch! git pull<CR>
+
+if filereadable(expand('~/.vimrc.local'))
+  source ~/.vimrc.local
+endif
