@@ -86,6 +86,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Link config
 ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
+ln -s (pwd)/tmux/helpers ~/.tmux/helpers
 ln -s (pwd)/tmux/tmuxp ~/.tmuxp
 ```
 
