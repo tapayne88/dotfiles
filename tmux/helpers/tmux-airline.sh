@@ -39,6 +39,6 @@ fi
 
 KUBE_STATUS="$KUBE_COLOUR$KUBE"
 BATTERY_STATUS="$BATTERY_COLOUR$BATTERY"
-BASIC="#[fg=colour00,bg=colour06] `date +\"%H:%M\"` #[fg=colour00,bg=colour07] `date +\"$DATE\"`"
+BASIC="#[fg=colour18,bg=colour06] `date +\"%H:%M\"` #[fg=colour18,bg=colour07] `date +\"$DATE\"`"
 
 echo "$KUBE_STATUS$BASIC $BATTERY_STATUS"
