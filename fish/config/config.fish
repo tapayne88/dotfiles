@@ -79,8 +79,10 @@ if test -e $LOCAL_FISH
     source $LOCAL_FISH
 end
 
-# Load kubectl aliases if available
-[ -f ~/.kubectl_aliases ]; and  source ~/.kubectl_aliases
+# Improved loading of kubectl aliases when available
+[ -f ~/.kubectl_aliases ]; and source (cat ~/.kubectl_aliases | sed -E 's/alias (.*)=\'(.*)\'/function \1; \2; end/' | psub)
+# The below version took ~7 seconds to load!
+# [ -f ~/.kubectl_aliases ]; and source ~/.kubectl_aliases
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
