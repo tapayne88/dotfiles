@@ -79,9 +79,12 @@ if test -e $LOCAL_FISH
     source $LOCAL_FISH
 end
 
+# Load kubectl aliases if available
+[ -f ~/.kubectl_aliases ]; and  source ~/.kubectl_aliases
+
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.fish ]; and . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.fish
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.fish ]; and source /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.fish
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.fish ]; and . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.fish
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.fish ]; and source /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.fish
