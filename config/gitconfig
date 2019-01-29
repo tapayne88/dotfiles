@@ -34,6 +34,7 @@
     review = difftool @{u}
     grp = grep -I -n
     l = log --oneline
+    lb = log --oneline origin/master..
     lg = log
     lgu = log @{u}
     lp = log -p

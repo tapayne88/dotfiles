@@ -187,11 +187,12 @@ nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 "" ==================== ALE ====================
 let g:ale_fixers = {
 \  'javascript': ['prettier', 'eslint'],
+\  'typescript': ['prettier'],
 \}
 
 let g:ale_linters = {
 \  'javascript': ['eslint'],
-\  'typescript': ['tslint'],
+\  'typescript': ['tslint', 'tsserver'],
 \}
 
 let g:ale_fix_on_save = 1
