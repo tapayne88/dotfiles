@@ -25,11 +25,7 @@ ln -s -f (pwd)/fish/config/* ~/.config/fish/
 ln -s -f (pwd)/fish/functions/* ~/.config/fish/functions/
 ```
 
-[fisherman](https://github.com/fisherman/fisherman)
-```
-curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
-fisher
-```
+[fisherman](https://github.com/fisherman/fisherman) should install itself on launching fish shell (with `config.fish` in place)
 
 ### Silver Searcher
 A code-searching tool similar to ack, but faster. [http://geoff.greer.fm/ag/]( http://geoff.greer.fm/ag/)
