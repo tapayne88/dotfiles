@@ -9,16 +9,16 @@
     branch = auto
     ui = true
 [color "diff-highlight"]
-	oldNormal = brred bold
-	oldHighlight = red bold brred
-	newNormal = brgreen bold
-	newHighlight = green bold brgreen
+	oldNormal = red bold
+	oldHighlight = reverse bold red
+	newNormal = green bold
+	newHighlight = reverse bold green
 [color "diff"]
 	meta = white
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
+	frag = magenta
+	commit = yellow
+	old = red
+	new = green
 	whitespace = red reverse
 [push]
     default = current
