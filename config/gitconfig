@@ -7,6 +7,19 @@
     diff = auto
     status = auto
     branch = auto
+    ui = true
+[color "diff-highlight"]
+	oldNormal = brred bold
+	oldHighlight = red bold brred
+	newNormal = brgreen bold
+	newHighlight = green bold brgreen
+[color "diff"]
+	meta = white
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
 [push]
     default = current
 [alias]
