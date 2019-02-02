@@ -53,6 +53,31 @@ function theme
     bass "$BASE16_SHELL/colortest"
 end
 
+# Setup consistent fish colours
+set fish_color_normal normal
+set fish_color_command --bold
+set fish_color_quote yellow
+set fish_color_redirection brblue
+set fish_color_end brmagenta
+set fish_color_error brred
+set fish_color_param cyan
+set fish_color_comment red
+set fish_color_match --background=brblue
+set fish_color_selection white --bold --background=brblack
+set fish_color_search_match bryellow --background=brblack
+set fish_color_operator bryellow
+set fish_color_escape bryellow --bold
+set fish_color_cwd green
+set fish_color_autosuggestion 555 brblack
+set fish_color_user brgreen
+set fish_color_host normal
+# set --erase fish_color_cancel
+set fish_pager_color_prefix white --bold --underline
+# set --erase fish_pager_color_completion
+set fish_pager_color_description yellow
+set fish_pager_color_progress brwhite --background=cyan
+# set --erase fish_pager_color_secondary
+
 # fzf defaults
 set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
 set -x FZF_DEFAULT_COMMAND "ag --nocolor -g ''"
