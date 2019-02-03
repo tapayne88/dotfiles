@@ -5,9 +5,9 @@ function fish_prompt
   set -l fish     "❯"
   set -l ahead    "⇡"
   set -l behind   "⇣"
-  set -l diverged "⇡⇣"
-  set -l dirty    "✎ "
-  set -l none     "◦"
+  set -l diverged "⇕"
+  set -l dirty    "⋯ "
+  set -l none     "•"
 
   set -l normal_color     (set_color normal)
   set -l success_color    (set_color $fish_pager_color_progress ^/dev/null; or set_color cyan)
