@@ -1,6 +1,7 @@
 edc/bass
-fisherman/getopts
-fisherman/git_util
-fisherman/nvm
 tuvistavie/fish-ssh-agent
-fisherman/z
+fishpkg/fish-git-util
+jorgebucaran/fish-getopts
+jorgebucaran/fish-nvm
+jethrokuan/z
+jethrokuan/fzf
