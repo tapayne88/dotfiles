@@ -79,11 +79,15 @@ set fish_pager_color_progress brwhite --background=cyan
 # set --erase fish_pager_color_secondary
 
 # fzf defaults
-set -x FZF_DEFAULT_OPTS '--height 40% --reverse'
 set -x FZF_DEFAULT_COMMAND "ag --nocolor -g ''"
-set -x FZF_OPEN_COMMAND $FZF_DEFAULT_COMMAND
 set -x FZF_TMUX 1
+set -x FZF_TMUX_HEIGHT 40%
 set -U FZF_LEGACY_KEYBINDINGS 0
+
+set -U FZF_DEFAULT_OPTS "\
+  --layout reverse\
+  --color bg+:18,bg:0,spinner:6,hl:4,fg:20,header:4,info:3,pointer:6,marker:6,fg+:21,prompt:3,hl+:4\
+"
 
 set -x FPP_DISABLE_SPLIT 1
 
