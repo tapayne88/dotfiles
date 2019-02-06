@@ -46,7 +46,7 @@
     dt = difftool
     review = difftool @{u}
     grp = grep -I -n
-    l = log --oneline
+    l = log --pretty='format:%C(yellow)%H%C(red)%d%n%C(blue)%cd  %an%n%C(reset)%s%n' --date='format:%Y-%m-%d %H:%M'
     lb = log --oneline origin/master..
     lg = log
     lgu = log @{u}
