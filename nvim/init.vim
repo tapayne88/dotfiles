@@ -51,6 +51,8 @@ Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'elmcast/elm-vim'                      " Elm-lang stuff
 Plug 'wincent/loupe'                        " more searching configuration
 Plug 'janko-m/vim-test'                     " easy testing
+Plug 'mhartington/nvim-typescript',
+  \ {'do': './install.sh'}                  " typescript definitions
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -267,6 +269,9 @@ let g:lightline = {
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
 let g:ackhighlight = 1
 nnoremap <leader>ag :Ack!<CR>
+
+"" ==================== nvim-typescript ====================
+nnoremap <leader>df :TSDefPreview<CR>
 
 "" ==================== NERDTree ====================
 let g:NERDTreeUseSimpleIndicator = 1
