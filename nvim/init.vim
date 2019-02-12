@@ -272,6 +272,7 @@ nnoremap <leader>ag :Ack!<CR>
 
 "" ==================== nvim-typescript ====================
 nnoremap <leader>df :TSDefPreview<CR>
+autocmd! CursorHold *.ts,*.tsx TSType
 
 "" ==================== NERDTree ====================
 let g:NERDTreeUseSimpleIndicator = 1
