@@ -25,6 +25,9 @@ windows:
 
 - window_name: cosmos
   window_index: 9
+  layout: main-horizontal
+  options:
+    main-pane-height: 15
   shell_command_before:
     - z cosmos
   panes:

@@ -1,0 +1,16 @@
+session_name: haskell
+windows:
+- window_name: haskell
+  window_index: 1
+  focus: true
+  layout: main-horizontal
+  options:
+    main-pane-height: 40
+  shell_command_before:
+    - z haskell
+    - clear
+  panes:
+    - shell_command:
+      - null
+      focus: true
+    - stack ghci
