@@ -46,13 +46,12 @@ Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
 Plug 'mileszs/ack.vim'                      " ag searching`
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
-Plug 'osyo-manga/vim-anzu'                  " Search - no. of matches
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
-Plug 'elmcast/elm-vim'                      " Elm-lang stuff
 Plug 'wincent/loupe'                        " more searching configuration
 Plug 'janko-m/vim-test'                     " easy testing
 Plug 'mhartington/nvim-typescript',
-  \ {'do': './install.sh'}                  " typescript definitions
+  \ { 'do': './install.sh'
+  \ , 'for': 'typescript' }                 " typescript definitions
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
