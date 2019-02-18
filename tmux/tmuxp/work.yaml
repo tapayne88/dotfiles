@@ -12,11 +12,11 @@ windows:
       focus: true
     - null
 
-- window_name: ui-library
+- window_name: match-preview-service
   window_index: 2
   layout: even-horizontal
   shell_command_before:
-    - z ui-library
+    - z match-preview-service
   panes:
     - shell_command:
       - null
