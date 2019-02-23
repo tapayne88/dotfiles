@@ -53,15 +53,16 @@ Plug 'mhartington/nvim-typescript',
   \ { 'do': './install.sh'
   \ , 'for': 'typescript' }                 " typescript definitions
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-else
-  Plug 'Shougo/deoplete.nvim'
-    \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" Disable deoplete until I can figure what is happening
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"     \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"     \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
 call plug#end()
 
