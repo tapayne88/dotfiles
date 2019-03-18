@@ -52,6 +52,7 @@ Plug 'janko-m/vim-test'                     " easy testing
 Plug 'mhartington/nvim-typescript',
   \ { 'do': './install.sh'
   \ , 'for': 'typescript' }                 " typescript definitions
+Plug 'peitalin/vim-jsx-typescript'
 
 " Disable deoplete until I can figure what is happening
 " if has('nvim')
