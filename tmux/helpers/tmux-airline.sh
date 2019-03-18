@@ -27,6 +27,12 @@ BATTERY_PERCENTAGE=`~/.tmux/plugins/tmux-battery/scripts/battery_percentage.sh`
 [ "$HAS_KUBE" != "" ] && KUBE=" ⎈  $KUBE_CLUSTER:$KUBE_NAMESPACE "
 [ "$HAS_BATTERY" != "" ] && BATTERY=" ⚡  $BATTERY_PERCENTAGE "
 
+if [ $WIDTH -le $MEDIUM ]; then
+    if [ $HAS_KUBE ]; then
+        KUBE=" ⎈  "
+    fi
+fi
+
 if [ $WIDTH -le $SMALL ]; then
     if [ $HAS_KUBE ]; then
         KUBE=" ⎈  "
