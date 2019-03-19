@@ -176,7 +176,7 @@ let g:fzf_colors = {
 function! MyGitFiles()
   return fzf#run(fzf#wrap({
   \ 'source': 'git ls-files `pwd` && git ls-files --others --exclude-standard `pwd`',
-  \ 'options': '--multi --reverse'
+  \ 'options': '--multi'
   \ }))
 endfunction
 
