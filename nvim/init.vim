@@ -53,6 +53,7 @@ Plug 'mhartington/nvim-typescript',
   \ { 'do': './install.sh'
   \ , 'for': 'typescript' }                 " typescript definitions
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Disable deoplete until I can figure what is happening
 " if has('nvim')
