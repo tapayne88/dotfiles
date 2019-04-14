@@ -276,7 +276,8 @@ let g:lightline = {
 
 "" ==================== nvim-typescript ====================
 nnoremap <leader>df :TSDefPreview<CR>
-autocmd! CursorHold *.ts,*.tsx TSType
+nnoremap <leader>st :TSType<CR>
+" autocmd! CursorHold *.ts,*.tsx TSType    " below is useful but blocks TS errors
 
 "" ==================== NERDTree ====================
 let g:NERDTreeUseSimpleIndicator = 1
