@@ -49,6 +49,7 @@ Plug 'dominikduda/vim_current_word'         " highlight other occurrences of wor
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/loupe'                        " more searching configuration
 Plug 'janko-m/vim-test'                     " easy testing
+Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'mhartington/nvim-typescript',
   \ { 'do': './install.sh'
   \ , 'for': 'typescript' }                 " typescript definitions
