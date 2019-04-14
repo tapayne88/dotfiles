@@ -189,6 +189,8 @@ nnoremap <c-t> :call MyGitFiles()<CR>
 nnoremap <c-f> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
 
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
