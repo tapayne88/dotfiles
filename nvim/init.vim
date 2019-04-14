@@ -33,19 +33,19 @@ Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' et
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
 Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
-Plug 'jaawerth/nrun.vim'                    " Run locally install npm stuff
+Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
+Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   \| Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'w0rp/ale'                             " Linting
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'maximbaz/lightline-ale'               " Linting status for lightline
-Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
-Plug 'mileszs/ack.vim'                      " ag searching`
+Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
-Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/loupe'                        " more searching configuration
 Plug 'janko-m/vim-test'                     " easy testing
@@ -67,8 +67,6 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 " endif
 
 call plug#end()
-
-"" ==================== Testing Area ====================
 
 "" ==================== General ====================
 set number                      "Adds line numbers
@@ -128,7 +126,7 @@ set wildmode=list:longest,list:full " Simulate zsh tab completion
 set scrolloff=4                     " Number of lines from vertical edge to start scrolling
 
 if exists('+colorcolumn')
-    " Add column line at 80 characters
+    " Add column line at 100 characters
     set colorcolumn=100
 endif
 
@@ -187,6 +185,12 @@ nnoremap <leader>f :Ag<CR>
 nnoremap <c-t> :call MyGitFiles()<CR>
 nnoremap <c-f> :Ag<CR>
 nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
+
+
+"" ==================== Ack ====================
+let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
+let g:ackhighlight = 1
+nnoremap <leader>ag :Ack!<CR>
 
 "" ==================== ALE ====================
 let g:ale_fixers = {
@@ -267,11 +271,6 @@ let g:lightline = {
 \ }
 \ }
 
-"" ==================== Ack ====================
-let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
-let g:ackhighlight = 1
-nnoremap <leader>ag :Ack!<CR>
-
 "" ==================== nvim-typescript ====================
 nnoremap <leader>df :TSDefPreview<CR>
 autocmd! CursorHold *.ts,*.tsx TSType
@@ -291,22 +290,11 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 nnoremap j gj
 nnoremap k gk
 
-map n <Plug>(is-nohl)<Plug>(anzu-n-with-echo)
-map N <Plug>(is-nohl)<Plug>(anzu-N-with-echo)
-map <F6> :Gblame<CR>
-map <F7> :NERDTreeToggle<CR>
-
 nmap gh <Plug>GitGutterNextHunk
 nmap gH <Plug>GitGutterPrevHunk
 
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
-
-" Ctrl-c to escape
-nmap <c-c> <esc>
-imap <c-c> <esc>
-vmap <c-c> <esc>
-omap <c-c> <esc>
 
 " Shows and hides invisible characters
 noremap <leader>e :set list!<CR>
@@ -323,8 +311,6 @@ nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 nnoremap <leader>evv :vsplit $MYVIMRC<CR>
 nnoremap <leader>ev :split $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
-nnoremap <leader>" ea"<esc>hbi"<esc>lel
-nnoremap <leader>' ea'<esc>hbi'<esc>lel
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>ff :NERDTreeFind<CR>
 nnoremap <leader>fp :echo @%<CR>
