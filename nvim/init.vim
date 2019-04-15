@@ -29,7 +29,7 @@ Plug 'scrooloose/nerdtree', { 'on': nerdTreeCommands }
 Plug 'Xuyuanp/nerdtree-git-plugin',
   \ { 'on': nerdTreeCommands }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
-Plug 'airblade/vim-gitgutter'               " + & - in column for changed lines
+Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive',
   \ { 'on': fugitiveCommands }              " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
@@ -231,10 +231,25 @@ function! ToggleAleOnSaveBuffer()
 endfunction
 
 "" ==================== GitGutter ====================
-let g:gitgutter_sign_added = "•"
-let g:gitgutter_sign_modified = "•"
-let g:gitgutter_sign_removed = "•"
-let g:gitgutter_sign_modified_removed = "•"
+" let g:gitgutter_sign_added = "•"
+" let g:gitgutter_sign_modified = "•"
+" let g:gitgutter_sign_removed = "•"
+" let g:gitgutter_sign_modified_removed = "•"
+
+" nmap gh <Plug>GitGutterNextHunk
+" nmap gH <Plug>GitGutterPrevHunk
+
+"" ==================== Signify ====================
+let g:signify_sign_add = "•"
+let g:signify_sign_change = "•"
+let g:signify_sign_delete = "•"
+let g:signify_sign_changedelete = "•"
+let g:signify_sign_show_count = 0
+let g:signify_sign_show_text = 1
+let g:signify_update_on_focusgained = 1
+
+nmap gh <plug>(signify-next-hunk)
+nmap gH <plug>(signify-prev-hunk)
 
 "" ==================== Vimux ====================
 map <Leader>vp :VimuxPromptCommand<CR>
@@ -303,9 +318,6 @@ autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive file
 " Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap j gj
 nnoremap k gk
-
-nmap gh <Plug>GitGutterNextHunk
-nmap gH <Plug>GitGutterPrevHunk
 
 " Open last file with Ctrl+e
 nnoremap <C-e> :e#<CR>
