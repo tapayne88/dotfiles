@@ -19,21 +19,26 @@ endif
 call plug#begin(s:vim_path.'/plugged')
 
 let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
+let fugitiveCommands = ['Gstatus', 'Gblame', 'Gmove', 'Grename', 'Gvdiff', 'Gdiff', 'Gwrite'
+                     \ , 'Gread', 'Gfetch', 'Gcommit', 'Git', 'Gpush']
+let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 " Core Bundles
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree', { 'on': nerdTreeCommands }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': nerdTreeCommands }
+Plug 'Xuyuanp/nerdtree-git-plugin',
+  \ { 'on': nerdTreeCommands }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'airblade/vim-gitgutter'               " + & - in column for changed lines
-Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
+Plug 'tpope/vim-fugitive',
+  \ { 'on': fugitiveCommands }              " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-Plug 'tpope/vim-dispatch'                   " Async vim compiler plugins (used to run mocha test below)
+Plug 'tpope/vim-dispatch',
+  \ { 'on': 'Dispatch' }                    " Async vim compiler plugins (used to run mocha test below)
 Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
-Plug 'tpope/vim-unimpaired'                 " More vim shortcuts
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
@@ -48,12 +53,15 @@ Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/loupe'                        " more searching configuration
-Plug 'janko-m/vim-test'                     " easy testing
+Plug 'janko-m/vim-test',
+  \ { 'on': vimTestCommands }               " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
+Plug 'tweekmonster/startuptime.vim',
+  \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'mhartington/nvim-typescript',
   \ { 'do': './install.sh'
   \ , 'for': 'typescript' }                 " typescript definitions
-Plug 'peitalin/vim-jsx-typescript'
 Plug 'iamcco/markdown-preview.nvim',
   \ { 'do': ':call mkdp#util#install()'
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
@@ -242,7 +250,7 @@ let g:test#javascript#jest#executable = "yarn jest"
 
 nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
 nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
-"nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
+" nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
 nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
 nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
 nmap <silent> t<C-w> :Jest --watch<CR>
