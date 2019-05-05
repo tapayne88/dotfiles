@@ -5,8 +5,8 @@ WIDTH=${1}
 SMALL=100
 MEDIUM=140
 
-KUBE_COLOUR="#[fg=brightMagenta,bg=colour19]"
-BATTERY_COLOUR="#[fg=yellow,bg=colour19]"
+KUBE_COLOUR="#[fg=brightBlack,bg=brightBlue]"
+BATTERY_COLOUR="#[fg=yellow,bg=brightBlack]"
 
 KUBE=""
 BATTERY=""
@@ -43,8 +43,8 @@ if [ $WIDTH -le $SMALL ]; then
     DATE="%d-%m-%y"
 fi
 
-KUBE_STATUS="$KUBE_COLOUR$KUBE"
+KUBE_STATUS="$KUBE"
 BATTERY_STATUS="$BATTERY_COLOUR$BATTERY"
-BASIC="#[fg=colour18,bg=cyan] `date +\"%H:%M\"` #[fg=colour18,bg=white] `date +\"$DATE\"`"
+BASIC="#[fg=white,bg=brightblack,nobold,noitalics,nounderscore] `date +\"$DATE\"` #[fg=black,bg=blue] `date +\"%H:%M\"`"
 
 echo "$KUBE_STATUS$BASIC $BATTERY_STATUS"
