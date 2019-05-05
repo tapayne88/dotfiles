@@ -22,7 +22,7 @@ let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
 let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 " Core Bundles
-Plug 'chriskempson/base16-vim'
+Plug 'arcticicestudio/nord-vim'
 Plug 'scrooloose/nerdtree', { 'on': nerdTreeCommands }
 Plug 'Xuyuanp/nerdtree-git-plugin',
   \ { 'on': nerdTreeCommands }
@@ -44,7 +44,6 @@ Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'w0rp/ale'                             " Linting
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'maximbaz/lightline-ale'               " Linting status for lightline
-Plug 'daviesjamie/vim-base16-lightline'     " Status line theme
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
@@ -95,11 +94,7 @@ let maplocalleader = "\\"
 
 "" ==================== Colors ====================
 syntax enable
-set background=dark
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
+colorscheme nord
 
 highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
 highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
@@ -258,7 +253,7 @@ let g:lightline#ale#indicator_errors = "✗ "
 let g:lightline#ale#indicator_ok = "✔"
 
 let g:lightline = {
-\ 'colorscheme': 'base16',
+\ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
