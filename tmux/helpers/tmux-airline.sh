@@ -5,8 +5,8 @@ WIDTH=${1}
 SMALL=100
 MEDIUM=140
 
-KUBE_COLOUR="#[fg=colour13,bg=colour19]"
-BATTERY_COLOUR="#[fg=colour03,bg=colour19]"
+KUBE_COLOUR="#[fg=brightMagenta,bg=colour19]"
+BATTERY_COLOUR="#[fg=yellow,bg=colour19]"
 
 KUBE=""
 BATTERY=""
@@ -45,6 +45,6 @@ fi
 
 KUBE_STATUS="$KUBE_COLOUR$KUBE"
 BATTERY_STATUS="$BATTERY_COLOUR$BATTERY"
-BASIC="#[fg=colour18,bg=colour06] `date +\"%H:%M\"` #[fg=colour18,bg=colour07] `date +\"$DATE\"`"
+BASIC="#[fg=colour18,bg=cyan] `date +\"%H:%M\"` #[fg=colour18,bg=white] `date +\"$DATE\"`"
 
 echo "$KUBE_STATUS$BASIC $BATTERY_STATUS"
