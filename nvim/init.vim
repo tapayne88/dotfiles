@@ -117,13 +117,16 @@ endif
 highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
 highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
 
-hi jsClassKeyword cterm=italic
-hi jsExtendsKeyword cterm=italic
-hi jsReturn cterm=italic
-hi jsThis  cterm=italic
-hi htmlArg cterm=italic
-hi Comment cterm=italic
-hi Type    cterm=italic
+highlight typescriptReserved cterm=italic ctermfg=blue
+highlight typescriptStatement cterm=italic ctermfg=blue
+highlight typescriptIdentifier cterm=italic
+highlight jsClassKeyword cterm=italic
+highlight jsExtendsKeyword cterm=italic
+highlight jsReturn cterm=italic
+highlight jsThis  cterm=italic
+highlight htmlArg cterm=italic
+highlight Comment cterm=italic
+highlight Type    cterm=italic
 
 "" ==================== Config ====================
 let &backupdir = s:vim_path.'/backups'
