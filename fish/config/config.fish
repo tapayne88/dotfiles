@@ -1,9 +1,3 @@
-# Base16 Shell
-if status --is-interactive
-    set BASE16_SHELL "$HOME/.config/base16-shell"
-    source "$BASE16_SHELL/profile_helper.fish"
-end
-
 set -x VISUAL nvim
 set -x EDITOR nvim
 
@@ -48,11 +42,6 @@ end
 
 sourceOPSession
 
-function theme
-    echo (string replace -r "\.sh" "" (basename (readlink $HOME/.base16_theme)))
-    bass "$BASE16_SHELL/colortest"
-end
-
 # Setup consistent fish colours
 set fish_color_normal normal
 set fish_color_command --bold
@@ -85,8 +74,8 @@ set -x FZF_TMUX_HEIGHT 40%
 set -U FZF_LEGACY_KEYBINDINGS 0
 
 set -U FZF_DEFAULT_OPTS "\
-  --layout reverse\
-  --color bg+:18,bg:0,spinner:6,hl:4,fg:20,header:4,info:3,pointer:6,marker:6,fg+:21,prompt:3,hl+:4\
+  --layout reverse \
+  --color bg+:0,hl:0,hl+:4,fg:7,fg+:15,header:4,info:4,marker:4,pointer:4,prompt:4,spinner:4 \
 "
 
 set -x FPP_DISABLE_SPLIT 1
