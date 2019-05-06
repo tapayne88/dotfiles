@@ -93,6 +93,10 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 "" ==================== Colors ====================
+let g:nord_italic = 1
+let g:nord_underline = 1
+let g:nord_uniform_diff_background = 1
+
 syntax enable
 colorscheme nord
 
