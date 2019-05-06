@@ -65,6 +65,9 @@ Plug 'mhartington/nvim-typescript',
 Plug 'iamcco/markdown-preview.nvim',
   \ { 'do': ':call mkdp#util#install()'
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
+Plug 'rhysd/git-messenger.vim',
+  \ { 'on': 'GitMessenger' }
+
 
 " Disable deoplete until I can figure what is happening
 " if has('nvim')
@@ -127,6 +130,11 @@ highlight jsThis  cterm=italic
 highlight htmlArg cterm=italic
 highlight Comment cterm=italic
 highlight Type    cterm=italic
+
+highlight link gitmessengerHeader Identifier
+highlight link gitmessengerHash Comment
+highlight link gitmessengerHistory Constant
+highlight link gitmessengerPopupNormal CursorLine
 
 "" ==================== Config ====================
 let &backupdir = s:vim_path.'/backups'
@@ -318,6 +326,9 @@ let g:vim_current_word#highlight_twins = 1
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
 "" ==================== Key (re)Mappings ====================
+" Automatically resize vim splits on resize
+autocmd VimResized * execute "normal! \<c-w>="
+
 " Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap j gj
 nnoremap k gk
@@ -353,7 +364,7 @@ nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR><CR>
 nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
 nnoremap <leader>gp :Ggrep -n<Space>
-nnoremap <leader>gm :Gmove<Space>
+nnoremap <leader>gm :GitMessenger<CR>
 nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
