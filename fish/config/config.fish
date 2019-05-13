@@ -8,7 +8,7 @@ set -x VISUAL nvim
 set -x EDITOR nvim
 
 # executable search path
-set paths /usr/local/bin $HOME/.local/bin /home/linuxbrew/.linuxbrew/bin
+set paths /usr/local/bin $HOME/.local/bin /home/linuxbrew/.linuxbrew/bin $HOME/Library/Python/3.7/bin
 for p in $paths;
     if test -d $p
         set PATH $p $PATH
