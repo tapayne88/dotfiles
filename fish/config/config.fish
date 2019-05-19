@@ -104,6 +104,7 @@ alias vimmg 'vim -c Gstatus'
 set -l approvedTerminal (test "$TERM_PROGRAM" = "iTerm.app" -o "$TERM_PROGRAM" = "gnome-terminal")
 if test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal
     set MYTMUX (which tmux)
+    set -x TMUXP_CONFIGDIR "$HOME/.tmuxp"
     # Start tmux at start of each session (only when local and tmux exists)
     if test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"
         tmux > /dev/null 2>&1
