@@ -187,12 +187,12 @@ nnoremap <leader>ag :Ack!<CR>
 "" ==================== ALE ====================
 let g:ale_fixers = {
 \  'javascript': ['prettier', 'eslint'],
-\  'typescript': ['prettier'],
+\  'typescript': ['prettier', 'eslint'],
 \}
 
 let g:ale_linters = {
 \  'javascript': ['eslint'],
-\  'typescript': ['tslint', 'tsserver'],
+\  'typescript': ['eslint', 'tslint', 'tsserver'],
 \}
 
 let g:ale_fix_on_save = 1
