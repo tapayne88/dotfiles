@@ -68,18 +68,6 @@ Plug 'iamcco/markdown-preview.nvim',
 Plug 'rhysd/git-messenger.vim',
   \ { 'on': 'GitMessenger' }
 
-
-" Disable deoplete until I can figure what is happening
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"     \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"     \| Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-
 call plug#end()
 
 "" ==================== General ====================
@@ -156,20 +144,6 @@ set shell=sh
 " disable sleuth for markdown files due to slowdown caused in combination with
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
-
-"" ==================== Deoplete ====================
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 10
-let g:deoplete#auto_refresh_delay = 10
-let g:deoplete#max_list = 50
-set completeopt-=preview
-
-let g:deoplete#sources#ternjs#types = 1
-let g:deoplete#sources#ternjs#docs = 1
-
-inoremap <silent><expr> <C-j> "\<C-n>"
-inoremap <silent><expr> <C-k> "\<C-p>"
-inoremap <C-[> <esc>
 
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
