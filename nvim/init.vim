@@ -210,25 +210,11 @@ let g:lightline#ale#indicator_warnings = "◆ "
 let g:lightline#ale#indicator_errors = "✗ "
 let g:lightline#ale#indicator_ok = "✔"
 
-function! LightLineCocStatusOk() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  let msgs = []
-  if get(info, 'error', 0)
-    call add(msgs, g:lightline#ale#indicator_errors . info['error'])
-  endif
-  if get(info, 'warning', 0) || get(info, 'information', 0)
-    call add(msgs, g:lightline#ale#indicator_warnings . (info['warning'] + info['information']))
-  endif
-  if empty(msgs) | return g:lightline#ale#indicator_ok | endif
-  return ''
-endfunction
-
 function! LightLineCocStatusWarn() abort
   let info = get(b:, 'coc_diagnostic_info', {})
   if empty(info) | return '' | endif
   if get(info, 'warning', 0) || get(info, 'information', 0)
-    return g:lightline#ale#indicator_warnings . (info['warning'] + info['information'])
+    return printf(g:lightline#ale#indicator_warnings . '%d', (info['warning'] + info['information']))
   endif
   return ''
 endfunction
@@ -237,7 +223,7 @@ function! LightLineCocStatusError() abort
   let info = get(b:, 'coc_diagnostic_info', {})
   if empty(info) | return '' | endif
   if get(info, 'error', 0)
-    return g:lightline#ale#indicator_errors . info['error']
+    return printf(g:lightline#ale#indicator_errors . '%d', info['error'])
   endif
   return ''
 endfunction
@@ -254,14 +240,13 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo'], ['filetype'], ['readonly', 'cocstatusok', 'cocstatuswarn', 'cocstatuserror']]
+\   'right': [['percentinfo'], ['filetype'], ['readonly', 'cocstatuswarn', 'cocstatuserror']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
-\   'cocstatusok': 'LightLineCocStatusOk',
 \   'cocstatuswarn': 'LightLineCocStatusWarn',
 \   'cocstatuserror': 'LightLineCocStatusError',
 \ },
