@@ -260,7 +260,10 @@ let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\   'right': [['lineinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\ },
+\ 'component': {
+\   'lineinfo': '≡ %3l',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head'
