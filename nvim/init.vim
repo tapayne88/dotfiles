@@ -257,7 +257,15 @@ let g:lightline#ale#indicator_errors = "✗ "
 let g:lightline#ale#indicator_ok = "✔"
 
 let g:lightline = {
-\ 'colorscheme': 'nord',
+\ 'colorscheme': 'nord_alt',
+\ 'separator': {
+\   'left': '❮',
+\   'right': '❯',
+\ },
+\ 'tabline_separator': {
+\   'left': '',
+\   'right': '',
+\ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['lineinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
