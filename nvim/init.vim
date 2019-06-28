@@ -35,7 +35,6 @@ Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' et
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
 Plug 'tpope/vim-dispatch',
   \ { 'on': 'Dispatch' }                    " Async vim compiler plugins (used to run mocha test below)
-Plug 'wesQ3/vim-windowswap'                 " Swap panes positions
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
