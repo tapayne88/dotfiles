@@ -136,7 +136,6 @@ if exists('+colorcolumn')
     set colorcolumn=100
 endif
 
-set shell=sh
 " disable sleuth for markdown files due to slowdown caused in combination with
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
