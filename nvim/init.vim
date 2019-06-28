@@ -27,9 +27,7 @@ Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   \| Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'                      " ag searching
-Plug 'w0rp/ale'                             " Linting
 Plug 'itchyny/lightline.vim'                " Status line plugin
-Plug 'maximbaz/lightline-ale'               " Linting status for lightline
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
@@ -48,6 +46,7 @@ Plug 'iamcco/markdown-preview.nvim',
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'rhysd/git-messenger.vim',
   \ { 'on': 'GitMessenger' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 call plug#end()
 
@@ -169,31 +168,6 @@ let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
 let g:ackhighlight = 1
 nnoremap <leader>ag :Ack!<CR>
 
-"" ==================== ALE ====================
-let g:ale_fixers = {
-\  'javascript': ['prettier', 'eslint'],
-\  'typescript': ['prettier', 'eslint'],
-\}
-
-let g:ale_linters = {
-\  'javascript': ['eslint'],
-\  'typescript': ['eslint', 'tslint', 'tsserver'],
-\}
-
-let g:ale_fix_on_save = 1
-let g:polyglot_disabled = ['markdown', 'md']
-nnoremap <leader>at :call ToggleAleOnSaveBuffer()<CR>
-
-function! ToggleAleOnSaveBuffer()
-  let l:fix_on_save = 0
-  if exists("b:ale_fix_on_save")
-    let l:fix_on_save = b:ale_fix_on_save == 1 ? 0 : 1
-  endif
-
-  let b:ale_fix_on_save = l:fix_on_save
-  echom 'b:ale_fix_on_save=' . l:fix_on_save
-endfunction
-
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
 let g:signify_sign_change = "•"
@@ -230,6 +204,20 @@ let g:lightline#ale#indicator_warnings = "◆ "
 let g:lightline#ale#indicator_errors = "✗ "
 let g:lightline#ale#indicator_ok = "✔"
 
+function! LightLineCocStatus() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, g:lightline#ale#indicator_errors . info['error'])
+  endif
+  if get(info, 'warning', 0) || get(info, 'information', 0)
+    call add(msgs, g:lightline#ale#indicator_warnings . (info['warning'] + info['information']))
+  endif
+  if empty(msgs) | return g:lightline#ale#indicator_ok | endif
+  return join(msgs, ' ')
+endfunction
+
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
 \ 'separator': {
@@ -242,24 +230,17 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\   'right': [['percentinfo'], ['filetype'], ['readonly', 'cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
-\   'gitbranch': 'fugitive#head'
-\ },
-\ 'component_expand': {
-\   'linter_checking': 'lightline#ale#checking',
-\   'linter_warnings': 'lightline#ale#warnings',
-\   'linter_errors': 'lightline#ale#errors',
-\   'linter_ok': 'lightline#ale#ok',
+\   'gitbranch': 'fugitive#head',
+\   'cocstatus': 'LightLineCocStatus',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
-\   'linter_warnings': 'warning',
-\   'linter_errors': 'error'
 \ }
 \ }
 
