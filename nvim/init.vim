@@ -19,8 +19,6 @@ endif
 call plug#begin(s:vim_path.'/plugged')
 
 let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
-let fugitiveCommands = ['Gstatus', 'Gblame', 'Gmove', 'Grename', 'Gvdiff', 'Gdiff', 'Gwrite'
-                     \ , 'Gread', 'Gfetch', 'Gcommit', 'Git', 'Gpush']
 let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 " Core Bundles
@@ -30,8 +28,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin',
   \ { 'on': nerdTreeCommands }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
-Plug 'tpope/vim-fugitive',
-  \ { 'on': fugitiveCommands }              " Git integration ':Gstatus' etc.
+Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
