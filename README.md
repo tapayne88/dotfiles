@@ -9,12 +9,7 @@ mkdir -p ~/.config
 ```
 
 ### Colour scheme
-[base16](https://github.com/chriskempson/base16-shell)
-```
-git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-```
-
-Color Scheme: [base16](https://github.com/chriskempson/base16)
+Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
 
 ### Fish Shell
 ```
@@ -31,27 +26,9 @@ ln -s -f (pwd)/fish/functions/* ~/.config/fish/functions/
 A code-searching tool similar to ack, but faster. [http://geoff.greer.fm/ag/]( http://geoff.greer.fm/ag/)
 
 ### Vim
-We're only interested in > Vim 8
+Primarily using neovim but `nvim/init.vim` is a hard link to `vim/vimrc`, the config is shared across both to ease switching between them.
 ```
-brew install vim
-```
-
-#### Symlinks
-```
-ln -s (pwd)/vim ~/.vim
-ln -s (pwd)/vim/vimrc ~/.vimrc
-```
-
-#### Plugins
-Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
-```
-# Now open Vim and Vim Plug should attempt to install the plugins
-vim +PlugInstall
-```
-
-### NeoVim
-*Note.* `nvim/init.vim` is a hard link to `vim/vimrc`, the config is shared across both to ease switching between them.
-```
+# NeoVim
 brew install neovim/neovim/neovim
 
 # Python configuration
@@ -60,18 +37,25 @@ pip3 install neovim --upgrade
 
 # Check health
 nvim +checkhealth
+
+# Vim
+# We're only interested in > Vim 8
+brew install vim
 ```
 
 #### Symlinks
 ```
+ln -s (pwd)/vim ~/.vim
+ln -s (pwd)/vim/vimrc ~/.vimrc
 ln -s (pwd)/nvim ~/.config/nvim
 ```
 
 #### Plugins
-Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open nvim for the first time.
+Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
 ```
 # Now open Vim and Vim Plug should attempt to install the plugins
 nvim +PlugInstall
+vim +PlugInstall
 ```
 
 ### Tmux
