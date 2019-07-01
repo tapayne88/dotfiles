@@ -302,9 +302,6 @@ autocmd VimResized * execute "normal! \<c-w>="
 nnoremap j gj
 nnoremap k gk
 
-" Open last file with Ctrl+e
-nnoremap <C-e> :e#<CR>
-
 " Shows and hides invisible characters
 noremap <leader>e :set list!<CR>
 
