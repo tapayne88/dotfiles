@@ -209,15 +209,6 @@ function! ToggleAleOnSaveBuffer()
   echom 'b:ale_fix_on_save=' . l:fix_on_save
 endfunction
 
-"" ==================== GitGutter ====================
-" let g:gitgutter_sign_added = "•"
-" let g:gitgutter_sign_modified = "•"
-" let g:gitgutter_sign_removed = "•"
-" let g:gitgutter_sign_modified_removed = "•"
-
-" nmap gh <Plug>GitGutterNextHunk
-" nmap gH <Plug>GitGutterPrevHunk
-
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
 let g:signify_sign_change = "•"
