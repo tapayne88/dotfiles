@@ -36,7 +36,7 @@
     ch = cherry-pick
     rb = rebase
     ru = reset --hard @{u}
-    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --preserve-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
+    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
     ps = push
     psf = push --force-with-lease
     psu = push -u
