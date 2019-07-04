@@ -186,6 +186,10 @@ let g:signify_update_on_focusgained = 1
 nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
 
+"" ==================== Coc ====================
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
 "" ==================== Vimux ====================
 map <Leader>vp :VimuxPromptCommand<CR>
 
