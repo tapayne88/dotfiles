@@ -259,10 +259,10 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['lineinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\   'right': [['percentinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
 \ },
 \ 'component': {
-\   'lineinfo': '≡ %3l',
+\   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head'
