@@ -23,7 +23,7 @@
 [push]
     default = current
 [alias]
-    st = status -uno -s
+    st = status -uno
     sta = status
     cm = commit
     cma = commit --amend
