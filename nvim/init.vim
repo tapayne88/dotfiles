@@ -5,16 +5,6 @@ if has("nvim")
   let s:vimrc = expand('~/.config/nvim/init.vim')
 endif
 
-function! DownloadVimPlug()
-  execute '!curl -fLo '.s:vim_path.'/autoload/plug.vim --create-dirs'
-    \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-endfunction
-
-if empty(glob(s:vim_path.'/autoload/plug.vim'))
-  silent call DownloadVimPlug()
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 "" ==================== Vim Plug ====================
 call plug#begin(s:vim_path.'/plugged')
 
@@ -62,31 +52,47 @@ Plug 'rhysd/git-messenger.vim',
 call plug#end()
 
 "" ==================== General ====================
-set number                      "Adds line numbers
-set shiftwidth=2                "Determines indentation in normal mode (using '>>' or '<<')
-set tabstop=4                   "Changes tabs to 4 spaces
-set softtabstop=2               "Let backspace delete indent
-set expandtab                   "Expands tabs to spaces, better for formatting
-set autoindent                  "Sets up auto indent (copies indentation from line above)
-set ls=2                        "Show filename permanently
-set backspace=2                 "Makes backspace key behave properly in insert mode
-set ruler                       "Adds line and column number in status bar and shows progress through file
-set hlsearch                    "Highlight search
-set incsearch                   "Highlight dynamically as pattern is typed
-set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
-set wildignorecase              "Ignore case when opening files
-set cursorline                  "Highlight line the cursor is on
 set lazyredraw                  "Improve scrolling performance with cursorline
+set ttyfast                     "More characters will be sent to the screen for redrawing
+set ttimeout
+set ttimeoutlen=50              "Time waited for key press(es) to complete. It makes for a faster key response
+set showcmd                     "Display incomplete commands
+set wildmenu                    "A better menu in command mode
+set wildmode=longest:full,full
+set scrolloff=4                 "Number of lines from vertical edge to start scrolling
+set number                      "Adds line numbers
+set cursorline                  "Highlight line the cursor is on
+set colorcolumn=80              "Add column line at 80 characters
+set splitbelow                  "Better split defaults
+set splitright
+set autoindent                  "Sets up auto indent (copies indentation from line above)
+set incsearch                   "Highlight dynamically as pattern is typed
+set hlsearch                    "Highlight search
 set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
-set splitbelow                  "Better split defaults
-set splitright                  "Better split defaults
-set mouse=                      "Disable mouse mode
-set updatetime=100              "Reduce vim's update delay for vim-gutter
+set wildignorecase              "Ignore case when opening files
+set laststatus=2                "Always display the status line
+set noswapfile                  "Disable swap files
+set autoread                    "Automatically read changes in the file
+set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
+set backspace=indent,eol,start  "Make backspace behave properly in insert mode
+set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set tabstop=4                   "Changes tabs to 4 spaces
+set shiftwidth=2                "Determines indentation in normal mode (using '>>' or '<<')
+set softtabstop=2               "Let backspace delete indent
+set expandtab                   "Expands tabs to spaces, better for formatting
 set spelllang=en                "Set vim's spell check language
 
 let mapleader = ","
 let maplocalleader = "\\"
+
+"" ==================== Config ====================
+" disable sleuth for markdown files due to slowdown caused in combination with
+" vim-polyglot
+autocmd FileType markdown let b:sleuth_automatic = 0
+
+" Automatically resize vim splits on resize
+autocmd VimResized * execute "normal! \<c-w>="
 
 "" ==================== Colors ====================
 let g:nord_italic = 1
@@ -115,25 +121,8 @@ highlight link gitmessengerHash Comment
 highlight link gitmessengerHistory Constant
 highlight link gitmessengerPopupNormal CursorLine
 
-"" ==================== Config ====================
-let &backupdir = s:vim_path.'/backups'
-let &directory = s:vim_path.'/swaps'
-if exists("&undodir")
-  let &undodir = s:vim_path.'/undo'
-endif
-
-" au FileType gitcommit set tw=0      " Stop vim line wrap in gitcommit
-set wildmode=list:longest,list:full " Simulate zsh tab completion
-set scrolloff=4                     " Number of lines from vertical edge to start scrolling
-
-if exists('+colorcolumn')
-    " Add column line at 100 characters
-    set colorcolumn=100
-endif
-
-" disable sleuth for markdown files due to slowdown caused in combination with
-" vim-polyglot
-autocmd FileType markdown let b:sleuth_automatic = 0
+"" ==================== netrw ====================
+let g:netrw_liststyle = 3
 
 "" ==================== FZF ====================
 let g:fzf_layout = { 'down': '~20%' }
@@ -220,7 +209,6 @@ nmap gH <plug>(signify-prev-hunk)
 "" ==================== Vimux ====================
 map <Leader>vp :VimuxPromptCommand<CR>
 
-
 "" ==================== Vim-test ====================
 let g:test#runner_commands = ['Jest']
 let g:test#strategy = "vimux"
@@ -235,7 +223,6 @@ nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
 nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
 nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
 nmap <silent> t<C-w> :Jest --watch<CR>
-
 
 "" ==================== Lightline ====================
 let g:lightline#ale#indicator_checking = ""
@@ -289,19 +276,18 @@ let g:vim_current_word#highlight_twins = 1
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
 "" ==================== Key (re)Mappings ====================
-" Automatically resize vim splits on resize
-autocmd VimResized * execute "normal! \<c-w>="
-
 " Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap j gj
 nnoremap k gk
 
+"keep text selected after indentation
+vnoremap < <gv
+vnoremap > >gv
+
 " Shows and hides invisible characters
 noremap <leader>e :set list!<CR>
-
-" Split resizing
-nnoremap <leader>- :res -5<CR>
-nnoremap <leader>= :res +5<CR>
+nnoremap <leader>- :resize -5<CR>
+nnoremap <leader>= :resize +5<CR>
 nnoremap <leader>. :vertical resize -20<CR>
 nnoremap <leader>, :vertical resize +20<CR>
 nnoremap <leader>x :cclose<CR>
