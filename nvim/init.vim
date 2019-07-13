@@ -37,10 +37,6 @@ Plug 'janko-m/vim-test',
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'tweekmonster/startuptime.vim',
   \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'mhartington/nvim-typescript',
-  \ { 'do': './install.sh'
-  \ , 'for': 'typescript' }                 " typescript definitions
 Plug 'iamcco/markdown-preview.nvim',
   \ { 'do': ':call mkdp#util#install()'
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
@@ -261,10 +257,22 @@ let g:lightline = {
 \ }
 \ }
 
-"" ==================== nvim-typescript ====================
-nnoremap <leader>df :TSDefPreview<CR>
-nnoremap <leader>st :TSType<CR>
-" autocmd! CursorHold *.ts,*.tsx TSType    " below is useful but blocks TS errors
+"" ==================== Coc-nvim ====================
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 "" ==================== vim_current_word ====================
 let g:vim_current_word#highlight_current_word = 0
