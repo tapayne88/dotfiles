@@ -18,14 +18,10 @@ endif
 "" ==================== Vim Plug ====================
 call plug#begin(s:vim_path.'/plugged')
 
-let nerdTreeCommands = ['NERDTreeFind', 'NERDTreeToggle']
 let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 " Core Bundles
 Plug 'arcticicestudio/nord-vim'
-Plug 'scrooloose/nerdtree', { 'on': nerdTreeCommands }
-Plug 'Xuyuanp/nerdtree-git-plugin',
-  \ { 'on': nerdTreeCommands }
 Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
@@ -285,9 +281,6 @@ nnoremap <leader>df :TSDefPreview<CR>
 nnoremap <leader>st :TSType<CR>
 " autocmd! CursorHold *.ts,*.tsx TSType    " below is useful but blocks TS errors
 
-"" ==================== NERDTree ====================
-let g:NERDTreeUseSimpleIndicator = 1
-
 "" ==================== vim_current_word ====================
 let g:vim_current_word#highlight_current_word = 0
 let g:vim_current_word#highlight_twins = 1
@@ -318,8 +311,7 @@ nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 nnoremap <leader>evv :vsplit $MYVIMRC<CR>
 nnoremap <leader>ev :split $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
-nnoremap <leader>ff :NERDTreeFind<CR>
+nnoremap <leader>ff :Ex<CR>
 nnoremap <leader>fp :echo @%<CR>
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
