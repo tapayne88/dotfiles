@@ -2,5 +2,7 @@
   "suggest.maxCompleteItemCount": 20,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "json", "javascriptreact", "css", "Markdown"],
   "eslint.autoFixOnSave": true,
-  "prettier.requireConfig": true
+  "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+  "prettier.requireConfig": true,
+  "tsserver.enableJavascript": false
 }
