@@ -1,55 +1,69 @@
-# ============================== Loading ==============================
-# Loads different file for each environment, also setting variables
-if [ -f ~/.zshrc_work ]; then
-    source ~/.zshrc_work
-fi
+export ZSH_HOME=~/.zsh
 
-if [ -f ~/.zshrc_home ]; then
-    source ~/.zshrc_home
-fi
+export VISUAL=nvim
+export EDITOR=nvim
+
+# executable search path
+PATHS=(/usr/local/bin $HOME/.local/bin /home/linuxbrew/.linuxbrew/bin $HOME/Library/Python/3.7/bin)
+for p in $PATHS; do
+  if (test -d $p); then
+    export PATH="$p:$PATH"
+  fi
+done
 
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
-if [ $USER = 'tapayne88' ] ||
-   [ $USER = 'tapayne' ] ||
-   [ $USER = 'tpayne' ] ||
-   [ $USER = 'payneth' ] ||
+if [ $USER = 'tpayne' ] ||
    [ $USER = 'tpa11' ]; then
     DEFAULT_USER=$USER
 fi
 
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
-
 KEYTIMEOUT=1
 
-plugins=(git command-not-found npm)
+# function sourceOPSession {
+#   echo "here!"
+#   if (test -e $OP_TMUX_TOKEN_FILE); then
+#     echo "he"
+#     export OP_SESSION_my=$(cat $OP_TMUX_TOKEN_FILE)
+#   fi
+# }
 
-# Setup special theme for ssh session, no special characters
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ "$TERM_PROGRAM" != "iTerm.app" ]; then
-    ZSH_THEME="tpayne-simple"
-else
-    ZSH_THEME="tpayne"
+# function opsignin {
+#   sourceOPSession
+#   if (! test -e $OP_TMUX_TOKEN_FILE); then
+#     op signin my --output=raw | tee $OP_TMUX_TOKEN_FILE
+#     sourceOPSession
+#   fi
+# }
 
-    MYTMUX=`which tmux`
-    # Start tmux at start of each session (only when local and tmux exists)
-    if [[ $MYTMUX != "tmux not found" && $TERM != "screen" && -z "$TMUX" ]]; then
-        tmux > /dev/null 2>&1
-    fi
+# sourceOPSession
+
+# fzf defaults
+export FZF_DEFAULT_COMMAND="ag --nocolor -g ''"
+export FZF_TMUX=1
+export FZF_TMUX_HEIGHT="40%"
+export FZF_LEGACY_KEYBINDINGS=0
+
+export FZF_DEFAULT_OPTS="\
+  --layout reverse \
+  --color bg+:0,hl:0,hl+:4,fg:7,fg+:15,header:4,info:4,marker:4,pointer:4,prompt:4,spinner:4 \
+"
+
+# Prevent FFP opening multiple splits
+export FPP_DISABLE_SPLIT=1
+
+approvedTerminal=$(test "$TERM_PROGRAM" = "iTerm.app" -o "$TERM_PROGRAM" = "gnome-terminal")
+if (test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal); then
+  export MYTMUX $(which tmux)
+  export TMUXP_CONFIGDIR "$HOME/.tmuxp"
+  # Start tmux at start of each session (only when local and tmux exists)
+  if (test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"); then
+    tmux > /dev/null 2>&1
+  fi
 fi
 
-# Load oh-my-zsh and config (oh-my-zsh first!)
-source $ZSH/oh-my-zsh.sh
-source $HOME/.config/zsh/environment.zsh
-source $HOME/.config/zsh/aliases.zsh
-source $HOME/.config/zsh/functions.zsh
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+for file in $ZSH_HOME/plugins/*; do
+  source $file
+done
