@@ -592,3 +592,5 @@ key_bindings:
   - { key: NumpadEnter,             chars: "\n"                              }
   - { key: LBracket, mods: Super|Shift,   chars: "\x02\x70"                  }
   - { key: RBracket, mods: Super|Shift,   chars: "\x02\x6E"                  }
+  - { key: Key6,     mods: Control,       chars: "\x1e"                      }
+  - { key: Key3,     mods: Alt,           chars: "\x23"                      }
