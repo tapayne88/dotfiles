@@ -64,6 +64,9 @@ if (test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal); then
   fi
 fi
 
-for file in $ZSH_HOME/plugins/*; do
-  source $file
-done
+source ~/.zplug/init.zsh
+
+zplug "~/.zsh/plugins", from:local
+zplug "zsh-users/zsh-autosuggestions"
+
+zplug load
