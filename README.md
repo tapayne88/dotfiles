@@ -11,6 +11,9 @@ mkdir -p ~/.config
 ### Colour scheme
 Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
 
+### ZSH Shell
+Install `zsh` and `zsh-completions`. Currently using [zplug](https://github.com/zplug/zplug) as the plugin manager
+
 ### Fish Shell
 ```
 brew install fish

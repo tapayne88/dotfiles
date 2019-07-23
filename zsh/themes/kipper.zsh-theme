@@ -1,3 +1,5 @@
+# vim:ft=zsh ts=2 sw=2 sts=2
+
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR=''
 
@@ -27,7 +29,7 @@ prompt_segment() {
 # End the prompt, closing any open segments
 prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+    echo -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
   else
     echo -n "%{%k%}"
   fi
@@ -68,6 +70,7 @@ prompt_git() {
     else
       prompt_segment default white $(git_remote_status)
     fi
+    echo -n " "
   fi
 }
 
@@ -93,4 +96,12 @@ function git_remote_status() {
   fi
 }
 
-PROMPT="$(prompt_context)$(prompt_status)$(prompt_dir)$(prompt_git)$(prompt_end)"
+build_prompt() {
+  prompt_context
+  prompt_status
+  prompt_dir
+  prompt_git
+  prompt_end
+}
+
+PROMPT='%{%f%b%k%k%}$(build_prompt)'

@@ -13,7 +13,8 @@ done
 
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
-if [ $USER = 'tpayne' ] ||
+if [ $USER = 'tapayne88' ] ||
+   [ $USER = 'tpayne' ] ||
    [ $USER = 'tpa11' ]; then
     DEFAULT_USER=$USER
 fi
@@ -66,7 +67,15 @@ fi
 
 source ~/.zplug/init.zsh
 
-zplug "~/.zsh/plugins", from:local
-zplug "zsh-users/zsh-autosuggestions"
+zplug "~/.zsh/themes",                    from:local,     as:theme, use:kipper.zsh-theme
+zplug "zsh-users/zsh-autosuggestions",    from:github
+zplug "plugins/brew",                     from:oh-my-zsh
+zplug "plugins/common-aliases",           from:oh-my-zsh
+zplug "plugins/history-substring-search", from:oh-my-zsh
 
 zplug load
+
+LOCAL_RC=~/.zshrc.local
+if [ -e $LOCAL_RC ]; then
+  source $LOCAL_RC
+fi
