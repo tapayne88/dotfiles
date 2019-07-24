@@ -590,6 +590,7 @@ key_bindings:
   - { key: F11,      mods: Super,   chars: "\x1b[23;3~"                      }
   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                      }
   - { key: NumpadEnter,             chars: "\n"                              }
+  - { key: N,        mods: Super,   action: SpawnNewInstance                 }
   - { key: LBracket, mods: Super|Shift,   chars: "\x02\x70"                  }
   - { key: RBracket, mods: Super|Shift,   chars: "\x02\x6E"                  }
   - { key: Key6,     mods: Control,       chars: "\x1e"                      }
