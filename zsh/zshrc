@@ -68,8 +68,10 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "~/.zsh/themes",                    from:local,     as:theme, use:kipper.zsh-theme
+zplug "~/.zsh/plugins",                   from:local
 zplug "zsh-users/zsh-autosuggestions",    from:github
-zplug "plugins/brew",                     from:oh-my-zsh
+zplug "lib/theme-and-appearance",         from:oh-my-zsh
+zplug "lib/key-bindings",                 from:oh-my-zsh
 zplug "plugins/common-aliases",           from:oh-my-zsh
 zplug "plugins/history-substring-search", from:oh-my-zsh
 
