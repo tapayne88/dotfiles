@@ -73,6 +73,7 @@ zplug "zsh-users/zsh-autosuggestions",      from:github
 zplug "zsh-users/zsh-syntax-highlighting",  from:github
 zplug "lib/theme-and-appearance",           from:oh-my-zsh
 zplug "lib/key-bindings",                   from:oh-my-zsh
+zplug "lib/completion",                     from:oh-my-zsh
 zplug "plugins/common-aliases",             from:oh-my-zsh
 zplug "plugins/fzf",                        from:oh-my-zsh
 zplug "plugins/z",                          from:oh-my-zsh
