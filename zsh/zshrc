@@ -37,15 +37,8 @@ export FZF_DEFAULT_OPTS="\
 # Prevent FFP opening multiple splits
 export FPP_DISABLE_SPLIT=1
 
-approvedTerminal=$(test "$TERM_PROGRAM" = "iTerm.app" -o "$TERM_PROGRAM" = "gnome-terminal")
-if (test -z "$SSH_CLIENT" -a -z "$SSH_TTY" -a $approvedTerminal); then
-  export MYTMUX $(which tmux)
-  export TMUXP_CONFIGDIR "$HOME/.tmuxp"
-  # Start tmux at start of each session (only when local and tmux exists)
-  if (test -n "$MYTMUX" -a $TERM != "screen" -a -z "$TMUX"); then
-    tmux > /dev/null 2>&1
-  fi
-fi
+export ZSH_TMUX_AUTOSTART="true"
+export ZSH_TMUX_AUTOQUIT="false"
 
 source ~/.zplug/init.zsh
 
@@ -60,6 +53,7 @@ zplug "lib/completion",                     from:oh-my-zsh
 zplug "plugins/common-aliases",             from:oh-my-zsh
 zplug "plugins/fzf",                        from:oh-my-zsh
 zplug "plugins/z",                          from:oh-my-zsh
+zplug "plugins/tmux",                       from:oh-my-zsh
 
 zplug load
 
