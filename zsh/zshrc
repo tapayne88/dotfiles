@@ -67,8 +67,8 @@ fi
 
 source ~/.zplug/init.zsh
 
-zplug "~/.zsh/themes",                      from:local,     as:theme, use:kipper.zsh-theme
-zplug "~/.zsh/lib/*",                       from:local
+zplug "$ZSH_HOME/themes",                   from:local,     as:theme, use:kipper.zsh-theme
+zplug "$ZSH_HOME/lib/*",                    from:local
 zplug "zsh-users/zsh-autosuggestions",      from:github
 zplug "zsh-users/zsh-syntax-highlighting",  from:github
 zplug "lib/theme-and-appearance",           from:oh-my-zsh
