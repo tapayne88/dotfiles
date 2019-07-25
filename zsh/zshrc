@@ -37,6 +37,10 @@ export FZF_DEFAULT_OPTS="\
 # Prevent FFP opening multiple splits
 export FPP_DISABLE_SPLIT=1
 
+zstyle :omz:plugins:ssh-agent agent-forwarding on
+zstyle :omz:plugins:ssh-agent identities ""
+zstyle :omz:plugins:ssh-agent lifetime 10m
+
 export ZSH_TMUX_AUTOSTART="true"
 export ZSH_TMUX_AUTOQUIT="false"
 
@@ -54,6 +58,7 @@ zplug "plugins/common-aliases",             from:oh-my-zsh
 zplug "plugins/fzf",                        from:oh-my-zsh
 zplug "plugins/z",                          from:oh-my-zsh
 zplug "plugins/tmux",                       from:oh-my-zsh
+zplug "plugins/ssh-agent",                  from:oh-my-zsh
 
 zplug load
 
