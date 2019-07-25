@@ -1,6 +1,6 @@
 # Idempotent tmux startup function
 function tm() {
-  if [[ -z "$@" || "$1" = "-h" ]]; then
+  if [ "$1" = "-h" ]; then
     echo "tm - My handy function for managing tmux sessions"
     echo ""
     echo "Usage:"
@@ -15,13 +15,13 @@ function tm() {
   fi
 
   # destroy flag
-  if [[ "$1" = "-k" ]]; then
+  if [ "$1" = "-k" ]; then
     tmux kill-session -t $2
     return
   fi
 
   # list flag
-  if [[ "$1" = "-l" ]]; then
+  if [[ -z "$@" || "$1" = "-l" ]]; then
     tmux list-session
     return
   fi
