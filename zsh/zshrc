@@ -23,24 +23,6 @@ fi
 stty -ixon
 KEYTIMEOUT=1
 
-# function sourceOPSession {
-#   echo "here!"
-#   if (test -e $OP_TMUX_TOKEN_FILE); then
-#     echo "he"
-#     export OP_SESSION_my=$(cat $OP_TMUX_TOKEN_FILE)
-#   fi
-# }
-
-# function opsignin {
-#   sourceOPSession
-#   if (! test -e $OP_TMUX_TOKEN_FILE); then
-#     op signin my --output=raw | tee $OP_TMUX_TOKEN_FILE
-#     sourceOPSession
-#   fi
-# }
-
-# sourceOPSession
-
 # fzf defaults
 export FZF_DEFAULT_COMMAND="ag --nocolor -g ''"
 export FZF_TMUX=1
@@ -68,7 +50,8 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "$ZSH_HOME/themes",                   from:local,     as:theme, use:kipper.zsh-theme
-zplug "$ZSH_HOME/lib/*",                    from:local
+zplug "$ZSH_HOME/lib",                      from:local
+zplug "$ZSH_HOME/plugins",                  from:local,     hook-load:"sourceOPSession"
 zplug "zsh-users/zsh-autosuggestions",      from:github
 zplug "zsh-users/zsh-syntax-highlighting",  from:github
 zplug "lib/theme-and-appearance",           from:oh-my-zsh
