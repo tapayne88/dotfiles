@@ -13,6 +13,12 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 
 ### ZSH Shell
 Install `zsh` and `zsh-completions`. Currently using [zplug](https://github.com/zplug/zplug) as the plugin manager
+```
+ln -s -f (pwd)/zsh ~/.zsh
+ln -s -f (pwd)/zsh/zshrc ~/.zshrc
+
+zplug install
+```
 
 ### Fish Shell
 ```
