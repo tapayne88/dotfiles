@@ -23,11 +23,6 @@ fi
 stty -ixon
 KEYTIMEOUT=1
 
-# History sharing
-[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
-setopt inc_append_history
-setopt share_history
-
 # function sourceOPSession {
 #   echo "here!"
 #   if (test -e $OP_TMUX_TOKEN_FILE); then
