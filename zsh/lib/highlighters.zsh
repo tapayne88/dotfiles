@@ -7,6 +7,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_HIGHLIGHT_STYLES[default]='fg=cyan'
 ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[command]='fg=white'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=white'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=white'
 ZSH_HIGHLIGHT_STYLES[function]='fg=white'
