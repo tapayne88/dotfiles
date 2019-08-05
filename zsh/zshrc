@@ -43,6 +43,7 @@ zstyle :omz:plugins:ssh-agent lifetime 10m
 
 export ZSH_TMUX_AUTOSTART="true"
 export ZSH_TMUX_AUTOQUIT="false"
+export ZSH_TMUX_AUTOCONNECT="false"
 
 source ~/.zplug/init.zsh
 
