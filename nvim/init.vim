@@ -27,9 +27,7 @@ Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   \| Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'                      " ag searching
-Plug 'w0rp/ale'                             " Linting
 Plug 'itchyny/lightline.vim'                " Status line plugin
-Plug 'maximbaz/lightline-ale'               " Linting status for lightline
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
@@ -39,15 +37,18 @@ Plug 'janko-m/vim-test',
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'tweekmonster/startuptime.vim',
   \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'mhartington/nvim-typescript',
-  \ { 'do': './install.sh'
-  \ , 'for': 'typescript' }                 " typescript definitions
 Plug 'iamcco/markdown-preview.nvim',
   \ { 'do': ':call mkdp#util#install()'
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'rhysd/git-messenger.vim',
   \ { 'on': 'GitMessenger' }
+
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 call plug#end()
 
@@ -169,31 +170,6 @@ let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
 let g:ackhighlight = 1
 nnoremap <leader>ag :Ack!<CR>
 
-"" ==================== ALE ====================
-let g:ale_fixers = {
-\  'javascript': ['prettier', 'eslint'],
-\  'typescript': ['prettier', 'eslint'],
-\}
-
-let g:ale_linters = {
-\  'javascript': ['eslint'],
-\  'typescript': ['eslint', 'tslint', 'tsserver'],
-\}
-
-let g:ale_fix_on_save = 1
-let g:polyglot_disabled = ['markdown', 'md']
-nnoremap <leader>at :call ToggleAleOnSaveBuffer()<CR>
-
-function! ToggleAleOnSaveBuffer()
-  let l:fix_on_save = 0
-  if exists("b:ale_fix_on_save")
-    let l:fix_on_save = b:ale_fix_on_save == 1 ? 0 : 1
-  endif
-
-  let b:ale_fix_on_save = l:fix_on_save
-  echom 'b:ale_fix_on_save=' . l:fix_on_save
-endfunction
-
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
 let g:signify_sign_change = "•"
@@ -205,6 +181,10 @@ let g:signify_update_on_focusgained = 1
 
 nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
+
+"" ==================== Coc ====================
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 "" ==================== Vimux ====================
 map <Leader>vp :VimuxPromptCommand<CR>
@@ -230,6 +210,24 @@ let g:lightline#ale#indicator_warnings = "◆ "
 let g:lightline#ale#indicator_errors = "✗ "
 let g:lightline#ale#indicator_ok = "✔"
 
+function! LightLineCocStatusWarn() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  if get(info, 'warning', 0) || get(info, 'information', 0)
+    return printf(g:lightline#ale#indicator_warnings . '%d', (info['warning'] + info['information']))
+  endif
+  return ''
+endfunction
+
+function! LightLineCocStatusError() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  if get(info, 'error', 0)
+    return printf(g:lightline#ale#indicator_errors . '%d', info['error'])
+  endif
+  return ''
+endfunction
+
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
 \ 'separator': {
@@ -242,31 +240,39 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo'], ['filetype'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\   'right': [['percentinfo'], ['filetype'], ['readonly', 'cocstatuswarn', 'cocstatuserror']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
-\   'gitbranch': 'fugitive#head'
-\ },
-\ 'component_expand': {
-\   'linter_checking': 'lightline#ale#checking',
-\   'linter_warnings': 'lightline#ale#warnings',
-\   'linter_errors': 'lightline#ale#errors',
-\   'linter_ok': 'lightline#ale#ok',
+\   'gitbranch': 'fugitive#head',
+\   'cocstatuswarn': 'LightLineCocStatusWarn',
+\   'cocstatuserror': 'LightLineCocStatusError',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
-\   'linter_warnings': 'warning',
-\   'linter_errors': 'error'
+\   'cocstatuswarn': 'warning',
+\   'cocstatuserror': 'error',
 \ }
 \ }
 
-"" ==================== nvim-typescript ====================
-nnoremap <leader>df :TSDefPreview<CR>
-nnoremap <leader>st :TSType<CR>
-" autocmd! CursorHold *.ts,*.tsx TSType    " below is useful but blocks TS errors
+"" ==================== Coc-nvim ====================
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 "" ==================== vim_current_word ====================
 let g:vim_current_word#highlight_current_word = 0
