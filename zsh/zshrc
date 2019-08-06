@@ -45,6 +45,10 @@ export ZSH_TMUX_AUTOSTART="true"
 export ZSH_TMUX_AUTOQUIT="false"
 export ZSH_TMUX_AUTOCONNECT="false"
 
+if [[ -f "$HOME/.dircolors" ]] && (( $+commands[gdircolors] )); then
+  eval `gdircolors $HOME/.dircolors`
+fi
+
 source ~/.zplug/init.zsh
 
 zplug "$ZSH_HOME/themes",                   from:local,     as:theme, use:kipper.zsh-theme
@@ -62,6 +66,10 @@ zplug "plugins/tmux",                       from:oh-my-zsh
 zplug "plugins/ssh-agent",                  from:oh-my-zsh
 
 zplug load
+
+# Need to run this after oh-my-zsh lib/completion as it resets it
+# for the benefit of macOS
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
 LOCAL_RC=~/.zshrc.local
 if [ -e $LOCAL_RC ]; then
