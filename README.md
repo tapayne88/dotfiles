@@ -14,8 +14,8 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 ### ZSH Shell
 Install `zsh` and `zsh-completions`. Currently using [zplug](https://github.com/zplug/zplug) as the plugin manager
 ```
-ln -s -f (pwd)/zsh ~/.zsh
-ln -s -f (pwd)/zsh/zshrc ~/.zshrc
+ln -s -f `pwd`/zsh ~/.zsh
+ln -s -f `pwd`/zsh/zshrc ~/.zshrc
 
 zplug install
 ```
@@ -25,8 +25,8 @@ zplug install
 brew install fish
 sudo sh -c "echo /usr/local/bin/fish >> /etc/shells"
 
-ln -s -f (pwd)/fish/config/* ~/.config/fish/
-ln -s -f (pwd)/fish/functions/* ~/.config/fish/functions/
+ln -s -f `pwd`/fish/config/* ~/.config/fish/
+ln -s -f `pwd`/fish/functions/* ~/.config/fish/functions/
 ```
 
 [fisherman](https://github.com/fisherman/fisherman) should install itself on launching fish shell (with `config.fish` in place)
@@ -54,9 +54,9 @@ brew install vim
 
 #### Symlinks
 ```
-ln -s (pwd)/vim ~/.vim
-ln -s (pwd)/vim/vimrc ~/.vimrc
-ln -s (pwd)/nvim ~/.config/nvim
+ln -s `pwd`/vim ~/.vim
+ln -s `pwd`/vim/vimrc ~/.vimrc
+ln -s `pwd`/nvim ~/.config/nvim
 ```
 
 #### Plugins
@@ -74,21 +74,21 @@ Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Link config
-ln -s (pwd)/tmux/tmux.conf ~/.tmux.conf
-ln -s (pwd)/tmux/helpers ~/.tmux/helpers
-ln -s (pwd)/tmux/tmuxp ~/.tmuxp
+ln -s `pwd`/tmux/tmux.conf ~/.tmux.conf
+ln -s `pwd`/tmux/helpers ~/.tmux/helpers
+ln -s `pwd`/tmux/tmuxp ~/.tmuxp
 ```
 
 ### Config
 ```
-ln -s (pwd)/config/gitconfig ~/.gitconfig
-ln -s (pwd)/config/tern-config ~/.tern-config
+ln -s `pwd`/config/gitconfig ~/.gitconfig
+ln -s `pwd`/config/tern-config ~/.tern-config
 ```
 
 ### Misc
 ```
 # scripts
-ln -s (pwd)/scripts/* ~/.local/bin
+ln -s `pwd`/scripts/* ~/.local/bin
 
 # Git config uses diff-so-fancy
 brew install diff-so-fancy
@@ -97,7 +97,7 @@ curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third
 chmod +x ~/.local/bin/diff-so-fancy
 
 # dir_colors
-ln -s (pwd)/misc/dir_colors ~/.dir_colors
+ln -s `pwd`/misc/dir_colors ~/.dir_colors
 ```
 (dir_colors from [nord-dircolors](https://github.com/arcticicestudio/nord-dircolors))
 
