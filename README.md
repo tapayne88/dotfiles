@@ -40,6 +40,10 @@ Primarily using neovim but `nvim/init.vim` is a hard link to `vim/vimrc`, the co
 # NeoVim
 brew install neovim/neovim/neovim
 
+# Ensure fzf is installed
+brew install fzf
+ln -s `brew --prefix fzf` ~/.fzf
+
 # Python configuration
 pip install neovim --upgrade
 pip3 install neovim --upgrade
