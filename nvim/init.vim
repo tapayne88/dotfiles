@@ -25,7 +25,7 @@ Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  \| Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
@@ -126,8 +126,11 @@ highlight link gitmessengerPopupNormal CursorLine
 let g:netrw_liststyle = 3
 
 "" ==================== FZF ====================
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 let g:fzf_layout = { 'down': '~20%' }
-let g:fzf_statusline = 0 " disable statusline overwriting
 let g:fzf_action = {
 \  'ctrl-s': 'split',
 \  'ctrl-v': 'vsplit'
