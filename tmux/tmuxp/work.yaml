@@ -12,17 +12,6 @@ windows:
       focus: true
     - null
 
-- window_name: match-preview-service
-  window_index: 2
-  layout: even-horizontal
-  shell_command_before:
-    - z match-preview-service
-  panes:
-    - shell_command:
-      - null
-      focus: true
-    - null
-
 - window_name: cosmos
   window_index: 9
   options:
@@ -31,5 +20,5 @@ windows:
     - z cosmos
   panes:
     - shell_command:
-      - ctop
+      - (ctop > /dev/null && ctop) || echo "Docker not running :("
     - null
