@@ -1,4 +1,5 @@
 # vim:ft=zsh ts=2 sw=2 sts=2
+setopt promptsubst
 
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR=''
@@ -62,7 +63,7 @@ prompt_git() {
   local ref dirty
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
     dirty=$(git status --porcelain --ignore-submodules=dirty 2> /dev/null | tail -n1)
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev | head -n1 2> /dev/null)"
     prompt_segment default white "on "
     prompt_segment default green "${ref/refs\/heads\//} "
     if [ -n "$dirty" ]; then
@@ -105,3 +106,4 @@ build_prompt() {
 }
 
 PROMPT='%{%f%b%k%k%}$(build_prompt)'
+RPROMPT=''

@@ -49,23 +49,31 @@ if [[ -f "$HOME/.dircolors" ]] && (( $+commands[gdircolors] )); then
   eval `gdircolors $HOME/.dircolors`
 fi
 
-source ~/.zplug/init.zsh
+autoload -Uz compinit
+compinit
 
-zplug "$ZSH_HOME/themes",                   from:local,     as:theme, use:kipper.zsh-theme
-zplug "$ZSH_HOME/lib",                      from:local
-zplug "$ZSH_HOME/plugins",                  from:local,     hook-load:"sourceOPSession"
-zplug "zsh-users/zsh-autosuggestions",      from:github
-zplug "zsh-users/zsh-syntax-highlighting",  from:github
-zplug "lib/theme-and-appearance",           from:oh-my-zsh
-zplug "lib/key-bindings",                   from:oh-my-zsh
-zplug "lib/completion",                     from:oh-my-zsh
-zplug "plugins/common-aliases",             from:oh-my-zsh
-zplug "plugins/fzf",                        from:oh-my-zsh
-zplug "plugins/z",                          from:oh-my-zsh
-zplug "plugins/tmux",                       from:oh-my-zsh
-zplug "plugins/ssh-agent",                  from:oh-my-zsh
+source "${HOME}/.zgen/zgen.zsh"
 
-zplug load
+if ! zgen saved; then
+
+  zgen load zsh-users/zsh-autosuggestions
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen oh-my-zsh lib/theme-and-appearance.zsh
+  zgen oh-my-zsh lib/completion.zsh
+  zgen oh-my-zsh lib/key-bindings.zsh
+  zgen oh-my-zsh plugins/common-aliases
+  zgen oh-my-zsh plugins/fzf
+  zgen oh-my-zsh plugins/z
+  zgen oh-my-zsh plugins/tmux
+  zgen oh-my-zsh plugins/ssh-agent
+  zgen load $ZSH_HOME/themes/kipper
+  zgen load $ZSH_HOME/lib
+  zgen load $ZSH_HOME/plugins
+
+  zgen save
+fi
+
+sourceOPSession
 
 # Need to run this after oh-my-zsh lib/completion as it resets it
 # for the benefit of macOS
