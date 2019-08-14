@@ -53,6 +53,9 @@ pip3 install neovim --upgrade
 # Check health
 nvim +checkhealth
 
+# Install CoC extensions
+nvim +'CocInstall coc-eslint coc-tslint coc-prettier coc-json coc-tsserver'
+
 # Vim
 # We're only interested in > Vim 8
 brew install vim
