@@ -37,6 +37,9 @@ export FZF_DEFAULT_OPTS="\
 # Prevent FFP opening multiple splits
 export FPP_DISABLE_SPLIT=1
 
+# tmuxp thing
+export DISABLE_AUTO_TITLE='true'
+
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 zstyle :omz:plugins:ssh-agent identities ""
 zstyle :omz:plugins:ssh-agent lifetime 10m
