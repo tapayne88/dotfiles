@@ -2,6 +2,7 @@
   "suggest.maxCompleteItemCount": 20,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "json", "javascriptreact", "css", "Markdown"],
   "coc.preferences.jumpCommand": "split",
+  "eslint.packageManager": "yarn",
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
   "prettier.requireConfig": true,
