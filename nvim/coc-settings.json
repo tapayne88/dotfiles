@@ -2,6 +2,8 @@
   "suggest.maxCompleteItemCount": 20,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "json", "javascriptreact", "css", "Markdown"],
   "coc.preferences.jumpCommand": "split",
+  "coc.preferences.hoverTarget": "echo",
+  "signature.target": "echo",
   "eslint.packageManager": "yarn",
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
