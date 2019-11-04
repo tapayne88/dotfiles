@@ -25,6 +25,7 @@ KEYTIMEOUT=1
 
 # fzf defaults
 export FZF_DEFAULT_COMMAND="ag --nocolor -g ''"
+export FZF_CTRL_T_COMMAND="ag --nocolor -g ''"
 export FZF_TMUX=1
 export FZF_TMUX_HEIGHT="40%"
 export FZF_LEGACY_KEYBINDINGS=0
