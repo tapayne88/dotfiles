@@ -3,8 +3,15 @@ export ZSH_HOME=~/.zsh
 export VISUAL=nvim
 export EDITOR=nvim
 
-# executable search path
-PATHS=(/usr/local/bin $HOME/.local/bin /home/linuxbrew/.linuxbrew/bin $HOME/Library/Python/3.7/bin)
+# executable search path (last to first order)
+PATHS=(
+  /usr/local/bin
+  /usr/local/sbin
+  /home/linuxbrew/.linuxbrew/bin
+  /home/linuxbrew/.linuxbrew/sbin
+  $HOME/.local/bin
+  $HOME/Library/Python/3.7/bin
+)
 for p in $PATHS; do
   if (test -d $p); then
     export PATH="$p:$PATH"
