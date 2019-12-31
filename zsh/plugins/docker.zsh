@@ -1,5 +1,5 @@
 # Interactively remove docker containers
-function docker_rm() {
+function drm() {
   # Do we need to sudo?
   docker ps > /dev/null 2>&1
   if [ $? -eq 1 ]; then
@@ -15,7 +15,7 @@ function docker_rm() {
 }
 
 # Interactively remove docker images
-function docker_rmi() {
+function drmi() {
   # Do we need to sudo?
   docker ps > /dev/null 2>&1
   if [ $? -eq 1 ]; then
