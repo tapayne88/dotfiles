@@ -1,40 +1,31 @@
 # Idempotent tmux startup function
 function tm() {
   if [ "$1" = "-h" ]; then
-    echo "tm - My handy function for managing tmux sessions"
+    echo "tm - create new tmux session, or switch to existing one. Also kill"
     echo ""
     echo "Usage:"
-    echo "   tm <flags> <args>"
+    echo "   tm <flags> <session>"
     echo ""
     echo "Flags:"
     echo "   -h     Help, print his help message"
-    echo "   -k     Kill named session (<args>)"
-    echo "   -l     List sessions"
+    echo "   -k     Kill named session or using fzf"
     echo ""
+    echo "\`tm\` will allow you to select your tmux session via fzf."
+    echo "\`tm irc\` will attach to the irc session (if it exists), else it will create it."
     return
   fi
+
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
 
   # destroy flag
   if [ "$1" = "-k" ]; then
-    tmux kill-session -t $2
-    return
+    change="kill-session"
+    if [ $2 ]; then
+      tmux $change -t $2; return
+    fi
+  elif [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
 
-  # list flag
-  if [[ -z "$@" || "$1" = "-l" ]]; then
-    tmux list-session
-    return
-  fi
-
-  tmux has-session -t "$1" > /dev/null 2>&1
-
-  if [ $? -ne 0 ]; then
-    tmux new -d -s "$1" -c "$HOME"
-  fi
-
-  if [ -n "$TMUX" ]; then
-    tmux switch -t "$1"
-  else
-    tmux attach -t "$1"
-  fi
+  session=$(tmux list-sessions 2>/dev/null | fzf --header $change | cut -f 1 -d':') && [ $session ] && tmux $change -t "$session" || echo "No sessions found."
 }
