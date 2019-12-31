@@ -29,6 +29,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
+Plug 'leafgarland/typescript-vim'
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/loupe'                        " more searching configuration
@@ -91,6 +92,11 @@ let maplocalleader = "\\"
 " disable sleuth for markdown files due to slowdown caused in combination with
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
+
+" disable typescript polyglot (don't like it)
+let g:polyglot_disabled = ['typescript']
+" Force .tsx files to be typescript ft so vim-typescript is used for syntax
+autocmd BufNewFile,BufRead *.tsx  set filetype=typescript
 
 " Automatically resize vim splits on resize
 autocmd VimResized * execute "normal! \<c-w>="
