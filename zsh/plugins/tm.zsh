@@ -27,5 +27,5 @@ function tm() {
     tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
 
-  session=$(tmux list-sessions 2>/dev/null | fzf --header $change | cut -f 1 -d':') && [ $session ] && tmux $change -t "$session" || echo "No sessions found."
+  session=$(tmux list-sessions 2>/dev/null | fzf --height 15 --header $change | cut -f 1 -d':') && [ $session ] && tmux $change -t "$session" || echo "No sessions found."
 }
