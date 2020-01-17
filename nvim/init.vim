@@ -95,8 +95,6 @@ autocmd FileType markdown let b:sleuth_automatic = 0
 
 " disable typescript polyglot (don't like it)
 let g:polyglot_disabled = ['typescript']
-" Force .tsx files to be typescript ft so vim-typescript is used for syntax
-autocmd BufNewFile,BufRead *.tsx  set filetype=typescript
 
 " Automatically resize vim splits on resize
 autocmd VimResized * execute "normal! \<c-w>="
