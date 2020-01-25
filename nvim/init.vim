@@ -247,7 +247,7 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo'], ['filetype'], ['readonly', 'cocstatuswarn', 'cocstatuserror']]
+\   'right': [['percentinfo', 'lineinfo'], ['filetype'], ['readonly', 'cocstatuswarn', 'cocstatuserror']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
