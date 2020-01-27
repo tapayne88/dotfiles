@@ -1,0 +1,13 @@
+bash
+brew_leaves.txt
+config
+fish
+fontconfig
+fonts
+misc
+README.md
+scripts
+setup.sh
+terminfo
+tmux
+vim
