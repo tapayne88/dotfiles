@@ -66,6 +66,9 @@ Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
+## [`asdf`](https://asdf-vm.com/#/)
+`asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn
+
 ## Misc
 ```
 # Git config uses diff-so-fancy
@@ -109,5 +112,3 @@ Keybindings
 - Install [Homebrew](http://brew.sh/)
 - Install utilities
 - Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
-
-For some brew modules you may want to install see [brew_leaves.txt](./brew_leaves.txt)
