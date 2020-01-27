@@ -5,7 +5,6 @@ fontconfig
 fonts
 misc
 README.md
-setup.sh
 terminfo
 tmux
 vim
