@@ -1,1 +1,0 @@
-/Users/payneth/git/dotfiles/irssi/scripts/notifier.pl
