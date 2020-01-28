@@ -59,6 +59,14 @@ Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should instal
 nvim +PlugInstall
 ```
 
+#### CoC Slow
+I've found in the past if neovim has to resolve the neovim npm module it can mean some plugins are slow. I noticed this with CoC being slow to show and move between options in the autocomplete menu. To fix this you can set the `node_host_prog` manually to point to the correct location (may differ per host).
+
+I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
+```vimscript
+let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
+```
+
 ## Tmux
 Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
 ```
