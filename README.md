@@ -2,8 +2,8 @@
 
 Get em while they're hot!
 
-Files managed using [chezmoi](https://www.chezmoi.io/). Simply download and
-```
+Files managed using [chezmoi](https://www.chezmoi.io/).
+```shell
 git clone git@gitlab.com:tpayne/dotfiles.git ~/.local/share/chezmoi
 chezmoi apply
 ```
@@ -13,7 +13,7 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 
 ## ZSH Shell
 Install `zsh` and `zsh-completions`. Currently using [zgen](https://github.com/tarjoilija/zgen) as the plugin manager
-```
+```shell
 brew install zsh zsh-completions
 
 # Following chezmoi apply
@@ -21,7 +21,7 @@ zgen update
 ```
 
 ## Fish Shell
-```
+```shell
 brew install fish
 sudo sh -c "echo `brew --prefix fish` >> /etc/shells"
 ```
@@ -33,7 +33,7 @@ A code-searching tool similar to ack, but faster. [http://geoff.greer.fm/ag/]( h
 
 ## Vim (NeoVim)
 Using NeoVim.
-```
+```shell
 # NeoVim
 brew install neovim/neovim/neovim
 
@@ -54,7 +54,7 @@ nvim +'CocInstall coc-eslint coc-tslint coc-prettier coc-json coc-tsserver'
 
 ### Plugins
 Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
-```
+```shell
 # Now open NeoVim and Vim Plug should attempt to install the plugins
 nvim +PlugInstall
 ```
@@ -69,7 +69,7 @@ let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
 
 ## Tmux
 Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
-```
+```shell
 # Setup tmux plugin mananger
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
@@ -78,11 +78,12 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 `asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn
 
 ## Misc
-```
+```shell
 # Git config uses diff-so-fancy
 brew install diff-so-fancy
 # OR
 curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
+
 chmod +x ~/.local/bin/diff-so-fancy
 ```
 (dir_colors from [nord-dircolors](https://github.com/arcticicestudio/nord-dircolors))
@@ -95,11 +96,13 @@ Include ~/git/dotfiles/misc/ssh_config
 
 ## Fonts
 To get ligature/italic font support there are a number of steps.
-- source a font like [Dank Mono](https://dank.sh) and install it
+- source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it
 - ensure terminal is configured for italic fonts (iterm2 needs a box checking)
 - configure new terminfo to ensure correct escape characters are used
 
-```
+*N.B.* As of writing this alacritty does not support ligatures.
+
+```shell
 # for each file in terminfo folder
 tic terminfo/tmux-256color.terminfo
 ```
