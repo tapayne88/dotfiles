@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}.dir_colors{{- else }}.dircolors{{- end }}
 misc
 README.md
 terminfo
