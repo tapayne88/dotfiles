@@ -12,10 +12,6 @@ fi
 alias grep='grep -n --color=auto'
 alias ..='cd ..'
 
-alias fem='cd $HOME/dev/stash.skybet.net/skybetdev/tiny/Mbet/React/FootballEventMarkets'
-alias uil='cd $HOME/dev/stash.skybet.net/@skybet/ui-library'
-alias sbd='cd $HOME/dev/stash.skybet.net/skybetdev'
-
 # For reviewing merge before commit
 # Review flow below:
 #   - git mg --no-ff --no-commit <branch>
