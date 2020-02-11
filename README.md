@@ -1,6 +1,6 @@
 # Dotfiles
 
-Get em while they're hot!
+A place for all my dotfiles and each one in its place.
 
 Files managed using [chezmoi](https://www.chezmoi.io/).
 ```shell
