@@ -20,9 +20,7 @@ done
 
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
-if [ $USER = 'tapayne88' ] ||
-   [ $USER = 'tpayne' ] ||
-   [ $USER = 'tpa11' ]; then
+if [ $USER = '{{ .chezmoi.username }}' ]; then
     DEFAULT_USER=$USER
 fi
 
