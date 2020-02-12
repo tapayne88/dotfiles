@@ -8,6 +8,9 @@ git clone git@gitlab.com:tpayne/dotfiles.git ~/.local/share/chezmoi
 chezmoi apply
 ```
 
+## Terminal
+Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty).
+
 ## Colour scheme
 Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
 
@@ -105,18 +108,6 @@ To get ligature/italic font support there are a number of steps.
 ```shell
 # for each file in terminfo folder
 tic terminfo/tmux-256color.terminfo
-```
-
-## MacOS Specific
-### iTerm2
-Keybindings
-```
-# Set iTerm2 to switch tmux windows with Cmd+{ and Cmd+}
-0x02 0x6E   Cmd + }			next window
-0x02 0x70   Cmd + {			previous window
-
-^[ b		Alt + <-		previous word
-^[ f		Alt + ->		next word
 ```
 
 ## General
