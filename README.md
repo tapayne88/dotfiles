@@ -2,11 +2,15 @@
 
 A place for all my dotfiles and each one in its place.
 
-Files managed using [chezmoi](https://www.chezmoi.io/).
+Installation:
 ```shell
-git clone git@github.com:tapayne88/dotfiles.git ~/.local/share/chezmoi
-chezmoi apply
+curl -sfL https://git.io/JvlgU | sh
+
+# or
+
+git clone https://github.com/tapayne88/dotfiles
 ```
+Files managed using [chezmoi](https://www.chezmoi.io/).
 
 ## Terminal
 Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty).
