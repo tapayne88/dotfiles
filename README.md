@@ -15,12 +15,9 @@ Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty).
 Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
 
 ## ZSH Shell
-Install `zsh` and `zsh-completions`. Currently using [zgen](https://github.com/tarjoilija/zgen) as the plugin manager
+Install `zsh` and `zsh-completions`. Currently using [zplug](https://github.com/zplug/zplug) as my plugin manager. Follow `zplug` installation instructions, then open a new shell to setup dependencies.
 ```shell
 brew install zsh zsh-completions
-
-# Following chezmoi apply
-zgen update
 ```
 
 ## Fish Shell
