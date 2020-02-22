@@ -6,10 +6,16 @@
 exit 0
 {{- end }}
 
-echo "I'm on windows"
+echo "This is WSL, setting up alacritty config"
 
-ALACRITTY_CONFIG_LOCATION="/mnt/c/Users/Thomas/AppData/Roaming/alacritty"
+CONFIG_LOCATION="/mnt/c/Users/Thomas/AppData/Roaming"
+ALACRITTY_CONFIG_LOCATION="$CONFIG_LOCATION/alacritty"
 ALACRITTY_CONFIG_FILENAME="alacritty.yml"
+
+if [ ! -d "$CONFIG_LOCATION" ]; then
+  echo "Can't find $CONFIG_LOCATION, exiting"
+  exit 1
+fi
 
 mkdir -p "$ALACRITTY_CONFIG_LOCATION"
 chezmoi cat ~/.config/alacritty/alacritty.yml > "$ALACRITTY_CONFIG_LOCATION/$ALACRITTY_CONFIG_FILENAME"
