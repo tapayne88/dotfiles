@@ -1,4 +1,14 @@
-{{- if eq .chezmoi.os "darwin" }}.dir_colors{{- else }}.dircolors{{- end }}
+{{- if eq "darwin" .chezmoi.os }}
+.dir_colors
+{{- else }}
+.dircolors
+{{- end }}
+
+{{- if contains "microsoft" .chezmoi.kernel.osrelease }}
+.config/alacritty
+.config/alacritty/alacritty.yml
+{{- end }}
+
 misc
 README.md
 terminfo
