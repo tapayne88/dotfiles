@@ -1,9 +1,11 @@
+# If on MacOS, use BSD dircolors location (for gdircolors)
 {{- if eq "darwin" .chezmoi.os }}
 .dir_colors
 {{- else }}
 .dircolors
 {{- end }}
 
+# If on WSL then ignore alacritty config, it lives somewhere else
 {{- if contains "microsoft" .chezmoi.kernel.osrelease }}
 .config/alacritty
 .config/alacritty/alacritty.yml

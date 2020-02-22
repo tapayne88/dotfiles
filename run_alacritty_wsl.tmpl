@@ -1,0 +1,15 @@
+#!/bin/sh
+# vi: filetype=sh
+
+{{- if contains "microsoft" .chezmoi.kernel.osrelease | not }}
+# Exit when not WSL
+exit 0
+{{- end }}
+
+echo "I'm on windows"
+
+ALACRITTY_CONFIG_LOCATION="/mnt/c/Users/Thomas/AppData/Roaming/alacritty"
+ALACRITTY_CONFIG_FILENAME="alacritty.yml"
+
+mkdir -p "$ALACRITTY_CONFIG_LOCATION"
+chezmoi cat ~/.config/alacritty/alacritty.yml > "$ALACRITTY_CONFIG_LOCATION/$ALACRITTY_CONFIG_FILENAME"
