@@ -1,73 +1,73 @@
 # vi: filetype=gitconfig
 [user]
-    name = Tom Payne
-    email = {{ .email }}
+  name = Tom Payne
+  email = {{ .email }}
 [core]
-    pager = less -x4
+  pager = less -x4
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    ui = true
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = reverse bold red
-	newNormal = green bold
-	newHighlight = reverse bold green
+  oldNormal = red bold
+  oldHighlight = reverse bold red
+  newNormal = green bold
+  newHighlight = reverse bold green
 [color "diff"]
-	meta = white
-	frag = magenta
-	commit = yellow
-	old = red
-	new = green
-	whitespace = red reverse
+  meta = white
+  frag = magenta
+  commit = yellow
+  old = red
+  new = green
+  whitespace = red reverse
 [push]
-    default = current
+  default = current
 [alias]
-    st = status -uno
-    sta = status
-    cm = commit
-    cma = commit --amend
-    cmae = commit --amend --no-edit
-    co = checkout
-    pl = pull --ff-only
-    ft = fetch
-    mg = merge
-    mb = merge --no-ff --no-commit
-    ch = cherry-pick
-    rb = rebase
-    ru = reset --hard @{u}
-    inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
-    ps = push
-    psf = push --force-with-lease
-    psu = push -u
-    br = branch
-    df = diff
-    dfc = diff --cached
-    dfu = !sh -c 'git diff $0..@{u} $@' 2> /dev/null
-    dt = difftool
-    review = difftool @{u}
-    grp = grep -I -n
-    l = log --pretty='format:%C(yellow)%H%C(red)%d%n%C(blue)%cd  %an%n%C(reset)%s%n' --date='format:%Y-%m-%d %H:%M'
-    lb = log --oneline origin/master..
-    lg = log
-    lgu = log @{u}
-    lp = log -p
-    qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
-    h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
-    hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
-    prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
-    git = !exec git
+  st = status -uno
+  sta = status
+  cm = commit
+  cma = commit --amend
+  cmae = commit --amend --no-edit
+  co = checkout
+  pl = pull --ff-only
+  ft = fetch
+  mg = merge
+  mb = merge --no-ff --no-commit
+  ch = cherry-pick
+  rb = rebase
+  ru = reset --hard @{u}
+  inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit -m \"fixup! $HASH\" $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
+  ps = push
+  psf = push --force-with-lease
+  psu = push -u
+  br = branch
+  df = diff
+  dfc = diff --cached
+  dfu = !sh -c 'git diff $0..@{u} $@' 2> /dev/null
+  dt = difftool
+  review = difftool @{u}
+  grp = grep -I -n
+  l = log --pretty='format:%C(yellow)%H%C(red)%d%n%C(blue)%cd %an%n%C(reset)%s%n' --date='format:%Y-%m-%d %H:%M'
+  lb = log --oneline origin/master..
+  lg = log
+  lgu = log @{u}
+  lp = log -p
+  qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
+  h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
+  hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
+  prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
+  git = !exec git
 [diff]
-    tool = fugitive
-    compactionHeuristic = 1
+  tool = fugitive
+  compactionHeuristic = 1
 [difftool "fugitive"]
-    cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
+  cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 [merge]
-    tool = splice
+  tool = splice
 [bash]
-    showDirtyState = true
+  showDirtyState = true
 [pager]
-    show = diff-so-fancy | less
-    log = diff-so-fancy | less
-    diff = diff-so-fancy | less
+  show = diff-so-fancy | less
+  log = diff-so-fancy | less
+  diff = diff-so-fancy | less
