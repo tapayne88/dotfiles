@@ -1,7 +1,7 @@
 #!/bin/sh
 # vi: filetype=sh
 
-{{- if contains "microsoft" .chezmoi.kernel.osrelease | not }}
+{{- if (hasKey .chezmoi "kernel") and (hasKey .chezmoi.kernel "osrelease") and (contains "microsoft" .chezmoi.kernel.osrelease) | not }}
 # Exit when not WSL
 exit 0
 {{- end }}

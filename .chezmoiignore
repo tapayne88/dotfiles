@@ -6,7 +6,7 @@
 {{- end }}
 
 # If on WSL then ignore alacritty config, it lives somewhere else
-{{- if contains "microsoft" .chezmoi.kernel.osrelease }}
+{{- if (hasKey .chezmoi "kernel") and (hasKey .chezmoi.kernel "osrelease") and (contains "microsoft" .chezmoi.kernel.osrelease) }}
 .config/alacritty
 .config/alacritty/alacritty.yml
 {{- end }}
