@@ -5,12 +5,6 @@
 .dircolors
 {{- end }}
 
-# If on WSL then ignore alacritty config, it lives somewhere else
-{{- if (hasKey .chezmoi "kernel") and (hasKey .chezmoi.kernel "osrelease") and (contains "microsoft" .chezmoi.kernel.osrelease) }}
-.config/alacritty
-.config/alacritty/alacritty.yml
-{{- end }}
-
 misc
 README.md
 terminfo
