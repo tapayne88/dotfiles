@@ -126,6 +126,11 @@ highlight link gitmessengerHash Comment
 highlight link gitmessengerHistory Constant
 highlight link gitmessengerPopupNormal CursorLine
 
+"" ==================== Folding ====================
+set foldmethod=syntax   "syntax highlighting items specify folds
+set foldcolumn=1        "defines 1 col at window left, to indicate folding
+set foldlevelstart=99   "start file with all folds opened
+
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
