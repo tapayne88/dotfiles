@@ -139,7 +139,7 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
-let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_action = {
 \  'ctrl-s': 'split',
 \  'ctrl-v': 'vsplit'
