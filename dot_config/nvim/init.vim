@@ -99,6 +99,10 @@ let g:polyglot_disabled = ['typescript']
 " Automatically resize vim splits on resize
 autocmd VimResized * execute "normal! \<c-w>="
 
+" Save and load vim views - remembers scroll position & folds
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent! loadview
+
 "" ==================== Colors ====================
 let g:nord_italic = 1
 let g:nord_underline = 1
