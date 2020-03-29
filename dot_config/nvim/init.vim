@@ -33,6 +33,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/loupe'                        " more searching configuration
+Plug 'giovanebribeiro/mpi'                  " function to get filetype icons - using fork as original isn't compatible with Plug
 Plug 'janko-m/vim-test',
   \ { 'on': vimTestCommands }               " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
@@ -240,6 +241,10 @@ function! LightLineCocStatusError() abort
   return ''
 endfunction
 
+function! LightLineFileTypeWithIcon()
+  return &filetype . ' ' . mpi#get(expand('%:t'))
+endfunction
+
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
 \ 'separator': {
@@ -252,7 +257,7 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetype', 'readonly'], ['cocstatuswarn', 'cocstatuserror']]
+\   'right': [['percentinfo', 'lineinfo'], ['filetypewithicon', 'readonly'], ['cocstatuswarn', 'cocstatuserror']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
@@ -261,6 +266,7 @@ let g:lightline = {
 \   'gitbranch': 'fugitive#head',
 \   'cocstatuswarn': 'LightLineCocStatusWarn',
 \   'cocstatuserror': 'LightLineCocStatusError',
+\   'filetypewithicon': 'LightLineFileTypeWithIcon',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
