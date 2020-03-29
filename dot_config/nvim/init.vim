@@ -43,13 +43,7 @@ Plug 'iamcco/markdown-preview.nvim',
   \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'rhysd/git-messenger.vim',
   \ { 'on': 'GitMessenger' }
-
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-" Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 call plug#end()
 
@@ -199,6 +193,8 @@ nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
 
 "" ==================== Coc ====================
+let g:coc_global_extensions = ['coc-eslint', 'coc-tslint', 'coc-prettier', 'coc-json', 'coc-tsserver']
+
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 

@@ -51,9 +51,6 @@ pip3 install neovim --upgrade
 
 # Check health
 nvim +checkhealth
-
-# Install CoC extensions
-nvim +'CocInstall coc-eslint coc-tslint coc-prettier coc-json coc-tsserver'
 ```
 
 ### Plugins
