@@ -12,7 +12,7 @@ let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'Test
 
 " Core Bundles
 Plug 'arcticicestudio/nord-vim'
-Plug 'bogado/file-line'                     " Handle filenames with line numbers i.e. :20
+Plug 'lervag/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
