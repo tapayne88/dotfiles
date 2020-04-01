@@ -25,7 +25,8 @@ Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug '~/.fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim'                     " All things FZF
+Plug 'chengzeyi/fzf-preview.vim'            " Few utility FZF functions
 Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
@@ -137,6 +138,7 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
+let g:fzf_preview_window = 'right:60%'
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_action = {
 \  'ctrl-s': 'split',
@@ -159,21 +161,18 @@ let g:fzf_colors = {
   \ }
 
 function! MyGitFiles()
-  return fzf#run(fzf#wrap({
+  return fzf#run(fzf#wrap(fzf#vim#with_preview({
   \ 'source': 'git ls-files `pwd` && git ls-files --others --exclude-standard `pwd`',
-  \ 'options': '--multi --preview "head -100 {}"'
-  \ }))
+  \ 'options': '--multi'
+  \ })))
 endfunction
 
 nnoremap <leader>l :Buffers<CR>
 nnoremap <leader>t :call MyGitFiles()<CR>
-nnoremap <leader>f :Ag<CR>
+nnoremap <leader>f :FZFAg<CR>
 nnoremap <c-t> :call MyGitFiles()<CR>
-nnoremap <c-f> :Ag<CR>
-nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'))<CR>
-
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
+nnoremap <c-f> :FZFAg<CR>
+nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'), fzf#wrap(fzf#vim#with_preview()))<CR>
 
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
