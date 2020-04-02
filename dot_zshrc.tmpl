@@ -37,7 +37,7 @@ export FZF_TMUX_HEIGHT="40%"
 export FZF_LEGACY_KEYBINDINGS=0
 
 export FZF_DEFAULT_OPTS="\
-  --preview 'head -100 {}'
+  --preview 'bat --style=numbers --color=always {} | head -500'
   --layout reverse \
   --color bg+:0,hl:0,hl+:4,fg:7,fg+:15,header:4,info:4,marker:4,pointer:4,prompt:4,spinner:4 \
 "

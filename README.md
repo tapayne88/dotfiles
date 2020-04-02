@@ -41,8 +41,8 @@ Using NeoVim.
 # NeoVim
 brew install neovim/neovim/neovim
 
-# Ensure fzf is installed
-brew install fzf
+# Ensure fzf and bat are installed
+brew install fzf bat
 ln -s `brew --prefix fzf` ~/.fzf
 
 # Python configuration
