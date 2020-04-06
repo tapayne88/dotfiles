@@ -18,9 +18,9 @@ window:
   #
   # Specified in number of columns/lines, not pixels.
   # If both are `0`, this setting is ignored.
-  #dimensions:
-  #  columns: 0
-  #  lines: 0
+  dimensions:
+    columns: 150
+    lines: 40
 
   # Window position (changes require restart)
   #
@@ -34,12 +34,22 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
+  {{- if eq .chezmoi.os "darwin" }}
+  padding:
+    x: 0
+    y: 20
+  {{- else }}
   #padding:
   #  x: 0
   #  y: 0
+  {{- end }}
 
   # Spread additional padding evenly around the terminal content.
+  {{- if eq .chezmoi.os "darwin" }}
+  dynamic_padding: true
+  {{- else }}
   #dynamic_padding: false
+  {{- end }}
 
   # Window decorations
   #
@@ -50,7 +60,11 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
+  {{- if eq .chezmoi.os "darwin" }}
+  decorations: transparent
+  {{- else }}
   decorations: full
+  {{- end }}
 
   # Startup Mode (changes require restart)
   #
