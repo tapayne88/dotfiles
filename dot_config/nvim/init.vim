@@ -161,18 +161,33 @@ let g:fzf_colors = {
   \ }
 
 function! MyGitFiles()
+  let preview_window = get(g:, 'fzf_preview_window', 'right')
+
   return fzf#run(fzf#wrap(fzf#vim#with_preview({
   \ 'source': 'git ls-files `pwd` && git ls-files --others --exclude-standard `pwd`',
   \ 'options': '--multi'
-  \ })))
+  \ }, preview_window, '?')))
 endfunction
 
-nnoremap <leader>l :Buffers<CR>
+function! MyBuffers()
+  let preview_window = get(g:, 'fzf_preview_window', 'right')
+
+  return fzf#vim#buffers(fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
+endfunction
+
+function! FindWord(word)
+  let preview_window = get(g:, 'fzf_preview_window', 'right')
+
+  return fzf#vim#ag(a:word, fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
+endfunction
+
+
+nnoremap <leader>l :call MyBuffers()<CR>
 nnoremap <leader>t :call MyGitFiles()<CR>
 nnoremap <leader>f :FZFAg<CR>
 nnoremap <c-t> :call MyGitFiles()<CR>
 nnoremap <c-f> :FZFAg<CR>
-nnoremap <leader>fw :call fzf#vim#ag(expand('<cword>'), fzf#wrap(fzf#vim#with_preview()))<CR>
+nnoremap <leader>fw :call FindWord(expand('<cword>'))<CR>
 
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
