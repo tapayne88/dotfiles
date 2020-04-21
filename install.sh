@@ -11,7 +11,9 @@ CHEZMOI_CONFIG="{
     \"args\": \"-d\",
     \"command\": \"nvim\"
   },
-  \"data\": {}
+  \"data\": {
+    \"tmux_location\": \"`which tmux`\"
+  }
 }"
 
 if [ -d "$INSTALL_LOCATION" ]; then
