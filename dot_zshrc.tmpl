@@ -1,25 +1,6 @@
 # vi: filetype=zsh
 export ZSH_HOME=~/.config/zsh
 
-export VISUAL=nvim
-export EDITOR=nvim
-
-# executable search path (last to first order)
-PATHS=(
-  /usr/local/bin
-  /usr/local/sbin
-  /home/linuxbrew/.linuxbrew/bin
-  /home/linuxbrew/.linuxbrew/sbin
-  $HOME/.local/bin
-  $HOME/Library/Python/3.7/bin
-  $HOME/.cargo/bin
-)
-for p in $PATHS; do
-  if (test -d $p); then
-    export PATH="$p:$PATH"
-  fi
-done
-
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
 if [ $USER = '{{ .chezmoi.username }}' ]; then

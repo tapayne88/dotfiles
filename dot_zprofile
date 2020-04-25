@@ -1,0 +1,23 @@
+# vi: filetype=zsh
+
+# executable search path (last to first order)
+PATHS_CANDIDATES=(
+  /usr/local/bin
+  /usr/local/sbin
+  /home/linuxbrew/.linuxbrew/bin
+  /home/linuxbrew/.linuxbrew/sbin
+  $HOME/.local/bin
+  $HOME/Library/Python/3.7/bin
+  $HOME/.cargo/bin
+)
+
+NEW_PATH=$PATH
+for P in $PATHS_CANDIDATES; do
+  if [ -d "$P" ]; then
+    NEW_PATH="$P:$NEW_PATH"
+  fi
+done
+
+export PATH=$NEW_PATH
+export VISUAL=nvim
+export EDITOR=nvim
