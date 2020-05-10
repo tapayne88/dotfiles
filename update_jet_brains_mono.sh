@@ -19,3 +19,12 @@ unzip -q -o $ARCHIVE_FILE -d "$OUT_DIR"
 echo "updating repo files"
 rm -rf "$REPO_DIR/*"
 cp $OUT_DIR/JetBrainsMono-$VERSION/ttf/* $REPO_DIR
+
+while true; do
+    read -p "Apply new fonts? (y/n) " yn
+    case $yn in
+        [Yy]* ) chezmoi apply ~/.local/share/fonts -v && sudo fc-cache -f -v; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer Y or N.";;
+    esac
+done
