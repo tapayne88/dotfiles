@@ -33,7 +33,6 @@ Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
-Plug 'wincent/loupe'                        " more searching configuration
 Plug 'janko-m/vim-test',
   \ { 'on': vimTestCommands }               " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
