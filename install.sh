@@ -35,10 +35,12 @@ mkdir -p $CHEZMOI_CONFIG_DIR
 echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
 
 echo ""
-echo "Next stps:
-Install chezmoi from https://github.com/twpayne/chezmoi
+echo "Next stps:"
 
-# Dry-run
+command -v chezmoi >/dev/null 2>&1 || { echo >&2 "Install chezmoi from https://github.com/twpayne/chezmoi"; }
+
+echo ""
+echo "# Dry-run
 chezmoi apply -vn
 
 # Apply dotfiles
