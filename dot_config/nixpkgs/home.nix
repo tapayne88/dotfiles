@@ -29,6 +29,7 @@
     jq
     neovim
     nix-zsh-completions
+    nodejs
     openssh
     silver-searcher
     tmux
