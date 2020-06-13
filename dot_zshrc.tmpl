@@ -36,6 +36,11 @@ for p in $NIX_PROFILES; do
   fi
 done
 
+{{- if ne "darwin" .chezmoi.os }}
+# Fix nix locale errors
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+{{- end }}
+
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
 KEYTIMEOUT=1
