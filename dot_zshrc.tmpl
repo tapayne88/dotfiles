@@ -26,7 +26,15 @@ if [ $USER = '{{ .chezmoi.username }}' ]; then
     DEFAULT_USER=$USER
 fi
 
-if [ -e /home/tpayne/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tpayne/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+NIX_PROFILES=(
+  $HOME/.nix-profile/etc/profile.d/nix.sh
+  $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+)
+for p in $NIX_PROFILES; do
+  if (test -e $p); then
+    source $p
+  fi
+done
 
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
