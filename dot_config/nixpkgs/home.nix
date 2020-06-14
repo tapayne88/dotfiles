@@ -36,6 +36,5 @@
     tmuxp
     vim
     zsh
-    zsh-completions
   ];
 }
