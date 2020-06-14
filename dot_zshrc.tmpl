@@ -26,11 +26,11 @@ if [ $USER = '{{ .chezmoi.username }}' ]; then
     DEFAULT_USER=$USER
 fi
 
-NIX_PROFILES=(
+SRC_FILES=(
   $HOME/.nix-profile/etc/profile.d/nix.sh
   $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 )
-for p in $NIX_PROFILES; do
+for p in $SRC_FILES; do
   if (test -e $p); then
     source $p
   fi
