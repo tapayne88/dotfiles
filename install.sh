@@ -1,6 +1,15 @@
 #!/bin/sh
 set -e
 
+COMMANDS="git curl"
+for C in $COMMANDS
+do
+  command -v $C >/dev/null 2>&1 || {
+    echo >&2 "I require $C but it's not installed. Aborting.";
+    exit 1;
+  }
+done
+
 CWD=`pwd`
 INSTALL_LOCATION="$CWD/dotfiles"
 REPO="git@github.com:tapayne88/dotfiles.git"
@@ -34,10 +43,14 @@ fi
 mkdir -p $CHEZMOI_CONFIG_DIR
 echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
 
+# Install vim-plug
+curl -fLo "$HOME/.config/nvim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 echo ""
 echo "Next stps:"
 
-command -v chezmoi >/dev/null 2>&1 || { echo >&2 "Install chezmoi from https://github.com/twpayne/chezmoi"; }
+command -v home-manager >/dev/null 2>&1 || { echo >&2 "Install chezmoi from https://github.com/rycee/home-manager"; }
+command -v chezmoi >/dev/null 2>&1 || { echo >&2 "Install home-manager from https://github.com/twpayne/chezmoi"; }
 
 echo ""
 echo "# Dry-run
