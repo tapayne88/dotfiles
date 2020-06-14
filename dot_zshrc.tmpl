@@ -77,7 +77,7 @@ if [[ -f "$HOME/.dircolors" ]] && (( $+commands[gdircolors] )); then
   eval `gdircolors $HOME/.dircolors`
 fi
 
-source $HOME/.local/share/antigen/antigen.zsh
+source $HOME/.nix-profile/share/antigen/antigen.zsh
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
