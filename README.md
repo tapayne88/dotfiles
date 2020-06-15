@@ -69,9 +69,24 @@ Include ~/git/dotfiles/misc/ssh_config
 ## Troubleshooting
 
 ### CoC Slow
+
 I've found in the past if neovim has to resolve the neovim npm module it can mean some plugins are slow. I noticed this with CoC being slow to show and move between options in the autocomplete menu. To fix this you can set the `node_host_prog` manually to point to the correct location (may differ per host).
 
 I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
+
 ```vimscript
 let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
+```
+
+A good way to get the path to the `neovim` module is using the following. Ensure you have your system `npm` active when running.
+
+```bash
+npm config get prefix
+```
+
+It should return something like below, simply add `lib/node_modules/neovim`
+
+```bash
+❯ ~ npm config get prefix
+/nix/store/vbbqhpb47jlz6acgb698hgf75i53scm2-nodejs-12.18.0
 ```
