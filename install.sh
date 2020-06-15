@@ -43,8 +43,11 @@ fi
 mkdir -p $CHEZMOI_CONFIG_DIR
 echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
 
-# Install vim-plug
+echo "Installing vim-plug for neovim"
 curl -fLo "$HOME/.config/nvim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+echo "Installing tmux plugin manager"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 echo ""
 echo "Next stps:"
@@ -57,4 +60,7 @@ echo "# Dry-run
 chezmoi apply -vn
 
 # Apply dotfiles
-chezmoi apply -v"
+chezmoi apply -v
+
+# Update installed packages
+home-manager switch"
