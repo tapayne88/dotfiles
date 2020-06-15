@@ -35,6 +35,7 @@
     tmux
     tmuxp
     vim
+    yarn
     zsh
   ];
 }
