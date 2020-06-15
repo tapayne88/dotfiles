@@ -70,21 +70,22 @@ fi
 source $HOME/.local/share/antigen/antigen.zsh
 
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-antigen bundle robbyrussell/oh-my-zsh lib/theme-and-appearance.zsh
 antigen bundle robbyrussell/oh-my-zsh lib/completion.zsh
 antigen bundle robbyrussell/oh-my-zsh lib/key-bindings.zsh
+antigen bundle robbyrussell/oh-my-zsh lib/theme-and-appearance.zsh
+antigen bundle robbyrussell/oh-my-zsh plugins/asdf
 antigen bundle robbyrussell/oh-my-zsh plugins/common-aliases
 antigen bundle robbyrussell/oh-my-zsh plugins/fzf
-antigen bundle robbyrussell/oh-my-zsh plugins/z
-antigen bundle robbyrussell/oh-my-zsh plugins/tmux
 antigen bundle robbyrussell/oh-my-zsh plugins/ssh-agent
+antigen bundle robbyrussell/oh-my-zsh plugins/tmux
+antigen bundle robbyrussell/oh-my-zsh plugins/z
 
+antigen bundle $ZSH_HOME/completions
 antigen bundle $ZSH_HOME/lib
 antigen bundle $ZSH_HOME/plugins
-antigen bundle $ZSH_HOME/completions
 
 antigen theme $ZSH_HOME themes/kipper.zsh-theme
 
