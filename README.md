@@ -2,100 +2,33 @@
 
 A place for all my dotfiles and each one in its place.
 
-Installation:
-```shell
+## Installation
+
+```bash
 curl -sfL https://git.io/JvlgU | sh
 
 # or
 
 git clone https://github.com/tapayne88/dotfiles
 ```
-Files managed using [chezmoi](https://www.chezmoi.io/).
+Files managed using [chezmoi](https://www.chezmoi.io/), packages managed using [nix](https://nixos.org/download.html) and [home-manager](https://github.com/rycee/home-manager).
+
+For debian specific setup guide, follow [this](./debian_installation.md).
 
 ## Terminal
-Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty).
+
+Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty) but Windows Terminal seems good too.
 
 ## Colour scheme
+
 Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
 
-## ZSH Shell
-Install `zsh` and `zsh-completions`. Currently using [zplug](https://github.com/zplug/zplug) as my plugin manager. Follow `zplug` installation instructions, then open a new shell to setup dependencies.
-```shell
-brew install zsh zsh-completions
-```
-
-## Fish Shell
-```shell
-brew install fish
-sudo sh -c "echo `brew --prefix fish` >> /etc/shells"
-```
-
-[fisherman](https://github.com/fisherman/fisherman) should install itself on launching fish shell (with `config.fish` in place)
-
-## Silver Searcher
-A code-searching tool similar to ack, but faster. [http://geoff.greer.fm/ag/]( http://geoff.greer.fm/ag/)
-
-## Vim (NeoVim)
-Using NeoVim.
-```shell
-# NeoVim
-brew install neovim/neovim/neovim
-
-# Ensure fzf and bat are installed
-brew install fzf bat
-ln -s `brew --prefix fzf` ~/.fzf
-
-# Python configuration
-pip install neovim --upgrade
-pip3 install neovim --upgrade
-
-# Check health
-nvim +checkhealth
-```
-
-### Plugins
-Install [Vim Plug](https://github.com/junegunn/vim-plug). Vim Plug should install itself when you open vim for the first time.
-```shell
-# Now open NeoVim and Vim Plug should attempt to install the plugins
-nvim +PlugInstall
-```
-
-#### CoC Slow
-I've found in the past if neovim has to resolve the neovim npm module it can mean some plugins are slow. I noticed this with CoC being slow to show and move between options in the autocomplete menu. To fix this you can set the `node_host_prog` manually to point to the correct location (may differ per host).
-
-I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
-```vimscript
-let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
-```
-
-## Tmux
-Optionally install [tmuxp](https://tmuxp.git-pull.com) session manager
-```shell
-# Setup tmux plugin mananger
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
 ## [`asdf`](https://asdf-vm.com/#/)
+
 `asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn
 
-## Misc
-```shell
-# Git config uses diff-so-fancy
-brew install diff-so-fancy
-# OR
-curl -s -l https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/.local/bin/diff-so-fancy
-
-chmod +x ~/.local/bin/diff-so-fancy
-```
-(dir_colors from [nord-dircolors](https://github.com/arcticicestudio/nord-dircolors))
-
-### SSH
-Example `~/.ssh/config`
-```
-Include ~/git/dotfiles/misc/ssh_config
-```
-
 ## Fonts
+
 To get ligature/italic font support there are a number of steps.
 - source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it
   - dotfiles includes JetBrains Mono font for linux, just need to run
@@ -107,12 +40,33 @@ To get ligature/italic font support there are a number of steps.
 
 *N.B.* As of writing this alacritty does not support ligatures.
 
-```shell
-# for each file in terminfo folder
-tic terminfo/tmux-256color.terminfo
+## Terminfo
+
+Likely want to `sudo tic` the terminfo so they are accessible to all system users (like root).
+
+From `man tic`
+
+> Secondly,  if  tic  cannot write in /etc/terminfo or the location specified using your TERMINFO variable, it looks for the directory $HOME/.terminfo (or hashed database $HOME/.terminfo.db); if that location exists, the  entry  is  placed there.
+
+```bash
+sudo tic terminfo/tmux.terminfo
+sudo tic terminfo/tmux-256color.terminfo
 ```
 
-## General
-- Install [Homebrew](http://brew.sh/)
-- Install utilities
-- Replace BSD tools with GNU [here](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/)
+## SSH
+
+Example `~/.ssh/config`
+
+```
+Include ~/git/dotfiles/misc/ssh_config
+```
+
+## Troubleshooting
+
+### CoC Slow
+I've found in the past if neovim has to resolve the neovim npm module it can mean some plugins are slow. I noticed this with CoC being slow to show and move between options in the autocomplete menu. To fix this you can set the `node_host_prog` manually to point to the correct location (may differ per host).
+
+I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
+```vimscript
+let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
+```
