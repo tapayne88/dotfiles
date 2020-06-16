@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+. ./.install_scripts/repo.sh
+
 COMMANDS="git curl"
 for C in $COMMANDS
 do
@@ -11,8 +13,6 @@ do
 done
 
 CWD=`pwd`
-INSTALL_LOCATION="$CWD/dotfiles"
-REPO="git@github.com:tapayne88/dotfiles.git"
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG_FILE="$CHEZMOI_CONFIG_DIR/chezmoi.json"
 CHEZMOI_CONFIG="{
@@ -24,14 +24,7 @@ CHEZMOI_CONFIG="{
   \"data\": {}
 }"
 
-if [ -d "$INSTALL_LOCATION" ]; then
-  echo "Found $INSTALL_LOCATION, halting"
-  exit 1
-fi
-
-echo "Cloning $REPO to $INSTALL_LOCATION"
-git clone $REPO $INSTALL_LOCATION
-chmod 700 $INSTALL_LOCATION
+install_repo $CWD
 
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
   echo "Found $CHEZMOI_CONFIG_FILE, halting"
