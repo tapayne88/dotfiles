@@ -11,9 +11,20 @@ curl -sfL https://git.io/JvlgU | sh
 
 git clone https://github.com/tapayne88/dotfiles
 ```
-Files managed using [chezmoi](https://www.chezmoi.io/), packages managed using [nix](https://nixos.org/download.html) and [home-manager](https://github.com/rycee/home-manager).
 
 For debian specific setup guide, follow [this](./debian_installation.md).
+
+## [Chezmoi](https://www.chezmoi.io/)
+
+> Manage your dotfiles across multiple machines, securely
+
+I use chezmoi to put all my dotfiles into place and make them work across different OS's.
+
+## [Nix](https://nixos.org/)
+
+> Nix is a powerful package manager for Linux and other Unix systems that makes package management reliable and reproducible. Share your development and build environments across different machines.
+
+I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage my required packages. Things like neovim, tmux, git, etc. all get installed using nix and are configured by [code](./dot_config/nixpkgs/home.nix.tmpl).
 
 ## Terminal
 
