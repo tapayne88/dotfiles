@@ -24,7 +24,7 @@ Plug 'tpope/vim-dispatch',
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug '~/.fzf'
+Plug '~/.nix-profile/share/vim-plugins/fzf'
 Plug 'junegunn/fzf.vim'                     " All things FZF
 Plug 'chengzeyi/fzf-preview.vim'            " Few utility FZF functions
 Plug 'mileszs/ack.vim'                      " ag searching

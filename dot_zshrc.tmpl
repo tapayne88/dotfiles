@@ -26,6 +26,26 @@ if [ $USER = '{{ .chezmoi.username }}' ]; then
     DEFAULT_USER=$USER
 fi
 
+SRC_FILES=(
+  $HOME/.nix-profile/etc/profile.d/nix.sh
+  $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+)
+for p in $SRC_FILES; do
+  if (test -e $p); then
+    source $p
+  fi
+done
+
+# ZSH completions
+for profile in ''${(z)NIX_PROFILES}; do
+  fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+done
+
+{{- if ne "darwin" .chezmoi.os }}
+# Fix nix locale errors
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+{{- end }}
+
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
 KEYTIMEOUT=1
@@ -67,7 +87,7 @@ if [[ -f "$HOME/.dircolors" ]] && (( $+commands[gdircolors] )); then
   eval `gdircolors $HOME/.dircolors`
 fi
 
-source $HOME/.local/share/antigen/antigen.zsh
+source $HOME/.nix-profile/share/antigen/antigen.zsh
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions

@@ -8,6 +8,7 @@
 
 misc
 README.md
+debian_installation.md
 terminfo
 install.sh
 update_jet_brains_mono.sh
