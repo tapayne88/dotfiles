@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Source https://gist.github.com/bartoszmajsak/1396344
+
+# This way you can customize which branches should be skipped when
+# prepending commit message.
+if [ -z "$BRANCHES_TO_SKIP" ]; then
+  BRANCHES_TO_SKIP=(master release)
+fi
+
+# BRANCH_NAME from git, then
+#  - strip any prefix
+#  - parse out structure
+#
+# Examples:
+#   feature/ARQ-653              -> ARQ-653
+#   ARQ-653-a-branch-description -> ARQ-653
+#   bugfix/ARQ-653-description   -> ARQ-653
+#   arq-653                      -> arq-653 (intended, branch shouldn't be lower case - needs fixing)
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+BRANCH_NAME=$(expr "${BRANCH_NAME##*/}" : '\([a-zA-Z]\{2,\}-[0-9]\{1,\}\)')
+
+BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
+BRANCH_IN_COMMIT=$(grep -c "\[$BRANCH_NAME\]" $1)
+
+# Only if
+#  - we have figured out a name
+#  - the branch isn't excluded
+#  - the branch isn't already in the message
+if [ -n "$BRANCH_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]] && ! [[ $BRANCH_IN_COMMIT -ge 1 ]]; then
+  sed -i.bak -e "1s/^/[$BRANCH_NAME] /" $1
+fi
