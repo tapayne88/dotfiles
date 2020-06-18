@@ -34,22 +34,12 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  {{- if eq .chezmoi.os "darwin" }}
-  padding:
-    x: 0
-    y: 20
-  {{- else }}
   #padding:
   #  x: 0
   #  y: 0
-  {{- end }}
 
   # Spread additional padding evenly around the terminal content.
-  {{- if eq .chezmoi.os "darwin" }}
-  dynamic_padding: true
-  {{- else }}
   #dynamic_padding: false
-  {{- end }}
 
   # Window decorations
   #
@@ -61,7 +51,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   {{- if eq .chezmoi.os "darwin" }}
-  decorations: transparent
+  decorations: buttonless
   {{- else }}
   decorations: full
   {{- end }}
@@ -117,37 +107,37 @@ font:
     style: Regular
 
   # Bold font face
-  #bold:
+  bold:
     # Font family
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold
+    style: Bold
 
   # Italic font face
-  #italic:
+  italic:
     # Font family
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
-    #style: Italic
+    style: Italic
 
   # Bold italic font face
-  #bold_italic:
+  bold_italic:
     # Font family
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold Italic
+    style: Bold Italic
 
   # Point size
   size: {{ .alacritty_font_size }}
