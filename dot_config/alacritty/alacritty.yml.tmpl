@@ -584,10 +584,10 @@ key_bindings:
   #- { key: End,       mods: Shift,   action: ScrollToBottom, mode: ~Alt       }
 
   # (custom)
-  - { key: N,        mods: Super,         action: SpawnNewInstance           }
-  - { key: LBracket, mods: Super|Shift,   chars: "\x02\x70"                  }
-  - { key: RBracket, mods: Super|Shift,   chars: "\x02\x6E"                  }
-  - { key: Key6,     mods: Control,       chars: "\x1e"                      }
-  - { key: Key3,     mods: Alt,           chars: "\x23"                      }
-  - { key: Left,     mods: Alt,           chars: "\x1bb"                     }
-  - { key: Right,    mods: Alt,           chars: "\x1bf"                     }
+  - { key: N,        mods: Super,         action: SpawnNewInstance             }  # New window
+  - { key: LBracket, mods: Super|Shift,   chars: "\x02\x70"                    }  # { to swap tmux tab
+  - { key: RBracket, mods: Super|Shift,   chars: "\x02\x6E"                    }  # } to swap tmux tab
+  - { key: Key6,     mods: Control,       chars: "\x1e"                        }  # Make Ctrl-6 work in vim
+  - { key: Key3,     mods: Alt,           chars: "\x23"                        }  # Make hash key work
+  - { key: Left,     mods: Alt,           chars: "\x1bb"                       }  # Alt <- to jump back words (esc sequence)
+  - { key: Right,    mods: Alt,           chars: "\x1bf"                       }  # Alt -> to jump forward words (esc sequence)
