@@ -20,6 +20,11 @@ echo "updating repo files"
 rm -rf "$REPO_DIR/*"
 cp $OUT_DIR/JetBrainsMono-$VERSION/ttf/* $REPO_DIR
 
+# Exit if we're running on Mac OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  exit 0
+fi
+
 while true; do
     read -p "Apply new fonts? (y/n) " yn
     case $yn in
