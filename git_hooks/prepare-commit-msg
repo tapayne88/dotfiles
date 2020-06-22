@@ -17,7 +17,7 @@ fi
 #   ARQ-653-a-branch-description -> ARQ-653
 #   bugfix/ARQ-653-description   -> ARQ-653
 #   arq-653                      -> arq-653 (intended, branch shouldn't be lower case - needs fixing)
-BRANCH_NAME=$(git symbolic-ref --short HEAD)
+BRANCH_NAME=$(git symbolic-ref --short HEAD 2> /dev/null)
 BRANCH_NAME=$(expr "${BRANCH_NAME##*/}" : '\([a-zA-Z]\{2,\}-[0-9]\{1,\}\)')
 
 BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
