@@ -163,7 +163,7 @@ function! MyGitFiles()
   let preview_window = get(g:, 'fzf_preview_window', 'right')
 
   return fzf#run(fzf#wrap(fzf#vim#with_preview({
-  \ 'source': 'git ls-files `pwd` && git ls-files --others --exclude-standard `pwd`',
+  \ 'source': 'git ls-files && git ls-files --others --exclude-standard',
   \ 'options': '--multi'
   \ }, preview_window, '?')))
 endfunction
