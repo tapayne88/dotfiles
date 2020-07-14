@@ -171,7 +171,11 @@ endfunction
 function! MyBuffers()
   let preview_window = get(g:, 'fzf_preview_window', 'right')
 
-  return fzf#vim#buffers(fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
+  " Deliberately not using fzf#wrap - caused issues when opening multiple files
+  " at startup
+  return fzf#vim#buffers(fzf#vim#with_preview({
+  \  "placeholder": "{1}", "options": ["-d", "\t"]
+  \  }, preview_window, '?'))
 endfunction
 
 function! FindWord(word)
