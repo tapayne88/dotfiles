@@ -1,7 +1,10 @@
 # vi: filetype=gitconfig
+[includeIf "gitdir:github|gitlab"]
+  path = .gitconfig-github
+[includeIf "gitdir:stash"]
+  path = .gitconfig-work
 [user]
   name = Tom Payne
-  email = {{ .email }}
 [core]
   pager = less -x4
   hooksPath = {{ .chezmoi.sourceDir }}/git_hooks
