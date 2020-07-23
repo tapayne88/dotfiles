@@ -1,10 +1,13 @@
 # vi: filetype=gitconfig
-[includeIf "gitdir:gitlab"]
-  path = .gitconfig-github
-[includeIf "gitdir:stash"]
-  path = .gitconfig-work
 [user]
   name = Tom Payne
+  # default to personal email
+  email = {{ .email.personal }}
+
+# If in repo within `work` directory, use work email
+[includeIf "gitdir:work/"]
+  path = .gitconfig-work
+
 [core]
   pager = less -x4
   hooksPath = {{ .chezmoi.sourceDir }}/git_hooks
