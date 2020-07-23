@@ -11,16 +11,19 @@
 [core]
   pager = less -x4
   hooksPath = {{ .chezmoi.sourceDir }}/git_hooks
+
 [color]
   diff = auto
   status = auto
   branch = auto
   ui = true
+
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = reverse bold red
   newNormal = green bold
   newHighlight = reverse bold green
+
 [color "diff"]
   meta = white
   frag = magenta
@@ -28,8 +31,10 @@
   old = red
   new = green
   whitespace = red reverse
+
 [push]
   default = current
+
 [alias]
   st = status -uno
   sta = status
@@ -65,15 +70,20 @@
   hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
   prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
   git = !exec git
+
 [diff]
   tool = fugitive
   compactionHeuristic = 1
+
 [difftool "fugitive"]
   cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
+
 [merge]
   tool = splice
+
 [bash]
   showDirtyState = true
+
 [pager]
   show = diff-so-fancy | less
   log = diff-so-fancy | less
