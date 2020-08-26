@@ -34,6 +34,9 @@
   new = green
   whitespace = red reverse
 
+[pull]
+  ff = only
+
 [push]
   default = current
 
@@ -44,7 +47,7 @@
   cma = commit --amend
   cmae = commit --amend --no-edit
   co = checkout
-  pl = pull --ff-only
+  pl = pull
   ft = fetch
   mg = merge
   mb = merge --no-ff --no-commit
