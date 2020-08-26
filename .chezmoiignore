@@ -12,4 +12,4 @@ debian_installation.md
 terminfo
 install.sh
 update_jet_brains_mono.sh
-git_hooks
+git_template

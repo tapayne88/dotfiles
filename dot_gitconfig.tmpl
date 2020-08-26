@@ -8,9 +8,11 @@
 [includeIf "gitdir:work/"]
   path = .gitconfig-work
 
+[init]
+  templateDir = {{ .chezmoi.sourceDir }}/git_template
+
 [core]
   pager = less -x4
-  hooksPath = {{ .chezmoi.sourceDir }}/git_hooks
 
 [color]
   diff = auto
