@@ -33,6 +33,7 @@ Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'benmills/vimux'                       " Easily interact with tmux from vim
+Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test',
   \ { 'on': vimTestCommands }               " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
@@ -286,6 +287,10 @@ let g:lightline = {
 \ }
 \ }
 
+"" ==================== Scalpel ====================
+let g:ScalpelCommand = 'S'
+nmap <leader>e <Plug>(Scalpel)
+
 "" ==================== Coc-nvim ====================
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -325,7 +330,6 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Shows and hides invisible characters
-noremap <leader>e :set list!<CR>
 nnoremap <leader>- :resize -5<CR>
 nnoremap <leader>= :resize +5<CR>
 nnoremap <leader>. :vertical resize -20<CR>
