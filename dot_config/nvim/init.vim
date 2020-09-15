@@ -5,10 +5,16 @@ if has("nvim")
   let s:vimrc = expand('~/.config/nvim/init.vim')
 endif
 
+"" ==================== Pre Plug ====================
+" Only load vim-test if these commands are used
+let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
+
+" disable typescript polyglot (don't like it) - needs to be set before
+" vim-polyglot is loaded
+let g:polyglot_disabled = ['typescript']
+
 "" ==================== Vim Plug ====================
 call plug#begin(s:vim_path.'/plugged')
-
-let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 " Core Bundles
 Plug 'arcticicestudio/nord-vim'
@@ -87,9 +93,6 @@ let maplocalleader = "\\"
 " disable sleuth for markdown files due to slowdown caused in combination with
 " vim-polyglot
 autocmd FileType markdown let b:sleuth_automatic = 0
-
-" disable typescript polyglot (don't like it)
-let g:polyglot_disabled = ['typescript']
 
 " Automatically resize vim splits on resize
 autocmd VimResized * execute "normal! \<c-w>="
