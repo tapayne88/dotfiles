@@ -239,7 +239,7 @@ nmap <silent> t<C-w> :Jest --watch<CR>
 
 "" ==================== Lightline ====================
 let g:coc_status_warning_sign = "◆ "
-let g:coc_status_error_sign = "✗ "
+let g:coc_status_error_sign = "⨯ "
 
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
