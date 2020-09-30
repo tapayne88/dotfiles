@@ -238,28 +238,8 @@ nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
 nmap <silent> t<C-w> :Jest --watch<CR>
 
 "" ==================== Lightline ====================
-let g:lightline#ale#indicator_checking = ""
-let g:lightline#ale#indicator_warnings = "◆ "
-let g:lightline#ale#indicator_errors = "✗ "
-let g:lightline#ale#indicator_ok = "✔"
-
-function! LightLineCocStatusWarn() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  if get(info, 'warning', 0) || get(info, 'information', 0)
-    return printf(g:lightline#ale#indicator_warnings . '%d', (info['warning'] + info['information']))
-  endif
-  return ''
-endfunction
-
-function! LightLineCocStatusError() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  if get(info, 'error', 0)
-    return printf(g:lightline#ale#indicator_errors . '%d', info['error'])
-  endif
-  return ''
-endfunction
+let g:coc_status_warning_sign = "◆ "
+let g:coc_status_error_sign = "✗ "
 
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
@@ -273,15 +253,14 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetype', 'readonly'], ['cocstatuswarn', 'cocstatuserror']]
+\   'right': [['percentinfo', 'lineinfo'], ['filetype', 'readonly'], ['cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
-\   'cocstatuswarn': 'LightLineCocStatusWarn',
-\   'cocstatuserror': 'LightLineCocStatusError',
+\   'cocstatus': 'coc#status'
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
@@ -289,6 +268,8 @@ let g:lightline = {
 \   'cocstatuserror': 'error',
 \ }
 \ }
+
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 "" ==================== Scalpel ====================
 let g:ScalpelCommand = 'S'
