@@ -6,6 +6,11 @@
 .dircolors
 {{- end }}
 
+# Crostini / chrome os patches
+{{- if eq "pengiun" .chezmoi.hostname }}
+.config/zsh/functions/patch-crostini.zsh
+{{- end }}
+
 misc
 README.md
 debian_installation.md
