@@ -47,7 +47,6 @@ in
     inetutils
     jq
     mosh
-    neovim
     nix-zsh-completions
     nodejs
     openssh
@@ -62,4 +61,10 @@ in
     yarn
     zsh
   ];
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    withNodeJs = true;
+  };
 }
