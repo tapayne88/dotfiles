@@ -322,6 +322,10 @@ nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
 nnoremap <leader>gpl :Dispatch! git pull<CR>
 
+" Esc (C-[) to escape terminal insert mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <A-[> <Esc>
+
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
 endif
