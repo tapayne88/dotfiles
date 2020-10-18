@@ -6,9 +6,6 @@ if has("nvim")
 endif
 
 "" ==================== Pre Plug ====================
-" Only load vim-test if these commands are used
-let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
-
 " disable typescript polyglot (don't like it) - needs to be set before
 " vim-polyglot is loaded
 let g:polyglot_disabled = ['typescript']
@@ -38,10 +35,7 @@ Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
-Plug 'benmills/vimux'                       " Easily interact with tmux from vim
 Plug 'wincent/scalpel'                      " Easier find & replace
-Plug 'janko-m/vim-test',
-  \ { 'on': vimTestCommands }               " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'tweekmonster/startuptime.vim',
   \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
@@ -214,28 +208,13 @@ nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
 
 "" ==================== Coc ====================
-let g:coc_global_extensions = ['coc-eslint', 'coc-tslint', 'coc-prettier', 'coc-json', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-eslint', 'coc-tslint', 'coc-prettier', 'coc-json', 'coc-tsserver', 'coc-jest']
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
-"" ==================== Vimux ====================
-map <Leader>vp :VimuxPromptCommand<CR>
-
-"" ==================== Vim-test ====================
-let g:test#runner_commands = ['Jest']
-let g:test#strategy = "vimux"
-
-" Below needed for tests inside spec folder
-let g:test#javascript#jest#file_pattern = '\v((__tests__|spec)/.*|(spec|test))\.(js|jsx|coffee|ts|tsx)$'
-let g:test#javascript#jest#executable = "yarn jest"
-
-nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
-nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
-" nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
-nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
-nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
-nmap <silent> t<C-w> :Jest --watch<CR>
+nmap <silent> t<C-n> :call CocAction('runCommand', 'jest.singleTest')<CR>
+nmap <silent> t<C-f> :call CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
 
 "" ==================== Lightline ====================
 let g:coc_status_warning_sign = "◆ "
