@@ -133,6 +133,31 @@ set foldlevelstart=99   "start file with all folds opened
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
+"" ==================== vim-clap ====================
+" shadow was making background colors look very weird
+let g:clap_enable_background_shadow = v:false
+let g:clap_open_action = {
+\  'ctrl-t': 'tab split',
+\  'ctrl-s': 'split',
+\  'ctrl-v': 'vsplit'
+\ }
+let g:clap_provider_git_files_plus = {
+\ 'source': 'git ls-files && git ls-files --others --exclude-standard',
+\ 'sink': function('clap#provider#files#sink_impl'),
+\ 'sink*': function('clap#provider#files#sink_star_impl'),
+\ 'on_move': function('clap#provider#files#on_move_impl'),
+\ 'syntax': 'clap_files',
+\ 'enable_rooter': v:true,
+\ 'support_open_action': v:true
+\ }
+
+nnoremap <leader>l :Clap buffers<CR>
+nnoremap <leader>t :Clap git_files_plus<CR>
+nnoremap <leader>f :Clap grep2<CR>
+nnoremap <c-t> :Clap git_files_plus<CR>
+nnoremap <c-f> :Clap grep2<CR>
+nnoremap <leader>fw :Clap grep ++query=<cword><CR>
+
 "" ==================== FZF ====================
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
@@ -186,12 +211,12 @@ function! FindWord(word)
 endfunction
 
 
-nnoremap <leader>l :call MyBuffers()<CR>
-nnoremap <leader>t :call MyGitFiles()<CR>
-nnoremap <leader>f :FZFAg<CR>
-nnoremap <c-t> :call MyGitFiles()<CR>
-nnoremap <c-f> :FZFAg<CR>
-nnoremap <leader>fw :call FindWord(expand('<cword>'))<CR>
+" nnoremap <leader>l :call MyBuffers()<CR>
+" nnoremap <leader>t :call MyGitFiles()<CR>
+" nnoremap <leader>f :FZFAg<CR>
+" nnoremap <c-t> :call MyGitFiles()<CR>
+" nnoremap <c-f> :FZFAg<CR>
+" nnoremap <leader>fw :call FindWord(expand('<cword>'))<CR>
 
 "" ==================== Ack ====================
 let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
