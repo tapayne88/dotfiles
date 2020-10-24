@@ -47,6 +47,7 @@ Plug 'iamcco/markdown-preview.nvim',
 Plug 'rhysd/git-messenger.vim',
   \ { 'on': 'GitMessenger' }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 
 call plug#end()
 
