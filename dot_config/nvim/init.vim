@@ -82,6 +82,7 @@ set shiftwidth=2                "Determines indentation in normal mode (using '>
 set softtabstop=2               "Let backspace delete indent
 set expandtab                   "Expands tabs to spaces, better for formatting
 set spelllang=en                "Set vim's spell check language
+set termguicolors               "Better terminal color support in neovim
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -134,8 +135,6 @@ set foldlevelstart=99   "start file with all folds opened
 let g:netrw_liststyle = 3
 
 "" ==================== vim-clap ====================
-" shadow was making background colors look very weird
-let g:clap_enable_background_shadow = v:false
 let g:clap_open_action = {
 \  'ctrl-t': 'tab split',
 \  'ctrl-s': 'split',
@@ -209,7 +208,6 @@ function! FindWord(word)
 
   return fzf#vim#ag(a:word, fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
 endfunction
-
 
 " nnoremap <leader>l :call MyBuffers()<CR>
 " nnoremap <leader>t :call MyGitFiles()<CR>
