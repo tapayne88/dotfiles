@@ -7,7 +7,7 @@
 {{- end }}
 
 # Crostini / chrome os patches
-{{- if eq "pengiun" .chezmoi.hostname }}
+{{- if ne "penguin" .chezmoi.hostname }}
 .config/zsh/functions/patch-crostini.zsh
 {{- end }}
 
