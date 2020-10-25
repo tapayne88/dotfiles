@@ -107,19 +107,19 @@ let g:nord_uniform_diff_background = 1
 syntax enable
 colorscheme nord
 
-highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
-highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
+highlight Search guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
+highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
-highlight typescriptReserved cterm=italic ctermfg=blue
-highlight typescriptStatement cterm=italic ctermfg=blue
-highlight typescriptIdentifier cterm=italic
-highlight jsClassKeyword cterm=italic
-highlight jsExtendsKeyword cterm=italic
-highlight jsReturn cterm=italic
-highlight jsThis  cterm=italic
-highlight htmlArg cterm=italic
-highlight Comment cterm=italic
-highlight Type    cterm=italic
+highlight typescriptReserved gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptStatement gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptIdentifier gui=italic cterm=italic
+highlight jsClassKeyword gui=italic cterm=italic
+highlight jsExtendsKeyword gui=italic cterm=italic
+highlight jsReturn gui=italic cterm=italic
+highlight jsThis  gui=italic term=italic
+highlight htmlArg gui=italic term=italic
+highlight Comment gui=italic term=italic
+highlight Type    gui=italic term=italic
 
 highlight link gitmessengerHeader Identifier
 highlight link gitmessengerHash Comment
