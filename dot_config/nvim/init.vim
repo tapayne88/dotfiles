@@ -208,15 +208,6 @@ let g:signify_update_on_focusgained = 1
 nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
 
-"" ==================== Coc ====================
-let g:coc_global_extensions = ['coc-eslint', 'coc-tslint', 'coc-prettier', 'coc-json', 'coc-tsserver', 'coc-jest']
-
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-nmap <silent> t<C-n> :call CocAction('runCommand', 'jest.singleTest')<CR>
-nmap <silent> t<C-f> :call CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
-
 "" ==================== Lightline ====================
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
@@ -256,6 +247,21 @@ let g:ScalpelCommand = 'S'
 nmap <leader>e <Plug>(Scalpel)
 
 "" ==================== Coc-nvim ====================
+let g:coc_global_extensions = [
+\  'coc-eslint',
+\  'coc-tslint',
+\  'coc-prettier',
+\  'coc-json',
+\  'coc-tsserver',
+\  'coc-jest'
+\ ]
+
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
+nmap <silent> t<C-n> :call CocAction('runCommand', 'jest.singleTest')<CR>
+nmap <silent> t<C-f> :call CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
+
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
