@@ -27,10 +27,6 @@ Plug 'tpope/vim-dispatch',
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug '~/.nix-profile/share/vim-plugins/fzf'
-Plug 'junegunn/fzf.vim'                     " All things FZF
-Plug 'chengzeyi/fzf-preview.vim'            " Few utility FZF functions
-Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'           " TypeScript syntax highlighting
@@ -157,70 +153,6 @@ nnoremap <leader>f :Clap grep2<CR>
 nnoremap <c-t> :Clap git_files_plus<CR>
 nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
-
-"" ==================== FZF ====================
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-let g:fzf_preview_window = 'right:60%'
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-let g:fzf_action = {
-\  'ctrl-s': 'split',
-\  'ctrl-v': 'vsplit'
-\}
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment']
-  \ }
-
-function! MyGitFiles()
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  return fzf#run(fzf#wrap(fzf#vim#with_preview({
-  \ 'source': 'git ls-files && git ls-files --others --exclude-standard',
-  \ 'options': '--multi'
-  \ }, preview_window, '?')))
-endfunction
-
-function! MyBuffers()
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  " Deliberately not using fzf#wrap - caused issues when opening multiple files
-  " at startup
-  return fzf#vim#buffers(fzf#vim#with_preview({
-  \  "placeholder": "{1}", "options": ["-d", "\t"]
-  \  }, preview_window, '?'))
-endfunction
-
-function! FindWord(word)
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  return fzf#vim#ag(a:word, fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
-endfunction
-
-" nnoremap <leader>l :call MyBuffers()<CR>
-" nnoremap <leader>t :call MyGitFiles()<CR>
-" nnoremap <leader>f :FZFAg<CR>
-" nnoremap <c-t> :call MyGitFiles()<CR>
-" nnoremap <c-f> :FZFAg<CR>
-" nnoremap <leader>fw :call FindWord(expand('<cword>'))<CR>
-
-"" ==================== Ack ====================
-let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
-let g:ackhighlight = 1
-nnoremap <leader>ag :Ack!<CR>
 
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
