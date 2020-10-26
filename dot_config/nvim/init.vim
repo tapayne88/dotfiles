@@ -156,7 +156,7 @@ nnoremap <leader>t :Clap git_files_plus<CR>
 nnoremap <leader>f :Clap grep2<CR>
 nnoremap <c-t> :Clap git_files_plus<CR>
 nnoremap <c-f> :Clap grep2<CR>
-nnoremap <leader>fw :Clap grep ++query=<cword><CR>
+nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
 
 "" ==================== FZF ====================
 autocmd! FileType fzf
