@@ -35,6 +35,7 @@ Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'           " TypeScript syntax highlighting
 Plug 'peitalin/vim-jsx-typescript'          " TypeScript-react syntax highlighting
+Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
