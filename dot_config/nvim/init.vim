@@ -137,6 +137,9 @@ let g:clap_open_action = {
 \  'ctrl-s': 'split',
 \  'ctrl-v': 'vsplit'
 \ }
+" Below doesn't work with icons despite being a very close copy of internal
+" git_files provider - some custom handle I can't access allows icons support.
+" Should re-enable when I can access it
 let g:clap_provider_git_files_plus = {
 \ 'source': 'git ls-files && git ls-files --others --exclude-standard',
 \ 'sink': function('clap#provider#files#sink_impl'),
@@ -148,9 +151,9 @@ let g:clap_provider_git_files_plus = {
 \ }
 
 nnoremap <leader>l :Clap buffers<CR>
-nnoremap <leader>t :Clap git_files_plus<CR>
+nnoremap <leader>t :Clap git_files<CR>
 nnoremap <leader>f :Clap grep2<CR>
-nnoremap <c-t> :Clap git_files_plus<CR>
+nnoremap <c-t> :Clap git_files<CR>
 nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
 
