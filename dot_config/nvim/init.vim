@@ -22,8 +22,8 @@ Plug 'tpope/vim-characterize'               " Adds 'ga' command to show characte
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-Plug 'tpope/vim-dispatch',
-  \ { 'on': 'Dispatch' }                    " Async vim compiler plugins (used to run mocha test below)
+Plug 'tpope/vim-dispatch', {
+  \ 'on': 'Dispatch' }                      " Async vim compiler plugins (used to run mocha test below)
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
@@ -35,15 +35,18 @@ Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
-Plug 'tweekmonster/startuptime.vim',
-  \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
-Plug 'iamcco/markdown-preview.nvim',
-  \ { 'do': ':call mkdp#util#install()'
-  \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
-Plug 'rhysd/git-messenger.vim',
-  \ { 'on': 'GitMessenger' }
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+Plug 'liuchengxu/vim-clap', {
+  \ 'do': ':Clap install-binary!' }         " whizzy command-p launcher
+Plug 'tweekmonster/startuptime.vim', {
+  \ 'on': 'StartupTime' }                   " easier vim startup time profiling
+Plug 'iamcco/markdown-preview.nvim', {
+  \ 'do': ':call mkdp#util#install()',
+  \ 'for': 'markdown',
+  \ 'on': 'MarkdownPreview' }
+Plug 'rhysd/git-messenger.vim', {
+  \ 'on': 'GitMessenger' }
+Plug 'neoclide/coc.nvim', {
+  \ 'branch': 'release' }
 
 call plug#end()
 
