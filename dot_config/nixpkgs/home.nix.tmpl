@@ -9,6 +9,16 @@ let
       sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
   }) {};
 
+  {{- if eq "darwin" .chezmoi.os }}
+  darwinPkgs = with pkgs; [
+    coreutils
+    gnugrep
+    gnused
+  ];
+  {{- else }}
+  darwinPkgs = [];
+  {{- end }}
+
 in
 
 {
@@ -62,7 +72,7 @@ in
     wget
     yarn
     zsh
-  ];
+  ] ++ darwinPkgs;
 
   programs.neovim = {
     enable = true;

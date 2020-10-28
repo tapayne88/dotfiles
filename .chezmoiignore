@@ -1,9 +1,6 @@
 # If on MacOS, use BSD dircolors location (for gdircolors)
 {{- if eq "darwin" .chezmoi.os }}
-.dir_colors
 .local/share/fonts
-{{- else }}
-.dircolors
 {{- end }}
 
 # Crostini / chrome os patches
