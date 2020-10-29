@@ -213,6 +213,10 @@ nmap gH <plug>(signify-prev-hunk)
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
 
+function! FileTypeIcon()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
+endfunction
+
 let g:lightline = {
 \ 'colorscheme': 'nord_alt',
 \ 'separator': {
@@ -225,14 +229,15 @@ let g:lightline = {
 \ },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetype', 'readonly'], ['cocstatus']]
+\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
-\   'cocstatus': 'coc#status'
+\   'cocstatus': 'coc#status',
+\   'filetypeicon': 'FileTypeIcon',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
