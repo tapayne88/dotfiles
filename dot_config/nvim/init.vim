@@ -101,8 +101,10 @@ autocmd BufWinEnter *.* silent! loadview
 
 "" ==================== Colors ====================
 let g:nord_italic = 1
+let g:nord_italic_comments = 1
 let g:nord_underline = 1
 let g:nord_uniform_diff_background = 1
+let g:nord_cursor_line_number_background = 1
 
 syntax enable
 colorscheme nord
@@ -118,7 +120,6 @@ highlight jsExtendsKeyword gui=italic cterm=italic
 highlight jsReturn gui=italic cterm=italic
 highlight jsThis  gui=italic term=italic
 highlight htmlArg gui=italic term=italic
-highlight Comment gui=italic term=italic
 highlight Type    gui=italic term=italic
 
 highlight link gitmessengerHeader Identifier
