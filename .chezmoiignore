@@ -1,6 +1,5 @@
-# If on MacOS, use BSD dircolors location (for gdircolors)
 {{- if eq "darwin" .chezmoi.os }}
-.local/share/fonts
+.local/share
 {{- end }}
 
 # Crostini / chrome os patches
@@ -15,3 +14,6 @@ terminfo
 install.sh
 update_jet_brains_mono.sh
 git_template
+
+# Ignore icons with kitty config
+.config/kitty/icons

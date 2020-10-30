@@ -19,6 +19,15 @@ let
   darwinPkgs = [];
   {{- end }}
 
+  {{- if eq "penguin" .chezmoi.hostname }}
+  crostiniPkgs = with pkgs; [
+    kitty
+    mesa_drivers
+  ];
+  {{- else }}
+  crostiniPkgs = [];
+  {{- end }}
+
 in
 
 {
@@ -55,9 +64,6 @@ in
     htop
     inetutils
     jq
-    {{- if eq "penguin" .chezmoi.hostname }}
-    mesa_drivers
-    {{- end }}
     mosh
     nix-zsh-completions
     nodejs
@@ -75,7 +81,7 @@ in
     wget
     yarn
     zsh
-  ] ++ darwinPkgs;
+  ] ++ darwinPkgs ++ crostiniPkgs;
 
   programs.neovim = {
     enable = true;

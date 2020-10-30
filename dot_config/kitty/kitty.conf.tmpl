@@ -1,0 +1,47 @@
+# vi: filetype=conf
+#######
+# env #
+#######
+env TERM_EMU=kitty
+
+##########
+# Colors #
+##########
+include nord.conf
+
+#########
+# Fonts #
+#########
+font_family JetBrainsMono Nerd Font
+font_size   {{ .terminal_font_size }}
+
+#############
+# Behaviour #
+#############
+# Disable things like new tabs spawning
+clear_all_shortcuts                 yes
+macos_quit_when_last_window_closed  yes
+{{- if eq "darwin" .chezmoi.os }}
+hide_window_decorations             yes
+{{- end }}
+
+#####################
+# Keyboard Mappings #
+#####################
+# Allow font resizing
+map super+equal               change_font_size all +1.0
+map super+minus               change_font_size all -1.0
+# Renable copy after clearing all shortcuts
+map super+c                   copy_to_clipboard
+map ctrl+shift+c              copy_to_clipboard
+# Renable paste after clearing all shortcuts
+map super+v                   paste_from_clipboard
+map ctrl+shift+v              paste_from_clipboard
+# { to swap tmux tab
+map shift+super+LEFT_BRACKET  send_text all \x02\x70
+# } to swap tmux tab
+map shift+super+RIGHT_BRACKET send_text all \x02\x6E
+# Alt <- to jump back words (esc sequence)
+map alt+left                  send_text all \x1b\x62
+# Alt -> to jump forward words (esc sequence)
+map alt+right                 send_text all \x1b\x66

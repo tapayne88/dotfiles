@@ -216,6 +216,13 @@ let g:lightline = {
 \ }
 \ }
 
+if ($TERM_EMU == 'kitty')
+  let g:lightline.separator = { 'left': "", 'right': " " }
+  let g:lightline.subseparator = { 'left': '\\', 'right': '\\' }
+  let g:lightline.tabline_separator = { 'left': " ", 'right': "" }
+  let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
+endif
+
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 "" ==================== Scalpel ====================
