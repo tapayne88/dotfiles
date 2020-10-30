@@ -22,15 +22,11 @@ Plug 'tpope/vim-characterize'               " Adds 'ga' command to show characte
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
 Plug 'tpope/vim-eunuch'                     " Adds unix commands like ':Move' etc.
 Plug 'tpope/vim-surround'                   " Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-Plug 'tpope/vim-dispatch',
-  \ { 'on': 'Dispatch' }                    " Async vim compiler plugins (used to run mocha test below)
+Plug 'tpope/vim-dispatch', {
+  \ 'on': 'Dispatch' }                      " Async vim compiler plugins (used to run mocha test below)
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug '~/.nix-profile/share/vim-plugins/fzf'
-Plug 'junegunn/fzf.vim'                     " All things FZF
-Plug 'chengzeyi/fzf-preview.vim'            " Few utility FZF functions
-Plug 'mileszs/ack.vim'                      " ag searching
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'           " TypeScript syntax highlighting
@@ -39,14 +35,18 @@ Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
-Plug 'tweekmonster/startuptime.vim',
-  \ { 'on': 'StartupTime' }                 " easier vim startup time profiling
-Plug 'iamcco/markdown-preview.nvim',
-  \ { 'do': ':call mkdp#util#install()'
-  \ , 'for': 'markdown', 'on': 'MarkdownPreview' }
-Plug 'rhysd/git-messenger.vim',
-  \ { 'on': 'GitMessenger' }
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'liuchengxu/vim-clap', {
+  \ 'do': ':Clap install-binary!' }         " whizzy command-p launcher
+Plug 'tweekmonster/startuptime.vim', {
+  \ 'on': 'StartupTime' }                   " easier vim startup time profiling
+Plug 'iamcco/markdown-preview.nvim', {
+  \ 'do': ':call mkdp#util#install()',
+  \ 'for': 'markdown',
+  \ 'on': 'MarkdownPreview' }
+Plug 'rhysd/git-messenger.vim', {
+  \ 'on': 'GitMessenger' }
+Plug 'neoclide/coc.nvim', {
+  \ 'branch': 'release' }
 
 call plug#end()
 
@@ -71,6 +71,7 @@ set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set wildignorecase              "Ignore case when opening files
 set laststatus=2                "Always display the status line
+set showtabline=2               "Always show tabline
 set noswapfile                  "Disable swap files
 set autoread                    "Automatically read changes in the file
 set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
@@ -81,6 +82,7 @@ set shiftwidth=2                "Determines indentation in normal mode (using '>
 set softtabstop=2               "Let backspace delete indent
 set expandtab                   "Expands tabs to spaces, better for formatting
 set spelllang=en                "Set vim's spell check language
+set termguicolors               "Better terminal color support in neovim
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -99,25 +101,26 @@ autocmd BufWinEnter *.* silent! loadview
 
 "" ==================== Colors ====================
 let g:nord_italic = 1
+let g:nord_italic_comments = 1
 let g:nord_underline = 1
 let g:nord_uniform_diff_background = 1
+let g:nord_cursor_line_number_background = 1
 
 syntax enable
 colorscheme nord
 
-highlight Search guibg=Blue guifg=Black ctermbg=Blue ctermfg=Black
-highlight IncSearch guibg=Blue guifg=Black ctermbg=Green ctermfg=Black
+highlight Search guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
+highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
-highlight typescriptReserved cterm=italic ctermfg=blue
-highlight typescriptStatement cterm=italic ctermfg=blue
-highlight typescriptIdentifier cterm=italic
-highlight jsClassKeyword cterm=italic
-highlight jsExtendsKeyword cterm=italic
-highlight jsReturn cterm=italic
-highlight jsThis  cterm=italic
-highlight htmlArg cterm=italic
-highlight Comment cterm=italic
-highlight Type    cterm=italic
+highlight typescriptReserved gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptStatement gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptIdentifier gui=italic cterm=italic
+highlight jsClassKeyword gui=italic cterm=italic
+highlight jsExtendsKeyword gui=italic cterm=italic
+highlight jsReturn gui=italic cterm=italic
+highlight jsThis  gui=italic term=italic
+highlight htmlArg gui=italic term=italic
+highlight Type    gui=italic term=italic
 
 highlight link gitmessengerHeader Identifier
 highlight link gitmessengerHash Comment
@@ -132,70 +135,31 @@ set foldlevelstart=99   "start file with all folds opened
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
-"" ==================== FZF ====================
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-let g:fzf_preview_window = 'right:60%'
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-let g:fzf_action = {
+"" ==================== vim-clap ====================
+let g:clap_open_action = {
+\  'ctrl-t': 'tab split',
 \  'ctrl-s': 'split',
 \  'ctrl-v': 'vsplit'
-\}
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment']
-  \ }
+\ }
+" Below doesn't work with icons despite being a very close copy of internal
+" git_files provider - some custom handle I can't access allows icons support.
+" Should re-enable when I can access it
+let g:clap_provider_git_files_plus = {
+\ 'source': 'git ls-files && git ls-files --others --exclude-standard',
+\ 'sink': function('clap#provider#files#sink_impl'),
+\ 'sink*': function('clap#provider#files#sink_star_impl'),
+\ 'on_move': function('clap#provider#files#on_move_impl'),
+\ 'syntax': 'clap_files',
+\ 'enable_rooter': v:true,
+\ 'support_open_action': v:true
+\ }
 
-function! MyGitFiles()
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  return fzf#run(fzf#wrap(fzf#vim#with_preview({
-  \ 'source': 'git ls-files && git ls-files --others --exclude-standard',
-  \ 'options': '--multi'
-  \ }, preview_window, '?')))
-endfunction
-
-function! MyBuffers()
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  " Deliberately not using fzf#wrap - caused issues when opening multiple files
-  " at startup
-  return fzf#vim#buffers(fzf#vim#with_preview({
-  \  "placeholder": "{1}", "options": ["-d", "\t"]
-  \  }, preview_window, '?'))
-endfunction
-
-function! FindWord(word)
-  let preview_window = get(g:, 'fzf_preview_window', 'right')
-
-  return fzf#vim#ag(a:word, fzf#wrap(fzf#vim#with_preview({}, preview_window, '?')))
-endfunction
-
-
-nnoremap <leader>l :call MyBuffers()<CR>
-nnoremap <leader>t :call MyGitFiles()<CR>
-nnoremap <leader>f :FZFAg<CR>
-nnoremap <c-t> :call MyGitFiles()<CR>
-nnoremap <c-f> :FZFAg<CR>
-nnoremap <leader>fw :call FindWord(expand('<cword>'))<CR>
-
-"" ==================== Ack ====================
-let g:ackprg = 'ag --smart-case --word-regexp --vimgrep'
-let g:ackhighlight = 1
-nnoremap <leader>ag :Ack!<CR>
+nnoremap <leader>l :Clap buffers<CR>
+nnoremap <leader>t :Clap git_files<CR>
+nnoremap <leader>f :Clap grep2<CR>
+nnoremap <c-t> :Clap git_files<CR>
+nnoremap <c-f> :Clap grep2<CR>
+nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
 
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
@@ -217,22 +181,24 @@ function! FileTypeIcon()
   return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
 endfunction
 
+function! Git_branch() abort
+  if fugitive#head() !=# ''
+    return  fugitive#head() . "  "
+  else
+    return "\uf468"
+  endif
+endfunction
+
 let g:lightline = {
-\ 'colorscheme': 'nord_alt',
-\ 'separator': {
-\   'left': '❮',
-\   'right': '❯',
-\ },
-\ 'tabline_separator': {
-\   'left': '',
-\   'right': '',
-\ },
+\ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
+\   'vim_logo': "\ue7c5 ",
+\   'git_branch': '%{Git_branch()}',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
@@ -243,6 +209,10 @@ let g:lightline = {
 \   'readonly': 'error',
 \   'cocstatuswarn': 'warning',
 \   'cocstatuserror': 'error',
+\ },
+\ 'tabline': {
+\   'left': [['vim_logo'], ['tabs']],
+\   'right': [['git_branch']]
 \ }
 \ }
 
