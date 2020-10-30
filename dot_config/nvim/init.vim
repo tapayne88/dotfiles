@@ -242,15 +242,7 @@ function! FileTypeIcon()
 endfunction
 
 let g:lightline = {
-\ 'colorscheme': 'nord_alt',
-\ 'separator': {
-\   'left': '❮',
-\   'right': '❯',
-\ },
-\ 'tabline_separator': {
-\   'left': '',
-\   'right': '',
-\ },
+\ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
