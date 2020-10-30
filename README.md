@@ -26,9 +26,14 @@ I use chezmoi to put all my dotfiles into place and make them work across differ
 
 I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage my required packages. Things like neovim, tmux, git, etc. all get installed using nix and are configured by [code](./dot_config/nixpkgs/home.nix.tmpl).
 
-## Terminal
+## Terminals
 
-Terminal of choice is [Alacritty](https://github.com/alacritty/alacritty) but Windows Terminal seems good too.
+| Terminal                                                  | Tested OS                                                               | Managed config | Notes                                                                                                                                                            |
+|-----------------------------------------------------------|-------------------------------------------------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Alacritty](https://github.com/alacritty/alacritty)       | <ul><li>MacOS</li><li>Chrome OS</li><li>Linux</li><li>Windows</li></ul> | Yes            | <ul><li>GPU accelerated</li><li>Very slim feature set (needs tmux)</li><li>Doesn't support ligatures</li><li>Doesn't support powerline fonts very well</li></ul> |
+| [Kitty](https://sw.kovidgoyal.net/kitty/)                 | <ul><li>MacOS</li><li>Chrome OS</li></ul>                               | Yes            | <ul><li>GPU accelerated</li><li>Supports ligatures</li><li>Supports powerline fonts well</li></ul>                                                               |
+| [Windows Terminal](https://github.com/microsoft/terminal) | <ul><li>Windows</li></ul>                                               | No             | <ul><li>Works well on windows</li></ul>                                                                                                                          |
+
 
 ## Colour scheme
 
