@@ -71,6 +71,7 @@ set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set wildignorecase              "Ignore case when opening files
 set laststatus=2                "Always display the status line
+set showtabline=2               "Always show tabline
 set noswapfile                  "Disable swap files
 set autoread                    "Automatically read changes in the file
 set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
@@ -180,6 +181,14 @@ function! FileTypeIcon()
   return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
 endfunction
 
+function! Git_branch() abort
+  if fugitive#head() !=# ''
+    return  fugitive#head() . "  "
+  else
+    return "\uf468"
+  endif
+endfunction
+
 let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
@@ -188,6 +197,8 @@ let g:lightline = {
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
+\   'vim_logo': "\ue7c5 ",
+\   'git_branch': '%{Git_branch()}',
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
@@ -198,6 +209,10 @@ let g:lightline = {
 \   'readonly': 'error',
 \   'cocstatuswarn': 'warning',
 \   'cocstatuserror': 'error',
+\ },
+\ 'tabline': {
+\   'left': [['vim_logo'], ['tabs']],
+\   'right': [['git_branch']]
 \ }
 \ }
 
