@@ -191,6 +191,10 @@ endfunction
 
 let g:lightline = {
 \ 'colorscheme': 'nord',
+\ 'separator': { 'left': "", 'right': " " },
+\ 'subseparator': { 'left': '\\', 'right': '\\' },
+\ 'tabline_separator': { 'left': " ", 'right': "" },
+\ 'tabline_subseparator': { 'left': "/", 'right': "/" },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
