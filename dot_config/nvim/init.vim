@@ -191,10 +191,6 @@ endfunction
 
 let g:lightline = {
 \ 'colorscheme': 'nord',
-\ 'separator': { 'left': "", 'right': " " },
-\ 'subseparator': { 'left': '\\', 'right': '\\' },
-\ 'tabline_separator': { 'left': " ", 'right': "" },
-\ 'tabline_subseparator': { 'left': "/", 'right': "/" },
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
 \   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
@@ -219,6 +215,13 @@ let g:lightline = {
 \   'right': [['git_branch']]
 \ }
 \ }
+
+if ($TERM_EMU == 'kitty')
+  let g:lightline.separator = { 'left': "", 'right': " " }
+  let g:lightline.subseparator = { 'left': '\\', 'right': '\\' }
+  let g:lightline.tabline_separator = { 'left': " ", 'right': "" }
+  let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
+endif
 
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
