@@ -1,3 +1,4 @@
+# vi: filetype=conf
 #######
 # env #
 #######
@@ -12,11 +13,24 @@ include nord.conf
 # Fonts #
 #########
 font_family JetBrainsMono Nerd Font
-font_size   13
+font_size   {{ .terminal_font_size }}
+
+#############
+# Behaviour #
+#############
+# Disable things like new tabs spawning
+clear_all_shortcuts                 yes
+macos_quit_when_last_window_closed  yes
 
 #####################
 # Keyboard Mappings #
 #####################
+# Renable copy after clearing all shortcuts
+map super+c                   copy_to_clipboard
+map ctrl+shift+c              copy_to_clipboard
+# Renable paste after clearing all shortcuts
+map super+v                   paste_from_clipboard
+map ctrl+shift+v              paste_from_clipboard
 # { to swap tmux tab
 map shift+super+LEFT_BRACKET  send_text all \x02\x70
 # } to swap tmux tab
