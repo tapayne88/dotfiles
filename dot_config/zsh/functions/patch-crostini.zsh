@@ -1,4 +1,4 @@
-function patch-alacritty {
+function patch-opengl {
   sudo mkdir -p /run/opengl-driver
   sudo ln -s `nix eval --raw nixpkgs.mesa_drivers.outPath`/lib /run/opengl-driver/lib
 }
