@@ -21,10 +21,14 @@ font_size   {{ .terminal_font_size }}
 # Disable things like new tabs spawning
 clear_all_shortcuts                 yes
 macos_quit_when_last_window_closed  yes
+hide_window_decorations             yes
 
 #####################
 # Keyboard Mappings #
 #####################
+# Allow font resizing
+map super+equal               change_font_size all +1.0
+map super+minus               change_font_size all -1.0
 # Renable copy after clearing all shortcuts
 map super+c                   copy_to_clipboard
 map ctrl+shift+c              copy_to_clipboard
