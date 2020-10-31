@@ -12,7 +12,7 @@ include nord.conf
 #########
 # Fonts #
 #########
-font_family JetBrainsMono Nerd Font
+font_family {{ default "JetBrainsMono Nerd Font" .terminal_font }}
 font_size   {{ .terminal_font_size }}
 
 #############
