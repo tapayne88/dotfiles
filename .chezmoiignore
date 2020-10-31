@@ -4,7 +4,7 @@
 
 # Crostini / chrome os patches
 {{- if ne "penguin" .chezmoi.hostname }}
-.config/zsh/functions/patch-crostini.zsh
+.config/zsh/functions/crostini.zsh
 {{- end }}
 
 # Ignore windows terminal config on anything not windows
