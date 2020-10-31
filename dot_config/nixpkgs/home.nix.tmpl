@@ -21,6 +21,7 @@ let
 
   {{- if eq "penguin" .chezmoi.hostname }}
   crostiniPkgs = with pkgs; [
+    alacritty
     kitty
     mesa_drivers
   ];
