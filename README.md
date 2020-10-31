@@ -12,7 +12,7 @@ curl -sfL https://git.io/JvlgU | sh
 git clone https://github.com/tapayne88/dotfiles
 ```
 
-For debian specific setup guide, follow [this](./debian_installation.md).
+For the full setup guide, follow [this](./installation_guide.md).
 
 ## [Chezmoi](https://www.chezmoi.io/)
 

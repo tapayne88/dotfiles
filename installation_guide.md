@@ -1,6 +1,6 @@
-# Debian Installation
+# Installation Guide
 
-## 1. Update and install things
+## 1. Update and install things (Debian only)
 
 ```bash
 sudo apt update
@@ -12,7 +12,7 @@ sudo apt upgrade
 sudo apt install curl xz-utils liburi-encode-perl
 ```
 
-## 2. Locale
+## 2. Locale (Debian only)
 
 Reconfigure locale to include en_GB.
 
@@ -27,39 +27,28 @@ sudo dpkg-reconfigure locales
 - [nix](https://nixos.org/download.html)
 - [home-manager](https://github.com/nix-community/home-manager)
 
-Update `~/.config/nixpkgs/home.nix` with the following
-
-```nix
-{
-  # Fix I/O error when writing XML
-  xdg.mime.enable = false;
-
-  # Basic packages to setup the rest
-  home.packages = [
-    pkgs.chezmoi
-    pkgs.git
-    pkgs.openssh
-  ];
-}
-```
-
-```bash
-home-manager switch
-```
-
 ## 4. Generate ssh key
 
 Generate ssh key and upload to github
 
 ```bash
-ssh-keygen -C <os-name>
+ssh-keygen -C `hostname`
 ```
 
 ## 4. Install dotfiles
 
 See [readme](./README.md#installation) for installation guide.
 
-## 5. Setup terminfo
+## 5. Setup shell
+
+Add nix zsh to allowed shells and change shell.
+
+```bash
+which zsh | sudo tee --append /etc/shells
+chsh -s `which zsh`
+```
+
+## 6. Setup terminfo
 
 Dotfiles includes tmux terminfo which needs installing. Likely want to `sudo tic` the terminfo so they are accessible to all system users (like root).
 
