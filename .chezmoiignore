@@ -7,6 +7,11 @@
 .config/zsh/functions/patch-crostini.zsh
 {{- end }}
 
+# Ignore windows terminal config on anything not windows
+{{- if (not (regexMatch "-microsoft-" .chezmoi.kernel.osrelease)) }}
+.config/windows_terminal
+{{- end }}
+
 misc
 README.md
 debian_installation.md
