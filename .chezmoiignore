@@ -10,6 +10,7 @@
 # Ignore windows terminal config on anything not windows
 {{- if (not (regexMatch "-microsoft-" .chezmoi.kernel.osrelease)) }}
 .config/windows_terminal
+.config/zsh/functions/wsl.zsh
 {{- end }}
 
 misc
