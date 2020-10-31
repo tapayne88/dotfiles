@@ -17,3 +17,6 @@ git_template
 
 # Ignore icons with kitty config
 .config/kitty/icons
+
+# Ignore window font folder
+.local/share/fonts/windows
