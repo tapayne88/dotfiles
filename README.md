@@ -50,14 +50,29 @@ asdf plugin-add yarn https://github.com/twuni/asdf-yarn
 
 ## Fonts
 
-To get ligature/italic font support there are a number of steps.
-- source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it
-  - dotfiles includes JetBrains Mono font for linux, just need to run
-  ```shell
-  sudo fc-cache -f -v
-  ```
-- ensure terminal is configured for italic fonts (iterm2 needs a box checking)
-- configure new terminfo to ensure correct escape characters are used
+To get ligature/italic font support there are a number of steps. You'll want to source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it. If you want icons you'll probably want the [Nerd Fonts](https://www.nerdfonts.com/font-downloads) version.
+
+### Installation
+
+#### Linux
+
+- Ensure `chezmoi` has applied the fonts to `~/.local/share/fonts`
+- Force the font cache to reload
+```shell
+sudo fc-cache -f -v
+```
+- Configure new terminfo to ensure correct escape characters are used
+
+#### MacOS
+
+- Double click and install each font in [here](./dot_local/share/fonts)
+- Configure new terminfo to ensure correct escape characters are used
+
+#### Windows
+
+- Double click and install each font in [here](./dot_local/share/fonts/windows)
+- Windows Terminal doesn't support italics
+- Configure new terminfo to ensure correct escape characters are used
 
 *N.B.* As of writing this alacritty does not support ligatures.
 
