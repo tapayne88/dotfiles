@@ -25,7 +25,7 @@ sudo dpkg-reconfigure locales
 ## 3. Install nix and home-manager
 
 - [nix](https://nixos.org/download.html)
-- [home-manager](https://github.com/rycee/home-manager)
+- [home-manager](https://github.com/nix-community/home-manager)
 
 Update `~/.config/nixpkgs/home.nix` with the following
 
