@@ -20,6 +20,7 @@ terminfo
 install.sh
 update_jet_brains_mono.sh
 git_template
+chezmoi-schema.json
 
 # Ignore icons with kitty config
 .config/kitty/icons

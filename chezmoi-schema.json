@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "osType": {
+          "type": "string",
+          "enum": ["macOS", "crotini", "wsl"]
+        },
+        "email": {
+          "type": "object",
+          "properties": {
+            "work": {
+              "type": "string"
+            },
+            "personal": {
+              "type": "string"
+            }
+          },
+          "required": ["work", "personal"]
+        },
+        "terminal_font": {
+          "type": "string"
+        },
+        "terminal_font_size": {
+          "type": "number"
+        }
+      },
+      "required": ["osType", "email", "terminal_font", "terminal_font_size"]
+    }
+  }
+}
