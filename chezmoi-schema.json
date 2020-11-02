@@ -4,9 +4,9 @@
     "data": {
       "type": "object",
       "properties": {
-        "osType": {
+        "ostype": {
           "type": "string",
-          "enum": ["macOS", "crotini", "wsl"],
+          "enum": ["macOS", "crostini", "wsl"],
           "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
         "email": {
@@ -30,7 +30,7 @@
           "description": "Font size to use in terminal, JetBrains Mono recommends 13"
         }
       },
-      "required": ["osType", "email", "terminal_font", "terminal_font_size"]
+      "required": ["ostype", "email", "terminal_font", "terminal_font_size"]
     }
   }
 }
