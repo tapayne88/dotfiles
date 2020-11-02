@@ -10,6 +10,7 @@ function opsignin {
   sourceOPSession
   if [[ ! -e $OP_TMUX_TOKEN_FILE ]]; then
     op signin my --output=raw | tee $OP_TMUX_TOKEN_FILE
+    chmod 0600 $OP_TMUX_TOKEN_FILE
     sourceOPSession
   fi
 }
