@@ -9,7 +9,7 @@ let
       sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
   }) {};
 
-  {{- if eq "darwin" .chezmoi.os }}
+  {{- if eq "macOS" .ostype }}
   darwinPkgs = with pkgs; [
     coreutils
     gnugrep
@@ -19,7 +19,7 @@ let
   darwinPkgs = [];
   {{- end }}
 
-  {{- if eq "penguin" .chezmoi.hostname }}
+  {{- if eq "crostini" .ostype }}
   crostiniPkgs = with pkgs; [
     alacritty
     kitty
@@ -50,7 +50,7 @@ in
   # changes in each release.
   home.stateVersion = "20.09";
 
-  {{- if ne "darwin" .chezmoi.os }}
+  {{- if ne "macOS" .ostype }}
   # Fix I/O error with XML write - root cause unknown
   xdg.mime.enable = false;
   {{- end }}

@@ -1,14 +1,14 @@
-{{- if eq "darwin" .chezmoi.os }}
+{{- if eq "macOS" .ostype }}
 .local/share
 {{- end }}
 
 # Crostini / chrome os patches
-{{- if ne "penguin" .chezmoi.hostname }}
+{{- if ne "crostini" .ostype }}
 .config/zsh/functions/crostini.zsh
 {{- end }}
 
 # Ignore windows terminal config on anything not windows
-{{- if (not (regexMatch "-microsoft-" .chezmoi.kernel.osrelease)) }}
+{{- if ne "wsl" .ostype }}
 .config/windows_terminal
 .config/zsh/functions/wsl.zsh
 {{- end }}
