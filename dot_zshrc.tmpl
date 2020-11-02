@@ -83,7 +83,7 @@ export ZSH_TMUX_AUTOCONNECT="false"
 # Setup ls colors
 eval `dircolors $HOME/.dir_colors`
 
-source {{ .antigen_path }}
+source ~/.nix-profile/share/antigen/antigen.zsh
 
 # moved ahead of oh-my-zsh, need aliases to run ahead of it
 antigen bundle $ZSH_HOME/completions
