@@ -20,6 +20,8 @@ For the full setup guide, follow [this](./installation_guide.md).
 
 I use chezmoi to put all my dotfiles into place and make them work across different OS's.
 
+JSON schema for `~/.config/chezmoi/chezmoi.json` is available [here](./chezmoi-schema.json).
+
 ## [Nix](https://nixos.org/)
 
 > Nix is a powerful package manager for Linux and other Unix systems that makes package management reliable and reproducible. Share your development and build environments across different machines.
