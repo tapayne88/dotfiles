@@ -6,7 +6,8 @@
       "properties": {
         "osType": {
           "type": "string",
-          "enum": ["macOS", "crotini", "wsl"]
+          "enum": ["macOS", "crotini", "wsl"],
+          "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
         "email": {
           "type": "object",
@@ -21,10 +22,12 @@
           "required": ["work", "personal"]
         },
         "terminal_font": {
-          "type": "string"
+          "type": "string",
+          "description": "Override default font name 'JetBrainsMono Nerd Font', specify empty string to use default"
         },
         "terminal_font_size": {
-          "type": "number"
+          "type": "number",
+          "description": "Font size to use in terminal, JetBrains Mono recommends 13"
         }
       },
       "required": ["osType", "email", "terminal_font", "terminal_font_size"]
