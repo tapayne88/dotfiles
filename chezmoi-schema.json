@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
     "data": {
@@ -30,6 +31,7 @@
           "description": "Font size to use in terminal, JetBrains Mono recommends 13"
         }
       },
+      "additionalProperties": false,
       "required": ["ostype", "email", "terminal_font", "terminal_font_size"]
     }
   }
