@@ -26,11 +26,13 @@
         },
         "terminal_font": {
           "type": "string",
-          "description": "Override default font name 'JetBrainsMono Nerd Font', specify empty string to use default"
+          "description": "Terminal font to use",
+          "default": "JetBrainsMono Nerd Font"
         },
         "terminal_font_size": {
           "type": "number",
-          "description": "Font size to use in terminal, JetBrains Mono recommends 13"
+          "description": "Font size to use in terminal, JetBrains Mono recommends 13",
+          "default": 13
         }
       },
       "additionalProperties": false,
