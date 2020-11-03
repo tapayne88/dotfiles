@@ -14,9 +14,10 @@ sudo apt install curl xz-utils liburi-encode-perl
 
 ## 2. Locale (Debian only)
 
-Reconfigure locale to include en_GB.
+Reconfigure locale to include en_GB ([source](https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian)).
 
 ```bash
+sudo locale-gen en_GB.UTF-8
 sudo dpkg-reconfigure locales
 
 # Select both en_GB.UTF8 and en_US.UTF8 - default to GB

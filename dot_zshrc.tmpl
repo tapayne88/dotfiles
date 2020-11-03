@@ -44,6 +44,9 @@ done
 {{- if ne "macOS" .ostype }}
 # Fix nix locale errors
 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+export LANGUAGE=en_GB.UTF-8
+export LANG=en_GB.UTF-8
+export LC_ALL=en_GB.UTF-8
 {{- end }}
 
 # Disables scroll lock shortcut (Ctrl+s)
