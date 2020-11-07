@@ -13,6 +13,7 @@
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
+.prettierrc.js
 misc
 README.md
 installation_guide.md
