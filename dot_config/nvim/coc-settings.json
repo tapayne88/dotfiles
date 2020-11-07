@@ -1,6 +1,14 @@
 {
   "suggest.maxCompleteItemCount": 20,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "json", "css", "Markdown"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "css",
+    "Markdown"
+  ],
   "coc.preferences.jumpCommand": "split",
   "coc.preferences.hoverTarget": "float",
   "diagnostic.messageTarget": "float",
@@ -11,7 +19,12 @@
   "signature.target": "float",
   "eslint.packageManager": "yarn",
   "eslint.autoFixOnSave": true,
-  "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "prettier.requireConfig": true,
   "tsserver.enableJavascript": true
 }
