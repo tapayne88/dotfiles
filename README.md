@@ -31,11 +31,10 @@ I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage 
 ## Terminals
 
 | Terminal                                                  | Tested OS                                                               | Managed config | Notes                                                                                                                                                            |
-|-----------------------------------------------------------|-------------------------------------------------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------------------------------------------- | ----------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Alacritty](https://github.com/alacritty/alacritty)       | <ul><li>MacOS</li><li>Chrome OS</li><li>Linux</li><li>Windows</li></ul> | Yes            | <ul><li>GPU accelerated</li><li>Very slim feature set (needs tmux)</li><li>Doesn't support ligatures</li><li>Doesn't support powerline fonts very well</li></ul> |
 | [Kitty](https://sw.kovidgoyal.net/kitty/)                 | <ul><li>MacOS</li><li>Chrome OS</li></ul>                               | Yes            | <ul><li>GPU accelerated</li><li>Supports ligatures</li><li>Supports powerline fonts well</li></ul>                                                               |
 | [Windows Terminal](https://github.com/microsoft/terminal) | <ul><li>Windows</li></ul>                                               | No             | <ul><li>Works well on windows</li></ul>                                                                                                                          |
-
 
 ## Colour scheme
 
@@ -60,9 +59,11 @@ To get ligature/italic font support there are a number of steps. You'll want to 
 
 - Ensure `chezmoi` has applied the fonts to `~/.local/share/fonts`
 - Force the font cache to reload
+
 ```shell
 sudo fc-cache -f -v
 ```
+
 - Configure new terminfo to ensure correct escape characters are used
 
 #### MacOS
@@ -76,7 +77,7 @@ sudo fc-cache -f -v
 - Windows Terminal doesn't support italics
 - Configure new terminfo to ensure correct escape characters are used
 
-*N.B.* As of writing this alacritty does not support ligatures.
+_N.B._ As of writing this alacritty does not support ligatures.
 
 ## Terminfo
 
@@ -84,7 +85,7 @@ Likely want to `sudo tic` the terminfo so they are accessible to all system user
 
 From `man tic`
 
-> Secondly,  if  tic  cannot write in /etc/terminfo or the location specified using your TERMINFO variable, it looks for the directory $HOME/.terminfo (or hashed database $HOME/.terminfo.db); if that location exists, the  entry  is  placed there.
+> Secondly, if tic cannot write in /etc/terminfo or the location specified using your TERMINFO variable, it looks for the directory $HOME/.terminfo (or hashed database $HOME/.terminfo.db); if that location exists, the entry is placed there.
 
 ```bash
 sudo tic terminfo/tmux.terminfo
