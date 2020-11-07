@@ -6,6 +6,9 @@ if has("nvim")
 endif
 
 "" ==================== Pre Plug ====================
+" Only load vim-test if these commands are used
+let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
+
 " disable typescript polyglot (don't like it) - needs to be set before
 " vim-polyglot is loaded
 let g:polyglot_disabled = ['typescript']
@@ -34,6 +37,8 @@ Plug 'peitalin/vim-jsx-typescript'          " TypeScript-react syntax highlighti
 Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'wincent/scalpel'                      " Easier find & replace
+Plug 'janko-m/vim-test', {
+  \ 'on': vimTestCommands }                 " easy testing
 Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'liuchengxu/vim-clap', {
   \ 'do': ':Clap install-binary!' }         " whizzy command-p launcher
@@ -173,6 +178,19 @@ let g:signify_update_on_focusgained = 1
 nmap gh <plug>(signify-next-hunk)
 nmap gH <plug>(signify-prev-hunk)
 
+"" ==================== Vim-test ====================
+let g:test#runner_commands = ['Jest']
+let g:test#strategy = "neovim"
+let test#neovim#term_position = "vert botright"
+
+" Below needed for tests inside spec folder
+let g:test#javascript#jest#file_pattern = '\v((__tests__|spec)/.*|(spec|test))\.(js|jsx|coffee|ts|tsx)$'
+let g:test#javascript#jest#executable = "yarn jest --watch"
+
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-w> :Jest --watch<CR>
+
 "" ==================== Lightline ====================
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
@@ -236,15 +254,11 @@ let g:coc_global_extensions = [
 \  'coc-prettier',
 \  'coc-json',
 \  'coc-tsserver',
-\  'coc-jest',
 \  'coc-markdownlint'
 \ ]
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-nmap <silent> t<C-n> :call CocAction('runCommand', 'jest.singleTest')<CR>
-nmap <silent> t<C-f> :call CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
