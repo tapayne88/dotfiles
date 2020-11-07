@@ -236,7 +236,8 @@ let g:coc_global_extensions = [
 \  'coc-prettier',
 \  'coc-json',
 \  'coc-tsserver',
-\  'coc-jest'
+\  'coc-jest',
+\  'coc-markdownlint'
 \ ]
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"

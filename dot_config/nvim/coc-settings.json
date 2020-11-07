@@ -26,5 +26,9 @@
     "typescriptreact"
   ],
   "prettier.requireConfig": true,
-  "tsserver.enableJavascript": true
+  "tsserver.enableJavascript": true,
+  "markdownlint.config": {
+    "line_length": false,
+    "no-inline-html": false
+  }
 }
