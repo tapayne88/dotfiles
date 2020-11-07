@@ -7,7 +7,7 @@
     "typescriptreact",
     "json",
     "css",
-    "Markdown"
+    "markdown"
   ],
   "coc.preferences.jumpCommand": "split",
   "coc.preferences.hoverTarget": "float",
