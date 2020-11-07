@@ -100,6 +100,15 @@ Example `~/.ssh/config`
 Include ~/git/dotfiles/misc/ssh_config
 ```
 
+## Windows Utilities
+
+| Utility                                                 | Description                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [scoop](https://scoop.sh/)                              | Windows version of [homebrew](https://brew.sh/)                                      |
+| [xdg-open-wsl](https://github.com/cpbotha/xdg-open-wsl) | Make things like vim's `MarkdownPreview` work                                        |
+| [sharpkeys](https://github.com/randyrants/sharpkeys)    | Remap individual keys - useful for HHKB on windows without messing with dip switches |
+| [PowerToys](https://github.com/microsoft/PowerToys)     | Nice tools, good for keyboard chord remapping                                        |
+
 ## Troubleshooting
 
 ### CoC Slow
