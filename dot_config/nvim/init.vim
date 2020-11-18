@@ -47,11 +47,11 @@ Plug 'tweekmonster/startuptime.vim', {
 Plug 'iamcco/markdown-preview.nvim', {
   \ 'do': ':call mkdp#util#install()',
   \ 'for': 'markdown',
-  \ 'on': 'MarkdownPreview' }
+  \ 'on': 'MarkdownPreview' }               " Markdown previewing commands
 Plug 'rhysd/git-messenger.vim', {
-  \ 'on': 'GitMessenger' }
+  \ 'on': 'GitMessenger' }                  " Git blame for line with commit message
 Plug 'neoclide/coc.nvim', {
-  \ 'branch': 'release' }
+  \ 'branch': 'release' }                   " LSPish integration
 
 call plug#end()
 
