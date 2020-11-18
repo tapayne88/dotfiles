@@ -39,7 +39,6 @@ Plug 'dominikduda/vim_current_word'         " highlight other occurrences of wor
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
-Plug 'terryma/vim-multiple-cursors'         " multiple cursors
 Plug 'liuchengxu/vim-clap', {
   \ 'do': ':Clap install-binary!' }         " whizzy command-p launcher
 Plug 'tweekmonster/startuptime.vim', {
