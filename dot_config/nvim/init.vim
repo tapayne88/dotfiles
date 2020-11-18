@@ -52,6 +52,7 @@ Plug 'rhysd/git-messenger.vim', {
   \ 'on': 'GitMessenger' }                  " Git blame for line with commit message
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
+Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
 
 call plug#end()
 
