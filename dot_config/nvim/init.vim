@@ -35,7 +35,6 @@ Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'leafgarland/typescript-vim'           " TypeScript syntax highlighting
 Plug 'peitalin/vim-jsx-typescript'          " TypeScript-react syntax highlighting
 Plug 'ryanoasis/vim-devicons'               " Filetype icons
-Plug 'dominikduda/vim_current_word'         " highlight other occurrences of word
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
@@ -281,10 +280,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-
-"" ==================== vim_current_word ====================
-let g:vim_current_word#highlight_current_word = 0
-let g:vim_current_word#highlight_twins = 1
 
 "" ==================== Fugitive ====================
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
