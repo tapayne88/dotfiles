@@ -9,10 +9,6 @@ endif
 " Only load vim-test if these commands are used
 let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
-" disable typescript polyglot (don't like it) - needs to be set before
-" vim-polyglot is loaded
-let g:polyglot_disabled = ['typescript']
-
 "" ==================== Vim Plug ====================
 call plug#begin(s:vim_path.'/plugged')
 
@@ -32,8 +28,6 @@ Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
-Plug 'leafgarland/typescript-vim'           " TypeScript syntax highlighting
-Plug 'peitalin/vim-jsx-typescript'          " TypeScript-react syntax highlighting
 Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
@@ -116,9 +110,12 @@ colorscheme nord
 highlight Search guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
 highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
-highlight typescriptReserved gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptStatement gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptIdentifier gui=italic cterm=italic
+highlight typescriptImport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptExport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptImportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptExportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptStatementKeyword  gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+
 highlight jsClassKeyword gui=italic cterm=italic
 highlight jsExtendsKeyword gui=italic cterm=italic
 highlight jsReturn gui=italic cterm=italic
