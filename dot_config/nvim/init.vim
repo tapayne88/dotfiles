@@ -107,7 +107,7 @@ let g:nord_cursor_line_number_background = 1
 syntax enable
 colorscheme nord
 
-highlight Search guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
+highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
 highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
 highlight typescriptImport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
@@ -116,12 +116,12 @@ highlight typescriptImportType        gui=italic guifg=#81A1C1 cterm=italic cter
 highlight typescriptExportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
 highlight typescriptStatementKeyword  gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
 
-highlight jsClassKeyword gui=italic cterm=italic
-highlight jsExtendsKeyword gui=italic cterm=italic
-highlight jsReturn gui=italic cterm=italic
-highlight jsThis  gui=italic term=italic
-highlight htmlArg gui=italic term=italic
-highlight Type    gui=italic term=italic
+highlight jsClassKeyword    gui=italic cterm=italic
+highlight jsExtendsKeyword  gui=italic cterm=italic
+highlight jsReturn          gui=italic cterm=italic
+highlight jsThis            gui=italic term=italic
+highlight htmlArg           gui=italic term=italic
+highlight Type              gui=italic term=italic
 
 highlight link gitmessengerHeader Identifier
 highlight link gitmessengerHash Comment
