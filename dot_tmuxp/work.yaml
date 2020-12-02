@@ -8,9 +8,9 @@ windows:
     - z betdev$
   panes:
     - shell_command:
-      - null
+      - clear
       focus: true
-    - null
+    - clear
 - window_name: dotfiles
   window_index: 8
   layout: even-horizontal
@@ -18,16 +18,19 @@ windows:
     - z dotfiles
   panes:
     - shell_command:
-      - null
+      - clear
       focus: true
-    - null
+    - clear
 - window_name: cosmos
   window_index: 9
+  layout: main-horizontal
   options:
-    main-pane-height: 15
+    main-pane-height: 20
   shell_command_before:
     - z cosmos
+  # Not sure why but I need to sleep to get the pane to clear properly - think it might be the layout
   panes:
     - shell_command:
+      - sleep 2 && clear
       - (ctop 2> /dev/null && ctop) || echo "Docker not running :("
-    - null
+    - sleep 2 && clear
