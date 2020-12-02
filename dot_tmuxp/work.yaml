@@ -5,7 +5,7 @@ windows:
   focus: true
   layout: even-horizontal
   shell_command_before:
-    - z betdev/application
+    - z betdev$
   panes:
     - shell_command:
       - null
@@ -20,5 +20,5 @@ windows:
     - z cosmos
   panes:
     - shell_command:
-      - (ctop > /dev/null && ctop) || echo "Docker not running :("
+      - (ctop 2> /dev/null && ctop) || echo "Docker not running :("
     - null
