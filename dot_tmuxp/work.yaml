@@ -11,7 +11,16 @@ windows:
       - null
       focus: true
     - null
-
+- window_name: dotfiles
+  window_index: 8
+  layout: even-horizontal
+  shell_command_before:
+    - z dotfiles
+  panes:
+    - shell_command:
+      - null
+      focus: true
+    - null
 - window_name: cosmos
   window_index: 9
   options:
