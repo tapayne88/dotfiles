@@ -279,6 +279,7 @@ function! s:show_documentation()
 endfunction
 
 "" ==================== Fugitive ====================
+let g:fugitive_dynamic_colors = 0
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
 "" ==================== Key (re)Mappings ====================
