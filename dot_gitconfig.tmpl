@@ -40,6 +40,10 @@
 [push]
   default = current
 
+[pretty]
+  better-oneline = "format:%C(auto)%h%d %s %Cblue[%cn]"
+  summary = "format:%C(yellow)%H%C(red)%d%n%C(blue)%cd %an%n%C(reset)%s%n"
+
 [alias]
   st = status -uno
   stu = status
@@ -65,14 +69,13 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = log --pretty='format:%C(yellow)%H%C(red)%d%n%C(blue)%cd %an%n%C(reset)%s%n' --date='format:%Y-%m-%d %H:%M'
-  lb = log --oneline origin/master..
-  lg = log
-  lgu = log @{u}
-  lp = log -p
-  qlog = log --graph --pretty=tformat:'%Cgreen %h %Creset %an %Cred %ad (%ar) %Cgreen %s %Creset %d' --abbrev-commit --decorate --parents --date=short
-  h = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short --first-parent -n32 --topo-order
-  hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
+  l = log --pretty=better-oneline --date='format:%Y-%m-%d %H:%M'
+  lb = l origin/master..
+  lu = l @{u}
+  lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
+  lgb = lg origin/master..
+  lgu = lg @{u}
+  tree = log --pretty=better-oneline --all --graph
   prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
