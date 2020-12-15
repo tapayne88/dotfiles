@@ -75,7 +75,8 @@
   hf = log --graph --pretty=tformat:'%C(yellow) %h %C(cyan) %ad %C(red) %an %Creset %s %C(blue bold)%d%Creset' --abbrev-commit --decorate --parents --date=short -n32 --date-order
   prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
   git = !exec git
-  alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+  alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+  which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1\"`; [ -n \"$ALIAS\" ] && echo $ALIAS || echo \"$1 not found\"; }; f"
 
 [diff]
   tool = fugitive
