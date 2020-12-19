@@ -28,6 +28,22 @@ sudo dpkg-reconfigure locales
 - [nix](https://nixos.org/download.html)
 - [home-manager](https://github.com/nix-community/home-manager)
 
+### MacOS
+
+```console
+❯ nix-channel --list
+home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
+nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
+```
+
+### \*nix
+
+```console
+❯ nix-channel  --list
+home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
+nixpkgs https://nixos.org/channels/nixpkgs-20.09
+```
+
 ## 4. Generate ssh key
 
 Generate ssh key and upload to github
