@@ -31,10 +31,6 @@ bind-key m \
   set-option -g mouse off \;\
   display-message 'Mouse: OFF'
 
-# vi mode
-bind -Tcopy-mode-vi 'v' send -X begin-selection
-bind -Tcopy-mode-vi 'y' send -X copy-selection
-
 # Window navigation (mac like replaces iTerms tab navigation)
 bind -n "M-{" prev            # Send HEX Code: 0x02 0x70
 bind -n "M-}" next            # Send HEX Code: 0x02 0x6E
@@ -127,6 +123,9 @@ bind -T copy-mode-vi C-j select-pane -D
 bind -T copy-mode-vi C-k select-pane -U
 bind -T copy-mode-vi C-l select-pane -R
 
+# Easier inline selection
+bind -T copy-mode-vi 'v' send -X begin-selection
+
 set -g @prefix_highlight_fg black
 set -g @prefix_highlight_bg brightcyan
 set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow'
@@ -152,6 +151,12 @@ set -g @1password-items-jq-filter '\
 
 set -g @fingers-key 'c-f'
 set -g @fingers-compact-hints 0
+
+# tmux-yank
+{{- if eq "crostini" .ostype }}
+set -g @override_copy_command 'xsel --clipboard'
+{{- end }}
+set -g @shell_mode 'vi'
 
 set -g focus-events on
 
