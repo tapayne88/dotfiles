@@ -156,11 +156,14 @@ set -g @1password-items-jq-filter '\
   | .[] \
 '
 
-##########################
-# Morantron/tmux-fingers #
-##########################
-set -g @fingers-key 'c-f'
-set -g @fingers-compact-hints 0
+#########################
+# fcsonline/tmux-thumbs #
+#########################
+set -g @thumbs-key c-f
+{{- if eq "crostini" .ostype }}
+set -g @thumbs-command 'echo -n {} | xsel --clipboard && tmux display-message "Copied {}"'
+{{- end }}
+set -g @thumbs-upcase-command 'tmux set-buffer {} && tmux paste-buffer'
 
 ##########################
 # tmux-plugins/tmux-yank #
@@ -179,6 +182,6 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-battery'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/vim-tmux-focus-events'
-set -g @plugin 'Morantron/tmux-fingers'
+set -g @plugin 'fcsonline/tmux-thumbs'
 
 run '~/.tmux/plugins/tpm/tpm'
