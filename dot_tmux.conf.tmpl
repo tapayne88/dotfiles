@@ -7,6 +7,7 @@ set -g default-terminal "tmux-256color"
 set -g default-command ""
 set -sa terminal-overrides ',xterm-256color:RGB'
 set -g mode-keys vi
+set -g focus-events on
 
 # Source local config file - if it exists
 source-file -q "$HOME/.tmux.local.conf"
@@ -56,7 +57,7 @@ set -g pane-border-style fg=brightblack,bg=black
 set -g pane-active-border-style fg=brightblack,bg=black
 set -g display-panes-colour black
 set -g display-panes-active-colour brightblack
-setw -g clock-mode-colour cyan
+set -g clock-mode-colour cyan
 set -g message-style fg=cyan,bg=brightblack
 set -g message-command-style fg=cyan,bg=brightblack
 
@@ -126,6 +127,9 @@ bind -T copy-mode-vi C-l select-pane -R
 # Easier inline selection
 bind -T copy-mode-vi 'v' send -X begin-selection
 
+######################################
+# tmux-plugins/tmux-prefix-highlight #
+######################################
 set -g @prefix_highlight_fg black
 set -g @prefix_highlight_bg brightcyan
 set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow'
@@ -140,6 +144,9 @@ set -g @prefix_highlight_prefix_prompt '^b'
 set -g @prefix_highlight_show_copy_mode 'on'
 set -g @prefix_highlight_copy_prompt 'copy'
 
+##########################
+# yardnsm/tmux-1password #
+##########################
 # Filter for cli tags - without below, default filtering excludes anything without a url
 set -g @1password-items-jq-filter '\
   .[] \
@@ -149,18 +156,21 @@ set -g @1password-items-jq-filter '\
   | .[] \
 '
 
+##########################
+# Morantron/tmux-fingers #
+##########################
 set -g @fingers-key 'c-f'
 set -g @fingers-compact-hints 0
 
-# tmux-yank
+##########################
+# tmux-plugins/tmux-yank #
+##########################
 {{- if eq "crostini" .ostype }}
 set -g @override_copy_command 'xsel --clipboard'
 {{- end }}
 set -g @shell_mode 'vi'
 
-set -g focus-events on
-
-# List of plugins
+# tpm plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'jbnicolai/tmux-fpp'
 set -g @plugin 'yardnsm/tmux-1password'
