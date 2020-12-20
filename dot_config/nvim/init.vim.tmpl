@@ -1,3 +1,4 @@
+" vi: filetype=vim
 let s:vim_path = expand('~/.vim')
 let s:vimrc = expand('~/.vimrc')
 if has("nvim")
@@ -96,6 +97,22 @@ autocmd VimResized * execute "normal! \<c-w>="
 " Save and load vim views - remembers scroll position & folds
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent! loadview
+
+{{- if eq "crostini" .ostype }}
+" Configure vim's other clipboard registers to use xsel (system clipboard)
+let g:clipboard = {
+\   'name': 'crostiniClipboard',
+\   'copy': {
+\      '+': 'xsel --clipboard',
+\      '*': 'xsel --clipboard',
+\    },
+\   'paste': {
+\      '+': 'xsel --clipboard',
+\      '*': 'xsel --clipboard',
+\   },
+\   'cache_enabled': 1,
+\ }
+{{- end }}
 
 "" ==================== Colors ====================
 let g:nord_italic = 1
