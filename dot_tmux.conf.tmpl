@@ -163,6 +163,9 @@ set -g @thumbs-key c-f
 {{- if eq "crostini" .ostype }}
 set -g @thumbs-command 'echo -n {} | xsel --clipboard && tmux display-message "Copied {}"'
 {{- end }}
+{{- if eq "macOS" .ostype }}
+set -g @thumbs-command 'echo -n {} | pbcopy && tmux display-message "Copied {}"'
+{{- end }}
 set -g @thumbs-upcase-command 'tmux set-buffer {} && tmux paste-buffer'
 
 ##########################
