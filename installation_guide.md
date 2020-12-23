@@ -2,21 +2,27 @@
 
 ## 1. Update and install things (Debian only)
 
-```bash
+```shell
 sudo apt update
 sudo apt upgrade
 
 # curl for installation script et al.
 # xz for nix install
 # perl encode module for diff-so-fancy
-sudo apt install curl xz-utils liburi-encode-perl
+# build-essentials & pkg-config for rust related things
+sudo apt install \
+  curl \
+  xz-utils \
+  liburi-encode-perl \
+  build-essential \
+  pkg-config
 ```
 
 ## 2. Locale (Debian only)
 
 Reconfigure locale to include en_GB ([source](https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian)).
 
-```bash
+```shell
 sudo locale-gen en_GB.UTF-8
 sudo dpkg-reconfigure locales
 
@@ -26,7 +32,9 @@ sudo dpkg-reconfigure locales
 ## 3. Install nix and home-manager
 
 - [nix](https://nixos.org/download.html)
-- [home-manager](https://github.com/nix-community/home-manager)
+- [home-manager](https://github.com/nix-community/home-manager) - to get nix installed on crostini see [`patch-nix`](https://github.com/tapayne88/dotfiles/blob/master/dot_config/zsh/functions/crostini.zsh#L6-L8) function.
+
+Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
 
 ### MacOS
 
@@ -41,14 +49,14 @@ nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
 ```console
 ❯ nix-channel  --list
 home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
-nixpkgs https://nixos.org/channels/nixpkgs-20.09
+nixpkgs https://nixos.org/channels/nixos-20.09
 ```
 
 ## 4. Generate ssh key
 
 Generate ssh key and upload to github
 
-```bash
+```shell
 ssh-keygen -C `hostname`
 ```
 
@@ -60,7 +68,7 @@ See [readme](./README.md#installation) for installation guide.
 
 Add nix zsh to allowed shells and change shell.
 
-```bash
+```shell
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
 ```
@@ -69,7 +77,7 @@ chsh -s `which zsh`
 
 Dotfiles includes tmux terminfo which needs installing. Likely want to `sudo tic` the terminfo so they are accessible to all system users (like root).
 
-```bash
+```shell
 sudo tic terminfo/tmux.terminfo
 sudo tic terminfo/tmux-256color.terminfo
 ```
