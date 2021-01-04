@@ -124,6 +124,22 @@ let g:nord_cursor_line_number_background = 1
 syntax enable
 colorscheme nord
 
+" Patch CursorLine highlighting bug in NeoVim
+" Messes with highlighting of current line in weird ways
+" https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
+function! s:CustomizeColors()
+    if has('gui_running') || &termguicolors || exists('g:gonvim_running')
+        hi CursorLine ctermfg=white
+    else
+        hi CursorLine guifg=white
+    endif
+endfunction
+
+augroup OnColorScheme
+    autocmd!
+    autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
+augroup END
+
 highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
 highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
