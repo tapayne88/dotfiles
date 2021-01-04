@@ -25,6 +25,9 @@
     "typescript",
     "typescriptreact"
   ],
+  "eslint.workingDirectories": [
+    { "mode" : "auto" }
+  ],
   "prettier.requireConfig": true,
   "tsserver.enableJavascript": true,
   "markdownlint.config": {
