@@ -1,5 +1,7 @@
 # Dotfiles
 
+![kitty screenshot](./public/kitty-screenshot.png "Kitty Screenshot")
+
 A place for all my dotfiles and each one in its place.
 
 ## Installation
