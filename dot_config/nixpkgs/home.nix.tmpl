@@ -14,6 +14,10 @@ let
     coreutils
     gnugrep
     gnused
+    # reattach-to-user-namespace needed for MacOS when running programs within
+    # tmux. This was the original problem
+    # https://github.com/tmux/tmux/issues/600
+    reattach-to-user-namespace
   ];
   {{- else }}
   darwinPkgs = [];
