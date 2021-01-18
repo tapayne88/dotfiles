@@ -17,7 +17,7 @@ REPO="git@github.com:tapayne88/dotfiles.git"
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG_FILE="$CHEZMOI_CONFIG_DIR/chezmoi.json"
 CHEZMOI_CONFIG="{
-  \"\$schema\": \"https://raw.githubusercontent.com/tapayne88/dotfiles/master/chezmoi-schema.json\",
+  \"\$schema\": \"https://raw.githubusercontent.com/tapayne88/dotfiles/master/public/chezmoi-schema.json\",
   \"sourceDir\": \"$INSTALL_LOCATION\",
   \"merge\": {
     \"args\": \"-d\",
