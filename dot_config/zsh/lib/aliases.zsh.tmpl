@@ -1,6 +1,4 @@
 # vi: filetype=zsh
-alias ssh='TERM=xterm-256color ssh'
-
 alias nix-update='nix-channel --update && nix-env -u && home-manager switch'
 
 {{- if eq "macOS" .ostype }}
