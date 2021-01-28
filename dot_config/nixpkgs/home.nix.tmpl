@@ -2,6 +2,7 @@
 { config, pkgs, ... }:
 
 let
+  unstable = import <nixpkgs-unstable> { config = config; };
   comma = import ( pkgs.fetchFromGitHub {
       owner = "Shopify";
       repo = "comma";
@@ -63,7 +64,6 @@ in
     _1password
     antigen
     bat
-    cargo
     chezmoi
     comma
     curl
@@ -97,6 +97,9 @@ in
     wget
     yarn
     zsh
+
+    # Unstable Packages
+    unstable.cargo  # needed newer version of rust to compile vim-clap binary
   ] ++ darwinPkgs ++ crostiniPkgs;
 
   programs.neovim = {

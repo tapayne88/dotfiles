@@ -42,6 +42,7 @@ Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
 ❯ nix-channel --list
 home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
 nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
+nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
 
 ### \*nix
@@ -50,6 +51,7 @@ nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
 ❯ nix-channel  --list
 home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
 nixpkgs https://nixos.org/channels/nixos-20.09
+nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
 
 ## 4. Generate ssh key
