@@ -10,6 +10,14 @@ let
       sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
   }) {};
 
+  {{- if ne "macOS" .ostype }}
+  unixPkgs = with pkgs; [
+    nq
+  ];
+  {{- else }}
+  unixPkgs = [];
+  {{- end }}
+
   {{- if eq "macOS" .ostype }}
   darwinPkgs = with pkgs; [
     coreutils
@@ -100,7 +108,7 @@ in
 
     # Unstable Packages
     unstable.cargo  # needed newer version of rust to compile vim-clap binary
-  ] ++ darwinPkgs ++ crostiniPkgs;
+  ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs;
 
   programs.neovim = {
     enable = true;
