@@ -34,7 +34,7 @@ Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
 Plug 'liuchengxu/vim-clap', {
-  \ 'do': ':Clap install-binary!' }         " whizzy command-p launcher
+  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'tweekmonster/startuptime.vim', {
   \ 'on': 'StartupTime' }                   " easier vim startup time profiling
 Plug 'iamcco/markdown-preview.nvim', {
