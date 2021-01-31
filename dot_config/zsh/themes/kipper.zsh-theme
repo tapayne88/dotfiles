@@ -40,7 +40,7 @@ prompt_end() {
 
 # Status:
 # - was there an error
-prompt_status() {
+prompt_symbol() {
   echo -n "%(?.%F{white}.%F{red})$PROMPT_SYM%f "
 }
 
@@ -55,7 +55,16 @@ prompt_context() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment default yellow '%c '
+  prompt_segment default yellow '%c'
+}
+
+# Jobs: any background jobs running
+prompt_jobs() {
+  local -a symbols
+
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+
+  [[ -n "$symbols" ]] && prompt_segment default cyan "$symbols " || echo -n " "
 }
 
 # Git: branch/detached head, dirty status
@@ -99,8 +108,9 @@ function git_remote_status() {
 
 build_prompt() {
   prompt_context
-  prompt_status
+  prompt_symbol
   prompt_dir
+  prompt_jobs
   prompt_git
   prompt_end
 }
