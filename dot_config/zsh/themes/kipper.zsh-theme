@@ -10,6 +10,8 @@ BEHIND_SYM="⇣"
 DIVERGED_SYM="⇕"
 DIRTY_SYM="⋯ "
 NONE_SYM="•"
+ITALIC_ON=$'\e[3m'
+ITALIC_OFF=$'\e[23m'
 
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,
@@ -106,6 +108,31 @@ function git_remote_status() {
   fi
 }
 
+function preexec() {
+  timer=$(date +%s%3N)
+}
+
+function precmd() {
+  if [ $timer ]; then
+    local now=$(date +%s%3N)
+    local d_ms=$(($now-$timer))
+    local d_s=$((d_ms / 1000))
+    local ms=$((d_ms % 1000))
+    local s=$((d_s % 60))
+    local m=$(((d_s / 60) % 60))
+    local h=$((d_s / 3600))
+    if ((h > 0)); then elapsed=${h}h${m}m
+    elif ((m > 0)); then elapsed=${m}m${s}s
+    elif ((s >= 10)); then elapsed=${s}.$((ms / 100))s
+    elif ((s > 0)); then elapsed=${s}.$((ms / 10))s
+    else elapsed=${ms}ms
+    fi
+
+    export RPROMPT="%F{cyan}%{$ITALIC_ON%}${elapsed}%{$ITALIC_OFF%}%f"
+    unset timer
+  fi
+}
+
 build_prompt() {
   prompt_context
   prompt_symbol
@@ -116,4 +143,3 @@ build_prompt() {
 }
 
 PROMPT='%{%f%b%k%k%}$(build_prompt)'
-RPROMPT=''
