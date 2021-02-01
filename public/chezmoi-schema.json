@@ -11,6 +11,10 @@
           "enum": ["macOS", "crostini", "wsl"],
           "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
+        "neovim_nightly": {
+          "type": "boolean",
+          "description": "Enable / disable neovim nightly builds"
+        },
         "email": {
           "type": "object",
           "description": "Email addresses used in git commits",
@@ -36,7 +40,13 @@
         }
       },
       "additionalProperties": false,
-      "required": ["ostype", "email", "terminal_font", "terminal_font_size"]
+      "required": [
+        "ostype",
+        "neovim_nightly",
+        "email",
+        "terminal_font",
+        "terminal_font_size"
+      ]
     }
   }
 }

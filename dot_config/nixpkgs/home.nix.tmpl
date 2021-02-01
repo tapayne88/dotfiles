@@ -112,9 +112,23 @@ in
     unstable.cargo        # needed newer version of rust to compile vim-clap binary
   ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs;
 
+  {{- if .neovim_nightly }}
+  # Neovim nightly
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    }))
+  ];
+  {{- end }}
+
   programs.neovim = {
     enable = true;
     viAlias = true;
     withNodeJs = true;
+
+    {{- if .neovim_nightly }}
+    # Neovim nightly
+    package = pkgs.neovim-nightly;
+    {{- end }}
   };
 }
