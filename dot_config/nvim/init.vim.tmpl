@@ -47,6 +47,13 @@ Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
 Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
 
+{{- if .neovim_nightly }}
+Plug 'christianchiarulli/nvcode-color-schemes.vim'  " treesitter colorscheme
+Plug 'nvim-treesitter/nvim-treesitter', {
+  \ 'do': ':TSUpdate' }                     " better syntax highlighting
+Plug 'nvim-treesitter/playground'           " playground for illustrating the AST treesitter builds
+{{- end }}
+
 call plug#end()
 
 "" ==================== General ====================
@@ -115,6 +122,25 @@ let g:clipboard = {
 {{- end }}
 
 "" ==================== Colors ====================
+{{- if .neovim_nightly }}
+let g:nvcode_termcolors=256
+
+lua <<EOF
+require "nvim-treesitter.configs".setup {
+  ensure_installed = "all",
+  highlight = {
+    enable = true
+  },
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false -- Whether the query persists across vim sessions
+  }
+}
+EOF
+{{- end }}
+
 let g:nord_italic = 1
 let g:nord_italic_comments = 1
 let g:nord_underline = 1

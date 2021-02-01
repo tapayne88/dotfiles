@@ -42,6 +42,13 @@ let
   crostiniPkgs = [];
   {{- end }}
 
+  {{- if .neovim_nightly }}
+  neovimNightlyPkgs = with pkgs; [
+    gcc   # Needed more modern version (not too sure why) for nvim-treesitter
+  ];
+  {{- else }}
+  neovimNightlyPkgs = [];
+  {{- end }}
 in
 
 {
@@ -111,7 +118,7 @@ in
     # Unstable Packages
     unstable._1password   # 1password version is quite old - unstable is much newer
     unstable.cargo        # needed newer version of rust to compile vim-clap binary
-  ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs;
+  ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs ++ neovimNightlyPkgs;
 
   {{- if .neovim_nightly }}
   # Neovim nightly
