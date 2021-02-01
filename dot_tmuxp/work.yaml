@@ -32,5 +32,5 @@ windows:
   panes:
     - shell_command:
       - sleep 2 && clear
-      - (ctop 2> /dev/null && ctop) || echo "Docker not running :("
+      - ctop
     - sleep 2 && clear
