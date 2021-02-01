@@ -12,7 +12,7 @@ let
 
   {{- if ne "macOS" .ostype }}
   unixPkgs = with pkgs; [
-    nq
+    nq  # linux queue utility
   ];
   {{- else }}
   unixPkgs = [];
@@ -20,9 +20,9 @@ let
 
   {{- if eq "macOS" .ostype }}
   darwinPkgs = with pkgs; [
-    coreutils
-    gnugrep
-    gnused
+    coreutils   # gnu utilities
+    gnugrep     # gnu grep
+    gnused      # gnu sed
     # reattach-to-user-namespace needed for MacOS when running programs within
     # tmux. This was the original problem
     # https://github.com/tmux/tmux/issues/600
@@ -34,9 +34,9 @@ let
 
   {{- if eq "crostini" .ostype }}
   crostiniPkgs = with pkgs; [
-    alacritty
-    kitty
-    mesa_drivers
+    alacritty       # alacritty terminal
+    kitty           # kitty terminal
+    mesa_drivers    # GPU drivers for crostini
   ];
   {{- else }}
   crostiniPkgs = [];
@@ -69,47 +69,47 @@ in
   {{- end }}
 
   home.packages = with pkgs; [
-    antigen
-    bat
-    chezmoi
-    comma
-    ctop
-    curl
-    fpp
-    fzf
-    gawk
-    gitAndTools.diff-so-fancy
-    git
-    gnupg
-    gti
-    htop
-    inetutils
-    jq
-    mosh
-    ncdu
-    nix-zsh-completions
-    nodejs
-    openssh
-    python
-    python27Packages.pip
-    python3
-    python38Packages.pip
-    ripgrep
-    silver-searcher
-    screenfetch
-    tmux
-    tmuxp
-    tree
-    unixtools.watch
-    vim
-    watchman
-    wget
-    yarn
-    zsh
+    antigen                       # zsh plugin manager
+    bat                           # colourised cat
+    chezmoi                       # dotfile manager
+    comma                         # utility for trying nix executables
+    ctop                          # container top process tool
+    curl                          # curl...
+    fpp                           # facebook picker
+    fzf                           # fuzzy-finder
+    gawk                          # gnu awk
+    gitAndTools.diff-so-fancy     # fancy git diffs
+    git                           # git...
+    gnupg                         # gnu pretty good privacy
+    gti                           # alias for git, with a gti
+    htop                          # pretty top
+    inetutils                     # network utils, like traceroute, etc.
+    jq                            # json cli processor
+    mosh                          # better ssh
+    ncdu                          # disk usage tool
+    nix-zsh-completions           # zsh completions
+    nodejs                        # nodejs...
+    openssh                       # ssh
+    python                        # python27
+    python27Packages.pip          # pip for python27
+    python3                       # python38
+    python38Packages.pip          # pip for python38
+    ripgrep                       # rg searching
+    silver-searcher               # ag searching
+    screenfetch                   # pretty print of system info
+    tmux                          # terminal multiplexer
+    tmuxp                         # declaritive tmux session launcher
+    tree                          # print directory structure
+    unixtools.watch               # run command periodically
+    vim                           # vim
+    watchman                      # watch files and run command on change
+    wget                          # fetch things from urls
+    yarn                          # JS package manager
+    zsh                           # shell
 
     # Unstable Packages
-    unstable._1password # 1password version is quite old - unstable is much newer
-    unstable.cargo  # needed newer version of rust to compile vim-clap binary
+    unstable._1password   # 1password version is quite old - unstable is much newer
+    unstable.cargo        # needed newer version of rust to compile vim-clap binary
   ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs;
 
   programs.neovim = {
