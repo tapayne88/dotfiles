@@ -14,7 +14,6 @@ let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'Test
 call plug#begin(s:vim_path.'/plugged')
 
 " Core Bundles
-Plug 'arcticicestudio/nord-vim'
 Plug 'lervag/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
@@ -150,42 +149,8 @@ let g:nord_cursor_line_number_background = 1
 syntax enable
 colorscheme nord
 
-" Patch CursorLine highlighting bug in NeoVim
-" Messes with highlighting of current line in weird ways
-" https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
-function! s:CustomizeColors()
-    if has('gui_running') || &termguicolors || exists('g:gonvim_running')
-        hi CursorLine ctermfg=white
-    else
-        hi CursorLine guifg=white
-    endif
-endfunction
-
-augroup OnColorScheme
-    autocmd!
-    autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
-augroup END
-
 highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
 highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
-
-highlight typescriptImport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptExport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptImportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptExportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-highlight typescriptStatementKeyword  gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
-
-highlight jsClassKeyword    gui=italic cterm=italic
-highlight jsExtendsKeyword  gui=italic cterm=italic
-highlight jsReturn          gui=italic cterm=italic
-highlight jsThis            gui=italic term=italic
-highlight htmlArg           gui=italic term=italic
-highlight Type              gui=italic term=italic
-
-highlight link gitmessengerHeader Identifier
-highlight link gitmessengerHash Comment
-highlight link gitmessengerHistory Constant
-highlight link gitmessengerPopupNormal CursorLine
 
 "" ==================== Folding ====================
 set foldmethod=syntax   "syntax highlighting items specify folds
