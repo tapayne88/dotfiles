@@ -172,6 +172,35 @@ let g:netrw_liststyle = 3
 
 {{- if .neovim_nightly }}
 "" ==================== telescope ====================
+lua <<EOF
+local actions = require('telescope.actions')
+require('telescope').setup{
+  defaults = {
+    prompt_prefix = "❯",
+    use_less = false,
+    mappings = {
+      i = {
+        ["<c-s>"] = actions.goto_file_selection_split,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-j>"] = actions.move_selection_next,
+      }
+    }
+  }
+}
+EOF
+
+nnoremap <leader>l <cmd>Telescope buffers<cr>
+nnoremap <leader>t <cmd>Telescope git_files<cr>
+nnoremap <leader>f <cmd>Telescope live_grep<cr>
+nnoremap <c-t> <cmd>Telescope git_files<cr>
+nnoremap <c-f> <cmd>Telescope live_grep<cr>
+nnoremap <leader>fw <cmd>Telescope grep_string<CR>
+
+" Colors
+highlight TelescopeBorder       guifg=#4C566A
+highlight TelescopePromptBorder guifg=#5E81AC
+highlight TelescopeMatching     guifg=#EBCB8B
+
 {{- else }}
 "" ==================== vim-clap ====================
 let g:clap_open_action = {
