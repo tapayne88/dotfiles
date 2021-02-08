@@ -32,8 +32,6 @@ Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
-Plug 'liuchengxu/vim-clap', {
-  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'tweekmonster/startuptime.vim', {
   \ 'on': 'StartupTime' }                   " easier vim startup time profiling
 Plug 'iamcco/markdown-preview.nvim', {
@@ -44,13 +42,19 @@ Plug 'rhysd/git-messenger.vim', {
   \ 'on': 'GitMessenger' }                  " Git blame for line with commit message
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
-Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
 
 {{- if .neovim_nightly }}
 Plug '~/git/nvcode-color-schemes.vim'       " treesitter colorscheme
 Plug 'nvim-treesitter/nvim-treesitter', {
   \ 'do': ':TSUpdate' }                     " better syntax highlighting
 Plug 'nvim-treesitter/playground'           " playground for illustrating the AST treesitter builds
+Plug 'nvim-lua/popup.nvim'                  " dependency of telescope
+Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
+Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
+{{- else }}
+Plug 'liuchengxu/vim-clap', {
+  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
+Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
 {{- end }}
 
 call plug#end()
@@ -165,6 +169,9 @@ set foldlevelstart=99   "start file with all folds opened
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
+{{- if .neovim_nightly }}
+"" ==================== telescope ====================
+{{- else }}
 "" ==================== vim-clap ====================
 let g:clap_open_action = {
 \  'ctrl-t': 'tab split',
@@ -196,6 +203,7 @@ nnoremap <leader>f :Clap grep2<CR>
 nnoremap <c-t> :Clap git_files<CR>
 nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
+{{- end }}
 
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
