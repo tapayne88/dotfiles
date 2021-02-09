@@ -40,8 +40,6 @@ Plug 'iamcco/markdown-preview.nvim', {
   \ 'on': 'MarkdownPreview' }               " Markdown previewing commands
 Plug 'rhysd/git-messenger.vim', {
   \ 'on': 'GitMessenger' }                  " Git blame for line with commit message
-Plug 'neoclide/coc.nvim', {
-  \ 'branch': 'release' }                   " LSPish integration
 
 {{- if .neovim_nightly }}
 Plug '~/git/nvcode-color-schemes.vim'       " treesitter colorscheme
@@ -53,6 +51,8 @@ Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
 Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
 Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
 {{- else }}
+Plug 'neoclide/coc.nvim', {
+  \ 'branch': 'release' }                   " LSPish integration
 Plug 'liuchengxu/vim-clap', {
   \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
@@ -261,8 +261,10 @@ nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-w> :Jest --watch<CR>
 
 "" ==================== Lightline ====================
+{{- if not .neovim_nightly }}
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
+{{- end }}
 
 function! FileTypeIcon()
   return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
@@ -280,7 +282,7 @@ let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
+\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
@@ -289,19 +291,23 @@ let g:lightline = {
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
-\   'cocstatus': 'coc#status',
 \   'filetypeicon': 'FileTypeIcon',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
-\   'cocstatuswarn': 'warning',
-\   'cocstatuserror': 'error',
 \ },
 \ 'tabline': {
 \   'left': [['vim_logo'], ['tabs']],
 \   'right': [['git_branch']]
 \ }
 \ }
+
+{{- if not .neovim_nightly }}
+let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
+let g:lightline.component_function.cocstatus = 'coc#status'
+let g:lightline.component_type.cocstatuswarn = 'warning'
+let g:lightline.component_type.cocstatuserror = 'error'
+{{- end }}
 
 if ($TERM_EMU == 'kitty')
   let g:lightline.separator = { 'left': "", 'right': " " }
@@ -310,12 +316,15 @@ if ($TERM_EMU == 'kitty')
   let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
 endif
 
+{{- if not .neovim_nightly }}
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+{{- end }}
 
 "" ==================== Scalpel ====================
 let g:ScalpelCommand = 'S'
 nmap <leader>e <Plug>(Scalpel)
 
+{{- if not .neovim_nightly }}
 "" ==================== Coc-nvim ====================
 let g:coc_global_extensions = [
 \  'coc-eslint',
@@ -349,6 +358,7 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+{{- end }}
 
 function! OpenZippedFile(f)
   " get number of new (empty) buffer
