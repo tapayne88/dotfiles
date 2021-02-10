@@ -336,6 +336,12 @@ local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
+
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineError guifg=#BF616A gui=underline')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineWarning guifg=#EBCB8B gui=underline')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint guifg=none gui=underline')
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -389,6 +395,16 @@ end
 local tsserver_exec = get_tsserver_exec()
 
 nvim_lsp.tsserver.setup {
+  handlers = {
+   ["textDocument/publishDiagnostics"] = vim.lsp.with(
+     vim.lsp.diagnostic.on_publish_diagnostics, {
+       -- Enable signs
+       signs = true,
+       -- Disable virtual_text
+       virtual_text = false,
+     }
+   ),
+  },
   cmd = {
     "typescript-language-server",
     "--stdio",
