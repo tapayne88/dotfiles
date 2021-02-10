@@ -370,13 +370,23 @@ local get_ts_root_dir = function(fname)
   util.root_pattern("package.json", "jsconfig.json", ".git")(fname);
 end
 
--- Make tsserver work with yarn v2. This could be improved to parse the executable
--- path from coc-settings.json
-local ts_root_dir = get_ts_root_dir(vim.fn.getcwd())
-local coc_settings = ts_root_dir .. "/.vim/coc-settings.json"
-local tsserver_exec = (util.path.exists(coc_settings) == false)
-  and "node_modules/.bin/tsserver"
-  or ".yarn/sdks/typescript/lib/tsserver.js"
+-- Make tsserver work with yarn v2
+local get_tsserver_exec = function()
+  local ts_root_dir = get_ts_root_dir(vim.fn.getcwd())
+  local coc_settings = ts_root_dir .. "/.vim/coc-settings.json"
+
+  -- not yarn v2 project
+  if util.path.exists(coc_settings) == false then
+    return "node_modules/.bin/tsserver"
+  else
+    local file = io.open(coc_settings):read("*a")
+    local coc_json = vim.fn.json_decode(file)
+    local ts_key = "tsserver.tsdk"
+    return coc_json[ts_key] .. "/tsserver.js"
+  end
+end
+
+local tsserver_exec = get_tsserver_exec()
 
 nvim_lsp.tsserver.setup {
   cmd = {
