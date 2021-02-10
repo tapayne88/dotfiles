@@ -51,6 +51,7 @@ Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
 Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
 Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
 Plug 'neovim/nvim-lspconfig'                " native neovim LSP support
+Plug 'nvim-lua/lsp-status.nvim'             " LSP status display
 {{- else }}
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
@@ -303,7 +304,18 @@ let g:lightline = {
 \ }
 \ }
 
-{{- if not .neovim_nightly }}
+{{- if .neovim_nightly }}
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
+let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['lspstatus']]
+let g:lightline.component_function.lspstatus = 'LspStatus'
+{{- else }}
 let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
 let g:lightline.component_function.cocstatus = 'coc#status'
 let g:lightline.component_type.cocstatuswarn = 'warning'
@@ -330,8 +342,23 @@ nmap <leader>e <Plug>(Scalpel)
 lua <<EOF
 local nvim_lsp = require('lspconfig')
 local util = require('lspconfig/util')
+local lsp_status = require('lsp-status')
+
+lsp_status.register_progress()
+lsp_status.config({
+  current_function = false,
+  status_symbol = "",
+  indicator_errors = "⨯",
+  indicator_warnings = "◆",
+  indicator_info = "ⓘ ",
+  indicator_hint = "…",
+  indicator_ok = " "
+})
 
 local on_attach = function(client, bufnr)
+
+  lsp_status.on_attach(client, bufnr)
+
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -411,7 +438,8 @@ nvim_lsp.tsserver.setup {
     "--tsserver-path",
     tsserver_exec
   },
-  on_attach = on_attach
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities
 }
 EOF
 {{- else }}
