@@ -82,19 +82,38 @@ local get_tsserver_exec = function()
   end
 end
 
-local on_publish_diagnostics = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    -- Enable signs
-    signs = true,
-    -- Disable virtual_text
-    virtual_text = false,
-  }
-)
+local prefix_message = function(prefix, message)
+  return "[".. prefix .."] ".. message
+end
+
+local on_publish_diagnostics = function(prefix)
+  return function(err, method, params, client_id, bufnr, config)
+    vim.tbl_map(
+      function(value)
+        value.message = prefix_message(prefix, value.message)
+      end,
+      params.diagnostics
+    )
+
+    return vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- show underline
+        underline = true,
+        -- Enable signs
+        signs = true,
+        -- Disable virtual_text
+        virtual_text = false,
+        -- show diagnostics on exit from insert
+        update_in_insert = true,
+      }
+    )(err, method, params, client_id, bufnr, config)
+  end
+end
 
 local tsserver_exec = get_tsserver_exec()
 nvim_lsp.tsserver.setup {
   handlers = {
-    ["textDocument/publishDiagnostics"] = on_publish_diagnostics
+    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("tsserver")
   },
   cmd = {
     "typescript-language-server",
@@ -102,14 +121,19 @@ nvim_lsp.tsserver.setup {
     "--tsserver-path",
     tsserver_exec
   },
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+  end,
   capabilities = lsp_status.capabilities
 }
 
 local eslint = {
-  lintCommand = "node_modules/.bin/eslint -f unix --stdin --stdin-filename ${INPUT}",
+  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
   lintIgnoreExitCode = true,
-  lintStdin = true
+  lintStdin = true,
+  lintFormats = {"%f:%l:%c: %m"},
+  rootMarkers = { ".eslintrc.js", "package.json" }
 }
 
 local get_line_content_position = function(line)
@@ -121,6 +145,13 @@ local get_line_content_position = function(line)
     ["end"] = line_len
   }
 end
+
+local efmLanguages = {
+  javascript = { eslint },
+  javascriptreact = { eslint },
+  typescript = { eslint },
+  typescriptreact = { eslint }
+}
 
 -- Need to install efm via `go get`
 -- https://github.com/mattn/efm-langserver#installation
@@ -140,23 +171,15 @@ nvim_lsp.efm.setup {
         params.diagnostics
       )
 
-      return on_publish_diagnostics(err, method, params, client_id, bufnr, config)
+      return on_publish_diagnostics("eslint")(err, method, params, client_id, bufnr, config)
     end
   },
-  init_options = { documentFormatting = true },
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  root_dir = function(fname)
-    return util.root_pattern("tsconfig.json")(fname) or
-    util.root_pattern(".eslintrc.js", ".git")(fname);
-  end,
+  init_options = {
+    documentFormatting = true,
+  },
+  filetypes = vim.tbl_keys(efmLanguages),
   settings = {
-    rootMarkers = { ".eslintrc.js", ".git/" },
-    languages = {
-      javascript = { eslint },
-      javascriptreact = { eslint },
-      typescript = { eslint },
-      typescriptreact = { eslint }
-    }
+    languages = efmLanguages
   },
   on_attach = on_attach,
   capabilities = lsp_status.capabilities
