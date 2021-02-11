@@ -365,6 +365,11 @@ local on_attach = function(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
   vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
 
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultError guifg=#BF616A')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultInformation guifg=none')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultHint guifg=none')
+
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineError guifg=#BF616A gui=underline')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineWarning guifg=#EBCB8B gui=underline')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
@@ -437,6 +442,70 @@ nvim_lsp.tsserver.setup {
     "--stdio",
     "--tsserver-path",
     tsserver_exec
+  },
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities
+}
+
+local eslint = {
+  lintCommand = "node_modules/.bin/eslint -f unix --stdin --stdin-filename ${INPUT}",
+  lintIgnoreExitCode = true,
+  lintStdin = true
+}
+
+local get_line_content_position = function(line)
+  local line_len = string.len(line)
+  local line_ltrim = string.match(line, '^%s*(.*)$')
+
+  return {
+    ["start"] = line_len - string.len(line_ltrim),
+    ["end"] = line_len
+  }
+end
+
+-- Need to install efm via `go get`
+-- https://github.com/mattn/efm-langserver#installation
+nvim_lsp.efm.setup {
+  handlers = {
+    ["textDocument/publishDiagnostics"] = function(err, method, params, client_id, bufnr, config)
+      vim.tbl_map(
+        function(value)
+          local line_num = value.range["end"].line + 1
+          local line = vim.api.nvim_eval("getline(".. line_num ..")")
+
+          local line_content_pos = get_line_content_position(line)
+
+          value.range["start"].character = line_content_pos["start"]
+          value.range["end"].character = line_content_pos["end"]
+        end,
+        params.diagnostics
+      )
+
+      local on_diagnostics = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          -- Enable signs
+          signs = true,
+          -- Disable virtual_text
+          virtual_text = false,
+        }
+      )
+      return on_diagnostics(err, method, params, client_id, bufnr, config)
+    end
+  },
+  init_options = { documentFormatting = true },
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  root_dir = function(fname)
+    return util.root_pattern("tsconfig.json")(fname) or
+    util.root_pattern(".eslintrc.js", ".git")(fname);
+  end,
+  settings = {
+    rootMarkers = { ".eslintrc.js", ".git/" },
+    languages = {
+      javascript = { eslint },
+      javascriptreact = { eslint },
+      typescript = { eslint },
+      typescriptreact = { eslint }
+    }
   },
   on_attach = on_attach,
   capabilities = lsp_status.capabilities

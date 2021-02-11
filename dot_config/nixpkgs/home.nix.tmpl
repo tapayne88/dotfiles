@@ -45,6 +45,7 @@ let
   {{- if .neovim_nightly }}
   neovimNightlyPkgs = with pkgs; [
     gcc   # Needed more modern version (not too sure why) for nvim-treesitter
+    go    # Needed for efm language server
     ruby  # Needed to locally build nvcode treesitter color schemes
   ];
   {{- else }}
