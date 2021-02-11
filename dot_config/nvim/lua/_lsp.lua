@@ -33,6 +33,11 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint guifg=none gui=underline')
 
+  vim.fn.sign_define("LspDiagnosticsSignError", { text = "⨯", texthl = "LspDiagnosticsSignError" })
+  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = "◆", texthl = "LspDiagnosticsSignWarning" })
+  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = "ⓘ ", texthl = "LspDiagnosticsSignInformation" })
+  vim.fn.sign_define("LspDiagnosticsSignHint", { text = "…", texthl = "LspDiagnosticsSignHint" })
+
   -- Mappings.
   local opts = { noremap=true, silent=true }
   buf_set_keymap('n', 'gD',         '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -105,11 +110,14 @@ local on_publish_diagnostics = function(prefix)
         -- show underline
         underline = true,
         -- Enable signs
-        signs = true,
+        signs = {
+          -- Make priority higher than vim-signify
+          priority = 100
+        },
         -- Disable virtual_text
         virtual_text = false,
         -- show diagnostics on exit from insert
-        update_in_insert = true,
+        update_in_insert = true
       }
     )(err, method, params, client_id, bufnr, config)
   end
