@@ -54,6 +54,11 @@ local on_attach = function(client, bufnr)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
+    vim.cmd [[augroup lsp_formatting]]
+    vim.cmd [[autocmd!]]
+    vim.cmd [[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync({}, 1000)]]
+    vim.cmd [[augroup END]]
+
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
@@ -136,6 +141,12 @@ local eslint = {
   rootMarkers = { ".eslintrc.js", "package.json" }
 }
 
+local prettier  = {
+  formatCommand = "./node_modules/.bin/prettier --stdin --stdin-filepath ${INPUT}",
+  formatStdin = true,
+  rootMarkers = { ".prettierrc.js", "package.json" }
+}
+
 local get_line_content_position = function(line)
   local line_len = string.len(line)
   local line_ltrim = string.match(line, '^%s*(.*)$')
@@ -147,10 +158,10 @@ local get_line_content_position = function(line)
 end
 
 local efmLanguages = {
-  javascript = { eslint },
-  javascriptreact = { eslint },
-  typescript = { eslint },
-  typescriptreact = { eslint }
+  javascript = { eslint, prettier },
+  javascriptreact = { eslint, prettier },
+  typescript = { eslint, prettier },
+  typescriptreact = { eslint, prettier }
 }
 
 -- Need to install efm via `go get`
@@ -179,6 +190,7 @@ nvim_lsp.efm.setup {
   },
   filetypes = vim.tbl_keys(efmLanguages),
   settings = {
+    lintDebounce = 500,
     languages = efmLanguages
   },
   on_attach = on_attach,
