@@ -82,18 +82,19 @@ local get_tsserver_exec = function()
   end
 end
 
-local tsserver_exec = get_tsserver_exec()
+local on_publish_diagnostics = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- Enable signs
+    signs = true,
+    -- Disable virtual_text
+    virtual_text = false,
+  }
+)
 
+local tsserver_exec = get_tsserver_exec()
 nvim_lsp.tsserver.setup {
   handlers = {
-   ["textDocument/publishDiagnostics"] = vim.lsp.with(
-     vim.lsp.diagnostic.on_publish_diagnostics, {
-       -- Enable signs
-       signs = true,
-       -- Disable virtual_text
-       virtual_text = false,
-     }
-   ),
+    ["textDocument/publishDiagnostics"] = on_publish_diagnostics
   },
   cmd = {
     "typescript-language-server",
@@ -139,15 +140,7 @@ nvim_lsp.efm.setup {
         params.diagnostics
       )
 
-      local on_diagnostics = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-          -- Enable signs
-          signs = true,
-          -- Disable virtual_text
-          virtual_text = false,
-        }
-      )
-      return on_diagnostics(err, method, params, client_id, bufnr, config)
+      return on_publish_diagnostics(err, method, params, client_id, bufnr, config)
     end
   },
   init_options = { documentFormatting = true },
