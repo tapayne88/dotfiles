@@ -49,12 +49,12 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD',         '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gd',         '<Cmd>Lspsaga preview_definition<CR>', opts)
+  buf_set_keymap('n', 'gD',         '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gd',         '<cmd>Lspsaga preview_definition<CR>', opts)
   buf_set_keymap('n', 'gi',         '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', 'gr',         '<cmd>Telescope lsp_references<CR>', opts)
-  buf_set_keymap('n', 'K',          '<Cmd>Lspsaga hover_doc<CR>', opts)
-  buf_set_keymap('n', '<leader>ac', '<Cmd>Telescope lsp_code_actions<CR>', opts)
+  buf_set_keymap('n', 'K',          '<cmd>Lspsaga hover_doc<CR>', opts)
+  buf_set_keymap('n', '<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
 
   -- other mappings, not sure about these
   buf_set_keymap('n', '<space>wa',  '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
