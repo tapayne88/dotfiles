@@ -186,22 +186,7 @@ local efmLanguages = {
 -- https://github.com/mattn/efm-langserver#installation
 nvim_lsp.efm.setup {
   handlers = {
-    ["textDocument/publishDiagnostics"] = function(err, method, params, client_id, bufnr, config)
-      vim.tbl_map(
-        function(value)
-          local line_num = value.range["end"].line + 1
-          local line = vim.api.nvim_eval("getline(".. line_num ..")")
-
-          local line_content_pos = get_line_content_position(line)
-
-          value.range["start"].character = line_content_pos["start"]
-          value.range["end"].character = line_content_pos["end"]
-        end,
-        params.diagnostics
-      )
-
-      return on_publish_diagnostics("eslint")(err, method, params, client_id, bufnr, config)
-    end
+    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("eslint")
   },
   init_options = {
     documentFormatting = true,
