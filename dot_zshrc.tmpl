@@ -5,14 +5,11 @@ export VISUAL=nvim
 export EDITOR=nvim
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-export GOPATH=$HOME/.go
-
 # executable search path (last to first order)
 PATHS=(
   /usr/local/bin
   /usr/local/sbin
   $HOME/.local/bin
-  $GOPATH/bin
 )
 for p in $PATHS; do
   if (test -d $p); then

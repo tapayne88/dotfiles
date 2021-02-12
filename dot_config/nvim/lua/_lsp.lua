@@ -71,7 +71,7 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.document_formatting then
     vim.cmd [[augroup lsp_formatting]]
     vim.cmd [[autocmd!]]
-    vim.cmd [[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync({}, 1000)]]
+    vim.cmd [[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync({}, 5000)]]
     vim.cmd [[augroup END]]
 
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
@@ -102,15 +102,11 @@ local get_tsserver_exec = function()
   end
 end
 
-local prefix_message = function(prefix, message)
-  return "[".. prefix .."] ".. message
-end
-
 local on_publish_diagnostics = function(prefix)
   return function(err, method, params, client_id, bufnr, config)
     vim.tbl_map(
       function(value)
-        value.message = prefix_message(prefix, value.message)
+        value.message = prefix .. value.message
       end,
       params.diagnostics
     )
@@ -136,7 +132,7 @@ end
 local tsserver_exec = get_tsserver_exec()
 nvim_lsp.tsserver.setup {
   handlers = {
-    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("tsserver")
+    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("[tsserver] ")
   },
   cmd = {
     "typescript-language-server",
@@ -151,51 +147,73 @@ nvim_lsp.tsserver.setup {
   capabilities = lsp_status.capabilities
 }
 
-local eslint = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  rootMarkers = { ".eslintrc.js", "package.json" }
-}
-
-local prettier  = {
-  formatCommand = "./node_modules/.bin/prettier --stdin --stdin-filepath ${INPUT}",
-  formatStdin = true,
-  rootMarkers = { ".prettierrc.js", "package.json" }
-}
-
-local get_line_content_position = function(line)
-  local line_len = string.len(line)
-  local line_ltrim = string.match(line, '^%s*(.*)$')
-
-  return {
-    ["start"] = line_len - string.len(line_ltrim),
-    ["end"] = line_len
-  }
-end
-
-local efmLanguages = {
-  javascript = { eslint, prettier },
-  javascriptreact = { eslint, prettier },
-  typescript = { eslint, prettier },
-  typescriptreact = { eslint, prettier }
-}
-
--- Need to install efm via `go get`
--- https://github.com/mattn/efm-langserver#installation
-nvim_lsp.efm.setup {
+require'lspconfig'.diagnosticls.setup{
   handlers = {
-    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("eslint")
+    ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
   },
-  init_options = {
-    documentFormatting = true,
-  },
-  filetypes = vim.tbl_keys(efmLanguages),
-  settings = {
-    lintDebounce = 500,
-    languages = efmLanguages
-  },
+  filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
   on_attach = on_attach,
-  capabilities = lsp_status.capabilities
+  capabilities = lsp_status.capabilities,
+  init_options = {
+    linters = {
+      eslint = {
+        command = "eslint_d",
+        rootPatterns = {".eslintrc.js", ".git"},
+        debounce = 100,
+        args = {
+          "--stdin",
+          "--stdin-filename",
+          "%filepath",
+          "--format",
+          "json"
+        },
+        sourceName = "eslint",
+        parseJson = {
+          errorsRoot = "[0].messages",
+          line = "line",
+          column = "column",
+          endLine = "endLine",
+          endColumn = "endColumn",
+          message = "[eslint] ${message} [${ruleId}]",
+          security = "severity"
+        },
+        securities = {
+          [2] = "error",
+          [1] = "warning"
+        }
+      },
+    },
+    filetypes = {
+      javascript = "eslint",
+      javascriptreact = "eslint",
+      typescript = "eslint",
+      typescriptreact = "eslint"
+    },
+    formatters = {
+      prettier = {
+        command = "./node_modules/.bin/prettier",
+        args = {"--stdin-filepath", "%filepath"},
+        rootPatterns = {
+          "package.json",
+          ".prettierrc",
+          ".prettierrc.json",
+          ".prettierrc.toml",
+          ".prettierrc.json",
+          ".prettierrc.yml",
+          ".prettierrc.yaml",
+          ".prettierrc.json5",
+          ".prettierrc.js",
+          ".prettierrc.cjs",
+          "prettier.config.js",
+          "prettier.config.cjs"
+        }
+      }
+    },
+    formatFiletypes = {
+      javascript = "prettier",
+      javascriptreact = "prettier",
+      typescript = "prettier",
+      typescriptreact = "prettier"
+    }
+  }
 }
