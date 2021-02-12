@@ -147,6 +147,30 @@ nvim_lsp.tsserver.setup {
   capabilities = lsp_status.capabilities
 }
 
+local map_table_to_key = function(tbl, key)
+  return vim.tbl_map(function(value)
+    return value[key]
+  end, tbl)
+end
+
+local diagnosticls_languages = {
+  javascript = {
+    linters = { "eslint" },
+    formatters = { "prettier" }
+  },
+  javascriptreact = {
+    linters = { "eslint" },
+    formatters = { "prettier" }
+  },
+  typescript = {
+    linters = { "eslint" },
+    formatters = { "prettier" }
+  },
+  typescriptreact = {
+    linters = { "eslint" },
+    formatters = { "eslint", "prettier" }
+  },
+}
 require'lspconfig'.diagnosticls.setup{
   handlers = {
     ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
@@ -158,7 +182,10 @@ require'lspconfig'.diagnosticls.setup{
     linters = {
       eslint = {
         command = "eslint_d",
-        rootPatterns = {".eslintrc.js", ".git"},
+        rootPatterns = {
+          "package.json",
+          ".eslintrc.js"
+        },
         debounce = 100,
         args = {
           "--stdin",
@@ -183,13 +210,22 @@ require'lspconfig'.diagnosticls.setup{
         }
       },
     },
-    filetypes = {
-      javascript = "eslint",
-      javascriptreact = "eslint",
-      typescript = "eslint",
-      typescriptreact = "eslint"
-    },
+    filetypes = map_table_to_key(diagnosticls_languages, "linters"),
     formatters = {
+      eslint = {
+        command = "eslint_d",
+        rootPatterns = {
+          "package.json",
+          ".eslintrc.js"
+        },
+        debounce = 100,
+        args = {
+          "--fix-to-stdout",
+          "--stdin",
+          "--stdin-filename",
+          "%filepath"
+        },
+      },
       prettier = {
         command = "./node_modules/.bin/prettier",
         args = {"--stdin-filepath", "%filepath"},
@@ -209,11 +245,6 @@ require'lspconfig'.diagnosticls.setup{
         }
       }
     },
-    formatFiletypes = {
-      javascript = "prettier",
-      javascriptreact = "prettier",
-      typescript = "prettier",
-      typescriptreact = "prettier"
-    }
+    formatFiletypes = map_table_to_key(diagnosticls_languages, "formatters"),
   }
 }
