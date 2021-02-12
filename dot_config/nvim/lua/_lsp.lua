@@ -1,6 +1,7 @@
 local nvim_lsp = require('lspconfig')
 local util = require('lspconfig/util')
 local lsp_status = require('lsp-status')
+local saga = require('lspsaga')
 
 lsp_status.register_progress()
 lsp_status.config({
@@ -12,6 +13,14 @@ lsp_status.config({
   indicator_hint = "…",
   indicator_ok = " "
 })
+saga.init_lsp_saga({
+  error_sign = "⨯",
+  warn_sign = "◆",
+  infor_sign = "ⓘ ",
+  hint_sign = "…",
+  max_diag_msg_width = 100,
+  border_style = 2
+})
 
 local on_attach = function(client, bufnr)
 
@@ -21,7 +30,7 @@ local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
+  vim.api.nvim_command('autocmd CursorHold <buffer> lua require("lspsaga.diagnostic").show_line_diagnostics()')
 
   vim.api.nvim_command('highlight LspDiagnosticsDefaultError guifg=#BF616A')
   vim.api.nvim_command('highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B')
@@ -40,11 +49,11 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD',         '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd',         '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gD',         '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gd',         '<Cmd>Lspsaga preview_definition<CR>', opts)
   buf_set_keymap('n', 'gi',         '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', 'gr',         '<cmd>Telescope lsp_references<CR>', opts)
-  buf_set_keymap('n', 'K',          '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'K',          '<Cmd>Lspsaga hover_doc<CR>', opts)
   buf_set_keymap('n', '<leader>ac', '<Cmd>Telescope lsp_code_actions<CR>', opts)
 
   -- other mappings, not sure about these
