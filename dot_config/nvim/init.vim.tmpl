@@ -50,15 +50,19 @@ Plug 'nvim-lua/popup.nvim'                  " dependency of telescope
 Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
 Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
 Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
+{{- else }}
+Plug 'liuchengxu/vim-clap', {
+  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
+Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
+{{- end }}
+
+{{- if .neovim_nightly_native_lsp }}
 Plug 'neovim/nvim-lspconfig'                " native neovim LSP support
 Plug 'nvim-lua/lsp-status.nvim'             " LSP status display
 Plug 'glepnir/lspsaga.nvim'                 " Better LSP diagnostics display
 {{- else }}
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
-Plug 'liuchengxu/vim-clap', {
-  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
-Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
 {{- end }}
 
 call plug#end()
@@ -236,7 +240,7 @@ nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-w> :Jest --watch<CR>
 
 "" ==================== Lightline ====================
-{{- if not .neovim_nightly }}
+{{- if not .neovim_nightly_native_lsp }}
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
 {{- end }}
@@ -277,7 +281,7 @@ let g:lightline = {
 \ }
 \ }
 
-{{- if .neovim_nightly }}
+{{- if .neovim_nightly_native_lsp }}
 function! LspStatus() abort
   if luaeval('#vim.lsp.buf_get_clients() > 0')
     return luaeval("require('lsp-status').status()")
@@ -302,7 +306,7 @@ if ($TERM_EMU == 'kitty')
   let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
 endif
 
-{{- if not .neovim_nightly }}
+{{- if not .neovim_nightly_native_lsp }}
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 {{- end }}
 
@@ -310,7 +314,7 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 let g:ScalpelCommand = 'S'
 nmap <leader>e <Plug>(Scalpel)
 
-{{- if .neovim_nightly }}
+{{- if .neovim_nightly_native_lsp }}
 "" ==================== nvim-lspconfig ====================
 lua require('_lsp')
 

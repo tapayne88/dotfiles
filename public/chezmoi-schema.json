@@ -15,6 +15,10 @@
           "type": "boolean",
           "description": "Enable / disable neovim nightly builds"
         },
+        "neovim_nightly_native_lsp": {
+          "type": "boolean",
+          "description": "Enable / disable neovim nightly's native LSP (falls back to CoC)"
+        },
         "email": {
           "type": "object",
           "description": "Email addresses used in git commits",
@@ -43,6 +47,7 @@
       "required": [
         "ostype",
         "neovim_nightly",
+        "neovim_nightly_native_lsp",
         "email",
         "terminal_font",
         "terminal_font_size"
