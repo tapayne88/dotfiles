@@ -18,7 +18,6 @@ saga.init_lsp_saga({
   warn_sign = "◆",
   infor_sign = "ⓘ ",
   hint_sign = "…",
-  max_diag_msg_width = 100,
   border_style = 2
 })
 
