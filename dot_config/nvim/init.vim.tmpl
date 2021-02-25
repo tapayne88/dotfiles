@@ -51,6 +51,7 @@ Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
 Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
 Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
 {{- else }}
+Plug 'arcticicestudio/nord-vim'
 Plug 'liuchengxu/vim-clap', {
   \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
@@ -151,10 +152,46 @@ colorscheme nord
 highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
 highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
+{{- if .neovim_nightly }}
 " Treesitter overrides
 highlight TSInclude   gui=italic cterm=italic
 highlight TSOperator  gui=italic cterm=italic
 highlight TSKeyword   gui=italic cterm=italic
+{{- else }}
+" Patch CursorLine highlighting bug in NeoVim
+" Messes with highlighting of current line in weird ways
+" https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
+function! s:CustomizeColors()
+    if has('gui_running') || &termguicolors || exists('g:gonvim_running')
+        hi CursorLine ctermfg=white
+    else
+        hi CursorLine guifg=white
+    endif
+endfunction
+
+augroup OnColorScheme
+    autocmd!
+    autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
+augroup END
+
+highlight typescriptImport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptExport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptImportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptExportType        gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+highlight typescriptStatementKeyword  gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
+
+highlight jsClassKeyword    gui=italic cterm=italic
+highlight jsExtendsKeyword  gui=italic cterm=italic
+highlight jsReturn          gui=italic cterm=italic
+highlight jsThis            gui=italic term=italic
+highlight htmlArg           gui=italic term=italic
+highlight Type              gui=italic term=italic
+
+highlight link gitmessengerHeader Identifier
+highlight link gitmessengerHash Comment
+highlight link gitmessengerHistory Constant
+highlight link gitmessengerPopupNormal CursorLine
+{{- end }}
 
 "" ==================== Folding ====================
 set foldmethod=syntax   "syntax highlighting items specify folds
@@ -261,7 +298,6 @@ let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
