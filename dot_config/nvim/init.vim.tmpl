@@ -14,7 +14,6 @@ let vimTestCommands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'Test
 call plug#begin(s:vim_path.'/plugged')
 
 " Core Bundles
-Plug 'arcticicestudio/nord-vim'
 Plug 'lervag/file-line'                     " Handle filenames with line numbers i.e. :20
 Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
@@ -33,8 +32,6 @@ Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
-Plug 'liuchengxu/vim-clap', {
-  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'tweekmonster/startuptime.vim', {
   \ 'on': 'StartupTime' }                   " easier vim startup time profiling
 Plug 'iamcco/markdown-preview.nvim', {
@@ -43,9 +40,31 @@ Plug 'iamcco/markdown-preview.nvim', {
   \ 'on': 'MarkdownPreview' }               " Markdown previewing commands
 Plug 'rhysd/git-messenger.vim', {
   \ 'on': 'GitMessenger' }                  " Git blame for line with commit message
+
+{{- if .neovim_nightly }}
+Plug '~/git/nvcode-color-schemes.vim'       " treesitter colorscheme
+Plug 'nvim-treesitter/nvim-treesitter', {
+  \ 'do': ':TSUpdate' }                     " better syntax highlighting
+Plug 'nvim-treesitter/playground'           " playground for illustrating the AST treesitter builds
+Plug 'nvim-lua/popup.nvim'                  " dependency of telescope
+Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
+Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
+Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
+{{- else }}
+Plug 'arcticicestudio/nord-vim'
+Plug 'liuchengxu/vim-clap', {
+  \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
+Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
+{{- end }}
+
+{{- if .neovim_nightly_native_lsp }}
+Plug 'neovim/nvim-lspconfig'                " native neovim LSP support
+Plug 'nvim-lua/lsp-status.nvim'             " LSP status display
+Plug 'glepnir/lspsaga.nvim'                 " Better LSP diagnostics display
+{{- else }}
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
-Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
+{{- end }}
 
 call plug#end()
 
@@ -115,6 +134,12 @@ let g:clipboard = {
 {{- end }}
 
 "" ==================== Colors ====================
+{{- if .neovim_nightly }}
+let g:nvcode_termcolors=256
+
+lua require('_treesitter')
+{{- end }}
+
 let g:nord_italic = 1
 let g:nord_italic_comments = 1
 let g:nord_underline = 1
@@ -124,6 +149,15 @@ let g:nord_cursor_line_number_background = 1
 syntax enable
 colorscheme nord
 
+highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
+highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
+
+{{- if .neovim_nightly }}
+" Treesitter overrides
+highlight TSInclude   gui=italic cterm=italic
+highlight TSOperator  gui=italic cterm=italic
+highlight TSKeyword   gui=italic cterm=italic
+{{- else }}
 " Patch CursorLine highlighting bug in NeoVim
 " Messes with highlighting of current line in weird ways
 " https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
@@ -139,9 +173,6 @@ augroup OnColorScheme
     autocmd!
     autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
 augroup END
-
-highlight Search    guibg=#81A1C1 guifg=#2E3440 ctermbg=blue ctermfg=black
-highlight IncSearch guibg=#81A1C1 guifg=#2E3440 ctermbg=green ctermfg=black
 
 highlight typescriptImport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
 highlight typescriptExport            gui=italic guifg=#81A1C1 cterm=italic ctermfg=blue
@@ -160,6 +191,7 @@ highlight link gitmessengerHeader Identifier
 highlight link gitmessengerHash Comment
 highlight link gitmessengerHistory Constant
 highlight link gitmessengerPopupNormal CursorLine
+{{- end }}
 
 "" ==================== Folding ====================
 set foldmethod=syntax   "syntax highlighting items specify folds
@@ -169,6 +201,23 @@ set foldlevelstart=99   "start file with all folds opened
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
+{{- if .neovim_nightly }}
+"" ==================== telescope ====================
+lua require('_telescope')
+
+nnoremap <leader>l <cmd>Telescope buffers<cr>
+nnoremap <leader>t <cmd>Telescope git_files<cr>
+nnoremap <leader>f <cmd>Telescope live_grep<cr>
+nnoremap <c-t> <cmd>Telescope git_files<cr>
+nnoremap <c-f> <cmd>Telescope live_grep<cr>
+nnoremap <leader>fw <cmd>Telescope grep_string<CR>
+
+" Colors
+highlight TelescopeBorder       guifg=#4C566A
+highlight TelescopePromptBorder guifg=#5E81AC
+highlight TelescopeMatching     guifg=#EBCB8B
+
+{{- else }}
 "" ==================== vim-clap ====================
 let g:clap_open_action = {
 \  'ctrl-t': 'tab split',
@@ -200,6 +249,7 @@ nnoremap <leader>f :Clap grep2<CR>
 nnoremap <c-t> :Clap git_files<CR>
 nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
+{{- end }}
 
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
@@ -227,8 +277,10 @@ nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-w> :Jest --watch<CR>
 
 "" ==================== Lightline ====================
+{{- if not .neovim_nightly_native_lsp }}
 let g:coc_status_warning_sign = "◆ "
 let g:coc_status_error_sign = "⨯ "
+{{- end }}
 
 function! FileTypeIcon()
   return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
@@ -246,7 +298,6 @@ let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
-\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
@@ -255,19 +306,34 @@ let g:lightline = {
 \ },
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
-\   'cocstatus': 'coc#status',
 \   'filetypeicon': 'FileTypeIcon',
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
-\   'cocstatuswarn': 'warning',
-\   'cocstatuserror': 'error',
 \ },
 \ 'tabline': {
 \   'left': [['vim_logo'], ['tabs']],
 \   'right': [['git_branch']]
 \ }
 \ }
+
+{{- if .neovim_nightly_native_lsp }}
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
+let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['lspstatus']]
+let g:lightline.component_function.lspstatus = 'LspStatus'
+{{- else }}
+let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
+let g:lightline.component_function.cocstatus = 'coc#status'
+let g:lightline.component_type.cocstatuswarn = 'warning'
+let g:lightline.component_type.cocstatuserror = 'error'
+{{- end }}
 
 if ($TERM_EMU == 'kitty')
   let g:lightline.separator = { 'left': "", 'right': " " }
@@ -276,12 +342,19 @@ if ($TERM_EMU == 'kitty')
   let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
 endif
 
+{{- if not .neovim_nightly_native_lsp }}
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+{{- end }}
 
 "" ==================== Scalpel ====================
 let g:ScalpelCommand = 'S'
 nmap <leader>e <Plug>(Scalpel)
 
+{{- if .neovim_nightly_native_lsp }}
+"" ==================== nvim-lspconfig ====================
+lua require('_lsp')
+
+{{- else }}
 "" ==================== Coc-nvim ====================
 let g:coc_global_extensions = [
 \  'coc-eslint',
@@ -315,6 +388,7 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+{{- end }}
 
 function! OpenZippedFile(f)
   " get number of new (empty) buffer

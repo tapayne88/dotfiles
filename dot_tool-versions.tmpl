@@ -1,0 +1,7 @@
+{{- if .neovim_nightly_native_lsp }}
+nodejs 14.15.5
+yarn 1.22.5
+{{- else }}
+nodejs system
+yarn system
+{{- end }}
