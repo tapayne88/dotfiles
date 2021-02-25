@@ -5,7 +5,7 @@ require('telescope').setup{
     use_less = false,
     mappings = {
       i = {
-        ["<c-s>"] = actions.goto_file_selection_split,
+        ["<c-s>"] = actions.select_horizontal,
         ["<C-k>"] = actions.move_selection_previous,
         ["<C-j>"] = actions.move_selection_next,
       }
