@@ -9,7 +9,6 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 PATHS=(
   /usr/local/bin
   /usr/local/sbin
-  $HOME/.local/bin
 )
 for p in $PATHS; do
   if (test -d $p); then
@@ -109,6 +108,9 @@ antigen theme $ZSH_HOME themes/kipper.zsh-theme
 antigen apply
 
 sourceOPSession
+
+# Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
+export PATH="$HOME/.local/bin:$PATH"
 
 # Need to run this after oh-my-zsh lib/completion as it resets it
 # for the benefit of macOS
