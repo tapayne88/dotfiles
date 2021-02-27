@@ -3,7 +3,7 @@ require('telescope').setup{
   defaults = {
     prompt_prefix = "❯",
     use_less = false,
-    layout_strategy = "vertical", -- more useful when in tmux virtical split
+    layout_strategy = "flex", -- let telescope figure out what to do given the space
     mappings = {
       i = {
         ["<c-s>"] = actions.select_horizontal,
