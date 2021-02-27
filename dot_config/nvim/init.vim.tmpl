@@ -206,10 +206,11 @@ let g:netrw_liststyle = 3
 lua require('_telescope')
 
 nnoremap <leader>l  <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>t  <cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>
-nnoremap <leader>f  <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <c-t>      <cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>
-nnoremap <c-f>      <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>gf <cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>
+nnoremap <leader>gF <cmd>lua require('telescope.builtin').git_files()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').file_browser()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fw <cmd>lua require('telescope.builtin').grep_string()<cr>
 
 " Colors
@@ -434,7 +435,7 @@ nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
 nnoremap <leader>evv :vsplit $MYVIMRC<CR>
 nnoremap <leader>ev :split $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
-nnoremap <leader>ff :Ex<CR>
+" nnoremap <leader>ff :Ex<CR> " Replacing with Telescope file_browser (though borrowing shortcut for find_files)
 nnoremap <leader>fp :echo @%<CR>
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
