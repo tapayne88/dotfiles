@@ -47,6 +47,42 @@ local function get_git_remote()
   return output[1]
 end
 
+local function url_is_http(url)
+  return string.find(url, "^https?://") ~= nil
+end
+
+local function parse_remote_ssh(url)
+  _, _, remote, path = string.find(url, "^[^@]+@([^:]+):%d*/?(.+)%.git$")
+  return remote .. "/" .. path
+end
+
+local function parse_remote_url(url)
+  if url_is_http(url) then
+    -- do something different
+  end
+
+  print("ssh", parse_remote_ssh(url))
+end
+
+local git_provider_map = {
+  github = {
+    test = "github",
+    lines = "#L"
+  },
+  gitlab = {
+    test = "gitlab",
+    lines = "#L"
+  },
+  bitbucket = {
+    test = "bitbucket",
+    lines = "#lines-"
+  },
+  stash = {
+    test = "stash",
+    lines = "#"
+  },
+}
+
 module.open = function(opts)
   opts = opts or {}
   file = opts.file or vim.fn.expand("%")
@@ -56,6 +92,8 @@ module.open = function(opts)
 
   print("file", git_file_path)
   print("remote", git_remote)
+
+  parse_remote_url(git_remote)
 end
 
 return module
