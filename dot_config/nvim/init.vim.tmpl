@@ -213,6 +213,7 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').file_browser()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fw <cmd>lua require('telescope.builtin').grep_string()<cr>
+nnoremap <leader>ch <cmd>lua require('telescope.builtin').command_history()<cr>
 
 " Colors
 highlight TelescopeBorder       guifg=#4C566A
@@ -415,27 +416,6 @@ autocmd BufReadCmd /zip:*.yarn/cache/*.zip/* call OpenZippedFile(expand('<afile>
 let g:fugitive_dynamic_colors = 0
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
 
-"" ==================== Key (re)Mappings ====================
-" Makes up/down on line wrapped lines work better (more intuitive)
-nnoremap j gj
-nnoremap k gk
-
-"keep text selected after indentation
-vnoremap < <gv
-vnoremap > >gv
-
-"Super simple window resizing
-nnoremap <leader>w :WinResizerStartResize<CR>
-
-nnoremap <leader>x :cclose<CR>
-nnoremap <leader>h :set hlsearch!<CR>
-nnoremap <leader>n :set number!<CR>
-nnoremap <leader>w :%s/\s\+$//e<CR>:echom "Cleared whitespace"<CR>
-nnoremap <leader>evv :vsplit $MYVIMRC<CR>
-nnoremap <leader>ev :split $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
-" nnoremap <leader>ff :Ex<CR> " Replacing with Telescope file_browser (though borrowing shortcut for find_files)
-nnoremap <leader>fp :echo @%<CR>
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v -q<CR>
@@ -451,6 +431,29 @@ nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
 nnoremap <leader>gpl :Dispatch! git pull<CR>
+
+"" ==================== Key (re)Mappings ====================
+" Makes up/down on line wrapped lines work better (more intuitive)
+nnoremap j gj
+nnoremap k gk
+
+"keep text selected after indentation
+vnoremap < <gv
+vnoremap > >gv
+
+"Super simple window resizing
+nnoremap <leader>w :WinResizerStartResize<CR>
+
+nnoremap <leader>x :cclose<CR>
+nnoremap <leader>h :set hlsearch!<CR>
+nnoremap <leader>n :set number!<CR>
+nnoremap <leader>fp :echo @%<CR>
+" nnoremap <leader>ff :Ex<CR> " Replacing with Telescope file_browser (though borrowing shortcut for find_files)
+
+"vimrc sourcing
+nnoremap <leader>evv :vsplit $MYVIMRC<CR>
+nnoremap <leader>ev :split $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
 
 " Esc (C-[) to escape terminal insert mode
 tnoremap <Esc> <C-\><C-n>
