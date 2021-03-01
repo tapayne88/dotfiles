@@ -30,6 +30,7 @@ Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'sheerun/vim-polyglot'                 " Syntax highlighting
 Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'wincent/scalpel'                      " Easier find & replace
+Plug 'simeji/winresizer'                    " Simple plugin to easily resize windows
 Plug 'janko-m/vim-test', {
   \ 'on': vimTestCommands }                 " easy testing
 Plug 'tweekmonster/startuptime.vim', {
@@ -423,11 +424,9 @@ nnoremap k gk
 vnoremap < <gv
 vnoremap > >gv
 
-" Shows and hides invisible characters
-nnoremap <leader>- :resize -5<CR>
-nnoremap <leader>= :resize +5<CR>
-nnoremap <leader>. :vertical resize -20<CR>
-nnoremap <leader>, :vertical resize +20<CR>
+"Super simple window resizing
+nnoremap <leader>w :WinResizerStartResize<CR>
+
 nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>n :set number!<CR>
