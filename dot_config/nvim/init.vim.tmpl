@@ -505,6 +505,8 @@ nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-[> <Esc>
 
+nnoremap <leader>rp <cmd>lua require('_git-open-url').open()<CR>
+
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
 endif
