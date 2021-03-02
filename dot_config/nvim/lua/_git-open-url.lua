@@ -38,7 +38,7 @@ local function get_git_filepath(filename)
   end
 
   if output[2] ~= "" then
-    return output[2] .. "/" .. output[3]
+    return output[2] .. output[3]
   end
   return output[3]
 end
@@ -58,39 +58,54 @@ local function url_is_http(url)
 end
 
 local function parse_remote_ssh(url)
-  _, _, remote, path = string.find(url, "^[^@]+@([^:]+):%d*/?(.+)%.git$")
-  return remote, path
+  _, _, remote, project, repo = string.find(url, "^[^@]+@([^:]+):%d*/?([^/]+)/([^/]+)%.git$")
+  return remote, project, repo
 end
 
 local git_provider_map = {
   github = {
     test = "github",
-    path = "tree/master",
+    project_prefix = "",
+    repo_prefix = "",
+    filename_prefix = "tree/master",
     lines = "#L"
   },
   gitlab = {
     test = "gitlab",
-    path = "",
+    project_prefix = "",
+    repo_prefix = "",
+    filename_prefix = "",
     lines = "#L"
   },
   bitbucket = {
     test = "bitbucket",
-    path = "",
+    project_prefix = "",
+    repo_prefix = "",
+    filename_prefix = "",
     lines = "#lines-"
   },
   stash = {
     test = "stash",
-    path = "",
+    project_prefix = "projects",
+    repo_prefix = "repos",
+    filename_prefix = "browse",
     lines = "#"
   },
 }
+
+local function with_prefix(prefix, str)
+  if prefix ~= "" and str ~= "" then
+    return prefix .. "/" .. str
+  end
+  return prefix .. str
+end
 
 local function parse_remote_url(url)
   if url_is_http(url) then
     -- do something different
   end
 
-  remote, path = parse_remote_ssh(url)
+  remote, project, repo = parse_remote_ssh(url)
 
   matched_providers = vim.tbl_filter(function(provider)
     return string.match(remote, provider["test"]) ~= nil
@@ -99,7 +114,10 @@ local function parse_remote_url(url)
   -- TODO: if count(matched_providers) > 1 do something
   
   provider = matched_providers[1]
-  path = path .. "/" .. provider["path"]
+
+  path = with_prefix(provider["project_prefix"], project) .. "/" ..
+         with_prefix(provider["repo_prefix"], repo) .. "/" ..
+         with_prefix(provider["filename_prefix"], "")
 
   return remote, path, provider["lines"]
 end
