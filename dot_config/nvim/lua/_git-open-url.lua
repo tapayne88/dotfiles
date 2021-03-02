@@ -9,6 +9,7 @@
 --      - gitlab
 --    - support line
 --    - support visual blocks
+--    - support branch
 local Job = require('plenary.job')
 
 local module = {}
@@ -42,7 +43,12 @@ local function get_git_filepath(filename)
   return output[3]
 end
 
+local function get_current_line_number()
+  return vim.fn.line('.')
+end
+
 local function get_git_remote()
+  -- TODO: allow remote name to be configurable
   output = get_os_command_output({ "git", "remote", "get-url", "origin" })
   return output[1]
 end
@@ -53,35 +59,58 @@ end
 
 local function parse_remote_ssh(url)
   _, _, remote, path = string.find(url, "^[^@]+@([^:]+):%d*/?(.+)%.git$")
-  return remote .. "/" .. path
+  return remote, path
 end
+
+local git_provider_map = {
+  github = {
+    test = "github",
+    path = "tree/master",
+    lines = "#L"
+  },
+  gitlab = {
+    test = "gitlab",
+    path = "",
+    lines = "#L"
+  },
+  bitbucket = {
+    test = "bitbucket",
+    path = "",
+    lines = "#lines-"
+  },
+  stash = {
+    test = "stash",
+    path = "",
+    lines = "#"
+  },
+}
 
 local function parse_remote_url(url)
   if url_is_http(url) then
     -- do something different
   end
 
-  print("ssh", parse_remote_ssh(url))
+  remote, path = parse_remote_ssh(url)
+
+  matched_providers = vim.tbl_filter(function(provider)
+    return string.match(remote, provider["test"]) ~= nil
+  end, git_provider_map)
+
+  -- TODO: if count(matched_providers) > 1 do something
+  
+  provider = matched_providers[1]
+  path = path .. "/" .. provider["path"]
+
+  return remote, path, provider["lines"]
 end
 
-local git_provider_map = {
-  github = {
-    test = "github",
-    lines = "#L"
-  },
-  gitlab = {
-    test = "gitlab",
-    lines = "#L"
-  },
-  bitbucket = {
-    test = "bitbucket",
-    lines = "#lines-"
-  },
-  stash = {
-    test = "stash",
-    lines = "#"
-  },
-}
+local function build_url(remote, path, filename, line_num)
+  print(
+    "https://" .. remote ..
+    "/" .. path .. "/" .. filename ..
+    provider["lines"] .. line_num
+  )
+end
 
 module.open = function(opts)
   opts = opts or {}
@@ -90,10 +119,10 @@ module.open = function(opts)
   git_file_path = get_git_filepath(file)
   git_remote = get_git_remote()
 
-  print("file", git_file_path)
-  print("remote", git_remote)
+  remote, path, filename = parse_remote_url(git_remote)
+  line_num = get_current_line_number()
 
-  parse_remote_url(git_remote)
+  build_url(remote, path, git_file_path, line_num)
 end
 
 return module
