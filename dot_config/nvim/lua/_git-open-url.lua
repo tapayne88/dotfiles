@@ -77,13 +77,6 @@ local git_provider_map = {
     filename_prefix = "-/tree/master",
     lines = "#L"
   },
-  bitbucket = {
-    test = "bitbucket",
-    project_prefix = "",
-    repo_prefix = "",
-    filename_prefix = "",
-    lines = "#lines-"
-  },
   stash = {
     test = "stash",
     project_prefix = "projects",
@@ -102,7 +95,7 @@ end
 
 local function parse_remote_url(url)
   if url_is_http(url) then
-    -- do something different
+    error("http git remotes are currently not supported")
   end
 
   remote, project, repo = parse_remote_ssh(url)
