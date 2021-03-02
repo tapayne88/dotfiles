@@ -68,29 +68,30 @@ local git_provider_map = {
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "tree/master",
-    lines = "#L"
+    lines_prefix = "#L"
   },
   gitlab = {
     test = "gitlab",
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "-/tree/master",
-    lines = "#L"
+    lines_prefix = "#L"
   },
   stash = {
     test = "stash",
     project_prefix = "projects",
     repo_prefix = "repos",
     filename_prefix = "browse",
-    lines = "#"
+    lines_prefix = "#"
   },
 }
 
-local function with_prefix(prefix, str)
-  if prefix ~= "" and str ~= "" then
-    return prefix .. "/" .. str
-  end
-  return prefix .. str
+local function join(tbl)
+  table_without_empty_strings = vim.tbl_filter(function(param)
+    return param ~= ""
+  end, tbl)
+
+  return table.concat(table_without_empty_strings, "/")
 end
 
 local function parse_remote_url(url)
@@ -108,19 +109,20 @@ local function parse_remote_url(url)
   
   provider = matched_providers[1]
 
-  -- TODO: Fix bug with empty filename_prefix (too many /)
-  path = with_prefix(provider["project_prefix"], project) .. "/" ..
-         with_prefix(provider["repo_prefix"], repo) .. "/" ..
-         with_prefix(provider["filename_prefix"], "")
+  path = join({
+    provider["project_prefix"],
+    project,
+    provider["repo_prefix"],
+    repo,
+    provider["filename_prefix"]
+  })
 
-  return remote, path, provider["lines"]
+  return remote, path, provider["lines_prefix"]
 end
 
-local function build_url(remote, path, filename, line_num)
+local function build_url(remote, path, filename, lines_prefix, line_num)
   print(
-    "https://" .. remote ..
-    "/" .. path .. "/" .. filename ..
-    provider["lines"] .. line_num
+    "https://" ..  join({ remote, path, filename .. lines_prefix .. line_num })
   )
 end
 
@@ -131,10 +133,10 @@ module.open = function(opts)
   git_file_path = get_git_filepath(file)
   git_remote = get_git_remote()
 
-  remote, path, filename = parse_remote_url(git_remote)
+  host, path, lines_prefix = parse_remote_url(git_remote)
   line_num = get_current_line_number()
 
-  build_url(remote, path, git_file_path, line_num)
+  build_url(host, path, git_file_path, lines_prefix, line_num)
 end
 
 return module
