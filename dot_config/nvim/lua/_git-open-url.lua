@@ -64,21 +64,28 @@ end
 
 local git_provider_map = {
   github = {
-    test = "github",
+    domain_test = "github",
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "tree/master",
     lines_prefix = "#L"
   },
   gitlab = {
-    test = "gitlab",
+    domain_test = "gitlab",
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "-/tree/master",
     lines_prefix = "#L"
   },
+  bitbucket = {
+    domain_test = "bitbucket",
+    project_prefix = "",
+    repo_prefix = "",
+    filename_prefix = "src/master",
+    lines_prefix = "#lines-"
+  },
   stash = {
-    test = "stash",
+    domain_test = "stash",
     project_prefix = "projects",
     repo_prefix = "repos",
     filename_prefix = "browse",
@@ -102,7 +109,7 @@ local function parse_remote_url(url)
   remote, project, repo = parse_remote_ssh(url)
 
   matched_providers = vim.tbl_filter(function(provider)
-    return string.match(remote, provider["test"]) ~= nil
+    return string.match(remote, provider["domain_test"]) ~= nil
   end, git_provider_map)
 
   -- TODO: if count(matched_providers) > 1 do something
