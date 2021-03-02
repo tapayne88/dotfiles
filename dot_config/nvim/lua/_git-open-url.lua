@@ -4,12 +4,7 @@
 --    - open in default browser or just use clipboard?
 --    - handle various remote types
 --      - stash
---      - bitbucket
---      - github
---      - gitlab
---    - support line
 --    - support visual blocks
---    - support branch
 local Job = require('plenary.job')
 
 local module = {}
@@ -27,14 +22,23 @@ local function get_os_command_output(cmd, cwd)
   return stdout, ret, stderr
 end
 
+local function get_git_branch()
+  output, ret = get_os_command_output({ "git", "branch", "--show-current" })
+
+  if ret ~= 0 then
+    error('not git repo')
+  end
+
+  return output[1]
+end
+
 local function get_git_filepath(filename)
   output, ret = get_os_command_output({
     "git", "rev-parse", "--show-toplevel", "--show-prefix", filename
   })
 
   if ret ~= 0 then
-    print('not git repo')
-    return {}
+    error('not git repo')
   end
 
   if output[2] ~= "" then
@@ -67,21 +71,21 @@ local git_provider_map = {
     domain_test = "github",
     project_prefix = "",
     repo_prefix = "",
-    filename_prefix = "tree/master",
+    filename_prefix = "tree/$git_branch",
     lines_prefix = "#L"
   },
   gitlab = {
     domain_test = "gitlab",
     project_prefix = "",
     repo_prefix = "",
-    filename_prefix = "-/tree/master",
+    filename_prefix = "-/tree/$git_branch",
     lines_prefix = "#L"
   },
   bitbucket = {
     domain_test = "bitbucket",
     project_prefix = "",
     repo_prefix = "",
-    filename_prefix = "src/master",
+    filename_prefix = "src/$git_branch",
     lines_prefix = "#lines-"
   },
   stash = {
@@ -101,7 +105,7 @@ local function join(tbl)
   return table.concat(table_without_empty_strings, "/")
 end
 
-local function parse_remote_url(url)
+local function parse_remote_url(url, provider_prop)
   if url_is_http(url) then
     error("http git remotes are currently not supported")
   end
@@ -109,22 +113,22 @@ local function parse_remote_url(url)
   remote, project, repo = parse_remote_ssh(url)
 
   matched_providers = vim.tbl_filter(function(provider)
-    return string.match(remote, provider["domain_test"]) ~= nil
+    return string.match(remote, provider_prop(provider, "domain_test")) ~= nil
   end, git_provider_map)
 
-  -- TODO: if count(matched_providers) > 1 do something
+  -- TODO: if count(matched_providers) > 1 plenary log something
   
   provider = matched_providers[1]
 
   path = join({
-    provider["project_prefix"],
+    provider_prop(provider, "project_prefix"),
     project,
-    provider["repo_prefix"],
+    provider_prop(provider, "repo_prefix"),
     repo,
-    provider["filename_prefix"]
+    provider_prop(provider, "filename_prefix"),
   })
 
-  return remote, path, provider["lines_prefix"]
+  return remote, path, provider_prop(provider, "lines_prefix")
 end
 
 local function build_url(remote, path, filename, lines_prefix, line_num)
@@ -133,14 +137,26 @@ local function build_url(remote, path, filename, lines_prefix, line_num)
   )
 end
 
+local function get_provider_prop(git_branch)
+  return function(provider, prop)
+    interp_prop = string.gsub(
+      provider[prop], "%$([%w_]+)", { git_branch = git_branch }
+    )
+    return interp_prop
+  end
+end
+
 module.open = function(opts)
   opts = opts or {}
   file = opts.file or vim.fn.expand("%")
 
+  git_branch = get_git_branch()
   git_file_path = get_git_filepath(file)
   git_remote = get_git_remote()
 
-  host, path, lines_prefix = parse_remote_url(git_remote)
+  provider_prop = get_provider_prop(git_branch)
+
+  host, path, lines_prefix = parse_remote_url(git_remote, provider_prop)
   line_num = get_current_line_number()
 
   build_url(host, path, git_file_path, lines_prefix, line_num)
