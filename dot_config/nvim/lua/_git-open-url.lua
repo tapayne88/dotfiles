@@ -72,6 +72,7 @@ local git_provider_map = {
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "tree/$git_branch",
+    query_string = "",
     lines_prefix = "#L"
   },
   gitlab = {
@@ -79,6 +80,7 @@ local git_provider_map = {
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "-/tree/$git_branch",
+    query_string = "",
     lines_prefix = "#L"
   },
   bitbucket = {
@@ -86,6 +88,7 @@ local git_provider_map = {
     project_prefix = "",
     repo_prefix = "",
     filename_prefix = "src/$git_branch",
+    query_string = "",
     lines_prefix = "#lines-"
   },
   stash = {
@@ -93,6 +96,7 @@ local git_provider_map = {
     project_prefix = "projects",
     repo_prefix = "repos",
     filename_prefix = "browse",
+    query_string = "at=$git_branch",
     lines_prefix = "#"
   },
 }
@@ -128,12 +132,17 @@ local function parse_remote_url(url, provider_prop)
     provider_prop(provider, "filename_prefix"),
   })
 
-  return remote, path, provider_prop(provider, "lines_prefix")
+  return remote,
+    path,
+    provider_prop(provider, "query_string"),
+    provider_prop(provider, "lines_prefix")
 end
 
-local function build_url(remote, path, filename, lines_prefix, line_num)
+local function build_url(remote, path, filename, query_string, lines_prefix, line_num)
+  query_string = query_string ~= "" and "?" .. query_string or ""
+  line_anchor = lines_prefix .. line_num
   print(
-    "https://" ..  join({ remote, path, filename .. lines_prefix .. line_num })
+    "https://" ..  join({ remote, path, filename .. query_string .. line_anchor })
   )
 end
 
@@ -156,10 +165,10 @@ module.open = function(opts)
 
   provider_prop = get_provider_prop(git_branch)
 
-  host, path, lines_prefix = parse_remote_url(git_remote, provider_prop)
+  host, path, query_string, lines_prefix = parse_remote_url(git_remote, provider_prop)
   line_num = get_current_line_number()
 
-  build_url(host, path, git_file_path, lines_prefix, line_num)
+  build_url(host, path, git_file_path, query_string, lines_prefix, line_num)
 end
 
 return module
