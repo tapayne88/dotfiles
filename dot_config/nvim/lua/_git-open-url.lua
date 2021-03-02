@@ -73,7 +73,7 @@ local git_provider_map = {
     repo_prefix = "",
     filename_prefix = "tree/$git_branch",
     query_string = "",
-    lines_prefix = "#L"
+    fragment = "L$lines"
   },
   gitlab = {
     domain_test = "gitlab",
@@ -81,7 +81,7 @@ local git_provider_map = {
     repo_prefix = "",
     filename_prefix = "-/tree/$git_branch",
     query_string = "",
-    lines_prefix = "#L"
+    fragment = "L$lines"
   },
   bitbucket = {
     domain_test = "bitbucket",
@@ -89,7 +89,7 @@ local git_provider_map = {
     repo_prefix = "",
     filename_prefix = "src/$git_branch",
     query_string = "",
-    lines_prefix = "#lines-"
+    fragment = "lines-$lines"
   },
   stash = {
     domain_test = "stash",
@@ -97,7 +97,7 @@ local git_provider_map = {
     repo_prefix = "repos",
     filename_prefix = "browse",
     query_string = "at=$git_branch",
-    lines_prefix = "#"
+    fragment = "$lines"
   },
 }
 
@@ -135,21 +135,21 @@ local function parse_remote_url(url, provider_prop)
   return remote,
     path,
     provider_prop(provider, "query_string"),
-    provider_prop(provider, "lines_prefix")
+    provider_prop(provider, "fragment")
 end
 
-local function build_url(remote, path, filename, query_string, lines_prefix, line_num)
+local function build_url(remote, path, filename, query_string, fragment)
   query_string = query_string ~= "" and "?" .. query_string or ""
-  line_anchor = lines_prefix .. line_num
+  fragment = fragment ~= "" and "#" .. fragment or ""
   print(
-    "https://" ..  join({ remote, path, filename .. query_string .. line_anchor })
+    "https://" ..  join({ remote, path, filename .. query_string .. fragment })
   )
 end
 
-local function get_provider_prop(git_branch)
+local function get_provider_prop(git_branch, lines)
   return function(provider, prop)
     interp_prop = string.gsub(
-      provider[prop], "%$([%w_]+)", { git_branch = git_branch }
+      provider[prop], "%$([%w_]+)", { git_branch = git_branch, lines = lines }
     )
     return interp_prop
   end
@@ -163,12 +163,12 @@ module.open = function(opts)
   git_file_path = get_git_filepath(file)
   git_remote = get_git_remote()
 
-  provider_prop = get_provider_prop(git_branch)
-
-  host, path, query_string, lines_prefix = parse_remote_url(git_remote, provider_prop)
   line_num = get_current_line_number()
+  provider_prop = get_provider_prop(git_branch, line_num)
 
-  build_url(host, path, git_file_path, query_string, lines_prefix, line_num)
+  host, path, query_string, fragment = parse_remote_url(git_remote, provider_prop)
+
+  build_url(host, path, git_file_path, query_string, fragment)
 end
 
 return module
