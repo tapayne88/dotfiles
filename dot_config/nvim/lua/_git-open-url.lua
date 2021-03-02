@@ -53,7 +53,12 @@ end
 
 local function get_git_remote()
   -- TODO: allow remote name to be configurable
-  output = get_os_command_output({ "git", "remote", "get-url", "origin" })
+  output, ret = get_os_command_output({ "git", "remote", "get-url", "origin" })
+
+  if ret ~= 0 then
+    error("not git repo or origin remote doesn't exist")
+  end
+
   return output[1]
 end
 
