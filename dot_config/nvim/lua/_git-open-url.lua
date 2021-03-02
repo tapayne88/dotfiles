@@ -74,7 +74,7 @@ local git_provider_map = {
     test = "gitlab",
     project_prefix = "",
     repo_prefix = "",
-    filename_prefix = "",
+    filename_prefix = "-/tree/master",
     lines = "#L"
   },
   bitbucket = {
@@ -115,6 +115,7 @@ local function parse_remote_url(url)
   
   provider = matched_providers[1]
 
+  -- TODO: Fix bug with empty filename_prefix (too many /)
   path = with_prefix(provider["project_prefix"], project) .. "/" ..
          with_prefix(provider["repo_prefix"], repo) .. "/" ..
          with_prefix(provider["filename_prefix"], "")
