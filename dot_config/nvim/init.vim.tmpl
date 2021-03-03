@@ -470,7 +470,6 @@ nnoremap <leader>ge :Gedit<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR><CR>
 nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <leader>gp :Ggrep -n<Space>
 nnoremap <leader>gm :GitMessenger<CR>
 nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
@@ -505,7 +504,7 @@ nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-[> <Esc>
 
-nnoremap <leader>rp <cmd>lua require('_git-open-url').open()<CR>
+nnoremap <leader>gp <cmd>lua require('_git-open-url').git_path()<CR>
 
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local

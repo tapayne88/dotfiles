@@ -2,8 +2,6 @@
 --
 -- TODO:
 --    - open in default browser or just use clipboard?
---    - handle various remote types
---      - stash
 --    - support visual blocks
 local Job = require('plenary.job')
 
@@ -152,7 +150,7 @@ local function get_provider_prop(project, repo, branch, file_path, lines)
   end
 end
 
-module.open = function(opts)
+module.git_path = function(opts)
   opts = opts or {}
   file = opts.file or vim.fn.expand("%")
 
