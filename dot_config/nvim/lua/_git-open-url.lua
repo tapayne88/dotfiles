@@ -3,6 +3,10 @@
 -- TODO:
 --    - open in default browser or just use clipboard?
 --    - support visual blocks
+--      - github #L2-L5
+--      - gitlab #L8-10
+--      - bitbucket #lines-10:13
+--      - stash #33-35
 local Job = require('plenary.job')
 
 local module = {}
