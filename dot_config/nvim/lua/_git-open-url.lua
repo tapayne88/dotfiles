@@ -53,6 +53,10 @@ local function get_current_line_number()
   return vim.fn.line('.')
 end
 
+local function get_visual_selection_lines()
+  return vim.fn.line("'<"), vim.fn.line("'>")
+end
+
 local function get_git_remote()
   -- TODO: allow remote name to be configurable
   output, ret = get_os_command_output({ "git", "remote", "get-url", "origin" })
@@ -78,25 +82,37 @@ local git_provider_map = {
     domain_test = "github",
     path = "$project/$repo/tree/$branch/$filename",
     query_string = "",
-    fragment = "L$lines"
+    fragment = {
+      normal = "L$lines",
+      visual = "L$start_line-L$end_line"
+    }
   },
   gitlab = {
     domain_test = "gitlab",
     path = "$project/$repo/-/tree/$branch/$filename",
     query_string = "",
-    fragment = "L$lines"
+    fragment = {
+      normal = "L$lines",
+      visual = "L$start_line-$end_line"
+    }
   },
   bitbucket = {
     domain_test = "bitbucket",
     path = "$project/$repo/src/$branch/$filename",
     query_string = "",
-    fragment = "lines-$lines"
+    fragment = {
+      normal = "lines-$lines",
+      visual = "lines-$start_line:$end_line",
+    }
   },
   stash = {
     domain_test = "stash",
     path = "projects/$project/repos/$repo/browse/$filename",
     query_string = "at=$branch",
-    fragment = "$lines"
+    fragment = {
+      normal = "$lines",
+      visual = "$start_line-$end_line"
+    }
   },
 }
 
@@ -116,7 +132,7 @@ local function parse_remote_url(url, provider_prop)
   return parse_remote_ssh(url)
 end
 
-local function apply_provider(provider_prop)
+local function apply_provider(provider_prop, subkey)
   matched_providers = vim.tbl_filter(function(provider)
     return string.match(remote, provider_prop(provider, "domain_test")) ~= nil
   end, git_provider_map)
@@ -127,7 +143,7 @@ local function apply_provider(provider_prop)
 
   return provider_prop(provider, "path"),
     provider_prop(provider, "query_string"),
-    provider_prop(provider, "fragment")
+    provider_prop(provider, "fragment", subkey)
 end
 
 local function build_url(remote, path, query_string, fragment)
@@ -138,23 +154,26 @@ local function build_url(remote, path, query_string, fragment)
   )
 end
 
-local function get_provider_prop(project, repo, branch, file_path, lines)
-  return function(provider, prop)
+local function get_provider_prop(project, repo, branch, file_path, lines, start_num, end_num)
+  return function(provider, prop, sub_prop)
+    property = sub_prop == nil and provider[prop] or provider[prop][sub_prop]
     interp_prop = string.gsub(
-      provider[prop], "%$([%w_]+)",
+      property, "%$([%w_]+)",
       {
         project = project,
         repo = repo,
         branch = branch,
         filename = file_path,
-        lines = lines
+        lines = lines,
+        start_line = start_num,
+        end_line = end_num
       }
     )
     return interp_prop
   end
 end
 
-module.git_path = function(opts)
+local function print_url(opts, key)
   opts = opts or {}
   file = opts.file or vim.fn.expand("%")
 
@@ -164,11 +183,20 @@ module.git_path = function(opts)
 
   host, project, repo = parse_remote_url(git_remote)
   line_num = get_current_line_number()
-  provider_prop = get_provider_prop(project, repo, git_branch, git_file_path, line_num)
+  start_num, end_num = get_visual_selection_lines()
+  provider_prop = get_provider_prop(project, repo, git_branch, git_file_path, line_num, start_num, end_num)
 
-  path, query_string, fragment = apply_provider(provider_prop)
+  path, query_string, fragment = apply_provider(provider_prop, key)
 
   build_url(host, path, query_string, fragment)
+end
+
+module.git_path_line = function(opts)
+  print_url(opts, "normal")
+end
+
+module.git_path_block = function(opts)
+  print_url(opts, "visual")
 end
 
 return module
