@@ -22,7 +22,6 @@ call plug#begin(s:vim_path.'/plugged')
 
 " Core Bundles
 Plug 'lervag/file-line'                     " Handle filenames with line numbers i.e. :20
-Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'tpope/vim-fugitive'                   " Git integration ':Gstatus' etc.
 Plug 'tpope/vim-characterize'               " Adds 'ga' command to show character code
 Plug 'tpope/vim-commentary'                 " Adds 'gc' & 'gcc' commands for commenting lines
@@ -58,11 +57,13 @@ Plug 'nvim-lua/popup.nvim'                  " dependency of telescope
 Plug 'nvim-lua/plenary.nvim'                " dependency of telescope
 Plug 'nvim-telescope/telescope.nvim'        " whizzy command-p launcher
 Plug 'kyazdani42/nvim-web-devicons'         " devicons for lua plugins
+Plug 'lewis6991/gitsigns.nvim'              " + & - in column for changed lines
 {{- else }}
 Plug 'arcticicestudio/nord-vim'
 Plug 'liuchengxu/vim-clap', {
   \ 'do': { -> clap#installer#force_download() } } " whizzy command-p launcher
 Plug 'vn-ki/coc-clap'                       " Integrate coc.nvim with vim-clap
+Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 {{- end }}
 
 {{- if .neovim_nightly_native_lsp }}
@@ -269,6 +270,19 @@ nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
 {{- end }}
 
+{{- if .neovim_nightly }}
+"" ==================== Gitsigns ====================
+lua << EOF
+require('gitsigns').setup()
+EOF
+
+highlight DiffAdd     guibg=NONE guifg=#A3BE8C
+highlight DiffChange  guibg=NONE guifg=#EBCB8B
+highlight DiffDelete  guibg=NONE guifg=#BF616A
+
+nnoremap gh <cmd>lua require("gitsigns").next_hunk()<CR>
+nnoremap gH <cmd>lua require("gitsigns").prev_hunk()<CR>
+{{- else}}
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
 let g:signify_sign_change = "•"
@@ -277,9 +291,7 @@ let g:signify_sign_changedelete = "•"
 let g:signify_sign_show_count = 0
 let g:signify_sign_show_text = 1
 let g:signify_update_on_focusgained = 1
-
-nmap gh <plug>(signify-next-hunk)
-nmap gH <plug>(signify-prev-hunk)
+{{- end }}
 
 "" ==================== Vim-test ====================
 let g:test#runner_commands = ['Jest']
