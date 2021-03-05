@@ -201,6 +201,12 @@ highlight link gitmessengerHistory Constant
 highlight link gitmessengerPopupNormal CursorLine
 {{- end }}
 
+{{- if .neovim_nightly_native_lsp }}
+highlight link LspSagaDiagnosticBorder LspSagaDefPreviewBorder
+highlight link LspSagaDiagnosticHeader LspSagaDefPreviewBorder
+highlight link LspSagaDiagnosticTruncateLine LspSagaDefPreviewBorder
+{{- end }}
+
 "" ==================== Folding ====================
 set foldmethod=syntax   "syntax highlighting items specify folds
 set foldcolumn=2        "defines 1 col at window left, to indicate folding
