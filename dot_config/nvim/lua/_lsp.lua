@@ -101,30 +101,43 @@ local get_tsserver_exec = function()
   end
 end
 
+local publish_with_priority = function(priority)
+  return vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      -- show underline
+      underline = true,
+      -- Enable signs
+      signs = {
+        -- Make priority higher than vim-signify
+        priority = 100 - priority
+      },
+      -- Disable virtual_text
+      virtual_text = false,
+      -- show diagnostics on exit from insert
+      update_in_insert = true
+    }
+  )
+end
+
 local on_publish_diagnostics = function(prefix)
   return function(err, method, params, client_id, bufnr, config)
+    local diags = {}
+
     vim.tbl_map(
       function(value)
         value.message = prefix .. value.message
+
+        local severity_diag = diags[value.severity] or {}
+        table.insert(severity_diag, value)
+        diags[value.severity] = severity_diag
       end,
       params.diagnostics
     )
 
-    return vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- show underline
-        underline = true,
-        -- Enable signs
-        signs = {
-          -- Make priority higher than vim-signify
-          priority = 100
-        },
-        -- Disable virtual_text
-        virtual_text = false,
-        -- show diagnostics on exit from insert
-        update_in_insert = true
-      }
-    )(err, method, params, client_id, bufnr, config)
+    for severity, diagnostics in pairs(diags) do
+      params.diagnostics = diagnostics
+      publish_with_priority(severity)(err, method, params, client_id, bufnr, config)
+    end
   end
 end
 
