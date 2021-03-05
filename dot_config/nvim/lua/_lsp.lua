@@ -168,15 +168,15 @@ end
 local diagnosticls_languages = {
   javascript = {
     linters = { "eslint" },
-    formatters = { "prettier" }
+    formatters = { "eslint", "prettier" }
   },
   javascriptreact = {
     linters = { "eslint" },
-    formatters = { "prettier" }
+    formatters = { "eslint", "prettier" }
   },
   typescript = {
     linters = { "eslint" },
-    formatters = { "prettier" }
+    formatters = { "eslint", "prettier" }
   },
   typescriptreact = {
     linters = { "eslint" },
