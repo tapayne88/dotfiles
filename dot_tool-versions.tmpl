@@ -1,7 +1,9 @@
 {{- if .neovim_nightly_native_lsp }}
+deno system
 nodejs 14.15.5
 yarn 1.22.5
 {{- else }}
+deno system
 nodejs system
 yarn system
 {{- end }}
