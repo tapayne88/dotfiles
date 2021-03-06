@@ -70,6 +70,7 @@ Plug 'mhinz/vim-signify'                    " + & - in column for changed lines
 Plug 'neovim/nvim-lspconfig'                " native neovim LSP support
 Plug 'nvim-lua/lsp-status.nvim'             " LSP status display
 Plug 'glepnir/lspsaga.nvim'                 " Better LSP diagnostics display
+Plug 'hrsh7th/nvim-compe'                   " Auto completion plugin for nvim
 {{- else }}
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
@@ -383,6 +384,18 @@ nmap <leader>e <Plug>(Scalpel)
 {{- if .neovim_nightly_native_lsp }}
 "" ==================== nvim-lspconfig ====================
 lua require('_lsp')
+
+"" ==================== nvim-compe ====================
+set completeopt=menuone,noselect
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 {{- else }}
 "" ==================== Coc-nvim ====================
