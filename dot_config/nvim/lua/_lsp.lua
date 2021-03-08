@@ -31,7 +31,7 @@ local get_bin_path = function(cmd, fn)
         print("`yarn bin ".. cmd .."` failed")
         return
       end
-      fn(result[1], code, signal)
+      fn(result[1])
     end
   )
 end
@@ -158,7 +158,7 @@ local get_tsserver_exec = function(fn)
     local file = io.open(coc_settings):read("*a")
     local coc_json = vim.fn.json_decode(file)
     local ts_key = "tsserver.tsdk"
-    return coc_json[ts_key] .. "/tsserver.js"
+    return fn(coc_json[ts_key] .. "/tsserver.js")
   end
 end
 
@@ -260,7 +260,7 @@ get_bin_path(
       handlers = {
         ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
       },
-      filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+      filetypes = vim.tbl_keys(diagnosticls_languages),
       on_attach = on_attach,
       capabilities = lsp_status.capabilities,
       init_options = {
