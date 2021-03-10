@@ -196,7 +196,7 @@ get_tsserver_exec(
       end,
       capabilities = lsp_status.capabilities
     }
-    tsserver.manager.try_add()
+    tsserver.manager.try_add_wrapper()
   end
 )
 
@@ -307,6 +307,6 @@ get_bin_path(
         formatFiletypes = map_table_to_key(diagnosticls_languages, "formatters"),
       }
     }
-    diagnosticls.manager.try_add()
+    diagnosticls.manager.try_add_wrapper()
   end
 )
