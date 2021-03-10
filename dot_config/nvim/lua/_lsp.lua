@@ -37,22 +37,33 @@ local get_bin_path = function(cmd, fn)
   )
 end
 
+local lsp_symbols = {
+  error = "⨯",
+  warning = "◆",
+  info = "ⓘ ",
+  hint = "",
+  ok = " "
+}
+
 lsp_status.register_progress()
 lsp_status.config({
   current_function = false,
   status_symbol = "",
-  indicator_errors = "⨯",
-  indicator_warnings = "◆",
-  indicator_info = "ⓘ ",
-  indicator_hint = "…",
-  indicator_ok = " "
+  indicator_errors = lsp_symbols["error"],
+  indicator_warnings = lsp_symbols["warning"],
+  indicator_info = lsp_symbols["info"],
+  indicator_hint = lsp_symbols["hint"],
+  indicator_ok = lsp_symbols["ok"]
 })
 saga.init_lsp_saga({
-  error_sign = "⨯",
-  warn_sign = "◆",
-  infor_sign = "ⓘ ",
-  hint_sign = "…",
-  border_style = 2
+  error_sign = lsp_symbols["error"],
+  warn_sign = lsp_symbols["warning"],
+  infor_sign = lsp_symbols["info"],
+  hint_sign = lsp_symbols["hint"],
+  border_style = 2,
+  code_action_prompt = {
+    enable = false
+  }
 })
 
 local on_attach = function(client, bufnr)
@@ -76,9 +87,9 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint guifg=none gui=underline')
 
-  vim.fn.sign_define("LspDiagnosticsSignError", { text = "⨯", texthl = "LspDiagnosticsSignError" })
-  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = "◆", texthl = "LspDiagnosticsSignWarning" })
-  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = "ⓘ ", texthl = "LspDiagnosticsSignInformation" })
+  vim.fn.sign_define("LspDiagnosticsSignError", { text = lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
+  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
+  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = lsp_symbols["info"], texthl = "LspDiagnosticsSignInformation" })
   vim.fn.sign_define("LspDiagnosticsSignHint", { text = "…", texthl = "LspDiagnosticsSignHint" })
 
   -- Mappings.
