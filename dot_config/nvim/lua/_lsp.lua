@@ -1,4 +1,4 @@
-local util = require('lspconfig/util')
+local util = require('lspconfig.util')
 local lsp_status = require('lsp-status')
 local saga = require('lspsaga')
 local completion = require('completion')
@@ -46,15 +46,15 @@ local lsp_symbols = {
 }
 
 lsp_status.register_progress()
-lsp_status.config({
-  current_function = false,
-  status_symbol = "",
-  indicator_errors = lsp_symbols["error"],
-  indicator_warnings = lsp_symbols["warning"],
-  indicator_info = lsp_symbols["info"],
-  indicator_hint = lsp_symbols["hint"],
-  indicator_ok = lsp_symbols["ok"]
-})
+-- lsp_status.config({
+--   current_function = false,
+--   status_symbol = "",
+--   indicator_errors = lsp_symbols["error"],
+--   indicator_warnings = lsp_symbols["warning"],
+--   indicator_info = lsp_symbols["info"],
+--   indicator_hint = lsp_symbols["hint"],
+--   indicator_ok = lsp_symbols["ok"]
+-- })
 saga.init_lsp_saga({
   error_sign = lsp_symbols["error"],
   warn_sign = lsp_symbols["warning"],
@@ -187,6 +187,14 @@ local on_publish_diagnostics = function(prefix)
   end
 end
 
+local get_config_capabilities = function(config)
+  return vim.tbl_extend(
+    'keep',
+    config.capabilities or {},
+    lsp_status.capabilities
+  )
+end
+
 get_tsserver_exec(
   function(tsserver_bin)
     local tsserver = require("lspconfig").tsserver
@@ -205,7 +213,7 @@ get_tsserver_exec(
         client.resolved_capabilities.document_formatting = false
         on_attach(client, bufnr)
       end,
-      capabilities = lsp_status.capabilities
+      capabilities = get_config_capabilities(tsserver)
     }
     tsserver.manager.try_add_wrapper()
   end
@@ -247,7 +255,7 @@ get_bin_path(
       },
       filetypes = vim.tbl_keys(diagnosticls_languages),
       on_attach = on_attach,
-      capabilities = lsp_status.capabilities,
+      capabilities = get_config_capabilities(diagnosticls),
       init_options = {
         linters = {
           eslint = {
