@@ -148,7 +148,7 @@ let g:clipboard = {
 {{- if .neovim_nightly }}
 let g:nvcode_termcolors=256
 
-lua require('_treesitter')
+lua require('tap.treesitter')
 {{- end }}
 
 let g:nord_italic = 1
@@ -220,7 +220,7 @@ let g:netrw_liststyle = 3
 
 {{- if .neovim_nightly }}
 "" ==================== telescope ====================
-lua require('_telescope')
+lua require('tap.telescope')
 
 nnoremap <leader>l  <cmd>lua require('telescope.builtin').buffers{ sort_lastused = true }<cr>
 nnoremap <leader>gf <cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>
@@ -384,7 +384,7 @@ nmap <leader>e <Plug>(Scalpel)
 
 {{- if .neovim_nightly_native_lsp }}
 "" ==================== nvim-lspconfig ====================
-lua require('_lsp')
+lua require('tap.lsp')
 
 "" ==================== completion-nvim ====================
 " Avoid showing message extra message when using completion
