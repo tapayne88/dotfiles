@@ -1,12 +1,11 @@
--- Module to open the current file and line in git browser interface
+-- Module to open the current file and line in git web interface
 --
 -- TODO:
 --    - open in default browser or just use clipboard?
---    - support visual blocks
---      - github #L2-L5
---      - gitlab #L8-10
---      - bitbucket #lines-10:13
---      - stash #33-35
+--    - support http git remotes
+--    - allow remote name to be configurable (currently hard coded to origin)
+--    - expand support for matching (uses name of config to match)
+--
 local Job = require('plenary.job')
 
 local module = {}
@@ -58,7 +57,6 @@ local function get_visual_selection_lines()
 end
 
 local function get_git_remote()
-  -- TODO: allow remote name to be configurable
   output, ret = get_os_command_output({ "git", "remote", "get-url", "origin" })
 
   if ret ~= 0 then
