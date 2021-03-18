@@ -1,4 +1,4 @@
-local util = require('lspconfig/util')
+local util = require('lspconfig.util')
 local lsp_status = require('lsp-status')
 local saga = require('lspsaga')
 local completion = require('completion')
@@ -98,7 +98,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gd',         '<cmd>Lspsaga preview_definition<CR>', opts)
   buf_set_keymap('n', 'gi',         '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', 'gr',         '<cmd>Telescope lsp_references<CR>', opts)
-  buf_set_keymap('n', 'K',          '<cmd>Lspsaga hover_doc<CR>', opts)
+  buf_set_keymap('n', 'K',          '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
   buf_set_keymap('n', '<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
 
   -- other mappings, not sure about these
@@ -187,6 +187,14 @@ local on_publish_diagnostics = function(prefix)
   end
 end
 
+local get_config_capabilities = function(config)
+  return vim.tbl_extend(
+    'keep',
+    config.capabilities or {},
+    lsp_status.capabilities
+  )
+end
+
 get_tsserver_exec(
   function(tsserver_bin)
     local tsserver = require("lspconfig").tsserver
@@ -205,7 +213,7 @@ get_tsserver_exec(
         client.resolved_capabilities.document_formatting = false
         on_attach(client, bufnr)
       end,
-      capabilities = lsp_status.capabilities
+      capabilities = get_config_capabilities(tsserver)
     }
     tsserver.manager.try_add_wrapper()
   end
@@ -247,7 +255,7 @@ get_bin_path(
       },
       filetypes = vim.tbl_keys(diagnosticls_languages),
       on_attach = on_attach,
-      capabilities = lsp_status.capabilities,
+      capabilities = get_config_capabilities(diagnosticls),
       init_options = {
         linters = {
           eslint = {
