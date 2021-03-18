@@ -470,7 +470,6 @@ nnoremap <leader>ge :Gedit<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR><CR>
 nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <leader>gp :Ggrep -n<Space>
 nnoremap <leader>gm :GitMessenger<CR>
 nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
@@ -504,6 +503,9 @@ nnoremap <leader>sv :source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>
 " Esc (C-[) to escape terminal insert mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-[> <Esc>
+
+nnoremap <leader>gp :lua require('tap.git-web-url').get_line_url()<CR>
+xnoremap <leader>gp :<c-u>lua require('tap.git-web-url').get_block_url()<CR>
 
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
