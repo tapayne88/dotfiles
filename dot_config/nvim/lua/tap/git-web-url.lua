@@ -6,25 +6,12 @@
 --    - allow remote name to be configurable (currently hard coded to origin)
 --    - expand support for matching (uses name of config to match)
 --
-local Job = require('plenary.job')
+local utils = require("tap.utils")
 
 local module = {}
 
-local function get_os_command_output(cmd, cwd)
-  if type(cmd) ~= "table" then
-    print('[get_os_command_output]: cmd has to be a table')
-    return {}
-  end
-  local command = table.remove(cmd, 1)
-  local stderr = {}
-  local stdout, ret = Job:new({ command = command, args = cmd, cwd = cwd, on_stderr = function(_, data)
-    table.insert(stderr, data)
-  end }):sync()
-  return stdout, ret, stderr
-end
-
 local function get_git_branch()
-  output, ret = get_os_command_output({ "git", "branch", "--show-current" })
+  output, ret = utils.get_os_command_output({ "git", "branch", "--show-current" })
 
   if ret ~= 0 then
     error('not git repo')
@@ -34,7 +21,7 @@ local function get_git_branch()
 end
 
 local function get_git_filepath(filename)
-  output, ret = get_os_command_output({
+  output, ret = utils.get_os_command_output({
     "git", "rev-parse", "--show-toplevel", "--show-prefix", filename
   })
 
@@ -57,7 +44,7 @@ local function get_visual_selection_lines()
 end
 
 local function get_git_remote()
-  output, ret = get_os_command_output({ "git", "remote", "get-url", "origin" })
+  output, ret = utils.get_os_command_output({ "git", "remote", "get-url", "origin" })
 
   if ret ~= 0 then
     error("not git repo or origin remote doesn't exist")

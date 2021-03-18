@@ -2,40 +2,7 @@ local util = require('lspconfig.util')
 local lsp_status = require('lsp-status')
 local saga = require('lspsaga')
 local completion = require('completion')
-local Job = require('plenary.job')
-
-local function get_os_command_output_async(cmd, fn, cwd)
-  if type(cmd) ~= "table" then
-    print('[get_os_command_output_async]: cmd has to be a table')
-    return {}
-  end
-  local command = table.remove(cmd, 1)
-  job = Job:new({ command = command, args = cmd, cwd = cwd })
-  job:after(
-    vim.schedule_wrap(
-      function(j, code, signal)
-        if code == 0 then
-          return fn(j:result(), code, signal)
-        end
-        return fn(j:stderr_result(), code, signal)
-      end
-    )
-  )
-  job:start()
-end
-
-local get_bin_path = function(cmd, fn)
-  get_os_command_output_async(
-    { "yarn", "bin", cmd },
-    function(result, code, signal)
-      if code ~= 0 then
-        print("`yarn bin ".. cmd .."` failed")
-        return
-      end
-      fn(result[1])
-    end
-  )
-end
+local utils = require("tap.utils")
 
 local lsp_symbols = {
   error = "⨯",
@@ -123,6 +90,19 @@ local on_attach = function(client, bufnr)
   elseif client.resolved_capabilities.document_range_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
+end
+
+local get_bin_path = function(cmd, fn)
+  utils.get_os_command_output_async(
+    { "yarn", "bin", cmd },
+    function(result, code, signal)
+      if code ~= 0 then
+        print("`yarn bin ".. cmd .."` failed")
+        return
+      end
+      fn(result[1])
+    end
+  )
 end
 
 -- Stolen from lspconfig/tsserver, would have been nice to be able to import
@@ -219,12 +199,6 @@ get_tsserver_exec(
   end
 )
 
-local map_table_to_key = function(tbl, key)
-  return vim.tbl_map(function(value)
-    return value[key]
-  end, tbl)
-end
-
 local diagnosticls_languages = {
   javascript = {
     linters = { "eslint" },
@@ -288,7 +262,7 @@ get_bin_path(
             }
           },
         },
-        filetypes = map_table_to_key(diagnosticls_languages, "linters"),
+        filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
         formatters = {
           eslint = {
             command = "eslint_d",
@@ -323,7 +297,7 @@ get_bin_path(
             }
           }
         },
-        formatFiletypes = map_table_to_key(diagnosticls_languages, "formatters"),
+        formatFiletypes = utils.map_table_to_key(diagnosticls_languages, "formatters"),
       }
     }
     diagnosticls.manager.try_add_wrapper()
