@@ -189,11 +189,11 @@ local function print_url(opts, key)
   build_url(host, path, query_string, fragment)
 end
 
-module.git_path_line = function(opts)
+module.get_line_url = function(opts)
   print_url(opts, "normal")
 end
 
-module.git_path_block = function(opts)
+module.get_block_url = function(opts)
   print_url(opts, "visual")
 end
 
