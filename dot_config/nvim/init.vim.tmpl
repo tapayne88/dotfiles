@@ -147,8 +147,6 @@ let g:clipboard = {
 "" ==================== Colors ====================
 {{- if .neovim_nightly }}
 let g:nvcode_termcolors=256
-
-lua require('tap.treesitter')
 {{- end }}
 
 let g:nord_italic = 1
@@ -210,6 +208,11 @@ highlight link LspSagaDiagnosticHeader LspSagaDefPreviewBorder
 highlight link LspSagaDiagnosticTruncateLine LspSagaDefPreviewBorder
 {{- end }}
 
+{{- if .neovim_nightly }}
+" Load all lua files
+lua require('tap')
+{{- end }}
+
 "" ==================== Folding ====================
 set foldmethod=syntax   "syntax highlighting items specify folds
 set foldcolumn=2        "defines 1 col at window left, to indicate folding
@@ -218,27 +221,7 @@ set foldlevelstart=99   "start file with all folds opened
 "" ==================== netrw ====================
 let g:netrw_liststyle = 3
 
-{{- if .neovim_nightly }}
-"" ==================== telescope ====================
-lua require('tap.telescope')
-
-nnoremap <leader>l  <cmd>lua require('telescope.builtin').buffers{ sort_lastused = true }<cr>
-nnoremap <leader>gf <cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>
-nnoremap <leader>gF <cmd>lua require('telescope.builtin').git_files()<cr>
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').file_browser{ cwd = vim.fn.expand("%:p:h") }<cr>
-nnoremap <leader>fB <cmd>lua require('telescope.builtin').file_browser()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').file_browser{ cwd = vim.fn.expand("~"), hidden = true }<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fw <cmd>lua require('telescope.builtin').grep_string()<cr>
-nnoremap <leader>ch <cmd>lua require('telescope.builtin').command_history()<cr>
-
-" Colors
-highlight TelescopeBorder       guifg=#4C566A
-highlight TelescopePromptBorder guifg=#5E81AC
-highlight TelescopeMatching     guifg=#EBCB8B
-
-{{- else }}
+{{- if not .neovim_nightly }}
 "" ==================== vim-clap ====================
 let g:clap_open_action = {
 \  'ctrl-t': 'tab split',
@@ -272,19 +255,7 @@ nnoremap <c-f> :Clap grep2<CR>
 nnoremap <leader>fw :Clap grep2 ++query=<cword><CR>
 {{- end }}
 
-{{- if .neovim_nightly }}
-"" ==================== Gitsigns ====================
-lua << EOF
-require('gitsigns').setup()
-EOF
-
-highlight DiffAdd     guibg=NONE guifg=#A3BE8C
-highlight DiffChange  guibg=NONE guifg=#EBCB8B
-highlight DiffDelete  guibg=NONE guifg=#BF616A
-
-nnoremap gh <cmd>lua require("gitsigns").next_hunk()<CR>
-nnoremap gH <cmd>lua require("gitsigns").prev_hunk()<CR>
-{{- else}}
+{{- if not .neovim_nightly }}
 "" ==================== Signify ====================
 let g:signify_sign_add = "•"
 let g:signify_sign_change = "•"
@@ -382,27 +353,7 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 let g:ScalpelCommand = 'S'
 nmap <leader>e <Plug>(Scalpel)
 
-{{- if .neovim_nightly_native_lsp }}
-"" ==================== nvim-lspconfig ====================
-lua require('tap.lsp')
-
-"" ==================== completion-nvim ====================
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-let g:completion_chain_complete_list = [
-  \{'complete_items': ['lsp', 'path', 'buffers']},
-  \{'mode': '<c-p>'},
-  \{'mode': '<c-n>'}
-\]
-
-{{- else }}
+{{- if not .neovim_nightly_native_lsp }}
 "" ==================== Coc-nvim ====================
 let g:coc_global_extensions = [
 \  'coc-eslint',
