@@ -138,4 +138,8 @@ function utils.join(value, str, sep)
   return str ~= "" and table.concat({value, str}, sep) or value
 end
 
+function utils.termcodes(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 return utils
