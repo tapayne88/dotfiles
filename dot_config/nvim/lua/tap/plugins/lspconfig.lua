@@ -180,11 +180,28 @@ local get_config_capabilities = function(config)
   )
 end
 
+local lspconfig_server_setup = function(server_name, config)
+  local server = require("lspconfig")[server_name]
+
+  if (server == nil) then
+    return
+  end
+
+  server.setup(
+    vim.tbl_extend(
+      "force",
+      {capabilities = get_config_capabilities(server)},
+      config
+    )
+  )
+  server.manager.try_add_wrapper()
+
+  return server
+end
+
 get_tsserver_exec(
   function(tsserver_bin)
-    local tsserver = require("lspconfig").tsserver
-
-    tsserver.setup {
+    lspconfig_server_setup("tsserver", {
       handlers = {
         ["textDocument/publishDiagnostics"] = on_publish_diagnostics("[tsserver] ")
       },
@@ -198,9 +215,7 @@ get_tsserver_exec(
         client.resolved_capabilities.document_formatting = false
         on_attach(client, bufnr)
       end,
-      capabilities = get_config_capabilities(tsserver)
-    }
-    tsserver.manager.try_add_wrapper()
+    })
   end
 )
 
@@ -226,15 +241,12 @@ local diagnosticls_languages = {
 get_bin_path(
   "prettier",
   function(prettier_bin)
-    local diagnosticls = require('lspconfig').diagnosticls
-
-    diagnosticls.setup {
+    lspconfig_server_setup("diagnosticls", {
       handlers = {
         ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
       },
       filetypes = vim.tbl_keys(diagnosticls_languages),
       on_attach = on_attach,
-      capabilities = get_config_capabilities(diagnosticls),
       init_options = {
         linters = {
           eslint = {
@@ -304,7 +316,6 @@ get_bin_path(
         },
         formatFiletypes = utils.map_table_to_key(diagnosticls_languages, "formatters"),
       }
-    }
-    diagnosticls.manager.try_add_wrapper()
+    })
   end
 )
