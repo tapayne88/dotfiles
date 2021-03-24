@@ -147,8 +147,13 @@ end
 
 local on_publish_diagnostics = function(prefix)
   return function(err, method, params, client_id, bufnr, config)
-    local diags = {}
+    -- Clear diagnostics when there are 0 to stop them hanging around
+    if (table.getn(params.diagnostics) == 0) then
+      publish_with_priority(0)(err, method, params, client_id, bufnr, config)
+      return
+    end
 
+    local diags = {}
     vim.tbl_map(
       function(value)
         value.message = prefix .. value.message
