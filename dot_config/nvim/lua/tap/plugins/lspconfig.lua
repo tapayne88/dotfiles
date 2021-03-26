@@ -57,7 +57,7 @@ local on_attach = function(client, bufnr)
   vim.fn.sign_define("LspDiagnosticsSignError", { text = lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
   vim.fn.sign_define("LspDiagnosticsSignWarning", { text = lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
   vim.fn.sign_define("LspDiagnosticsSignInformation", { text = lsp_symbols["info"], texthl = "LspDiagnosticsSignInformation" })
-  vim.fn.sign_define("LspDiagnosticsSignHint", { text = "…", texthl = "LspDiagnosticsSignHint" })
+  vim.fn.sign_define("LspDiagnosticsSignHint", { text = lsp_symbols["hint"], texthl = "LspDiagnosticsSignHint" })
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
