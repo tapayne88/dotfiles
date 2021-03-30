@@ -1,4 +1,4 @@
-local util = require('lspconfig.util')
+local lspconfig_util = require('lspconfig.util')
 local lsp_status = require('lsp-status')
 local saga = require('lspsaga')
 local completion = require('completion')
@@ -98,7 +98,7 @@ local get_bin_path = function(cmd, fn)
     function(result, code, signal)
       if code ~= 0 then
         print("`yarn bin ".. cmd .."` failed")
-        return
+        return fn(nil)
       end
       fn(result[1])
     end
@@ -107,17 +107,17 @@ end
 
 -- Stolen from lspconfig/tsserver, would have been nice to be able to import
 local get_ts_root_dir = function(fname)
-  return util.root_pattern("tsconfig.json")(fname) or
-  util.root_pattern("package.json", "jsconfig.json", ".git")(fname);
+  return lspconfig_util.root_pattern("tsconfig.json")(fname) or
+  lspconfig_util.root_pattern("package.json", "jsconfig.json", ".git")(fname);
 end
 
 -- Make tsserver work with yarn v2
 local get_tsserver_exec = function(fn)
   local ts_root_dir = get_ts_root_dir(vim.fn.getcwd())
-  local coc_settings = ts_root_dir .. "/.vim/coc-settings.json"
+  local coc_settings = ts_root_dir and ts_root_dir .. "/.vim/coc-settings.json" or ""
 
   -- not yarn v2 project
-  if util.path.exists(coc_settings) == false then
+  if lspconfig_util.path.exists(coc_settings) == false then
     return get_bin_path("tsserver", fn)
   else
     local file = io.open(coc_settings):read("*a")
@@ -201,6 +201,10 @@ end
 
 get_tsserver_exec(
   function(tsserver_bin)
+    if (tsserver_bin == nil) then
+      return
+    end
+
     lspconfig_server_setup("tsserver", {
       handlers = {
         ["textDocument/publishDiagnostics"] = on_publish_diagnostics("[tsserver] ")
@@ -244,6 +248,43 @@ local diagnosticls_languages = {
 get_bin_path(
   "prettier",
   function(prettier_bin)
+    local eslint_formatter = {
+      eslint = {
+        command = "eslint_d",
+        rootPatterns = {
+          "package.json",
+          ".eslintrc.js"
+        },
+        debounce = 100,
+        args = {
+          "--fix-to-stdout",
+          "--stdin",
+          "--stdin-filename",
+          "%filepath"
+        },
+      }
+    }
+    local prettier_formatter = prettier_bin ~= nil and {
+      prettier = {
+        command = prettier_bin,
+        args = {"--stdin-filepath", "%filepath"},
+        rootPatterns = {
+          "package.json",
+          ".prettierrc",
+          ".prettierrc.json",
+          ".prettierrc.toml",
+          ".prettierrc.json",
+          ".prettierrc.yml",
+          ".prettierrc.yaml",
+          ".prettierrc.json5",
+          ".prettierrc.js",
+          ".prettierrc.cjs",
+          "prettier.config.js",
+          "prettier.config.cjs"
+        }
+      }
+    } or {}
+
     lspconfig_server_setup("diagnosticls", {
       handlers = {
         ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
@@ -283,40 +324,7 @@ get_bin_path(
           },
         },
         filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
-        formatters = {
-          eslint = {
-            command = "eslint_d",
-            rootPatterns = {
-              "package.json",
-              ".eslintrc.js"
-            },
-            debounce = 100,
-            args = {
-              "--fix-to-stdout",
-              "--stdin",
-              "--stdin-filename",
-              "%filepath"
-            },
-          },
-          prettier = {
-            command = prettier_bin,
-            args = {"--stdin-filepath", "%filepath"},
-            rootPatterns = {
-              "package.json",
-              ".prettierrc",
-              ".prettierrc.json",
-              ".prettierrc.toml",
-              ".prettierrc.json",
-              ".prettierrc.yml",
-              ".prettierrc.yaml",
-              ".prettierrc.json5",
-              ".prettierrc.js",
-              ".prettierrc.cjs",
-              "prettier.config.js",
-              "prettier.config.cjs"
-            }
-          }
-        },
+        formatters = vim.tbl_extend('keep', eslint_formatter, prettier_formatter),
         formatFiletypes = utils.map_table_to_key(diagnosticls_languages, "formatters"),
       }
     })
