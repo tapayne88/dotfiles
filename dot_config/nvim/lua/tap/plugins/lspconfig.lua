@@ -116,48 +116,32 @@ local get_tsserver_exec = function(fn)
   end
 end
 
-local publish_with_priority = function(priority)
-  return vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      -- show underline
-      underline = true,
-      -- Enable signs
-      signs = {
-        -- Make priority higher than vim-signify
-        priority = 100 - priority
-      },
-      -- Disable virtual_text
-      virtual_text = false,
-      -- show diagnostics on exit from insert
-      update_in_insert = true
-    }
-  )
-end
+local publish_diagnostics = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- show underline
+    underline = true,
+    -- Enable signs
+    signs = {
+      -- Make priority higher than vim-signify
+      priority = 100
+    },
+    -- Disable virtual_text
+    virtual_text = false,
+    -- show diagnostics on exit from insert
+    update_in_insert = true
+  }
+)
 
 local on_publish_diagnostics = function(prefix)
   return function(err, method, params, client_id, bufnr, config)
-    -- Clear diagnostics when there are 0 to stop them hanging around
-    if (table.getn(params.diagnostics) == 0) then
-      publish_with_priority(0)(err, method, params, client_id, bufnr, config)
-      return
-    end
-
-    local diags = {}
     vim.tbl_map(
       function(value)
         value.message = prefix .. value.message
-
-        local severity_diag = diags[value.severity] or {}
-        table.insert(severity_diag, value)
-        diags[value.severity] = severity_diag
       end,
       params.diagnostics
     )
 
-    for severity, diagnostics in pairs(diags) do
-      params.diagnostics = diagnostics
-      publish_with_priority(severity)(err, method, params, client_id, bufnr, config)
-    end
+    publish_diagnostics(err, method, params, client_id, bufnr, config)
   end
 end
 
