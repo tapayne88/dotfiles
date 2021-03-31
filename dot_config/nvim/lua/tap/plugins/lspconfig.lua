@@ -33,6 +33,22 @@ saga.init_lsp_saga({
   }
 })
 
+_G.lspconfig = {}
+
+function _G.lspconfig.toggle_format()
+  if (vim.b.disable_format == nil) then
+    vim.b.disable_format = 1
+    print("disabled formatting for buffer")
+  else
+    vim.b.disable_format = nil
+    print("enabled formatting for buffer")
+  end
+end
+
+function _G.lspconfig.format()
+  return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 5000)
+end
+
 local on_attach = function(client, bufnr)
 
   lsp_status.on_attach(client, bufnr)
@@ -81,11 +97,14 @@ local on_attach = function(client, bufnr)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
-    vim.cmd [[augroup lsp_formatting]]
-    vim.cmd [[autocmd!]]
-    vim.cmd [[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync({}, 5000)]]
-    vim.cmd [[augroup END]]
+    vim.api.nvim_exec([[
+      augroup lsp_formatting
+        autocmd! * <buffer>
+        autocmd BufWritePre <buffer> :lua lspconfig.format()
+      augroup END
+    ]], false)
 
+    buf_set_keymap("n", "<leader>tf", "<cmd>lua lspconfig.toggle_format()<CR>", opts)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
