@@ -1,37 +1,12 @@
 local lspconfig_util = require('lspconfig.util')
-local lsp_status = require('lsp-status')
-local saga = require('lspsaga')
 local completion = require('completion')
+local lspsaga = require("tap.plugins.lspsaga")
+local lsp_status = require('tap.plugins.lsp-status')
 local utils = require("tap.utils")
+local nnoremap = require('tap.utils').nnoremap
 
-local lsp_symbols = {
-  error = "⨯",
-  warning = "◆",
-  info = "ⓘ ",
-  hint = "",
-  ok = " "
-}
-
-lsp_status.register_progress()
-lsp_status.config({
-  current_function = false,
-  status_symbol = "",
-  indicator_errors = lsp_symbols["error"],
-  indicator_warnings = lsp_symbols["warning"],
-  indicator_info = lsp_symbols["info"],
-  indicator_hint = lsp_symbols["hint"],
-  indicator_ok = lsp_symbols["ok"]
-})
-saga.init_lsp_saga({
-  error_sign = lsp_symbols["error"],
-  warn_sign = lsp_symbols["warning"],
-  infor_sign = lsp_symbols["info"],
-  hint_sign = lsp_symbols["hint"],
-  border_style = 2,
-  code_action_prompt = {
-    enable = false
-  }
-})
+lspsaga.init()
+lsp_status.init()
 
 _G.lspconfig = {}
 
@@ -51,14 +26,11 @@ end
 
 local on_attach = function(client, bufnr)
 
-  lsp_status.on_attach(client, bufnr)
   completion.on_attach(client, bufnr)
+  lspsaga.on_attach(client, bufnr)
+  lsp_status.on_attach(client, bufnr)
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  vim.api.nvim_command('autocmd CursorHold <buffer> lua require("lspsaga.diagnostic").show_cursor_diagnostics()')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   vim.api.nvim_command('highlight LspDiagnosticsDefaultError guifg=#BF616A')
   vim.api.nvim_command('highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B')
@@ -70,30 +42,30 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint guifg=none gui=underline')
 
-  vim.fn.sign_define("LspDiagnosticsSignError", { text = lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
-  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
-  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = lsp_symbols["info"], texthl = "LspDiagnosticsSignInformation" })
-  vim.fn.sign_define("LspDiagnosticsSignHint", { text = lsp_symbols["hint"], texthl = "LspDiagnosticsSignHint" })
+  vim.fn.sign_define("LspDiagnosticsSignError", { text = utils.lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
+  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = utils.lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
+  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = utils.lsp_symbols["info"], texthl = "LspDiagnosticsSignInformation" })
+  vim.fn.sign_define("LspDiagnosticsSignHint", { text = utils.lsp_symbols["hint"], texthl = "LspDiagnosticsSignHint" })
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD',         '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gd',         '<cmd>Lspsaga preview_definition<CR>', opts)
-  buf_set_keymap('n', 'gi',         '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', 'gr',         '<cmd>Telescope lsp_references<CR>', opts)
-  buf_set_keymap('n', 'K',          '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
-  buf_set_keymap('n', '<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  local opts = { bufnr = bufnr }
+  nnoremap('gD',         '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  nnoremap('gd',         '<cmd>Lspsaga preview_definition<CR>', opts)
+  nnoremap('gi',         '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  nnoremap('gr',         '<cmd>Telescope lsp_references<CR>', opts)
+  nnoremap('K',          '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
+  nnoremap('<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
+  nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
   -- other mappings, not sure about these
-  buf_set_keymap('n', '<space>wa',  '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr',  '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl',  '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D',   '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>e',   '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d',         '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d',         '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q',   '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  nnoremap('<space>wa',  '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  nnoremap('<space>wr',  '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  nnoremap('<space>wl',  '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  nnoremap('<space>D',   '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  nnoremap('<space>e',   '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  nnoremap('[d',         '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  nnoremap(']d',         '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  nnoremap('<space>q',   '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
@@ -104,10 +76,10 @@ local on_attach = function(client, bufnr)
       augroup END
     ]], false)
 
-    buf_set_keymap("n", "<leader>tf", "<cmd>lua lspconfig.toggle_format()<CR>", opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    nnoremap("<leader>tf", "<cmd>lua lspconfig.toggle_format()<CR>", opts)
+    nnoremap("<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    nnoremap("<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 end
 

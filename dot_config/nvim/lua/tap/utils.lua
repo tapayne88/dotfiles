@@ -3,6 +3,14 @@ local Job = require('plenary.job')
 
 local utils = {}
 
+utils.lsp_symbols = {
+  error = "⨯",
+  warning = "◆",
+  info = "ⓘ ",
+  hint = "",
+  ok = " "
+}
+
 function utils.get_os_command_output_async(cmd, fn, cwd)
   if type(cmd) ~= "table" then
     print('[get_os_command_output_async]: cmd has to be a table')
@@ -66,10 +74,10 @@ local function make_mapper(mode, _opts)
       rhs = {rhs, "string"},
       opts = {opts, validate_opts, "mapping options are incorrect"}
     }
-    if opts.buffer then
-      -- Remove the buffer from the args sent to the key map function
-      local bufnr = opts.buffer
-      opts.buffer = nil
+    if opts.bufnr then
+      -- Remove the bufnr from the args sent to the key map function
+      local bufnr = opts.bufnr
+      opts.bufnr = nil
       opts = vim.tbl_extend("keep", opts, parent_opts)
       api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
     else
