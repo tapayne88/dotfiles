@@ -1,8 +1,3 @@
--- vi: filetype=lua
-{{- if .neovim_nightly_native_lsp }}
-require("tap.plugins.lspconfig")
-{{- end }}
-
 require("tap.plugins.completion-nvim")
 require("tap.plugins.gitsigns")
 require("tap.plugins.telescope")

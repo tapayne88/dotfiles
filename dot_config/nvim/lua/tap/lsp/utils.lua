@@ -1,11 +1,8 @@
-local lspconfig_util = require('lspconfig.util')
+local lspconfig = require("lspconfig")
 local lspsaga = require("tap.plugins.lspsaga")
 local lsp_status = require('tap.plugins.lsp-status')
 local utils = require("tap.utils")
 local nnoremap = require('tap.utils').nnoremap
-
-lspsaga.init()
-lsp_status.init()
 
 _G.lspconfig = {}
 
@@ -23,7 +20,9 @@ function _G.lspconfig.format()
   return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 5000)
 end
 
-local on_attach = function(client, bufnr)
+local module = {}
+
+function module.on_attach(client, bufnr)
 
   lspsaga.on_attach(client, bufnr)
   lsp_status.on_attach(client, bufnr)
@@ -81,7 +80,7 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local get_bin_path = function(cmd, fn)
+function module.get_bin_path(cmd, fn)
   utils.get_os_command_output_async(
     { "yarn", "bin", cmd },
     function(result, code, signal)
@@ -92,28 +91,6 @@ local get_bin_path = function(cmd, fn)
       fn(result[1])
     end
   )
-end
-
--- Stolen from lspconfig/tsserver, would have been nice to be able to import
-local get_ts_root_dir = function(fname)
-  return lspconfig_util.root_pattern("tsconfig.json")(fname) or
-  lspconfig_util.root_pattern("package.json", "jsconfig.json", ".git")(fname);
-end
-
--- Make tsserver work with yarn v2
-local get_tsserver_exec = function(fn)
-  local ts_root_dir = get_ts_root_dir(vim.fn.getcwd())
-  local coc_settings = ts_root_dir and ts_root_dir .. "/.vim/coc-settings.json" or ""
-
-  -- not yarn v2 project
-  if lspconfig_util.path.exists(coc_settings) == false then
-    return get_bin_path("tsserver", fn)
-  else
-    local file = io.open(coc_settings):read("*a")
-    local coc_json = vim.fn.json_decode(file)
-    local ts_key = "tsserver.tsdk"
-    return fn(coc_json[ts_key] .. "/tsserver.js")
-  end
 end
 
 local publish_diagnostics = vim.lsp.with(
@@ -132,7 +109,7 @@ local publish_diagnostics = vim.lsp.with(
   }
 )
 
-local on_publish_diagnostics = function(prefix)
+function module.on_publish_diagnostics(prefix)
   return function(err, method, params, client_id, bufnr, config)
     vim.tbl_map(
       function(value)
@@ -153,8 +130,8 @@ local get_config_capabilities = function(config)
   )
 end
 
-local lspconfig_server_setup = function(server_name, config)
-  local server = require("lspconfig")[server_name]
+function module.lspconfig_server_setup(server_name, config)
+  local server = lspconfig[server_name]
 
   if (server == nil) then
     return
@@ -172,134 +149,4 @@ local lspconfig_server_setup = function(server_name, config)
   return server
 end
 
-get_tsserver_exec(
-  function(tsserver_bin)
-    if (tsserver_bin == nil) then
-      return
-    end
-
-    lspconfig_server_setup("tsserver", {
-      handlers = {
-        ["textDocument/publishDiagnostics"] = on_publish_diagnostics("[tsserver] ")
-      },
-      cmd = {
-        "typescript-language-server",
-        "--stdio",
-        "--tsserver-path",
-        tsserver_bin
-      },
-      on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        on_attach(client, bufnr)
-      end,
-    })
-  end
-)
-
-local diagnosticls_languages = {
-  javascript = {
-    linters = { "eslint" },
-    formatters = { "eslint", "prettier" }
-  },
-  javascriptreact = {
-    linters = { "eslint" },
-    formatters = { "eslint", "prettier" }
-  },
-  markdown = {
-    formatters = { "prettier" }
-  },
-  typescript = {
-    linters = { "eslint" },
-    formatters = { "eslint", "prettier" }
-  },
-  typescriptreact = {
-    linters = { "eslint" },
-    formatters = { "eslint", "prettier" }
-  },
-}
-
-get_bin_path(
-  "prettier",
-  function(prettier_bin)
-    local eslint_formatter = {
-      eslint = {
-        command = "eslint_d",
-        rootPatterns = {
-          "package.json",
-          ".eslintrc.js"
-        },
-        debounce = 100,
-        args = {
-          "--fix-to-stdout",
-          "--stdin",
-          "--stdin-filename",
-          "%filepath"
-        },
-      }
-    }
-    local prettier_formatter = prettier_bin ~= nil and {
-      prettier = {
-        command = prettier_bin,
-        args = {"--stdin-filepath", "%filepath"},
-        rootPatterns = {
-          "package.json",
-          ".prettierrc",
-          ".prettierrc.json",
-          ".prettierrc.toml",
-          ".prettierrc.json",
-          ".prettierrc.yml",
-          ".prettierrc.yaml",
-          ".prettierrc.json5",
-          ".prettierrc.js",
-          ".prettierrc.cjs",
-          "prettier.config.js",
-          "prettier.config.cjs"
-        }
-      }
-    } or {}
-
-    lspconfig_server_setup("diagnosticls", {
-      handlers = {
-        ["textDocument/publishDiagnostics"] = on_publish_diagnostics("")
-      },
-      filetypes = vim.tbl_keys(diagnosticls_languages),
-      on_attach = on_attach,
-      init_options = {
-        linters = {
-          eslint = {
-            command = "eslint_d",
-            rootPatterns = {
-              "package.json",
-              ".eslintrc.js"
-            },
-            debounce = 100,
-            args = {
-              "--stdin",
-              "--stdin-filename",
-              "%filepath",
-              "--format",
-              "json"
-            },
-            sourceName = "eslint",
-            parseJson = {
-              errorsRoot = "[0].messages",
-              line = "line",
-              column = "column",
-              endLine = "endLine",
-              endColumn = "endColumn",
-              message = "[eslint] ${message} [${ruleId}]",
-              security = "severity"
-            },
-            securities = {
-              [2] = "error",
-              [1] = "warning"
-            }
-          },
-        },
-        filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
-        formatters = vim.tbl_extend('keep', eslint_formatter, prettier_formatter),
-        formatFiletypes = utils.map_table_to_key(diagnosticls_languages, "formatters"),
-      }
-    })
-  end
-)
+return module
