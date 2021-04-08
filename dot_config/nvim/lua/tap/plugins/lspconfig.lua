@@ -1,5 +1,4 @@
 local lspconfig_util = require('lspconfig.util')
-local completion = require('completion')
 local lspsaga = require("tap.plugins.lspsaga")
 local lsp_status = require('tap.plugins.lsp-status')
 local utils = require("tap.utils")
@@ -26,7 +25,6 @@ end
 
 local on_attach = function(client, bufnr)
 
-  completion.on_attach(client, bufnr)
   lspsaga.on_attach(client, bufnr)
   lsp_status.on_attach(client, bufnr)
 
