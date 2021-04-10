@@ -84,9 +84,11 @@ set -g window-status-separator ""
 if-shell '[ $TERM_EMU = "kitty" ]' {
   set -g window-status-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I  #W #[fg=black,bg=brightblack]"
   set -g window-status-current-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I #[fg=cyan,bg=brightblack]#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #W [#{window_panes}] "
+  set -g window-status-bell-style "italics,bold"
 } {
   set -g window-status-format " #[fg=white,bg=brightblack] #I  #W "
   set -g window-status-current-format " #[fg=white,bg=brightblack] #I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #W [#{window_panes}] "
+  set -g window-status-bell-style "italics,bold"
 }
 
 # Split creation
