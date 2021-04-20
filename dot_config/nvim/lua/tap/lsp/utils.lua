@@ -81,7 +81,7 @@ function module.on_attach(client, bufnr)
 end
 
 function module.get_bin_path(cmd, fn)
-  utils.get_os_command_output_async(
+  return utils.get_os_command_output_async(
     { "yarn", "bin", cmd },
     function(result, code, signal)
       if code ~= 0 then
@@ -147,6 +147,10 @@ function module.lspconfig_server_setup(server_name, config)
   server.manager.try_add_wrapper()
 
   return server
+end
+
+function module.install_path(lang)
+  return vim.fn.stdpath("data") .. "/lspinstall/" .. lang
 end
 
 return module

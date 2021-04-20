@@ -1,8 +1,6 @@
 local utils = require("tap.utils")
 local lsp_utils = require('tap.lsp.utils')
 
-local module = {}
-
 local diagnosticls_languages = {
   javascript = {
     linters = { "eslint" },
@@ -25,13 +23,31 @@ local diagnosticls_languages = {
   },
 }
 
+local module = {}
+
+function module.patch_install()
+  local config = require'lspconfig'.diagnosticls.document_config
+  -- Don't do below as it breaks lspinstall's own diagnosticls config
+  -- require'lspconfig/configs'.diagnosticls = nil -- important, immediately unset the loaded config again
+  config.default_config.cmd[1] = "./node_modules/.bin/diagnostic-languageserver"
+
+  return vim.tbl_extend('error', config, {
+    install_script = [=[
+    ! test -f package.json && npm init -y --scope=lspinstall || true
+    npm install \
+      diagnostic-languageserver@latest \
+      eslint_d@latest
+    ]=]
+  })
+end
+
 function module.setup()
   lsp_utils.get_bin_path(
     "prettier",
     function(prettier_bin)
       local eslint_formatter = {
         eslint = {
-          command = "eslint_d",
+          command = lsp_utils.install_path("diagnosticls") .. "/node_modules/.bin/eslint_d",
           rootPatterns = {
             "package.json",
             ".eslintrc.js"
@@ -75,7 +91,7 @@ function module.setup()
         init_options = {
           linters = {
             eslint = {
-              command = "eslint_d",
+              command = eslint_formatter.eslint.command,
               rootPatterns = {
                 "package.json",
                 ".eslintrc.js"

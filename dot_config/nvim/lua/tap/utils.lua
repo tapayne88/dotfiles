@@ -29,6 +29,7 @@ function utils.get_os_command_output_async(cmd, fn, cwd)
     )
   )
   job:start()
+  return job
 end
 
 function utils.get_os_command_output(cmd, cwd)

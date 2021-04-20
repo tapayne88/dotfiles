@@ -1,8 +1,6 @@
 local lspconfig_util = require('lspconfig.util')
 local lsp_utils = require('tap.lsp.utils')
 
-local module = {}
-
 -- Stolen from lspconfig/tsserver, would have been nice to be able to import
 local get_ts_root_dir = function(fname)
   return lspconfig_util.root_pattern("tsconfig.json")(fname) or
@@ -25,6 +23,24 @@ local get_tsserver_exec = function(fn)
   end
 end
 
+local module = {}
+
+local server_path = "./node_modules/.bin/typescript-language-server"
+
+function module.patch_install()
+  local config = require'lspconfig'.tsserver.document_config
+  -- Don't do below as it breaks lspinstall's own typescript config
+  -- require'lspconfig/configs'.tsserver = nil -- important, immediately unset the loaded config again
+  config.default_config.cmd[1] = server_path
+
+  return vim.tbl_extend('error', config, {
+    install_script = [=[
+    ! test -f package.json && npm init -y --scope=lspinstall || true
+    npm install typescript-language-server@latest
+    ]=]
+  })
+end
+
 function module.setup()
   get_tsserver_exec(
     function(tsserver_bin)
@@ -32,12 +48,14 @@ function module.setup()
         return
       end
 
-      lsp_utils.lspconfig_server_setup("tsserver", {
+      local config = require'lspconfig/configs'.typescript.document_config
+
+      lsp_utils.lspconfig_server_setup("typescript", {
         handlers = {
           ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics("[tsserver] ")
         },
         cmd = {
-          "typescript-language-server",
+          config.default_config.cmd[1],
           "--stdio",
           "--tsserver-path",
           tsserver_bin
