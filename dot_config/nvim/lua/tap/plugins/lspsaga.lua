@@ -9,7 +9,7 @@ module.init = function()
     warn_sign = utils.lsp_symbols["warning"],
     infor_sign = utils.lsp_symbols["info"],
     hint_sign = utils.lsp_symbols["hint"],
-    border_style = 2,
+    border_style = "round",
     code_action_prompt = {
       enable = false
     }
