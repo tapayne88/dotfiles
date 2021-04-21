@@ -410,6 +410,9 @@ endfunction
 
 autocmd BufReadCmd /zip:*.yarn/cache/*.zip/* call OpenZippedFile(expand('<afile>'))
 
+"" ==================== simeji/winresizer ====================
+let g:winresizer_start_key = '<leader>w'
+
 "" ==================== Fugitive ====================
 let g:fugitive_dynamic_colors = 0
 autocmd BufReadPost fugitive://* set bufhidden=delete       "Stops fugitive files being left in buffer by removing all but currently visible
@@ -437,9 +440,6 @@ nnoremap k gk
 "keep text selected after indentation
 vnoremap < <gv
 vnoremap > >gv
-
-"Super simple window resizing
-nnoremap <leader>w :WinResizerStartResize<CR>
 
 nnoremap <leader>x :cclose<CR>
 nnoremap <leader>h :set hlsearch!<CR>
