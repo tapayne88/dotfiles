@@ -12,6 +12,13 @@ utils.lsp_symbols = {
   ok = " "
 }
 
+utils.lsp_colors = {
+  error = "#BF616A",
+  warning = "#EBCB8B",
+  info = "#D8DEE9",
+  hint = "#5E81AC"
+}
+
 function utils.get_os_command_output_async(cmd, fn, cwd)
   if type(cmd) ~= "table" then
     print('[get_os_command_output_async]: cmd has to be a table')
