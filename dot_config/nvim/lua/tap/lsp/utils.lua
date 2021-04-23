@@ -29,15 +29,15 @@ function module.on_attach(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  vim.api.nvim_command('highlight LspDiagnosticsDefaultError guifg=#BF616A')
-  vim.api.nvim_command('highlight LspDiagnosticsDefaultWarning guifg=#EBCB8B')
-  vim.api.nvim_command('highlight LspDiagnosticsDefaultInformation guifg=none')
-  vim.api.nvim_command('highlight LspDiagnosticsDefaultHint guifg=none')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultError        guifg=none')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultWarning      guifg=none')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultInformation  guifg=none')
+  vim.api.nvim_command('highlight LspDiagnosticsDefaultHint         guifg=none')
 
-  vim.api.nvim_command('highlight LspDiagnosticsUnderlineError guifg=#BF616A gui=underline')
-  vim.api.nvim_command('highlight LspDiagnosticsUnderlineWarning guifg=#EBCB8B gui=underline')
-  vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation guifg=none gui=underline')
-  vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint guifg=none gui=underline')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineError        guifg=none gui=undercurl guisp=#BF616A')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineWarning      guifg=none gui=undercurl guisp=#EBCB8B')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation  guifg=none gui=undercurl guisp=#D8DEE9')
+  vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint         guifg=none gui=undercurl guisp=#5E81AC')
 
   vim.fn.sign_define("LspDiagnosticsSignError", { text = utils.lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
   vim.fn.sign_define("LspDiagnosticsSignWarning", { text = utils.lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
