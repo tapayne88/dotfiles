@@ -4,10 +4,11 @@ local Job = require('plenary.job')
 local utils = {}
 
 utils.lsp_symbols = {
-  error = "⨯",
-  warning = "◆",
-  info = "ⓘ ",
-  hint = "",
+  error = "",
+  warning = "",
+  info = "",
+  hint = "",
+  hint_alt = "",
   ok = " "
 }
 
