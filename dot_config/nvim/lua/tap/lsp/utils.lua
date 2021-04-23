@@ -39,10 +39,15 @@ function module.on_attach(client, bufnr)
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineInformation  guifg=none gui=undercurl guisp=#D8DEE9')
   vim.api.nvim_command('highlight LspDiagnosticsUnderlineHint         guifg=none gui=undercurl guisp=#5E81AC')
 
-  vim.fn.sign_define("LspDiagnosticsSignError", { text = utils.lsp_symbols["error"], texthl = "LspDiagnosticsSignError" })
-  vim.fn.sign_define("LspDiagnosticsSignWarning", { text = utils.lsp_symbols["warning"], texthl = "LspDiagnosticsSignWarning" })
-  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = utils.lsp_symbols["info"], texthl = "LspDiagnosticsSignInformation" })
-  vim.fn.sign_define("LspDiagnosticsSignHint", { text = utils.lsp_symbols["hint"], texthl = "LspDiagnosticsSignHint" })
+  vim.api.nvim_command('highlight LspDiagnosticsSignError        guifg=#BF616A')
+  vim.api.nvim_command('highlight LspDiagnosticsSignWarning      guifg=#EBCB8B')
+  vim.api.nvim_command('highlight LspDiagnosticsSignInformation  guifg=#D8DEE9')
+  vim.api.nvim_command('highlight LspDiagnosticsSignHint         guifg=#5E81AC')
+
+  vim.fn.sign_define("LspDiagnosticsSignError",       { text = utils.lsp_symbols["error"],    texthl = "LspDiagnosticsSignError" })
+  vim.fn.sign_define("LspDiagnosticsSignWarning",     { text = utils.lsp_symbols["warning"],  texthl = "LspDiagnosticsSignWarning" })
+  vim.fn.sign_define("LspDiagnosticsSignInformation", { text = utils.lsp_symbols["info"],     texthl = "LspDiagnosticsSignInformation" })
+  vim.fn.sign_define("LspDiagnosticsSignHint",        { text = utils.lsp_symbols["hint"],     texthl = "LspDiagnosticsSignHint" })
 
   -- Mappings.
   local opts = { bufnr = bufnr }
