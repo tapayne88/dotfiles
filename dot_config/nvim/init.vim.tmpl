@@ -76,6 +76,7 @@ Plug 'glepnir/lspsaga.nvim'                 " Better LSP diagnostics display
 Plug 'nvim-lua/completion-nvim'             " Auto completion plugin for nvim
 Plug 'steelsojka/completion-buffers'
 Plug 'nvim-treesitter/completion-treesitter'
+Plug 'hoob3rt/lualine.nvim'                 " statusline in lua
 {{- else }}
 Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'neoclide/coc.nvim', {
@@ -105,7 +106,6 @@ set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set wildignorecase              "Ignore case when opening files
 set laststatus=2                "Always display the status line
-set showtabline=2               "Always show tabline
 set noswapfile                  "Disable swap files
 set autoread                    "Automatically read changes in the file
 set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
@@ -301,6 +301,8 @@ endfunction
 
 {{- if not .neovim_nightly_native_lsp }}
 "" ==================== Lightline ====================
+set showtabline=2               "Always show tabline
+
 function! FileTypeIcon()
   return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . ' ' . &filetype : 'no ft') : ''
 endfunction
