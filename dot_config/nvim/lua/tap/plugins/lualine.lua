@@ -1,5 +1,28 @@
+local lsp_colors = require("tap.utils").lsp_colors
+
 local section_separators = vim.env.TERM_EMU == "kitty" and { "", " " } or {}
 local component_separators = vim.env.TERM_EMU == "kitty" and { '\\', '\\' } or {}
+
+local lsp_status_function_map = {
+  error = "status_errors",
+  warning = "status_warnings",
+  info = "status_info",
+  hint = "status_hints"
+}
+
+local function lsp_status(type)
+  return {
+    function()
+      if #vim.lsp.buf_get_clients() > 0 then
+        return require('lsp-status')[lsp_status_function_map[type]]()
+      end
+    end,
+    color = {fg = lsp_colors[type]},
+    separator = "",
+    left_padding = 0,
+    right_padding = 1
+  }
+end
 
 require('lualine').setup{
   options = {
@@ -12,7 +35,13 @@ require('lualine').setup{
     lualine_a = { {'mode', upper = true} },
     lualine_b = { {'branch', icon = ''} },
     lualine_c = { {'filename', file_status = true} },
-    lualine_x = { {'diagnostics', sources = {'nvim_lsp'}} },
+    -- Default 'diagnostics' doesn't include hints... so the below
+    lualine_x = {
+      lsp_status("error"),
+      lsp_status("warning"),
+      lsp_status("info"),
+      lsp_status("hint")
+    },
     lualine_y = { 'filetype', {'progress', icon = "≡"} },
     lualine_z = { 'location' },
   },
