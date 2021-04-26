@@ -32,7 +32,6 @@ Plug 'tpope/vim-dispatch', {
 Plug 'jaawerth/nrun.vim'                    " Put locally installed npm module .bin at front of path
 Plug 'tpope/vim-sleuth'                     " Detect indentation
 Plug 'christoomey/vim-tmux-navigator'       " Seemless vim <-> tmux navigation
-Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'ryanoasis/vim-devicons'               " Filetype icons
 Plug 'wincent/scalpel'                      " Easier find & replace
 Plug 'simeji/winresizer'                    " Simple plugin to easily resize windows
@@ -77,7 +76,9 @@ Plug 'glepnir/lspsaga.nvim'                 " Better LSP diagnostics display
 Plug 'nvim-lua/completion-nvim'             " Auto completion plugin for nvim
 Plug 'steelsojka/completion-buffers'
 Plug 'nvim-treesitter/completion-treesitter'
+Plug 'hoob3rt/lualine.nvim'                 " statusline in lua
 {{- else }}
+Plug 'itchyny/lightline.vim'                " Status line plugin
 Plug 'neoclide/coc.nvim', {
   \ 'branch': 'release' }                   " LSPish integration
 {{- end }}
@@ -105,7 +106,6 @@ set ignorecase                  "Case insensitive search
 set smartcase                   "Case sensitive when search contains upper-case characters
 set wildignorecase              "Ignore case when opening files
 set laststatus=2                "Always display the status line
-set showtabline=2               "Always show tabline
 set noswapfile                  "Disable swap files
 set autoread                    "Automatically read changes in the file
 set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
@@ -286,14 +286,25 @@ nmap <silent> t<C-n> :TestNearest<CR>
 nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-w> :Jest --watch<CR>
 
-"" ==================== Lightline ====================
-{{- if not .neovim_nightly_native_lsp }}
-let g:coc_status_warning_sign = "◆ "
-let g:coc_status_error_sign = "⨯ "
+{{- if .neovim_nightly_native_lsp }}
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
+" let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'readonly'], ['lspstatus']]
+" let g:lightline.component.lspstatus = '%{LspStatus()}'
 {{- end }}
 
+{{- if not .neovim_nightly_native_lsp }}
+"" ==================== Lightline ====================
+set showtabline=2               "Always show tabline
+
 function! FileTypeIcon()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : '') : ''
+  return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . ' ' . &filetype : 'no ft') : ''
 endfunction
 
 function! Git_branch() abort
@@ -308,6 +319,7 @@ let g:lightline = {
 \ 'colorscheme': 'nord',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified'], ['gitbranch']],
+\   'right': [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
 \ },
 \ 'component': {
 \   'percentinfo': '≡ %3p%%',
@@ -317,33 +329,18 @@ let g:lightline = {
 \ 'component_function': {
 \   'gitbranch': 'fugitive#head',
 \   'filetypeicon': 'FileTypeIcon',
+\   'cocstatus': 'coc#status'
 \ },
 \ 'component_type': {
 \   'readonly': 'error',
+\   'cocstatuswarn': 'warning'
+\   'cocstatuserror': 'error'
 \ },
 \ 'tabline': {
 \   'left': [['vim_logo'], ['tabs']],
 \   'right': [['git_branch']]
 \ }
 \ }
-
-{{- if .neovim_nightly_native_lsp }}
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-
-  return ''
-endfunction
-
-let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['lspstatus']]
-let g:lightline.component_function.lspstatus = 'LspStatus'
-{{- else }}
-let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'filetype', 'readonly'], ['cocstatus']]
-let g:lightline.component_function.cocstatus = 'coc#status'
-let g:lightline.component_type.cocstatuswarn = 'warning'
-let g:lightline.component_type.cocstatuserror = 'error'
-{{- end }}
 
 if ($TERM_EMU == 'kitty')
   let g:lightline.separator = { 'left': "", 'right': " " }
@@ -352,7 +349,9 @@ if ($TERM_EMU == 'kitty')
   let g:lightline.tabline_subseparator = { 'left': "/", 'right': "/" }
 endif
 
-{{- if not .neovim_nightly_native_lsp }}
+let g:coc_status_warning_sign = "◆ "
+let g:coc_status_error_sign = "⨯ "
+
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 {{- end }}
 
