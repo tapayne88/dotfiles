@@ -4,7 +4,6 @@ local lsp_status = require('tap.plugins.lsp-status')
 lspsaga.init()
 lsp_status.init()
 
-
 local function patch_install(server, config)
   require'lspinstall/servers'[server] = config
 end
@@ -12,7 +11,8 @@ end
 local function init_servers()
   local servers = {
     typescript = "typescript",
-    diagnosticls = "diagnosticls"
+    diagnosticls = "diagnosticls",
+    lua = "lua"
   }
 
   local patched_servers = vim.tbl_map(function(server)
