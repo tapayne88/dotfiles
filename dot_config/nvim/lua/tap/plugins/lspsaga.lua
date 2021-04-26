@@ -4,6 +4,11 @@ local utils = require("tap.utils")
 local module = {}
 
 module.init = function()
+  utils.highlight("LspDiagnosticsFloatingError",    { guifg = utils.lsp_colors["error"] })
+  utils.highlight("LspDiagnosticsFloatingWarning",  { guifg = utils.lsp_colors["warning"] })
+  utils.highlight("LspDiagnosticsFloatingInfor",    { guifg = utils.lsp_colors["info"] })
+  utils.highlight("LspDiagnosticsFloatingHint",     { guifg = utils.lsp_colors["hint"] })
+
   saga.init_lsp_saga({
     error_sign = utils.lsp_symbols["error"],
     warn_sign = utils.lsp_symbols["warning"],
