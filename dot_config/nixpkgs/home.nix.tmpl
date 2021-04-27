@@ -108,7 +108,6 @@ in
     ripgrep                       # rg searching
     silver-searcher               # ag searching
     screenfetch                   # pretty print of system info
-    tmux                          # terminal multiplexer
     tmuxp                         # declaritive tmux session launcher
     tree                          # print directory structure
     up                            # utlimate plumber - unix pipes tool
@@ -122,6 +121,7 @@ in
     # Unstable Packages
     unstable._1password   # 1password version is quite old - unstable is much newer
     unstable.cargo        # needed newer version of rust to compile vim-clap binary
+    unstable.tmux         # terminal multiplexer
   ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs ++ neovimNightlyPkgs;
 
   {{- if .neovim_nightly }}
