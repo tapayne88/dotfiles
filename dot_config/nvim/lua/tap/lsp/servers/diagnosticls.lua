@@ -2,6 +2,9 @@ local utils = require("tap.utils")
 local lsp_utils = require('tap.lsp.utils')
 
 local diagnosticls_languages = {
+  lua = {
+    formatters = { "lua_format" }
+  },
   javascript = {
     linters = { "eslint" },
     formatters = { "eslint", "prettier" }
@@ -23,6 +26,29 @@ local diagnosticls_languages = {
   },
 }
 
+local npm_packages = [[
+  ! test -f package.json && npm init -y --scope=lspinstall || true
+  npm install \
+    diagnostic-languageserver@latest \
+    eslint_d@latest
+]]
+
+local lua_format = [[
+  os=$(uname -s | tr "[:upper:]" "[:lower:]")
+
+  case $os in
+  linux)
+  platform="linux"
+  ;;
+  darwin)
+  platform="darwin"
+  ;;
+  esac
+
+  curl -L -o lua-format "https://github.com/Koihik/vscode-lua-format/raw/master/bin/$platform/lua-format"
+  chmod +x lua-format
+]]
+
 local module = {}
 
 function module.patch_install()
@@ -32,12 +58,7 @@ function module.patch_install()
   config.default_config.cmd[1] = "./node_modules/.bin/diagnostic-languageserver"
 
   return vim.tbl_extend('error', config, {
-    install_script = [=[
-    ! test -f package.json && npm init -y --scope=lspinstall || true
-    npm install \
-      diagnostic-languageserver@latest \
-      eslint_d@latest
-    ]=]
+    install_script = npm_packages .. lua_format
   })
 end
 
@@ -82,6 +103,12 @@ function module.setup()
         }
       } or {}
 
+      local lua_formatter = {
+        lua_format = {
+          command = lsp_utils.install_path("diagnosticls") .. "/lua-format"
+        }
+      }
+
       lsp_utils.lspconfig_server_setup("diagnosticls", {
         handlers = {
           ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics("")
@@ -121,7 +148,7 @@ function module.setup()
             },
           },
           filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
-          formatters = vim.tbl_extend('keep', eslint_formatter, prettier_formatter),
+          formatters = vim.tbl_extend('keep', eslint_formatter, prettier_formatter, lua_formatter),
           formatFiletypes = utils.map_table_to_key(diagnosticls_languages, "formatters"),
         }
       })
