@@ -1,6 +1,4 @@
 # vi: filetype=zsh
-alias nix-update='nix-channel --update && nix-env -u && home-manager switch'
-
 {{- if eq "macOS" .ostype }}
 # Register gls alias to trick oh-my-zsh into thinking we've installed coreutils
 # through homebrew (actually installed with nix). This way we get nice ls color
