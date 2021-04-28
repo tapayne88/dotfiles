@@ -36,6 +36,9 @@ require('lualine').setup {
         lualine_b = {{'branch', icon = ''}},
         lualine_c = {{'filename', file_status = true}},
         -- Default 'diagnostics' doesn't include hints... so the below
+        -- TODO:
+        --  - Update to show Ok
+        --  - Show spinner?
         lualine_x = {
             lsp_status("error"), lsp_status("warning"), lsp_status("info"),
             lsp_status("hint")
