@@ -129,20 +129,6 @@ let g:netrw_liststyle = 3
 let mapleader = ","
 let maplocalleader = "\\"
 
-"" ==================== Config ====================
-{{- if not .neovim_nightly }}
-" disable sleuth for markdown files due to slowdown caused in combination with
-" vim-polyglot
-autocmd FileType markdown let b:sleuth_automatic = 0
-{{- end }}
-
-" Automatically resize vim splits on resize
-autocmd VimResized * execute "normal! \<c-w>="
-
-" Save and load vim views - remembers scroll position & folds
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent! loadview
-
 {{- if eq "crostini" .ostype }}
 " Configure vim's other clipboard registers to use xsel (system clipboard)
 let g:clipboard = {
@@ -160,14 +146,13 @@ let g:clipboard = {
 {{- end }}
 
 luafile ~/.config/nvim/lua/tap/colours.lua
+luafile ~/.config/nvim/lua/tap/auto.lua
+luafile ~/.config/nvim/lua/tap/keymap.lua
 
 {{- if .neovim_nightly }}
 " Load all lua files
 lua require('tap')
 {{- end }}
-
-luafile ~/.config/nvim/lua/tap/auto.lua
-luafile ~/.config/nvim/lua/tap/keymap.lua
 
 if filereadable(expand('~/.vimrc.local'))
   source ~/.vimrc.local
