@@ -286,19 +286,6 @@ nmap <silent> t<C-n> :TestNearest<CR>
 nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-w> :Jest --watch<CR>
 
-{{- if .neovim_nightly_native_lsp }}
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-
-  return ''
-endfunction
-
-" let g:lightline.active.right = [['percentinfo', 'lineinfo'], ['filetypeicon', 'readonly'], ['lspstatus']]
-" let g:lightline.component.lspstatus = '%{LspStatus()}'
-{{- end }}
-
 {{- if not .neovim_nightly_native_lsp }}
 "" ==================== Lightline ====================
 set showtabline=2               "Always show tabline
