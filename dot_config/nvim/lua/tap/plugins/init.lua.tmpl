@@ -9,6 +9,10 @@ require("tap.plugins.treesitter")
 require("tap.plugins.vim-test")
 require("tap.plugins.winresizer")
 
+{{- if not .neovim_nightly }}
+require("tap.plugins.signify")
+require("tap.plugins.vim-clap")
+{{- end }}
 {{- if not .neovim_nightly_native_lsp }}
 require("tap.plugins.lightline")
 require("tap.plugins.coc-nvim")
