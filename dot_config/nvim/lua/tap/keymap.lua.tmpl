@@ -1,0 +1,35 @@
+-- vi: filetype=lua
+local nnoremap = require("tap.utils").nnoremap
+local vnoremap = require("tap.utils").vnoremap
+local tnoremap = require("tap.utils").tnoremap
+local xnoremap = require("tap.utils").xnoremap
+
+-- Makes up/down on line wrapped lines work better (more intuitive)
+nnoremap('j', 'gj')
+nnoremap('k', 'gk')
+
+-- Keep text selected after indentation
+vnoremap('<', '<gv')
+vnoremap('>', '>gv')
+
+nnoremap('<leader>x', ":cclose<CR>")
+nnoremap('<leader>h', ":set hlsearch!<CR>")
+nnoremap('<leader>n', ":set number!<CR>")
+nnoremap('<leader>fp', ":echo @%<CR>")
+nnoremap('<leader>cm', ":!chezmoi apply -v<CR>")
+-- nnoremap('<leader>ff', ":Ex<CR>") -- Replacing with Telescope file_browser (though borrowing shortcut for find_files)
+
+-- vimrc sourcing
+nnoremap('<leader>evv',
+         ":vsplit {{ .chezmoi.sourceDir }}/dot_config/nvim/init.vim.tmpl<CR>")
+nnoremap('<leader>ev',
+         ":split {{ .chezmoi.sourceDir }}/dot_config/nvim/init.vim.tmpl<CR>")
+nnoremap('<leader>sv', ":source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
+
+-- Esc (C-[) to escape terminal insert mode
+tnoremap('<Esc>', [[<C-\><C-n>]])
+tnoremap('<A-[>', '<Esc>')
+
+nnoremap('<leader>gp', ":lua require('tap.git-web-url').get_line_url()<CR>")
+xnoremap('<leader>gp',
+         ":<c-u>lua require('tap.git-web-url').get_block_url()<CR>")
