@@ -1,7 +1,13 @@
+-- vi: filetype=lua
 require("tap.plugins.completion-nvim")
 require("tap.plugins.fugitive")
 require("tap.plugins.gitsigns")
 require("tap.plugins.lualine")
+require("tap.plugins.scalpel")
 require("tap.plugins.telescope")
 require("tap.plugins.treesitter")
 require("tap.plugins.winresizer")
+
+{{- if not .neovim_nightly_native_lsp }}
+require("tap.plugins.coc-nvim")
+{{- end }}
