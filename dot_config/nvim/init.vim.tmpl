@@ -209,12 +209,6 @@ highlight link gitmessengerHistory Constant
 highlight link gitmessengerPopupNormal CursorLine
 {{- end }}
 
-{{- if .neovim_nightly_native_lsp }}
-highlight link LspSagaDiagnosticBorder LspSagaDefPreviewBorder
-highlight link LspSagaDiagnosticHeader LspSagaDefPreviewBorder
-highlight link LspSagaDiagnosticTruncateLine LspSagaDefPreviewBorder
-{{- end }}
-
 {{- if .neovim_nightly }}
 " Load all lua files
 lua require('tap')
