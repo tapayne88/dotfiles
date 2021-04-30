@@ -4,6 +4,14 @@ local utils = require("tap.utils")
 local module = {}
 
 module.init = function()
+
+    utils.highlight('LspSagaDiagnosticBorder',
+                    {link = 'LspSagaDefPreviewBorder'})
+    utils.highlight('LspSagaDiagnosticHeader',
+                    {link = 'LspSagaDefPreviewBorder'})
+    utils.highlight('LspSagaDiagnosticTruncateLine',
+                    {link = 'LspSagaDefPreviewBorder'})
+
     utils.highlight("LspDiagnosticsFloatingError",
                     {guifg = utils.lsp_colors["error"]})
     utils.highlight("LspDiagnosticsFloatingWarning",
