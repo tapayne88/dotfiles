@@ -42,9 +42,7 @@ local lua_format = [[
 local module = {}
 
 function module.patch_install()
-    local config = require'lspconfig'.diagnosticls.document_config
-    -- Don't do below as it breaks lspinstall's own diagnosticls config
-    -- require'lspconfig/configs'.diagnosticls = nil -- important, immediately unset the loaded config again
+    local config = require"lspinstall/util".extract_config("diagnosticls")
     config.default_config.cmd[1] =
         "./node_modules/.bin/diagnostic-languageserver"
 

@@ -30,9 +30,7 @@ local module = {}
 local server_path = "./node_modules/.bin/typescript-language-server"
 
 function module.patch_install()
-    local config = require'lspconfig'.tsserver.document_config
-    -- Don't do below as it breaks lspinstall's own typescript config
-    -- require'lspconfig/configs'.tsserver = nil -- important, immediately unset the loaded config again
+    local config = require"lspinstall/util".extract_config("tsserver")
     config.default_config.cmd[1] = server_path
 
     return vim.tbl_extend('error', config, {
