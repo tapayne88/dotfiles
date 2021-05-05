@@ -17,7 +17,7 @@ require('telescope').setup {
 }
 
 nnoremap("<leader>l",
-         "<cmd>lua require('telescope.builtin').buffers{ sort_lastused = true }<cr>")
+         "<cmd>lua require('telescope.builtin').buffers{ sort_lastused = true, show_all_buffers = true }<cr>")
 nnoremap("<leader>gf",
          "<cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>")
 nnoremap("<leader>gF", "<cmd>lua require('telescope.builtin').git_files()<cr>")
