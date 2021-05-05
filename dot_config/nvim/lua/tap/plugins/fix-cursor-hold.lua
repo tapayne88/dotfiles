@@ -1,3 +1,1 @@
-vim.cmd [[
-let g:cursorhold_updatetime = 500
-]]
+vim.g.cursorhold_updatetime = 500

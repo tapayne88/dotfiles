@@ -1,6 +1,6 @@
 local nnoremap = require("tap.utils").nnoremap
 
-vim.cmd 'let g:fugitive_dynamic_colors = 0'
+vim.g.fugitive_dynamic_colors = 0
 
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
