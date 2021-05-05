@@ -18,12 +18,6 @@ endfunction
 
 autocmd BufReadCmd /zip:*.yarn/cache/*.zip/* call OpenZippedFile(expand('<afile>'))
 
-{{- if not .neovim_nightly }}
-" disable sleuth for markdown files due to slowdown caused in combination with
-" vim-polyglot
-autocmd FileType markdown let b:sleuth_automatic = 0
-{{- end }}
-
 " Automatically resize vim splits on resize
 autocmd VimResized * execute "normal! \<c-w>="
 

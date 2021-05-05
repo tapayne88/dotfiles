@@ -42,16 +42,12 @@ let
   crostiniPkgs = [];
   {{- end }}
 
-  {{- if .neovim_nightly }}
   neovimNightlyPkgs = with pkgs; [
     {{- if ne "macOS" .ostype }}
     gcc   # Needed more modern version (not too sure why) for nvim-treesitter - not needed and breaks things on MacOS
     {{- end }}
     ruby  # Needed to locally build nvcode treesitter color schemes
   ];
-  {{- else }}
-  neovimNightlyPkgs = [];
-  {{- end }}
 in
 
 {
@@ -124,23 +120,19 @@ in
     unstable.tmux         # terminal multiplexer
   ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs ++ neovimNightlyPkgs;
 
-  {{- if .neovim_nightly }}
   # Neovim nightly
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
     }))
   ];
-  {{- end }}
 
   programs.neovim = {
     enable = true;
     viAlias = true;
     withNodeJs = true;
 
-    {{- if .neovim_nightly }}
     # Neovim nightly
     package = pkgs.neovim-nightly;
-    {{- end }}
   };
 }

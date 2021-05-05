@@ -11,10 +11,6 @@
           "enum": ["macOS", "crostini", "wsl"],
           "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
-        "neovim_nightly": {
-          "type": "boolean",
-          "description": "Enable / disable neovim nightly builds"
-        },
         "neovim_nightly_native_lsp": {
           "type": "boolean",
           "description": "Enable / disable neovim nightly's native LSP (falls back to CoC)"
@@ -46,7 +42,6 @@
       "additionalProperties": false,
       "required": [
         "ostype",
-        "neovim_nightly",
         "neovim_nightly_native_lsp",
         "email",
         "terminal_font",
