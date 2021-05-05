@@ -1,0 +1,70 @@
+-- vi: filetype=lua
+local highlight = require("tap.utils").highlight
+
+{{- if .neovim_nightly }}
+vim.cmd 'let g:nvcode_termcolors=256'
+{{- end }}
+
+vim.cmd [[
+let g:nord_italic = 1
+let g:nord_italic_comments = 1
+let g:nord_underline = 1
+let g:nord_uniform_diff_background = 1
+let g:nord_cursor_line_number_background = 1
+]]
+
+vim.cmd [[
+syntax enable
+colorscheme nord
+]]
+
+highlight('Search', {guibg = '#81A1C1', guifg = '#2E3440'})
+highlight('IncSearch', {guibg = '#81A1C1', guifg = '#2E3440'})
+
+{{- if .neovim_nightly }}
+-- Treesitter overrides
+highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
+highlight('TSOperator', {gui = 'italic', cterm = 'italic'})
+highlight('TSKeyword', {gui = 'italic', cterm = 'italic'})
+{{- else }}
+vim.cmd [[
+" Patch CursorLine highlighting bug in NeoVim
+" Messes with highlighting of current line in weird ways
+" https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
+function! s:CustomizeColors()
+    if has('gui_running') || &termguicolors || exists('g:gonvim_running')
+        hi CursorLine ctermfg=white
+    else
+        hi CursorLine guifg=white
+    endif
+endfunction
+
+augroup OnColorScheme
+    autocmd!
+    autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
+augroup END
+]]
+
+highlight('typescriptImport',
+          {gui = 'italic', guifg = '#81A1C1', cterm = 'italic'})
+highlight('typescriptExport',
+          {gui = 'italic', guifg = '#81A1C1', cterm = 'italic'})
+highlight('typescriptImportType',
+          {gui = 'italic', guifg = '#81A1C1', cterm = 'italic'})
+highlight('typescriptExportType',
+          {gui = 'italic', guifg = '#81A1C1', cterm = 'italic'})
+highlight('typescriptStatementKeyword',
+          {gui = 'italic', guifg = '#81A1C1', cterm = 'italic'})
+
+highlight('jsClassKeyword', {gui = 'italic', cterm = 'italic'})
+highlight('jsExtendsKeyword', {gui = 'italic', cterm = 'italic'})
+highlight('jsReturn', {gui = 'italic', cterm = 'italic'})
+highlight('jsThis', {gui = 'italic', term = 'italic'})
+highlight('htmlArg', {gui = 'italic', term = 'italic'})
+highlight('Type', {gui = 'italic', term = 'italic'})
+
+highlight('gitmessengerHeader', {link = 'Identifier'})
+highlight('gitmessengerHash', {link = 'Comment'})
+highlight('gitmessengerHistory', {link = 'Constant'})
+highlight('gitmessengerPopupNormal', {link = 'CursorLine'})
+{{- end }}
