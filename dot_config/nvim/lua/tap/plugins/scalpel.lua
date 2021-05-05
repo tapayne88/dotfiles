@@ -1,5 +1,5 @@
-local nnoremap = require("tap.utils").nnoremap
+local nmap = require("tap.utils").nmap
 
 vim.g.ScalpelCommand = 'S'
 
-nnoremap('<leader>e', '<Plug>(Scalpel)')
+nmap('<leader>e', '<Plug>(Scalpel)')
