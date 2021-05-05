@@ -82,7 +82,7 @@ function module.on_attach(client, bufnr)
 
     -- Mappings.
     local opts = {bufnr = bufnr}
-    nnoremap('gD', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>', opts)
     nnoremap('gd', '<cmd>Lspsaga preview_definition<CR>', opts)
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>', opts)
