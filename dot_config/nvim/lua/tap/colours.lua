@@ -1,19 +1,15 @@
 local highlight = require("tap.utils").highlight
 
-vim.cmd 'let g:nvcode_termcolors=256'
+vim.g.nvcode_termcolors=256
 
-vim.cmd [[
-let g:nord_italic = 1
-let g:nord_italic_comments = 1
-let g:nord_underline = 1
-let g:nord_uniform_diff_background = 1
-let g:nord_cursor_line_number_background = 1
-]]
+-- Nord config if/when they merge treesitter support
+vim.g.nord_italic = 1
+vim.g.nord_italic_comments = 1
+vim.g.nord_underline = 1
+vim.g.nord_uniform_diff_background = 1
+vim.g.nord_cursor_line_number_background = 1
 
-vim.cmd [[
-syntax enable
-colorscheme nord
-]]
+vim.cmd [[colorscheme nord]]
 
 highlight('Search', {guibg = '#81A1C1', guifg = '#2E3440'})
 highlight('IncSearch', {guibg = '#81A1C1', guifg = '#2E3440'})
