@@ -1,4 +1,3 @@
--- vi: filetype=lua
 local highlight = require("tap.utils").highlight
 
 vim.cmd 'let g:nvcode_termcolors=256'
