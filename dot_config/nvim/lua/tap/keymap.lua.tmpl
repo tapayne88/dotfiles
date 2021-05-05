@@ -21,10 +21,10 @@ nnoremap('<leader>cm', ":!chezmoi apply -v<CR>")
 
 -- vimrc sourcing
 nnoremap('<leader>evv',
-         ":vsplit {{ .chezmoi.sourceDir }}/dot_config/nvim/init.vim.tmpl<CR>")
+         ":vsplit {{ .chezmoi.sourceDir }}/dot_config/nvim/init.lua.tmpl<CR>")
 nnoremap('<leader>ev',
-         ":split {{ .chezmoi.sourceDir }}/dot_config/nvim/init.vim.tmpl<CR>")
-nnoremap('<leader>sv', ":source $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
+         ":split {{ .chezmoi.sourceDir }}/dot_config/nvim/init.lua.tmpl<CR>")
+nnoremap('<leader>sv', ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
 
 -- Esc (C-[) to escape terminal insert mode
 tnoremap('<Esc>', [[<C-\><C-n>]])
