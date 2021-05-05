@@ -1,40 +1,46 @@
 -- vi: filetype=lua
-vim.o.lazyredraw = true -- Improve scrolling performance with cursorline
-vim.o.ttyfast = true -- More characters will be sent to the screen for redrawing
-vim.o.ttimeout = true
-vim.o.ttimeoutlen = 50 -- Time waited for key press(es) to complete. It makes for a faster key response
-vim.o.showcmd = true -- Display incomplete commands
-vim.o.wildmenu = true -- A better menu in command mode
+-- Improve scrolling performance with cursorline
+vim.o.lazyredraw = true
+
+-- Number of lines from vertical edge to start scrolling
+vim.o.scrolloff = 4
+
+-- Better terminal color support in neovim
+vim.o.termguicolors = true
+
+-- Better command options
 vim.o.wildmode = 'longest:full,full'
-vim.o.scrolloff = 4 -- Number of lines from vertical edge to start scrolling
-vim.o.splitbelow = true -- Better split defaults
+vim.o.wildignorecase = true
+
+-- Better split opening defaults
+vim.o.splitbelow = true
 vim.o.splitright = true
-vim.o.autoindent = true -- Sets up auto indent (copies indentation from line above)
-vim.o.incsearch = true -- Highlight dynamically as pattern is typed
-vim.o.hlsearch = true -- Highlight search
-vim.o.ignorecase = true -- Case insensitive search
-vim.o.smartcase = true -- Case sensitive when search contains upper-case characters
-vim.o.wildignorecase = true -- Ignore case when opening files
-vim.o.laststatus = 2 -- Always display the status line
-vim.o.swapfile = false -- Disable swap files
-vim.o.autoread = true -- Automatically read changes in the file
-vim.o.hidden = true -- Hide buffers instead of closing them even if they contain unwritten changes
-vim.o.backspace = 'indent,eol,start' -- Make backspace behave properly in insert mode
-vim.o.showmode = false -- Hide the default mode text (e.g. -- INSERT -- below the statusline)
-vim.o.tabstop = 4 -- Changes tabs to 4 spaces
-vim.o.shiftwidth = 2 -- Determines indentation in normal mode (using '>>' or '<<')
-vim.o.softtabstop = 2 -- Let backspace delete indent
-vim.o.expandtab = true -- Expands tabs to spaces, better for formatting
-vim.o.spelllang = 'en' -- Set vim's spell check language
-vim.o.termguicolors = true -- Better terminal color support in neovim
 
-vim.o.foldmethod = 'syntax' -- syntax highlighting items specify folds
-vim.o.foldcolumn = '2' -- defines 1 col at window left, to indicate folding
-vim.o.foldlevelstart = 99 -- start file with all folds opened
+-- Better searching
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
-vim.wo.cursorline = true -- Highlight line the cursor is on
-vim.wo.colorcolumn = '80' -- Add column line at 80 characters
-vim.wo.number = true -- Adds line numbers
+vim.o.swapfile = false
+vim.o.hidden = true
+
+-- Hide the default mode text (e.g. -- INSERT -- below the statusline)
+vim.o.showmode = false
+vim.o.spelllang = 'en'
+
+-- Tab stuff
+vim.o.tabstop = 4
+vim.o.softtabstop = 2
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+
+-- Better folding
+vim.o.foldmethod = 'syntax'
+vim.o.foldcolumn = '2'
+vim.o.foldlevelstart = 99
+
+vim.wo.number = true
+vim.wo.cursorline = true
+vim.wo.colorcolumn = '80'
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
