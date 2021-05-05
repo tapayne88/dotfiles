@@ -8,6 +8,7 @@ local diagnosticls_languages = {
         linters = {"eslint"},
         formatters = {"eslint", "prettier"}
     },
+    json = {formatters = {"prettier"}},
     markdown = {formatters = {"prettier"}},
     typescript = {linters = {"eslint"}, formatters = {"eslint", "prettier"}},
     typescriptreact = {
