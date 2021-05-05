@@ -25,10 +25,13 @@ inoremap("<C-k>", "v:lua.completion_nvim.smart_pumvisible('<C-p>', '<C-k>')",
 
 -- vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.smart_tab()', {expr = true, noremap = true})
 
-vim.api.nvim_exec([==[
-let g:completion_auto_change_source = 1
+vim.g.completion_auto_change_source = 1
 
-let g:completion_chain_complete_list = [{'complete_items': ['lsp']}, {'complete_items': ['ts', 'buffers', 'path']}, {'mode': '<c-p>'}, {'mode': '<c-n>'}]
+vim.g.completion_chain_complete_list = {
+    {complete_items = {'lsp'}}, {complete_items = {'ts', 'buffers', 'path'}},
+    {mode = '<c-p>'}, {mode = '<c-n>'}
+}
 
+vim.cmd [[
 autocmd BufEnter * lua require'completion'.on_attach()
-]==], false)
+]]
