@@ -1,50 +1,52 @@
 -- vi: filetype=lua
-vim.cmd [[
-set lazyredraw                  "Improve scrolling performance with cursorline
-set ttyfast                     "More characters will be sent to the screen for redrawing
-set ttimeout
-set ttimeoutlen=50              "Time waited for key press(es) to complete. It makes for a faster key response
-set showcmd                     "Display incomplete commands
-set wildmenu                    "A better menu in command mode
-set wildmode=longest:full,full
-set scrolloff=4                 "Number of lines from vertical edge to start scrolling
-set number                      "Adds line numbers
-set cursorline                  "Highlight line the cursor is on
-set colorcolumn=80              "Add column line at 80 characters
-set splitbelow                  "Better split defaults
-set splitright
-set autoindent                  "Sets up auto indent (copies indentation from line above)
-set incsearch                   "Highlight dynamically as pattern is typed
-set hlsearch                    "Highlight search
-set ignorecase                  "Case insensitive search
-set smartcase                   "Case sensitive when search contains upper-case characters
-set wildignorecase              "Ignore case when opening files
-set laststatus=2                "Always display the status line
-set noswapfile                  "Disable swap files
-set autoread                    "Automatically read changes in the file
-set hidden                      "Hide buffers instead of closing them even if they contain unwritten changes
-set backspace=indent,eol,start  "Make backspace behave properly in insert mode
-set noshowmode                  "Hide the default mode text (e.g. -- INSERT -- below the statusline)
-set tabstop=4                   "Changes tabs to 4 spaces
-set shiftwidth=2                "Determines indentation in normal mode (using '>>' or '<<')
-set softtabstop=2               "Let backspace delete indent
-set expandtab                   "Expands tabs to spaces, better for formatting
-set spelllang=en                "Set vim's spell check language
-set termguicolors               "Better terminal color support in neovim
+vim.o.lazyredraw = true -- Improve scrolling performance with cursorline
+vim.o.ttyfast = true -- More characters will be sent to the screen for redrawing
+vim.o.ttimeout = true
+vim.o.ttimeoutlen = 50 -- Time waited for key press(es) to complete. It makes for a faster key response
+vim.o.showcmd = true -- Display incomplete commands
+vim.o.wildmenu = true -- A better menu in command mode
+vim.o.wildmode = 'longest:full,full'
+vim.o.scrolloff = 4 -- Number of lines from vertical edge to start scrolling
+vim.o.splitbelow = true -- Better split defaults
+vim.o.splitright = true
+vim.o.autoindent = true -- Sets up auto indent (copies indentation from line above)
+vim.o.incsearch = true -- Highlight dynamically as pattern is typed
+vim.o.hlsearch = true -- Highlight search
+vim.o.ignorecase = true -- Case insensitive search
+vim.o.smartcase = true -- Case sensitive when search contains upper-case characters
+vim.o.wildignorecase = true -- Ignore case when opening files
+vim.o.laststatus = 2 -- Always display the status line
+vim.o.swapfile = false -- Disable swap files
+vim.o.autoread = true -- Automatically read changes in the file
+vim.o.hidden = true -- Hide buffers instead of closing them even if they contain unwritten changes
+vim.o.backspace = 'indent,eol,start' -- Make backspace behave properly in insert mode
+vim.o.showmode = false -- Hide the default mode text (e.g. -- INSERT -- below the statusline)
+vim.o.tabstop = 4 -- Changes tabs to 4 spaces
+vim.o.shiftwidth = 2 -- Determines indentation in normal mode (using '>>' or '<<')
+vim.o.softtabstop = 2 -- Let backspace delete indent
+vim.o.expandtab = true -- Expands tabs to spaces, better for formatting
+vim.o.spelllang = 'en' -- Set vim's spell check language
+vim.o.termguicolors = true -- Better terminal color support in neovim
 
-"" ==================== Folding ====================
-set foldmethod=syntax   "syntax highlighting items specify folds
-set foldcolumn=2        "defines 1 col at window left, to indicate folding
-set foldlevelstart=99   "start file with all folds opened
+vim.o.foldmethod = 'syntax' -- syntax highlighting items specify folds
+vim.o.foldcolumn = '2' -- defines 1 col at window left, to indicate folding
+vim.o.foldlevelstart = 99 -- start file with all folds opened
 
-"" ==================== netrw ====================
-let g:netrw_liststyle = 3
+vim.wo.cursorline = true -- Highlight line the cursor is on
+vim.wo.colorcolumn = '80' -- Add column line at 80 characters
+vim.wo.number = true -- Adds line numbers
 
-let mapleader = ","
-let maplocalleader = "\\"
+vim.g.mapleader = ","
+vim.g.maplocalleader = "\\"
+
+vim.g.netrw_liststyle = 3
 
 {{- if eq "crostini" .ostype }}
-" Configure vim's other clipboard registers to use xsel (system clipboard)
-let g:clipboard = { 'name': 'crostiniClipboard', 'copy': { '+': 'xsel --clipboard', '*': 'xsel --clipboard', }, 'paste': { '+': 'xsel --clipboard', '*': 'xsel --clipboard', }, 'cache_enabled': 1, }
+-- Configure vim's other clipboard registers to use xsel (system clipboard)
+vim.g.clipboard = {
+    name = 'crostiniClipboard',
+    copy = {["+"] = 'xsel --clipboard', ["*"] = 'xsel --clipboard'},
+    paste = {["+"] = 'xsel --clipboard', ["*"] = 'xsel --clipboard'},
+    cache_enabled = 1
+}
 {{- end }}
-]]
