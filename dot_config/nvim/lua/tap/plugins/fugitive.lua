@@ -6,7 +6,7 @@ vim.g.fugitive_dynamic_colors = 0
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
 
 nnoremap('<leader>ga', ':Git add %:p<CR><CR>')
-nnoremap('<leader>gs', ':Gstatus<CR>')
+nnoremap('<leader>gs', ':Git<CR>')
 nnoremap('<leader>gc', ':Git commit -v -q<CR>')
 nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
 nnoremap('<leader>gd', ':Gvdiff<CR>')

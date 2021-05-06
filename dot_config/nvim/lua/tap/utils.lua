@@ -25,7 +25,7 @@ function utils.get_os_command_output_async(cmd, fn, cwd)
         return {}
     end
     local command = table.remove(cmd, 1)
-    job = Job:new({command = command, args = cmd, cwd = cwd})
+    local job = Job:new({command = command, args = cmd, cwd = cwd})
     job:after(vim.schedule_wrap(function(j, code, signal)
         if code == 0 then return fn(j:result(), code, signal) end
         return fn(j:stderr_result(), code, signal)
