@@ -39,15 +39,12 @@ module.on_attach = function()
         'autocmd CursorHold <buffer> lua require("lspsaga.diagnostic").show_cursor_diagnostics()')
 end
 
-utils.augroup(
-  "LspSagaHighlights",
-  {
+utils.augroup("LspSagaHighlights", {
     {
-      events = {"VimEnter", "ColorScheme"},
-      targets = {"*"},
-      command = "lua require('tap.plugins.lspsaga').apply_user_highlights()"
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = "lua require('tap.plugins.lspsaga').apply_user_highlights()"
     }
-  }
-)
+})
 
 return module

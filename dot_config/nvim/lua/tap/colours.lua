@@ -1,7 +1,7 @@
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 
-vim.g.nvcode_termcolors=256
+vim.g.nvcode_termcolors = 256
 
 -- Nord config if/when they merge treesitter support
 vim.g.nord_italic = 1
@@ -29,16 +29,13 @@ function module.apply_user_highlights()
     highlight('gitmessengerPopupNormal', {link = 'CursorLine'})
 end
 
-augroup(
-  "ExplorerHighlights",
-  {
+augroup("ExplorerHighlights", {
     {
-      events = {"VimEnter", "ColorScheme"},
-      targets = {"*"},
-      command = "lua require('tap.colours').apply_user_highlights()"
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = "lua require('tap.colours').apply_user_highlights()"
     }
-  }
-)
+})
 
 return module
 
