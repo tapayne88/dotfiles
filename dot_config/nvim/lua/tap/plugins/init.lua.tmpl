@@ -94,11 +94,13 @@ return require('packer').startup(function(use)
     {{- if .neovim_nightly_native_lsp }}
     -- native neovim LSP support
     use {
-        -- LSP server config
-        'neovim/nvim-lspconfig', -- install LSP servers
-        'kabouzeid/nvim-lspinstall', -- LSP status display
-        'nvim-lua/lsp-status.nvim', -- Better LSP diagnostics display
-        'glepnir/lspsaga.nvim'
+        'neovim/nvim-lspconfig', -- LSP server config
+        config = [[require("tap.lsp")]],
+        requires = {
+            'kabouzeid/nvim-lspinstall', -- install LSP servers
+            'nvim-lua/lsp-status.nvim', -- LSP status display
+            'glepnir/lspsaga.nvim' -- Better LSP diagnostics display
+        }
     }
 
     -- Auto completion plugin for nvim

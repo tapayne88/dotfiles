@@ -22,6 +22,8 @@ module.apply_user_highlights = function()
 end
 
 module.init = function()
+    module.apply_user_highlights()
+
     saga.init_lsp_saga({
         error_sign = utils.lsp_symbols["error"],
         warn_sign = utils.lsp_symbols["warning"],

@@ -1,15 +1,9 @@
--- vi: filetype=lua
-
 require('tap.globals')
 require('tap.plugins')
 require('tap.settings')
 require('tap.colours')
 require('tap.auto')
 require('tap.keymap')
-
-{{- if .neovim_nightly_native_lsp }}
-require("tap.lsp")
-{{- end }}
 
 vim.cmd [[
 if filereadable(expand('~/.vimrc.local'))
