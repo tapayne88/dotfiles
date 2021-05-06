@@ -54,39 +54,88 @@ function utils.map_table_to_key(tbl, key)
     return vim.tbl_map(function(value) return value[key] end, tbl)
 end
 
+---check if a mapping already exists
+---@param lhs string
+---@param mode string
+---@return boolean
+local function has_map(lhs, mode)
+  mode = mode or "n"
+  return vim.fn.maparg(lhs, mode) ~= ""
+end
+
 local function validate_opts(opts)
-    if not opts then return true end
-
-    if opts.buffer and type(opts.buffer) ~= "number" then
-        return false, "The buffer key should be a number"
-    end
-
+  if not opts then
     return true
+  end
+
+  if type(opts) ~= "table" then
+    return false, "opts should be a table"
+  end
+
+  if opts.buffer and type(opts.buffer) ~= "number" then
+    return false, "The buffer key should be a number"
+  end
+
+  return true
+end
+
+local function validate_mappings(lhs, rhs, opts)
+  vim.validate {
+    lhs = {lhs, "string"},
+    rhs = {
+      rhs,
+      function(a)
+        local arg_type = type(a)
+        return arg_type == "string" or arg_type == "function"
+      end,
+      "right hand side"
+    },
+    opts = {opts, validate_opts, "mapping options are incorrect"}
+  }
 end
 
 -- Shamelessly stolen from akinsho/dotfiles
--- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/utils.lua#L71
-local function make_mapper(mode, _opts)
-    -- copy the opts table as extends will mutate the opts table passed in otherwise
-    local parent_opts = vim.deepcopy(_opts)
-    return function(lhs, rhs, __opts)
-        local opts = __opts and vim.deepcopy(__opts) or {}
-        vim.validate {
-            lhs = {lhs, "string"},
-            rhs = {rhs, "string"},
-            opts = {opts, validate_opts, "mapping options are incorrect"}
-        }
-        if opts.bufnr then
-            -- Remove the bufnr from the args sent to the key map function
-            local bufnr = opts.bufnr
-            opts.bufnr = nil
-            opts = vim.tbl_extend("keep", opts, parent_opts)
-            api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-        else
-            api.nvim_set_keymap(mode, lhs, rhs,
-                                vim.tbl_extend("keep", opts, parent_opts))
-        end
+-- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/utils.lua
+---create a mapping function factory
+---@param mode string
+---@param o table
+---@return function
+local function make_mapper(mode, o)
+  -- copy the opts table as extends will mutate the opts table passed in otherwise
+  local parent_opts = vim.deepcopy(o)
+  ---Create a mapping
+  ---@param lhs string
+  ---@param rhs string|function
+  ---@param opts table
+  return function(lhs, rhs, opts)
+    assert(lhs ~= mode, string.format("The lhs should not be the same as mode for %s", lhs))
+    local _opts = opts and vim.deepcopy(opts) or {}
+
+    validate_mappings(lhs, rhs, _opts)
+
+    if _opts.check_existing and has_map(lhs) then
+      return
+    else
+      -- don't pass this invalid key to set keymap
+      _opts.check_existing = nil
     end
+
+    -- add functions to a global table keyed by their index
+    if type(rhs) == "function" then
+      local fn_id = tap._create(rhs)
+      rhs = string.format("v:lua.tap._execute(%s)<CR>", fn_id)
+    end
+
+    if _opts.bufnr then
+      -- Remove the buffer from the args sent to the key map function
+      local bufnr = _opts.bufnr
+      _opts.bufnr = nil
+      _opts = vim.tbl_extend("keep", _opts, parent_opts)
+      api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, _opts)
+    else
+      api.nvim_set_keymap(mode, lhs, rhs, vim.tbl_extend("keep", _opts, parent_opts))
+    end
+  end
 end
 
 local map_opts = {noremap = false, silent = true}
