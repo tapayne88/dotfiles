@@ -143,6 +143,29 @@ function utils.highlight(name, opts)
     end
 end
 
+-- Ditto above
+function utils.augroup(name, commands)
+  vim.cmd("augroup " .. name)
+  vim.cmd("autocmd!")
+  for _, c in ipairs(commands) do
+    local command = c.command
+    if type(command) == "function" then
+      local fn_id = tap._create(command)
+      command = string.format("lua tap._execute(%s)", fn_id)
+    end
+    vim.cmd(
+      string.format(
+        "autocmd %s %s %s %s",
+        table.concat(c.events, ","),
+        table.concat(c.targets or {}, ","),
+        table.concat(c.modifiers or {}, " "),
+        command
+      )
+    )
+  end
+  vim.cmd("augroup END")
+end
+
 function utils.join(value, str, sep)
     sep = sep or ","
     str = str or ""
