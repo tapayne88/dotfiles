@@ -1,59 +1,94 @@
 -- vi: filetype=lua
 local fn = vim.fn
 
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
-  vim.api.nvim_command 'packadd packer.nvim'
+    fn.system({
+        'git', 'clone', 'https://github.com/wbthomason/packer.nvim',
+        install_path
+    })
+    vim.api.nvim_command 'packadd packer.nvim'
 end
 
 return require('packer').startup(function(use)
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+    -- Packer can manage itself
+    use 'wbthomason/packer.nvim'
 
-  use 'lervag/file-line'                     -- Handle filenames with line numbers i.e. :20
-  use {'tpope/vim-fugitive', config = [[require("tap.plugins.fugitive")]] }                   -- Git integration ':Gstatus' etc.
-  use 'tpope/vim-characterize'               -- Adds 'ga' command to show character code
-  use 'tpope/vim-commentary'                 -- Adds 'gc' & 'gcc' commands for commenting lines
-  use 'tpope/vim-eunuch'                     -- Adds unix commands like ':Move' etc.
-  use 'tpope/vim-surround'                   -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-  use {'tpope/vim-dispatch', cmd = 'Dispatch' }                      -- Async vim compiler plugins (used to run mocha test below)
-  use 'jaawerth/nrun.vim'                    -- Put locally installed npm module .bin at front of path
-  use 'tpope/vim-sleuth'                     -- Detect indentation
-  use 'christoomey/vim-tmux-navigator'       -- Seemless vim <-> tmux navigation
-  use 'ryanoasis/vim-devicons'               -- Filetype icons
-  use {'wincent/scalpel', config = [[require("tap.plugins.scalpel")]]}                      -- Easier find & replace
-  use {'simeji/winresizer', config = [[vim.g.winresizer_start_key = '<leader>w']] }                    -- Simple plugin to easily resize windows
-  use {'janko-m/vim-test', config = [[require("tap.plugins.vim-test")]], cmd = {'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'}}                 -- easy testing
-  use {'tweekmonster/startuptime.vim',  cmd = 'StartupTime' }                   -- easier vim startup time profiling
-  use {'iamcco/markdown-preview.nvim',  run= ':call mkdp#util#install()', ft = 'markdown', cmd = 'MarkdownPreview' }               -- Markdown previewing commands
-  use {'rhysd/git-messenger.vim',  cmd = 'GitMessenger' }                  -- Git blame for line with commit message
-  use {'antoinemadec/FixCursorHold.nvim', config = [[vim.g.cursorhold_updatetime = 500]]}       -- Fix performance issue with CursorHold events
+    use 'lervag/file-line' -- Handle filenames with line numbers i.e. :20
+    use {'tpope/vim-fugitive', config = [[require("tap.plugins.fugitive")]]} -- Git integration ':Gstatus' etc.
+    use 'tpope/vim-characterize' -- Adds 'ga' command to show character code
+    use 'tpope/vim-commentary' -- Adds 'gc' & 'gcc' commands for commenting lines
+    use 'tpope/vim-eunuch' -- Adds unix commands like ':Move' etc.
+    use 'tpope/vim-surround' -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
+    use {'tpope/vim-dispatch', cmd = 'Dispatch'} -- Async vim compiler plugins (used to run mocha test below)
+    use 'jaawerth/nrun.vim' -- Put locally installed npm module .bin at front of path
+    use 'tpope/vim-sleuth' -- Detect indentation
+    use 'christoomey/vim-tmux-navigator' -- Seemless vim <-> tmux navigation
+    use 'ryanoasis/vim-devicons' -- Filetype icons
+    use {'wincent/scalpel', config = [[require("tap.plugins.scalpel")]]} -- Easier find & replace
+    use {
+        'simeji/winresizer',
+        config = [[vim.g.winresizer_start_key = '<leader>w']]
+    } -- Simple plugin to easily resize windows
+    use {
+        'janko-m/vim-test',
+        config = [[require("tap.plugins.vim-test")]],
+        cmd = {'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'}
+    } -- easy testing
+    use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'} -- easier vim startup time profiling
+    use {
+        'iamcco/markdown-preview.nvim',
+        run = ':call mkdp#util#install()',
+        ft = 'markdown',
+        cmd = 'MarkdownPreview'
+    } -- Markdown previewing commands
+    use {'rhysd/git-messenger.vim', cmd = 'GitMessenger'} -- Git blame for line with commit message
+    use {
+        'antoinemadec/FixCursorHold.nvim',
+        config = [[vim.g.cursorhold_updatetime = 500]]
+    } -- Fix performance issue with CursorHold events
 
-  use 'ChristianChiarulli/nvcode-color-schemes.vim'  -- treesitter colorscheme
-  use {'nvim-treesitter/nvim-treesitter', config = [[require("tap.plugins.treesitter")]], run = ':TSUpdate' }                     -- better syntax highlighting
-  use 'nvim-treesitter/playground'           -- playground for illustrating the AST treesitter builds
-  use 'nvim-lua/popup.nvim'                  -- dependency of telescope
-  use 'nvim-lua/plenary.nvim'                -- dependency of telescope
-  use {'nvim-telescope/telescope.nvim', config = [[require("tap.plugins.telescope")]]}        -- whizzy command-p launcher
-  use 'kyazdani42/nvim-web-devicons'         -- devicons for lua plugins
-  use {'lewis6991/gitsigns.nvim', config = [[require("tap.plugins.gitsigns")]]}              -- + & - in column for changed lines
+    use 'ChristianChiarulli/nvcode-color-schemes.vim' -- treesitter colorscheme
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        config = [[require("tap.plugins.treesitter")]],
+        run = ':TSUpdate'
+    } -- better syntax highlighting
+    use 'nvim-treesitter/playground' -- playground for illustrating the AST treesitter builds
+    use 'nvim-lua/popup.nvim' -- dependency of telescope
+    use 'nvim-lua/plenary.nvim' -- dependency of telescope
+    use {
+        'nvim-telescope/telescope.nvim',
+        config = [[require("tap.plugins.telescope")]]
+    } -- whizzy command-p launcher
+    use 'kyazdani42/nvim-web-devicons' -- devicons for lua plugins
+    use {
+        'lewis6991/gitsigns.nvim',
+        config = [[require("tap.plugins.gitsigns")]]
+    } -- + & - in column for changed lines
 
-  -- Syntax not supported by treesitter
-  use 'plasticboy/vim-markdown'
+    -- Syntax not supported by treesitter
+    use 'plasticboy/vim-markdown'
 
-  {{- if .neovim_nightly_native_lsp }}
-  use 'neovim/nvim-lspconfig'                -- native neovim LSP support
-  use 'kabouzeid/nvim-lspinstall'            -- install LSP servers
-  use 'nvim-lua/lsp-status.nvim'             -- LSP status display
-  use 'glepnir/lspsaga.nvim'                 -- Better LSP diagnostics display
-  use {'nvim-lua/completion-nvim', config =[[require("tap.plugins.completion-nvim")]]}              -- Auto completion plugin for nvim
-  use 'steelsojka/completion-buffers'
-  use 'nvim-treesitter/completion-treesitter'
-  use {'hoob3rt/lualine.nvim', config = [[require("tap.plugins.lualine")]]}                 -- statusline in lua
-  {{- else }}
-  use {'itchyny/lightline.vim', config = [[require("tap.plugins.lightline")]]}                -- Status line plugin
-  use {'neoclide/coc.nvim',  branch = 'release', config = [[require("tap.plugins.coc-nvim")]] }                   -- LSPish integration
-  {{- end }}
+    {{- if .neovim_nightly_native_lsp }}
+    use 'neovim/nvim-lspconfig' -- native neovim LSP support
+    use 'kabouzeid/nvim-lspinstall' -- install LSP servers
+    use 'nvim-lua/lsp-status.nvim' -- LSP status display
+    use 'glepnir/lspsaga.nvim' -- Better LSP diagnostics display
+    use {
+        'nvim-lua/completion-nvim',
+        config = [[require("tap.plugins.completion-nvim")]]
+    } -- Auto completion plugin for nvim
+    use 'steelsojka/completion-buffers'
+    use 'nvim-treesitter/completion-treesitter'
+    use {'hoob3rt/lualine.nvim', config = [[require("tap.plugins.lualine")]]} -- statusline in lua
+    {{- else }}
+    use {'itchyny/lightline.vim', config = [[require("tap.plugins.lightline")]]} -- Status line plugin
+    use {
+        'neoclide/coc.nvim',
+        branch = 'release',
+        config = [[require("tap.plugins.coc-nvim")]]
+    } -- LSPish integration
+    {{- end }}
 end)
