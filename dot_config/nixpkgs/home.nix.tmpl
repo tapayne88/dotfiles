@@ -44,6 +44,7 @@ let
 
   neovimNightlyPkgs = with pkgs; [
     {{- if ne "macOS" .ostype }}
+    cmake  # Needed to build luarocks
     gcc   # Needed more modern version (not too sure why) for nvim-treesitter - not needed and breaks things on MacOS
     {{- end }}
     ruby  # Needed to locally build nvcode treesitter color schemes
