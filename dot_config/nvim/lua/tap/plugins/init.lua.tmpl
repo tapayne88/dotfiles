@@ -11,7 +11,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
     vim.api.nvim_command 'packadd packer.nvim'
 end
 
-return require('packer').startup(function(use)
+return require('packer').startup({function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
@@ -132,4 +132,9 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.coc-nvim")]]
     }
     {{- end }}
-end)
+end, config = {
+luarocks = {
+    python_cmd = 'env MACOSX_DEPLOYMENT_TARGET=10.14 python3'
+  }
+
+}})
