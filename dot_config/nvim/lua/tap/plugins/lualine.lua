@@ -29,9 +29,10 @@ local function lsp_ok()
     return {
         function()
             if #vim.lsp.buf_get_clients() > 0 then
-                local diags = vim.tbl_map(function(fn)
-                    return require('lsp-status')[fn]()
-                end, lsp_status_function_map)
+                local diags = vim.tbl_map(
+                                  function(fn)
+                        return require('lsp-status')[fn]()
+                    end, lsp_status_function_map)
 
                 local diag_string = table.concat(vim.tbl_values(diags))
                 if diag_string == "" then

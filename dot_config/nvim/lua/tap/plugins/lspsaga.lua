@@ -3,8 +3,7 @@ local utils = require("tap.utils")
 
 local module = {}
 
-module.init = function()
-
+module.apply_user_highlights = function()
     utils.highlight('LspSagaDiagnosticBorder',
                     {link = 'LspSagaDefPreviewBorder'})
     utils.highlight('LspSagaDiagnosticHeader',
@@ -20,6 +19,10 @@ module.init = function()
                     {guifg = utils.lsp_colors["info"]})
     utils.highlight("LspDiagnosticsFloatingHint",
                     {guifg = utils.lsp_colors["hint"]})
+end
+
+module.init = function()
+    module.apply_user_highlights()
 
     saga.init_lsp_saga({
         error_sign = utils.lsp_symbols["error"],
@@ -35,5 +38,13 @@ module.on_attach = function()
     vim.api.nvim_command(
         'autocmd CursorHold <buffer> lua require("lspsaga.diagnostic").show_cursor_diagnostics()')
 end
+
+utils.augroup("LspSagaHighlights", {
+    {
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = "lua require('tap.plugins.lspsaga').apply_user_highlights()"
+    }
+})
 
 return module
