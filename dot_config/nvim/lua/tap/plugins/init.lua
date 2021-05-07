@@ -1,4 +1,3 @@
--- vi: filetype=lua
 local fn = vim.fn
 
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
