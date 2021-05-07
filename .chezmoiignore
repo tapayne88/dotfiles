@@ -13,11 +13,6 @@
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
-{{- if not .neovim_nightly_native_lsp }}
-.default-npm-packages
-.config/nvim/lua/_lsp.lua
-{{- end }}
-
 public
 .prettierrc.js
 misc
