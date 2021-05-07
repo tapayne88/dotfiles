@@ -42,6 +42,11 @@ for profile in ''${(z)NIX_PROFILES}; do
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
 done
 
+# Export shell after nix paths have been setup
+# Needed as MacOS doesn't set SHELL correctly by default
+# it was /bin/sh without the below
+export SHELL=$(which zsh)
+
 {{- if ne "macOS" .ostype }}
 # Fix nix locale errors
 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
