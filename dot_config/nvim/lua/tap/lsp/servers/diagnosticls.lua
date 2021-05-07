@@ -9,7 +9,7 @@ local diagnosticls_languages = {
         formatters = {"eslint", "prettier"}
     },
     json = {formatters = {"prettier"}},
-    markdown = {formatters = {"prettier"}},
+    markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
     typescript = {linters = {"eslint"}, formatters = {"eslint", "prettier"}},
     typescriptreact = {
         linters = {"eslint"},
@@ -21,7 +21,8 @@ local npm_packages = [[
   ! test -f package.json && npm init -y --scope=lspinstall || true
   npm install \
     diagnostic-languageserver@latest \
-    eslint_d@latest
+    eslint_d@latest \
+    markdownlint-cli@latest
 ]]
 
 local lua_format = [[
@@ -114,6 +115,25 @@ function module.setup()
                             security = "severity"
                         },
                         securities = {[2] = "error", [1] = "warning"}
+                    },
+                    markdownlint = {
+                        command = lsp_utils.install_path("diagnosticls") ..
+                            "/node_modules/.bin/markdownlint",
+                        isStderr = true,
+                        debounce = 100,
+                        args = {
+                            "--config",
+                            vim.fn.stdpath("config") .. "/markdownlint.json",
+                            "--stdin"
+                        },
+                        offsetLine = 0,
+                        offsetColumn = 0,
+                        sourceName = "markdownlint",
+                        formatLines = 1,
+                        formatPattern = {
+                            "^.*?:\\s?(\\d+)(:(\\d+)?)?\\s(MD\\d{3}\\/[A-Za-z0-9-/]+)\\s(.*)$",
+                            {line = 1, column = 3, message = {4}}
+                        }
                     }
                 },
                 filetypes = utils.map_table_to_key(diagnosticls_languages,
