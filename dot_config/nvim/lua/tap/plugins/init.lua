@@ -1,4 +1,3 @@
--- vi: filetype=lua
 local fn = vim.fn
 
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -91,7 +90,6 @@ return require('packer').startup(function(use)
         requires = {'nvim-lua/plenary.nvim'}
     }
 
-    {{- if .neovim_nightly_native_lsp }}
     -- native neovim LSP support
     use {
         'neovim/nvim-lspconfig', -- LSP server config
@@ -119,14 +117,4 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.lualine")]],
         requires = {'kyazdani42/nvim-web-devicons'}
     }
-    {{- else }}
-    -- Status line plugin
-    use {'itchyny/lightline.vim', config = [[require("tap.plugins.lightline")]]}
-    -- LSPish integration
-    use {
-        'neoclide/coc.nvim',
-        branch = 'release',
-        config = [[require("tap.plugins.coc-nvim")]]
-    }
-    {{- end }}
 end)

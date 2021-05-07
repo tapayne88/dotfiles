@@ -11,10 +11,6 @@
           "enum": ["macOS", "crostini", "wsl"],
           "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
-        "neovim_nightly_native_lsp": {
-          "type": "boolean",
-          "description": "Enable / disable neovim nightly's native LSP (falls back to CoC)"
-        },
         "email": {
           "type": "object",
           "description": "Email addresses used in git commits",
@@ -42,7 +38,6 @@
       "additionalProperties": false,
       "required": [
         "ostype",
-        "neovim_nightly_native_lsp",
         "email",
         "terminal_font",
         "terminal_font_size"
