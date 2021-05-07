@@ -22,6 +22,7 @@ local npm_packages = [[
   npm install \
     diagnostic-languageserver@latest \
     eslint_d@latest \
+    prettier@latest \
     markdownlint-cli@latest
 ]]
 
@@ -52,40 +53,13 @@ function module.patch_install()
                           {install_script = npm_packages .. lua_format})
 end
 
+local function npm_path(bin)
+    return lsp_utils.install_path("diagnosticls") .. "/node_modules/.bin/" ..
+               bin
+end
+
 function module.setup()
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
-        local eslint_formatter = {
-            eslint = {
-                command = lsp_utils.install_path("diagnosticls") ..
-                    "/node_modules/.bin/eslint_d",
-                rootPatterns = {"package.json", ".eslintrc.js"},
-                debounce = 100,
-                args = {
-                    "--fix-to-stdout", "--stdin", "--stdin-filename",
-                    "%filepath"
-                }
-            }
-        }
-        local prettier_formatter = prettier_bin ~= nil and {
-            prettier = {
-                command = prettier_bin,
-                args = {"--stdin-filepath", "%filepath"},
-                rootPatterns = {
-                    "package.json", ".prettierrc", ".prettierrc.json",
-                    ".prettierrc.toml", ".prettierrc.json", ".prettierrc.yml",
-                    ".prettierrc.yaml", ".prettierrc.json5", ".prettierrc.js",
-                    ".prettierrc.cjs", "prettier.config.js",
-                    "prettier.config.cjs"
-                }
-            }
-        } or {}
-
-        local lua_formatter = {
-            lua_format = {
-                command = lsp_utils.install_path("diagnosticls") ..
-                    "/lua-format"
-            }
-        }
 
         lsp_utils.lspconfig_server_setup("diagnosticls", {
             handlers = {
@@ -97,7 +71,7 @@ function module.setup()
             init_options = {
                 linters = {
                     eslint = {
-                        command = eslint_formatter.eslint.command,
+                        command = npm_path("eslint_d"),
                         rootPatterns = {"package.json", ".eslintrc.js"},
                         debounce = 100,
                         args = {
@@ -117,8 +91,7 @@ function module.setup()
                         securities = {[2] = "error", [1] = "warning"}
                     },
                     markdownlint = {
-                        command = lsp_utils.install_path("diagnosticls") ..
-                            "/node_modules/.bin/markdownlint",
+                        command = npm_path("markdownlint"),
                         isStderr = true,
                         debounce = 100,
                         args = {
@@ -138,8 +111,33 @@ function module.setup()
                 },
                 filetypes = utils.map_table_to_key(diagnosticls_languages,
                                                    "linters"),
-                formatters = vim.tbl_extend('keep', eslint_formatter,
-                                            prettier_formatter, lua_formatter),
+                formatters = {
+                    eslint = {
+                        command = npm_path("eslint_d"),
+                        rootPatterns = {"package.json", ".eslintrc.js"},
+                        debounce = 100,
+                        args = {
+                            "--fix-to-stdout", "--stdin", "--stdin-filename",
+                            "%filepath"
+                        }
+                    },
+                    prettier = {
+                        command = prettier_bin or npm_path("prettier"),
+                        args = {"--stdin-filepath", "%filepath"},
+                        rootPatterns = {
+                            "package.json", ".prettierrc", ".prettierrc.json",
+                            ".prettierrc.toml", ".prettierrc.json",
+                            ".prettierrc.yml", ".prettierrc.yaml",
+                            ".prettierrc.json5", ".prettierrc.js",
+                            ".prettierrc.cjs", "prettier.config.js",
+                            "prettier.config.cjs"
+                        }
+                    },
+                    lua_format = {
+                        command = lsp_utils.install_path("diagnosticls") ..
+                            "/lua-format"
+                    }
+                },
                 formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
                                                          "formatters")
             }
