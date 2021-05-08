@@ -4,7 +4,7 @@ local lsp_status = require('tap.plugins.lsp-status')
 lspsaga.init()
 lsp_status.init()
 
-local servers = { "typescript", "diagnosticls", "lua" }
+local servers = { "typescript", "diagnosticls", "lua", "json" }
 
 local function init_servers()
     for _, server_name in pairs(servers) do
