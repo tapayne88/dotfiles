@@ -27,13 +27,14 @@ end
 
 local module = {}
 
-local server_path = "./node_modules/.bin/typescript-language-server"
+local server_name = "typescript"
+local lspconfig_name = "tsserver"
 
 function module.patch_install()
-    local config = require"lspinstall/util".extract_config("tsserver")
-    config.default_config.cmd[1] = server_path
+    local config = require"lspinstall/util".extract_config(lspconfig_name)
+    config.default_config.cmd[1] = "./node_modules/.bin/typescript-language-server"
 
-    return vim.tbl_extend('error', config, {
+    require'lspinstall/servers'[server_name] = vim.tbl_extend('error', config, {
         install_script = [=[
     ! test -f package.json && npm init -y --scope=lspinstall || true
     npm install typescript-language-server@latest
@@ -45,17 +46,15 @@ function module.setup()
     get_tsserver_exec(function(tsserver_bin)
         if (tsserver_bin == nil) then return end
 
+        -- Grab patched command following require('lspinstall').setup {}
         local config = require'lspconfig/configs'.typescript.document_config
 
-        lsp_utils.lspconfig_server_setup("typescript", {
+        lsp_utils.lspconfig_server_setup(server_name, {
             handlers = {
                 ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                    "[tsserver] ")
+                    "[".. server_name .."] ")
             },
-            cmd = {
-                config.default_config.cmd[1], "--stdio", "--tsserver-path",
-                tsserver_bin
-            },
+            cmd = vim.tbl_flatten({config.default_config.cmd, {"--tsserver-path", tsserver_bin}}),
             on_attach = function(client, bufnr)
                 client.resolved_capabilities.document_formatting = false
                 lsp_utils.on_attach(client, bufnr)

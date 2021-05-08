@@ -2,7 +2,8 @@ local lsp_utils = require('tap.lsp.utils')
 
 local module = {}
 
-function module.patch_install() end
+local server_name = "lua"
+local lspconfig_name = "sumneko_lua"
 
 function module.setup()
     local settings = {
@@ -26,10 +27,10 @@ function module.setup()
         }
     }
 
-    lsp_utils.lspconfig_server_setup("lua", {
+    lsp_utils.lspconfig_server_setup(server_name, {
         handlers = {
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                "[lua] ")
+                "[".. server_name.. "] ")
         },
         on_attach = lsp_utils.on_attach,
         settings = settings

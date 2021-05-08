@@ -44,27 +44,29 @@ local lua_format = [[
 
 local module = {}
 
+local server_name = "diagnosticls"
+local lspconfig_name = "diagnosticls"
+
 function module.patch_install()
-    local config = require"lspinstall/util".extract_config("diagnosticls")
+    local config = require"lspinstall/util".extract_config(lspconfig_name)
     config.default_config.cmd[1] =
         "./node_modules/.bin/diagnostic-languageserver"
 
-    return vim.tbl_extend('error', config,
+    require'lspinstall/servers'[server_name] = vim.tbl_extend('error', config,
                           {install_script = npm_packages .. lua_format})
 end
 
 local function npm_path(bin)
-    return lsp_utils.install_path("diagnosticls") .. "/node_modules/.bin/" ..
+    return lsp_utils.install_path(server_name) .. "/node_modules/.bin/" ..
                bin
 end
 
 function module.setup()
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
 
-        lsp_utils.lspconfig_server_setup("diagnosticls", {
+        lsp_utils.lspconfig_server_setup(server_name, {
             handlers = {
-                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                    "")
+                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics("")
             },
             filetypes = vim.tbl_keys(diagnosticls_languages),
             on_attach = lsp_utils.on_attach,
@@ -134,7 +136,7 @@ function module.setup()
                         }
                     },
                     lua_format = {
-                        command = lsp_utils.install_path("diagnosticls") ..
+                        command = lsp_utils.install_path(server_name) ..
                             "/lua-format"
                     }
                 },
