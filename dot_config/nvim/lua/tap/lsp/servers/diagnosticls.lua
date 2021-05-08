@@ -1,5 +1,6 @@
 local utils = require("tap.utils")
 local lsp_utils = require('tap.lsp.utils')
+local install_path = require'lspinstall/util'.install_path
 
 local diagnosticls_languages = {
     lua = {formatters = {"lua_format"}},
@@ -58,7 +59,7 @@ function module.patch_install()
 end
 
 local function npm_path(bin)
-    return lsp_utils.install_path(server_name) .. "/node_modules/.bin/" .. bin
+    return install_path(server_name) .. "/node_modules/.bin/" .. bin
 end
 
 function module.setup()
@@ -137,7 +138,7 @@ function module.setup()
                         }
                     },
                     lua_format = {
-                        command = lsp_utils.install_path(server_name) ..
+                        command = install_path(server_name) ..
                             "/lua-format"
                     }
                 },

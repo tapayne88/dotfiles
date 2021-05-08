@@ -176,8 +176,4 @@ function module.lspconfig_server_setup(server_name, config)
     return server
 end
 
-function module.install_path(lang)
-    return vim.fn.stdpath("data") .. "/lspinstall/" .. lang
-end
-
 return module
