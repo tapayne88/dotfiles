@@ -52,13 +52,13 @@ function module.patch_install()
     config.default_config.cmd[1] =
         "./node_modules/.bin/diagnostic-languageserver"
 
-    require'lspinstall/servers'[server_name] = vim.tbl_extend('error', config,
-                          {install_script = npm_packages .. lua_format})
+    require'lspinstall/servers'[server_name] =
+        vim.tbl_extend('error', config,
+                       {install_script = npm_packages .. lua_format})
 end
 
 local function npm_path(bin)
-    return lsp_utils.install_path(server_name) .. "/node_modules/.bin/" ..
-               bin
+    return lsp_utils.install_path(server_name) .. "/node_modules/.bin/" .. bin
 end
 
 function module.setup()
@@ -66,7 +66,8 @@ function module.setup()
 
         lsp_utils.lspconfig_server_setup(server_name, {
             handlers = {
-                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics("")
+                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
+                    "")
             },
             filetypes = vim.tbl_keys(diagnosticls_languages),
             on_attach = lsp_utils.on_attach,

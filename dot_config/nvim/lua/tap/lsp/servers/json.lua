@@ -8,9 +8,11 @@ function module.setup()
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[jsonls] ")
         },
-            cmd = {
-                "node", lsp_utils.install_path("json") .. "/vscode-json/json-language-features/server/dist/node/jsonServerMain.js", "--stdio"
-            },
+        cmd = {
+            "node", lsp_utils.install_path("json") ..
+                "/vscode-json/json-language-features/server/dist/node/jsonServerMain.js",
+            "--stdio"
+        },
         on_attach = lsp_utils.on_attach
     })
 end
