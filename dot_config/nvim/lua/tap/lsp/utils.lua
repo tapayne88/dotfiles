@@ -4,9 +4,7 @@ local lsp_status = require('tap.plugins.lsp-status')
 local utils = require("tap.utils")
 local nnoremap = require('tap.utils').nnoremap
 
-_G.lspconfig = {}
-
-function _G.lspconfig.toggle_format()
+local function toggle_format()
     if (vim.b.disable_format == nil) then
         vim.b.disable_format = 1
         print("disabled formatting for buffer")
@@ -16,11 +14,11 @@ function _G.lspconfig.toggle_format()
     end
 end
 
-function _G.lspconfig.format()
+local module = {}
+
+function module.format()
     return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 5000)
 end
-
-local module = {}
 
 function module.on_attach(client, bufnr)
 
@@ -111,11 +109,11 @@ function module.on_attach(client, bufnr)
         vim.api.nvim_exec([[
       augroup lsp_formatting
         autocmd! * <buffer>
-        autocmd BufWritePre <buffer> :lua lspconfig.format()
+        autocmd BufWritePre <buffer> lua require'tap.lsp.utils'.format()
       augroup END
     ]], false)
 
-        nnoremap("<leader>tf", "<cmd>lua lspconfig.toggle_format()<CR>", opts)
+        nnoremap("<leader>tf", toggle_format, opts)
         nnoremap("<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     elseif client.resolved_capabilities.document_range_formatting then
         nnoremap("<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)

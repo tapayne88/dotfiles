@@ -118,7 +118,7 @@ local function make_mapper(mode, o)
         -- add functions to a global table keyed by their index
         if type(rhs) == "function" then
             local fn_id = tap._create(rhs)
-            rhs = string.format("v:lua.tap._execute(%s)<CR>", fn_id)
+            rhs = string.format("<cmd>lua tap._execute(%s)<CR>", fn_id)
         end
 
         if _opts.bufnr then
