@@ -138,8 +138,7 @@ function module.setup()
                         }
                     },
                     lua_format = {
-                        command = install_path(server_name) ..
-                            "/lua-format"
+                        command = install_path(server_name) .. "/lua-format"
                     }
                 },
                 formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
