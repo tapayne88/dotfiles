@@ -1,5 +1,6 @@
 local inoremap = require('tap.utils').inoremap
 local termcodes = require('tap.utils').termcodes
+local augroup = require('tap.utils').augroup
 
 _G.completion_nvim = {}
 
@@ -32,6 +33,10 @@ vim.g.completion_chain_complete_list = {
     {mode = '<c-p>'}, {mode = '<c-n>'}
 }
 
-vim.cmd [[
-autocmd BufEnter * lua require'completion'.on_attach()
-]]
+local function on_attach()
+    -- ignore empty filetype buffers (telescope, etc.)
+    if vim.bo.filetype ~= "" then require'completion'.on_attach() end
+end
+
+augroup("CompletionNvim",
+        {{events = {"BufEnter"}, targets = {"*"}, command = on_attach}})
