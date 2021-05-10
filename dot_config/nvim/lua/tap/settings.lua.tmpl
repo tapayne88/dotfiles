@@ -38,9 +38,13 @@ vim.o.foldmethod = 'syntax'
 vim.o.foldcolumn = '2'
 vim.o.foldlevelstart = 99
 
+--Decrease update time
+vim.o.updatetime = 250
+
 vim.wo.number = true
 vim.wo.cursorline = true
 vim.wo.colorcolumn = '80'
+vim.wo.signcolumn="yes"
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
