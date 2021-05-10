@@ -47,6 +47,23 @@ local function lsp_ok()
     }
 end
 
+local function tsc_version()
+    return {
+        function()
+            if #vim.lsp.buf_get_clients() > 0 then
+                if vim.b.tsc_version ~= nil then
+                    return "v" .. vim.b.tsc_version
+                end
+
+                return ""
+            end
+        end,
+        separator = "",
+        left_padding = 1,
+        right_padding = 0
+    }
+end
+
 require('lualine').setup {
     options = {
         theme = 'nord',
@@ -63,7 +80,7 @@ require('lualine').setup {
         --  - Show spinner?
         lualine_x = {
             lsp_status("error"), lsp_status("warning"), lsp_status("info"),
-            lsp_status("hint"), lsp_ok()
+            lsp_status("hint"), lsp_ok(), tsc_version()
         },
         lualine_y = {'filetype', {'progress', icon = "≡"}},
         lualine_z = {'location'}

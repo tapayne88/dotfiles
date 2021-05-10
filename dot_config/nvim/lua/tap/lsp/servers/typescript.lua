@@ -1,4 +1,5 @@
 local lspconfig_util = require('lspconfig.util')
+local utils = require('tap.utils')
 local lsp_utils = require('tap.lsp.utils')
 
 -- Stolen from lspconfig/tsserver, would have been nice to be able to import
@@ -23,6 +24,25 @@ local get_tsserver_exec = function(fn)
         local ts_key = "tsserver.tsdk"
         return fn(coc_json[ts_key] .. "/tsserver.js")
     end
+end
+
+local get_tsc_version = function(fn)
+    lsp_utils.get_bin_path("tsc", function(path)
+        if path == nil then return fn(nil) end
+
+        utils.get_os_command_output_async({path, "--version"},
+                                          function(result, code, signal)
+            if code ~= 0 then return fn(nil) end
+            local version = string.match(result[1], "^Version (.*)$")
+
+            if version == nil then
+                print("failed to parse tsc version from [" .. result[1] .. "]")
+                return fn(nil)
+            end
+
+            return fn(version)
+        end)
+    end)
 end
 
 local module = {}
@@ -64,6 +84,10 @@ function module.setup()
                 lsp_utils.on_attach(client, bufnr)
             end
         })
+    end)
+
+    get_tsc_version(function(version)
+        if version ~= nil then vim.b.tsc_version = version end
     end)
 end
 
