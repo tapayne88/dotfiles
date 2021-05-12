@@ -9,14 +9,19 @@ local get_ts_root_dir = function(fname)
                                            ".git")(fname);
 end
 
--- Make tsserver work with yarn v2
-local get_tsserver_exec = function(fn)
+local yarn_v2_settings = function()
     local ts_root_dir = get_ts_root_dir(vim.fn.getcwd())
     local coc_settings = ts_root_dir and ts_root_dir ..
                              "/.vim/coc-settings.json" or ""
 
-    -- not yarn v2 project
-    if lspconfig_util.path.exists(coc_settings) == false then
+    return lspconfig_util.path.exists(coc_settings) and coc_settings or nil
+end
+
+-- Make tsserver work with yarn v2
+local get_tsserver_exec = function(fn)
+    local coc_settings = yarn_v2_settings()
+
+    if coc_settings == nil then
         return lsp_utils.get_bin_path("tsserver", fn)
     else
         local file = io.open(coc_settings):read("*a")
@@ -27,6 +32,8 @@ local get_tsserver_exec = function(fn)
 end
 
 local get_tsc_version = function(fn)
+    if yarn_v2_settings() ~= nil then return end
+
     lsp_utils.get_bin_path("tsc", function(path)
         if path == nil then return fn(nil) end
 
