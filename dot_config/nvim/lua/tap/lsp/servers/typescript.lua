@@ -80,14 +80,16 @@ function module.setup()
                 config.default_config.cmd, {"--tsserver-path", tsserver_bin}
             }),
             on_attach = function(client, bufnr)
+                get_tsc_version(function(version)
+                    if version ~= nil then
+                        vim.b.tsc_version = version
+                    end
+                end)
+
                 client.resolved_capabilities.document_formatting = false
                 lsp_utils.on_attach(client, bufnr)
             end
         })
-    end)
-
-    get_tsc_version(function(version)
-        if version ~= nil then vim.b.tsc_version = version end
     end)
 end
 
