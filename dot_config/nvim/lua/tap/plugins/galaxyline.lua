@@ -52,13 +52,13 @@ gl.section.left = {
 
                 return string.format("  %s ", mode)
             end,
-            separator = section_separators[1],
+            separator = section_separators[1] .. " ",
             separator_highlight = "GalaxyViModeInv"
         }
     }, {
         GitBranch = {
             provider = function()
-                return string.format('  %s ', vcs.get_git_branch())
+                return string.format(' %s ', vcs.get_git_branch())
             end,
             condition = condition.check_git_workspace,
             separator = section_separators[1] .. " ",
@@ -156,16 +156,22 @@ gl.section.right = {
 
 gl.section.short_line_left = {
     {
-        GitBranch = {
+        GitBranchInactive = {
             provider = function()
-                return string.format('  %s ', vcs.get_git_branch())
+                return string.format('   %s ', vcs.get_git_branch())
             end,
             condition = condition.check_git_workspace,
             separator = section_separators[1] .. " ",
             separator_highlight = {nord_colors.nord1, colors.bg},
             highlight = {'NONE', nord_colors.nord1}
         }
-    }, {FileName = {provider = 'FileName', highlight = {'NONE', colors.bg}}}
+    },
+    {
+        FileNameInactive = {
+            provider = 'FileName',
+            highlight = {'NONE', colors.bg}
+        }
+    }
 }
 
 gl.section.short_line_right = {
