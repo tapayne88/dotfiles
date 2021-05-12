@@ -8,7 +8,7 @@ local nord_colors = require("tap.utils").nord_colors
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
-local has_lsp_clients = require("tap.lsp.utils").has_lsp_clients
+local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
 
 gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
 
@@ -115,13 +115,23 @@ gl.section.right = {
     }, {
         TscVersion = {
             provider = function()
-                if has_lsp_clients() then
-                    if vim.b.tsc_version ~= nil then
-                        return string.format("v%s ", vim.b.tsc_version)
-                    end
+                if vim.g.tsc_version ~= nil then
+                    local client_version =
+                        vim.tbl_map(function(client)
+                            return vim.g.tsc_version["client_" .. client.id]
+                        end, get_lsp_clients())
 
-                    return ""
+                    local file_versions =
+                        vim.tbl_filter(function(version)
+                            return version ~= nil
+                        end, client_version)
+
+                    if #file_versions > 0 then
+                        return string.format("v%s ", file_versions[1])
+
+                    end
                 end
+                return ""
             end,
             highlight = {'NONE', colors.bg}
         }

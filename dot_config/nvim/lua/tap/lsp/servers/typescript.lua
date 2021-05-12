@@ -45,6 +45,23 @@ local get_tsc_version = function(fn)
     end)
 end
 
+local set_tsc_version = function(client_id)
+    if vim.g.tsc_version == nil then vim.g.tsc_version = {} end
+
+    local client_key = "client_" .. client_id
+
+    if vim.g.tsc_version[client_key] == nil then
+        get_tsc_version(function(version)
+            if version ~= nil then
+                -- Very convoluted way to update global map
+                local tsc_version = vim.g.tsc_version
+                tsc_version[client_key] = version
+                vim.g.tsc_version = tsc_version
+            end
+        end)
+    end
+end
+
 local module = {}
 
 local server_name = "typescript"
@@ -80,11 +97,7 @@ function module.setup()
                 config.default_config.cmd, {"--tsserver-path", tsserver_bin}
             }),
             on_attach = function(client, bufnr)
-                get_tsc_version(function(version)
-                    if version ~= nil then
-                        vim.b.tsc_version = version
-                    end
-                end)
+                set_tsc_version(client.id)
 
                 client.resolved_capabilities.document_formatting = false
                 lsp_utils.on_attach(client, bufnr)

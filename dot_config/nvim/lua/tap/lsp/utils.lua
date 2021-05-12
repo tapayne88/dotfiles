@@ -174,11 +174,11 @@ function module.lspconfig_server_setup(server_name, config)
     return server
 end
 
-function module.has_lsp_clients()
-    if next(vim.lsp.buf_get_clients(0)) == nil then return '' end
+function module.get_lsp_clients()
+    if next(vim.lsp.buf_get_clients(0)) == nil then return {} end
     local active_clients = vim.lsp.get_active_clients()
 
-    return #active_clients > 0
+    return active_clients
 end
 
 return module
