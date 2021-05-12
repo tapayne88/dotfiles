@@ -2,6 +2,7 @@ local gl = require('galaxyline')
 local vcs = require('galaxyline.provider_vcs')
 local diagnostic = require('galaxyline.provider_diagnostic')
 local fileinfo = require('galaxyline.provider_fileinfo')
+local extension = require('galaxyline.provider_extensions')
 local condition = require('galaxyline.condition')
 local nord_colors = require("tap.utils").nord_colors
 local lsp_colors = require("tap.utils").lsp_colors
@@ -139,7 +140,7 @@ gl.section.right = {
     }, {
         LineInfo = {
             provider = 'LineColumn',
-            icon = " ≡",
+            icon = " ≡ ",
             separator = component_separators[2],
             separator_highlight = {'NONE', nord_colors.nord1},
             highlight = {'NONE', nord_colors.nord1}
@@ -153,7 +154,13 @@ gl.section.right = {
         }
     }, {
         ScrollBar = {
-            provider = 'ScrollBar',
+            provider = function()
+                local scrollbars = {
+                    '██', '▇▇', '▆▆', '▅▅', '▄▄', '▃▃',
+                    '▂▂', '▁▁', '__'
+                }
+                return extension.scrollbar_instance(scrollbars)
+            end,
             highlight = {nord_colors.nord8, colors.bg}
         }
     }
@@ -193,7 +200,7 @@ gl.section.short_line_right = {
     }, {
         LineInfoInactive = {
             provider = 'LineColumn',
-            icon = " ≡",
+            icon = " ≡ ",
             separator = component_separators[2],
             separator_highlight = {'NONE', colors.bg},
             highlight = {'NONE', colors.bg}
@@ -207,7 +214,13 @@ gl.section.short_line_right = {
         }
     }, {
         ScrollBarInactive = {
-            provider = 'ScrollBar',
+            provider = function()
+                local scrollbars = {
+                    '██', '▇▇', '▆▆', '▅▅', '▄▄', '▃▃',
+                    '▂▂', '▁▁', '__'
+                }
+                return extension.scrollbar_instance(scrollbars)
+            end,
             highlight = {'NONE', nord_colors.nord1}
         }
     }
