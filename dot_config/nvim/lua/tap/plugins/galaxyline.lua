@@ -137,19 +137,24 @@ gl.section.right = {
             highlight = {'NONE', nord_colors.nord1}
         }
     }, {
-        PerCent = {
-            provider = 'LinePercent',
+        LineInfo = {
+            provider = 'LineColumn',
             icon = " ≡",
             separator = component_separators[2],
             separator_highlight = {'NONE', nord_colors.nord1},
             highlight = {'NONE', nord_colors.nord1}
         }
     }, {
-        LineInfo = {
-            provider = 'LineColumn',
+        PerCent = {
+            provider = 'LinePercent',
             separator = section_separators[2],
             separator_highlight = 'GalaxyViModeInv',
             highlight = 'GalaxyViMode'
+        }
+    }, {
+        ScrollBar = {
+            provider = 'ScrollBar',
+            highlight = {nord_colors.nord8, colors.bg}
         }
     }
 }
@@ -186,18 +191,23 @@ gl.section.short_line_right = {
             highlight = {'NONE', colors.bg}
         }
     }, {
-        PerCentInactive = {
-            provider = 'LinePercent',
+        LineInfoInactive = {
+            provider = 'LineColumn',
             icon = " ≡",
             separator = component_separators[2],
             separator_highlight = {'NONE', colors.bg},
             highlight = {'NONE', colors.bg}
         }
     }, {
-        LineInfoInactive = {
-            provider = 'LineColumn',
+        PerCentInactive = {
+            provider = 'LinePercent',
             separator = section_separators[2],
             separator_highlight = {nord_colors.nord1, colors.bg},
+            highlight = {'NONE', nord_colors.nord1}
+        }
+    }, {
+        ScrollBarInactive = {
+            provider = 'ScrollBar',
             highlight = {'NONE', nord_colors.nord1}
         }
     }
