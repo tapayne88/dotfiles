@@ -113,8 +113,9 @@ return require('packer').startup(function(use)
 
     -- statusline in lua
     use {
-        'hoob3rt/lualine.nvim',
-        config = [[require("tap.plugins.lualine")]],
+        'glepnir/galaxyline.nvim',
+        branch = 'main',
+        config = [[require("tap.plugins.galaxyline")]],
         requires = {'kyazdani42/nvim-web-devicons'}
     }
 end)
