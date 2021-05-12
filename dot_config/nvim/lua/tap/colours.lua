@@ -1,5 +1,6 @@
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
+local nord_colors = require("tap.utils").nord_colors
 
 vim.g.nvcode_termcolors = 256
 
@@ -15,8 +16,9 @@ vim.cmd [[colorscheme nord]]
 local module = {}
 
 function module.apply_user_highlights()
-    highlight('Search', {guibg = '#81A1C1', guifg = '#2E3440'})
-    highlight('IncSearch', {guibg = '#81A1C1', guifg = '#2E3440'})
+    highlight('Search', {guibg = nord_colors.nord9, guifg = nord_colors.nord0})
+    highlight('IncSearch',
+              {guibg = nord_colors.nord9, guifg = nord_colors.nord0})
 
     -- Treesitter overrides
     highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
