@@ -171,7 +171,7 @@ gl.section.right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = {nord_colors.nord8, colors.bg}
+            highlight = 'GalaxyViModeInv'
         }
     }
 }
