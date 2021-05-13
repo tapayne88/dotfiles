@@ -3,6 +3,7 @@ local lsp_utils = require('tap.lsp.utils')
 local install_path = require'lspinstall/util'.install_path
 
 local diagnosticls_languages = {
+    html = {formatters = {"prettier"}},
     lua = {formatters = {"lua_format"}},
     javascript = {linters = {"eslint"}, formatters = {"eslint", "prettier"}},
     javascriptreact = {
