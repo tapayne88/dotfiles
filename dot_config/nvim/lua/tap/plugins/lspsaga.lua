@@ -10,6 +10,8 @@ module.apply_user_highlights = function()
                     {link = 'LspSagaDefPreviewBorder'})
     utils.highlight('LspSagaDiagnosticTruncateLine',
                     {link = 'LspSagaDefPreviewBorder'})
+    utils.highlight('LspSagaSignatureHelpBorder',
+                    {link = 'LspSagaDefPreviewBorder'})
 
     utils.highlight("LspDiagnosticsFloatingError",
                     {guifg = utils.lsp_colors["error"]})
@@ -35,8 +37,18 @@ module.init = function()
 end
 
 module.on_attach = function()
-    vim.api.nvim_command(
-        'autocmd CursorHold <buffer> lua require("lspsaga.diagnostic").show_cursor_diagnostics()')
+    utils.augroup("LspSagaCursor", {
+        {
+            events = {"CursorHold"},
+            targets = {"<buffer>"},
+            command = "lua require('lspsaga.diagnostic').show_cursor_diagnostics()"
+
+        }
+    })
+
+    utils.inoremap("<c-k>",
+                   "<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>")
+
 end
 
 utils.augroup("LspSagaHighlights", {
