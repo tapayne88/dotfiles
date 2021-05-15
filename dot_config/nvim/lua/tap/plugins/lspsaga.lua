@@ -46,7 +46,7 @@ module.on_attach = function()
         }
     })
 
-    utils.inoremap("<c-k>",
+    utils.inoremap("<c-l>",
                    "<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>")
 
 end
