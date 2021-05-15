@@ -102,14 +102,7 @@ return require('packer').startup(function(use)
     }
 
     -- Auto completion plugin for nvim
-    use {
-        'nvim-lua/completion-nvim',
-        config = [[require("tap.plugins.completion-nvim")]],
-        requires = {
-            'steelsojka/completion-buffers',
-            'nvim-treesitter/completion-treesitter'
-        }
-    }
+    use {'hrsh7th/nvim-compe', config = [[require("tap.plugins.nvim-compe")]]}
 
     -- statusline in lua
     use {
