@@ -20,22 +20,19 @@ inoremap("<C-j>", "v:lua.completion_nvim.smart_pumvisible('<C-n>', '<C-j>')",
 inoremap("<C-k>", "v:lua.completion_nvim.smart_pumvisible('<C-p>', '<C-k>')",
          {expr = true})
 
--- function _G.smart_tab()
---     return vim.fn.pumvisible() == 1 and t'<C-n>' or t'<Tab>'
--- end
-
--- vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.smart_tab()', {expr = true, noremap = true})
-
-vim.g.completion_auto_change_source = 1
-
-vim.g.completion_chain_complete_list = {
-    {complete_items = {'lsp'}}, {complete_items = {'ts', 'buffers', 'path'}},
-    {mode = '<c-p>'}, {mode = '<c-n>'}
-}
-
 local function on_attach()
     -- ignore empty filetype buffers (telescope, etc.)
-    if vim.bo.filetype ~= "" then require'completion'.on_attach() end
+    if vim.bo.filetype ~= "" then
+        require'completion'.on_attach {
+            auto_change_source = 1,
+
+            chain_complete_list = {
+                {complete_items = {'lsp'}},
+                {complete_items = {'ts', 'buffers', 'path'}}, {mode = '<c-p>'},
+                {mode = '<c-n>'}
+            }
+        }
+    end
 end
 
 augroup("CompletionNvim",
