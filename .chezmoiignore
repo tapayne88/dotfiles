@@ -18,7 +18,6 @@ public
 misc
 README.md
 terminfo
-install.sh
 git_template
 
 # Ignore icons with kitty config

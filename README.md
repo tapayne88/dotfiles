@@ -7,7 +7,7 @@ A place for all my dotfiles and each one in its place.
 ## Installation
 
 ```bash
-curl -sfL https://git.io/JvlgU | sh
+curl -sfL https://git.io/JsiiF | sh
 
 # or
 
