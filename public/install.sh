@@ -66,27 +66,26 @@ echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
 mkdir -p $NIX_HOME_DIR
 echo "$NIX_HOME_BOOTSTRAP" > $NIX_HOME_FILE
 
-echo "Installing vim-plug for neovim"
-curl -fLo "$HOME/.config/nvim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 echo "Installing tmux plugin manager"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 echo ""
 echo "Next stps:"
 
-command -v nix-env >/dev/null 2>&1 || { echo >&2 "Install nix from https://nixos.org/download.html"; }
-command -v home-manager >/dev/null 2>&1 || { echo >&2 "Install home-manager from https://github.com/nix-community/home-manager"; }
+command -v nix-env >/dev/null 2>&1 || { echo >&2 "# Install nix from https://nixos.org/download.html"; }
+command -v home-manager >/dev/null 2>&1 || { echo >&2 "# Install home-manager from https://github.com/nix-community/home-manager"; }
 
-echo ""
-echo "# Install home-manager bootstrap packages
-home-manager switch
+CMD_COLOR="\033[1;34m"
+NO_COLOR="\033[0m"
 
-# Dry-run
-chezmoi apply -vn
+echo "
+# Install home-manager bootstrap packages
+\$ ${CMD_COLOR}home-manager switch${NO_COLOR}
 
-# Apply dotfiles
-chezmoi apply -v
+# Apply dotfiles with chezmoi, chechout the required schema with this URL
+https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
+\$ ${CMD_COLOR}chezmoi apply -v${NO_COLOR}
 
-# Now install the provisioned packages
-home-manager switch"
+# Install the provisioned packages
+\$ ${CMD_COLOR}home-manager switch${NO_COLOR}
+"
