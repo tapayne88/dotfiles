@@ -17,7 +17,6 @@ public
 .prettierrc.js
 misc
 README.md
-installation_guide.md
 terminfo
 install.sh
 git_template

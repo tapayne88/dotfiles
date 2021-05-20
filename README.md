@@ -14,7 +14,7 @@ curl -sfL https://git.io/JvlgU | sh
 git clone https://github.com/tapayne88/dotfiles
 ```
 
-For the full setup guide, follow [this](./installation_guide.md).
+For the full setup guide, follow [this](./public/installation_guide.md).
 
 ## [Chezmoi](https://www.chezmoi.io/)
 
