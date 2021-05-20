@@ -31,7 +31,7 @@ sudo dpkg-reconfigure locales
 
 ## 3. Install nix and home-manager
 
-- [nix](https://nixos.org/download.html) - to get nix installed on crostini see [`patch-nix`](https://github.com/tapayne88/dotfiles/blob/master/dot_config/zsh/functions/crostini.zsh#L6-L8) function.
+- [nix](https://nixos.org/download.html) - to get nix installed on crostini see [`patch-nix`](https://github.com/tapayne88/dotfiles/blob/18080b947f560ff59c0e7fc453b276c0ee9cd548/dot_config/zsh/functions/crostini.zsh#L7) function.
 - [home-manager](https://github.com/nix-community/home-manager)
 
 Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
