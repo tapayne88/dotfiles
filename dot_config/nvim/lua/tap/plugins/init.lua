@@ -96,7 +96,6 @@ return require('packer').startup(function(use)
         config = [[require("tap.lsp")]],
         requires = {
             'kabouzeid/nvim-lspinstall', -- install LSP servers
-            'nvim-lua/lsp-status.nvim', -- LSP status display
             'glepnir/lspsaga.nvim' -- Better LSP diagnostics display
         }
     }

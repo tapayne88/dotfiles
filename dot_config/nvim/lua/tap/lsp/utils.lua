@@ -1,6 +1,5 @@
 local lspconfig = require("lspconfig")
 local lspsaga = require("tap.plugins.lspsaga")
-local lsp_status = require('tap.plugins.lsp-status')
 local utils = require("tap.utils")
 local nnoremap = require('tap.utils').nnoremap
 
@@ -23,7 +22,6 @@ end
 function module.on_attach(client, bufnr)
 
     lspsaga.on_attach(client, bufnr)
-    lsp_status.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -156,10 +154,8 @@ function module.on_publish_diagnostics(prefix)
     end
 end
 
-local get_config_capabilities = function(config)
-    return vim.tbl_extend('keep', config.capabilities or {},
-                          lsp_status.capabilities)
-end
+local get_config_capabilities = function(config) return
+    config.capabilities or {} end
 
 function module.lspconfig_server_setup(server_name, config)
     local server = lspconfig[server_name]

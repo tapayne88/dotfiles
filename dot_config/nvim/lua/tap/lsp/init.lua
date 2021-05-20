@@ -1,8 +1,6 @@
 local lspsaga = require("tap.plugins.lspsaga")
-local lsp_status = require('tap.plugins.lsp-status')
 
 lspsaga.init()
-lsp_status.init()
 
 local servers = {"typescript", "diagnosticls", "lua", "json"}
 
