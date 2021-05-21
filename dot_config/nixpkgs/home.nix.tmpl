@@ -3,6 +3,7 @@
 
 let
   unstable = import <nixpkgs-unstable> { config = pkgs.config; };
+  nixgl = import <nixgl> {};
   comma = import ( pkgs.fetchFromGitHub {
       owner = "Shopify";
       repo = "comma";
@@ -34,9 +35,9 @@ let
 
   {{- if eq "crostini" .ostype }}
   crostiniPkgs = with pkgs; [
-    alacritty       # alacritty terminal
-    kitty           # kitty terminal
-    mesa_drivers    # GPU drivers for crostini
+    alacritty        	     # alacritty terminal
+    kitty           	     # kitty terminal
+    nixgl.nixGLDefault       # OpenGL wrapper for nix programs
   ];
   {{- else }}
   crostiniPkgs = [];

@@ -47,9 +47,12 @@ nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 
 ### \*nix
 
+Note, nix on crostini needs the nixgl channel so `nixGL` can be installed. This enables kitty terminal and probably other nix installed openGL programs to work.
+
 ```console
 ❯ nix-channel  --list
 home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
+nixgl https://github.com/guibou/nixGL/archive/master.tar.gz
 nixpkgs https://nixos.org/channels/nixos-20.09
 nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
