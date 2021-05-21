@@ -68,9 +68,10 @@ See [readme](./README.md#installation) for installation guide.
 
 ## 5. Setup shell
 
-Add nix zsh to allowed shells and change shell.
+Ensure user has a password set and add nix zsh to allowed shells and change shell.
 
 ```shell
+sudo passwd `whoami`
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
 ```
