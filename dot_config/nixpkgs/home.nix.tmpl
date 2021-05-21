@@ -4,12 +4,6 @@
 let
   unstable = import <nixpkgs-unstable> { config = pkgs.config; };
   nixgl = import <nixgl> {};
-  comma = import ( pkgs.fetchFromGitHub {
-      owner = "Shopify";
-      repo = "comma";
-      rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
-      sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
-  }) {};
 
   {{- if ne "macOS" .ostype }}
   unixPkgs = with pkgs; [
@@ -79,7 +73,6 @@ in
     antigen                       # zsh plugin manager
     bat                           # colourised cat
     chezmoi                       # dotfile manager
-    comma                         # utility for trying nix executables
     ctop                          # container top process tool
     curl                          # curl...
     fpp                           # facebook picker
