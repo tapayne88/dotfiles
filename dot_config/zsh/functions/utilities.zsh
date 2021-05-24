@@ -5,7 +5,7 @@ function ssh() {
   emulate -L zsh
 
   # local LOCAL_TERM=$(echo -n "$TERM" | sed -e s/tmux/screen/)
-  env TERM=xterm-256color command ssh "$@"
+  TERM=xterm-256color command ssh "$@"
 }
 
 # ctop doesn't like tmux terminfo
@@ -13,5 +13,5 @@ function ctop() {
   emulate -L zsh
 
   # local LOCAL_TERM=$(echo -n "$TERM" | sed -e s/tmux/screen/)
-  env TERM=xterm-256color command ctop "$@"
+  TERM=xterm-256color command ctop "$@"
 }
