@@ -20,10 +20,10 @@ nnoremap('<leader>cm', ":!chezmoi apply -v<CR>")
 -- nnoremap('<leader>ff', ":Ex<CR>") -- Replacing with Telescope file_browser (though borrowing shortcut for find_files)
 
 -- vimrc sourcing
-nnoremap('<leader>evv',
-         ":vsplit {{ .chezmoi.sourceDir }}/dot_config/nvim/init.lua.tmpl<CR>")
-nnoremap('<leader>ev',
-         ":split {{ .chezmoi.sourceDir }}/dot_config/nvim/init.lua.tmpl<CR>")
+nnoremap('<leader>evv', ":vsplit " .. vim.g.chezmoi_source_dir ..
+             "/dot_config/nvim/init.lua<CR>")
+nnoremap('<leader>ev', ":split " .. vim.g.chezmoi_source_dir ..
+             "/dot_config/nvim/init.lua<CR>")
 nnoremap('<leader>sv', ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
 
 -- Esc (C-[) to escape terminal insert mode

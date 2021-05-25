@@ -1,6 +1,6 @@
 require('tap.globals')
-require('tap.plugins')
 require('tap.settings')
+require('tap.plugins')
 require('tap.colours')
 require('tap.auto')
 require('tap.keymap')
