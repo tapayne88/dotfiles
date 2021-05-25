@@ -133,16 +133,17 @@ gl.section.right = {
                 end
                 return ""
             end,
+            condition = condition.hide_in_width,
             highlight = {'NONE', colors.bg}
         }
     }, {
         FileInfo = {
             provider = function()
-                local filetype = vim.bo.filetype
+                local filetype =
+                    condition.hide_in_width() and vim.bo.filetype or ""
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            condition = condition.hide_in_width,
             separator = section_separators[2],
             separator_highlight = {nord_colors.nord1, colors.bg},
             highlight = {'NONE', nord_colors.nord1}
@@ -151,15 +152,21 @@ gl.section.right = {
         LineInfo = {
             provider = 'LineColumn',
             icon = " ≡ ",
+            condition = condition.hide_in_width,
             separator = component_separators[2],
             separator_highlight = {'NONE', nord_colors.nord1},
             highlight = {'NONE', nord_colors.nord1}
         }
     }, {
+        NotASpace = {
+            provider = function() return "" end,
+            separator = section_separators[2],
+            separator_highlight = 'GalaxyViModeInv'
+        }
+    }, {
         PerCent = {
             provider = 'LinePercent',
-            separator = section_separators[2],
-            separator_highlight = 'GalaxyViModeInv',
+            condition = condition.hide_in_width,
             highlight = 'GalaxyViMode'
         }
     }, {
@@ -200,27 +207,33 @@ gl.section.short_line_right = {
     {
         FileInfoInactive = {
             provider = function()
-                local filetype = vim.bo.filetype
+                local filetype =
+                    condition.hide_in_width() and vim.bo.filetype or ""
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            condition = condition.hide_in_width,
             highlight = {'NONE', colors.bg}
         }
     }, {
         LineInfoInactive = {
             provider = 'LineColumn',
             icon = " ≡ ",
+            condition = condition.hide_in_width,
             separator = component_separators[2],
             separator_highlight = {'NONE', colors.bg},
             highlight = {'NONE', colors.bg}
         }
     }, {
+        NotASpaceInactive = {
+            provider = function() return "" end,
+            separator = section_separators[2],
+            separator_highlight = {'NONE', colors.bg}
+        }
+    }, {
         PerCentInactive = {
             provider = 'LinePercent',
-            separator = section_separators[2],
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            condition = condition.hide_in_width,
+            highlight = {nord_colors.nord1, nord_colors.nord4}
         }
     }, {
         ScrollBarInactive = {
