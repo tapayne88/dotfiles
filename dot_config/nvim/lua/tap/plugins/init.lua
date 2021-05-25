@@ -62,7 +62,11 @@ return require('packer').startup(function(use)
         cmd = 'MarkdownPreview'
     }
     -- Git blame for line with commit message
-    use {'rhysd/git-messenger.vim', cmd = 'GitMessenger'}
+    use {
+        'rhysd/git-messenger.vim',
+        cmd = 'GitMessenger',
+        setup = [[require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>')]]
+    }
 
     -- Git integration ':Gstatus' etc.
     use {'tpope/vim-fugitive', config = [[require("tap.plugins.fugitive")]]}
@@ -84,9 +88,11 @@ return require('packer').startup(function(use)
             'nvim-treesitter/nvim-treesitter',
             config = [[require("tap.plugins.treesitter")]],
             run = ':TSUpdate'
-        }, {
-            'nvim-treesitter/playground' -- playground for illustrating the AST treesitter builds
-        }
+        },
+        {
+            'nvim-treesitter/playground',
+            cmd = {"TSPlayground", "TSPlaygroundToggle"}
+        } -- playground for illustrating the AST treesitter builds
     }
     -- whizzy command-p launcher
     use {
