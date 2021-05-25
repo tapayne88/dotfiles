@@ -1,4 +1,3 @@
--- vi: filetype=lua
 local nnoremap = require("tap.utils").nnoremap
 local vnoremap = require("tap.utils").vnoremap
 local tnoremap = require("tap.utils").tnoremap
