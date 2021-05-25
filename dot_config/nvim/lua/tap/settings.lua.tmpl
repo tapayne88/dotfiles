@@ -51,6 +51,8 @@ vim.g.maplocalleader = "\\"
 
 vim.g.netrw_liststyle = 3
 
+vim.g.chezmoi_source_dir = "{{ .chezmoi.sourceDir }}"
+
 {{- if eq "crostini" .ostype }}
 -- Configure vim's other clipboard registers to use xsel (system clipboard)
 vim.g.clipboard = {
