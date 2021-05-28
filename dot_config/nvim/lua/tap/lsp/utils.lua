@@ -16,7 +16,7 @@ end
 local module = {}
 
 function module.format()
-    return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 5000)
+    return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 1000)
 end
 
 function module.on_attach(client, bufnr)
@@ -129,20 +129,20 @@ function module.get_bin_path(cmd, fn)
     end)
 end
 
-local publish_diagnostics = vim.lsp.with(
-                                vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- show underline
-        underline = true,
-        -- Enable signs
-        signs = {
-            -- Make priority higher than vim-signify
-            priority = 100
-        },
-        -- Disable virtual_text
-        virtual_text = false,
-        -- show diagnostics on exit from insert
-        update_in_insert = true
-    })
+local publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
+                                             .on_publish_diagnostics, {
+    -- show underline
+    underline = true,
+    -- Enable signs
+    signs = {
+        -- Make priority higher than vim-signify
+        priority = 100
+    },
+    -- Disable virtual_text
+    virtual_text = false,
+    -- show diagnostics on exit from insert
+    update_in_insert = true
+})
 
 function module.on_publish_diagnostics(prefix)
     return function(err, method, params, client_id, bufnr, config)
