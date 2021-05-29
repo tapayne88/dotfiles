@@ -26,7 +26,7 @@ function tpm() {
     return
   fi
   if [ "$1" = "update" ]; then
-    ${TMUX_PLUGIN_MANAGER_PATH}tpm/bin/update_plugins $2
+    ${TMUX_PLUGIN_MANAGER_PATH}tpm/bin/update_plugins ${2:=all}
     return
   fi
   if [ "$1" = "clean" ]; then
