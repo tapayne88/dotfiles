@@ -38,8 +38,8 @@ gl.section.left = {
         ViMode = {
             provider = function()
                 local mode, mode_color = unpack(
-                                        mode_map[vim.fn.mode()] or
-                                            {"unknown", color("red")})
+                                             mode_map[vim.fn.mode()] or
+                                                 {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
                                             color("dark2")) or color("bg")
@@ -66,9 +66,10 @@ gl.section.left = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
             separator_highlight = {color("dark2"), color("bg")},
-            highlight = {'NONE', color("dark2")}
+            highlight = {color("fg"), color("dark2")}
         }
-    }, {FileName = {provider = 'FileName', highlight = {'NONE', color("bg")}}}
+    },
+    {FileName = {provider = 'FileName', highlight = {color("fg"), color("bg")}}}
 }
 
 gl.section.right = {
@@ -112,7 +113,7 @@ gl.section.right = {
                 end
                 return ""
             end,
-            highlight = {'NONE', color("bg")}
+            highlight = {color("fg"), color("bg")}
         }
     }, {
         TscVersion = {
@@ -136,7 +137,7 @@ gl.section.right = {
                 return ""
             end,
             condition = condition.hide_in_width,
-            highlight = {'NONE', color("bg")}
+            highlight = {color("fg"), color("bg")}
         }
     }, {
         FileInfo = {
@@ -148,7 +149,7 @@ gl.section.right = {
             end,
             separator = section_separators[2],
             separator_highlight = {color("dark2"), color("bg")},
-            highlight = {'NONE', color("dark2")}
+            highlight = {color("fg"), color("dark2")}
         }
     }, {
         LineInfo = {
@@ -156,8 +157,8 @@ gl.section.right = {
             icon = " ≡ ",
             condition = condition.hide_in_width,
             separator = component_separators[2],
-            separator_highlight = {'NONE', color("dark2")},
-            highlight = {'NONE', color("dark2")}
+            separator_highlight = {color("fg"), color("dark2")},
+            highlight = {color("fg"), color("dark2")}
         }
     }, {
         NotASpace = {
@@ -198,13 +199,12 @@ gl.section.short_line_left = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
             separator_highlight = {color("dark2"), color("bg")},
-            highlight = {'NONE', color("dark2")}
+            highlight = {color("fg"), color("dark2")}
         }
-    },
-    {
+    }, {
         FileNameInactive = {
             provider = 'FileName',
-            highlight = {'NONE', color("bg")}
+            highlight = {color("fg"), color("bg")}
         }
     }
 }
@@ -218,7 +218,7 @@ gl.section.short_line_right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {'NONE', color("bg")}
+            highlight = {color("fg"), color("bg")}
         }
     }, {
         LineInfoInactive = {
@@ -226,14 +226,14 @@ gl.section.short_line_right = {
             icon = " ≡ ",
             condition = condition.hide_in_width,
             separator = component_separators[2],
-            separator_highlight = {'NONE', color("bg")},
-            highlight = {'NONE', color("bg")}
+            separator_highlight = {color("fg"), color("bg")},
+            highlight = {color("fg"), color("bg")}
         }
     }, {
         NotASpaceInactive = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = {'NONE', color("bg")}
+            separator_highlight = {color("fg"), color("bg")}
         }
     }, {
         PerCentInactive = {
@@ -250,7 +250,7 @@ gl.section.short_line_right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = {'NONE', color("dark2")}
+            highlight = {color("fg"), color("dark2")}
         }
     }
 }
