@@ -42,8 +42,7 @@ local module = {}
 
 function module.apply_user_highlights()
     highlight('Search', {guibg = color("blue2"), guifg = color("bg")})
-    highlight('IncSearch',
-              {guibg = color("blue2"), guifg = color("bg")})
+    highlight('IncSearch', {guibg = color("blue2"), guifg = color("bg")})
 
     -- Treesitter overrides
     highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
