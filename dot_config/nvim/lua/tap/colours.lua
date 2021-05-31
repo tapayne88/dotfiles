@@ -2,16 +2,41 @@ local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local nord_colors = require("tap.utils").nord_colors
 
-vim.g.nvcode_termcolors = 256
+local function set_terminal_colorscheme(name)
+    vim.loop.spawn('kitty', {
+        args = {
+            '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
+            -- '-a', -- update for all windows
+            -- '-c', -- update for new windows
+            string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
+        }
+    }, nil)
+end
 
--- Nord config if/when they merge treesitter support
-vim.g.nord_italic = 1
-vim.g.nord_italic_comments = 1
-vim.g.nord_underline = 1
-vim.g.nord_uniform_diff_background = 1
-vim.g.nord_cursor_line_number_background = 1
+local function set_colorscheme(use_light_theme)
+    if (use_light_theme) then
+        vim.g.use_light_theme = true
+        set_terminal_colorscheme("kitty_tokyonight_day")
+        vim.o.background = "light"
+        vim.cmd [[colorscheme tokyonight]]
+    else
+        vim.g.nvcode_termcolors = 256
 
-vim.cmd [[colorscheme nord]]
+        -- Nord config if/when they merge treesitter support
+        vim.g.nord_italic = 1
+        vim.g.nord_italic_comments = 1
+        vim.g.nord_underline = 1
+        vim.g.nord_uniform_diff_background = 1
+        vim.g.nord_cursor_line_number_background = 1
+
+        vim.g.use_light_theme = nil
+        set_terminal_colorscheme("nord")
+        vim.o.background = "dark"
+        vim.cmd [[colorscheme nord]]
+    end
+end
+
+set_colorscheme(false)
 
 local module = {}
 
@@ -60,19 +85,7 @@ augroup("OnColorScheme", {
     }
 })
 
-local function set_terminal_colorscheme(name)
-    vim.loop.spawn('kitty', {
-        args = {
-            '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
-            -- '-a', -- update for all windows
-            -- '-c', -- update for new windows
-            string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
-
-        }
-    }, nil)
-end
-
-_G.tap.updateColor =
-    function() set_terminal_colorscheme("kitty_tokyonight_day") end
+_G.tap.toggle_color =
+    function() set_colorscheme(vim.g.use_light_theme == nil) end
 
 return module
