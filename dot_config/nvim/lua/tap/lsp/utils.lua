@@ -16,7 +16,7 @@ end
 local module = {}
 
 function module.format()
-    return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 1000)
+    return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
 end
 
 function module.on_attach(client, bufnr)
