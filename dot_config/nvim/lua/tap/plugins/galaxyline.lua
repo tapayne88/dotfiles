@@ -3,7 +3,7 @@ local diagnostic = require('galaxyline.provider_diagnostic')
 local fileinfo = require('galaxyline.provider_fileinfo')
 local extension = require('galaxyline.provider_extensions')
 local condition = require('galaxyline.condition')
-local nord_colors = require("tap.utils").nord_colors
+local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
@@ -16,40 +16,38 @@ local section_separators = vim.env.TERM_EMU == "kitty" and {"", ""} or
 local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
                                  {"|", "|"}
 
-local colors = {bg = nord_colors.nord3}
-
 local mode_map = {
-    ['n'] = {'NORMAL', nord_colors.nord8},
-    ['i'] = {'INSERT', nord_colors.nord6},
-    ['r'] = {'REPLACE', nord_colors.nord13},
-    ['R'] = {'REPLACE', nord_colors.nord13},
-    ['v'] = {'VISUAL', nord_colors.nord7},
-    ['V'] = {'V-LINE', nord_colors.nord7},
-    ['c'] = {'COMMAND', nord_colors.nord8},
-    ['s'] = {'SELECT', nord_colors.nord8},
-    ['S'] = {'S-LINE', nord_colors.nord8},
-    ['t'] = {'TERMINAL', nord_colors.nord8},
-    [''] = {'V-BLOCK', nord_colors.nord7},
-    [''] = {'S-BLOCK', nord_colors.nord8},
-    ['Rv'] = {'VIRTUAL', nord_colors.nord11},
-    ['rm'] = {'--MORE', nord_colors.nord11}
+    ['n'] = {'NORMAL', color("blue1")},
+    ['i'] = {'INSERT', color("white3")},
+    ['r'] = {'REPLACE', color("yellow")},
+    ['R'] = {'REPLACE', color("yellow")},
+    ['v'] = {'VISUAL', color("cyan")},
+    ['V'] = {'V-LINE', color("cyan")},
+    ['c'] = {'COMMAND', color("blue1")},
+    ['s'] = {'SELECT', color("blue1")},
+    ['S'] = {'S-LINE', color("blue1")},
+    ['t'] = {'TERMINAL', color("blue1")},
+    [''] = {'V-BLOCK', color("cyan")},
+    [''] = {'S-BLOCK', color("blue1")},
+    ['Rv'] = {'VIRTUAL', color("red")},
+    ['rm'] = {'--MORE', color("red")}
 }
 
 gl.section.left = {
     {
         ViMode = {
             provider = function()
-                local mode, color = unpack(
+                local mode, mode_color = unpack(
                                         mode_map[vim.fn.mode()] or
-                                            {"unknown", nord_colors.nord11})
+                                            {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
-                                            nord_colors.nord1) or colors.bg
+                                            color("dark2")) or color("bg")
 
                 highlight("GalaxyViMode",
-                          {guifg = nord_colors.nord0, guibg = color})
+                          {guifg = color("bg"), guibg = mode_color})
                 highlight("GalaxyViModeInv",
-                          {guibg = next_section_bg, guifg = color})
+                          {guibg = next_section_bg, guifg = mode_color})
 
                 return string.format("  %s ", mode)
             end,
@@ -67,10 +65,10 @@ gl.section.left = {
         ASpace = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = {color("dark2"), color("bg")},
+            highlight = {'NONE', color("dark2")}
         }
-    }, {FileName = {provider = 'FileName', highlight = {'NONE', colors.bg}}}
+    }, {FileName = {provider = 'FileName', highlight = {'NONE', color("bg")}}}
 }
 
 gl.section.right = {
@@ -78,25 +76,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = {lsp_colors.error, colors.bg}
+            highlight = {lsp_colors.error, color("bg")}
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = {lsp_colors.warning, colors.bg}
+            highlight = {lsp_colors.warning, color("bg")}
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = {lsp_colors.hint, colors.bg}
+            highlight = {lsp_colors.hint, color("bg")}
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = {lsp_colors.info, colors.bg}
+            highlight = {lsp_colors.info, color("bg")}
         }
     }, {
         DiagnosticOk = {
@@ -114,7 +112,7 @@ gl.section.right = {
                 end
                 return ""
             end,
-            highlight = {'NONE', colors.bg}
+            highlight = {'NONE', color("bg")}
         }
     }, {
         TscVersion = {
@@ -138,7 +136,7 @@ gl.section.right = {
                 return ""
             end,
             condition = condition.hide_in_width,
-            highlight = {'NONE', colors.bg}
+            highlight = {'NONE', color("bg")}
         }
     }, {
         FileInfo = {
@@ -149,8 +147,8 @@ gl.section.right = {
                 return string.format(" %s%s ", icon, filetype)
             end,
             separator = section_separators[2],
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = {color("dark2"), color("bg")},
+            highlight = {'NONE', color("dark2")}
         }
     }, {
         LineInfo = {
@@ -158,8 +156,8 @@ gl.section.right = {
             icon = " ≡ ",
             condition = condition.hide_in_width,
             separator = component_separators[2],
-            separator_highlight = {'NONE', nord_colors.nord1},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = {'NONE', color("dark2")},
+            highlight = {'NONE', color("dark2")}
         }
     }, {
         NotASpace = {
@@ -199,14 +197,14 @@ gl.section.short_line_left = {
         ASpaceInactive = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = {color("dark2"), color("bg")},
+            highlight = {'NONE', color("dark2")}
         }
     },
     {
         FileNameInactive = {
             provider = 'FileName',
-            highlight = {'NONE', colors.bg}
+            highlight = {'NONE', color("bg")}
         }
     }
 }
@@ -220,7 +218,7 @@ gl.section.short_line_right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {'NONE', colors.bg}
+            highlight = {'NONE', color("bg")}
         }
     }, {
         LineInfoInactive = {
@@ -228,20 +226,20 @@ gl.section.short_line_right = {
             icon = " ≡ ",
             condition = condition.hide_in_width,
             separator = component_separators[2],
-            separator_highlight = {'NONE', colors.bg},
-            highlight = {'NONE', colors.bg}
+            separator_highlight = {'NONE', color("bg")},
+            highlight = {'NONE', color("bg")}
         }
     }, {
         NotASpaceInactive = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = {'NONE', colors.bg}
+            separator_highlight = {'NONE', color("bg")}
         }
     }, {
         PerCentInactive = {
             provider = 'LinePercent',
             condition = condition.hide_in_width,
-            highlight = {nord_colors.nord1, nord_colors.nord4}
+            highlight = {color("dark2"), color("fg")}
         }
     }, {
         ScrollBarInactive = {
@@ -252,7 +250,7 @@ gl.section.short_line_right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = {'NONE', color("dark2")}
         }
     }
 }

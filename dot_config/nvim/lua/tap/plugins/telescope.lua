@@ -1,7 +1,7 @@
 local actions = require('telescope.actions')
 local nnoremap = require('tap.utils').nnoremap
 local highlight = require('tap.utils').highlight
-local nord_colors = require('tap.utils').nord_colors
+local color = require('tap.utils').color
 
 require('telescope').setup {
     defaults = {
@@ -53,6 +53,6 @@ nnoremap("<leader>ch",
          function() require('telescope.builtin').command_history() end,
          {name = "Command History"})
 
-highlight("TelescopeBorder", {guifg = nord_colors.nord3})
-highlight("TelescopePromptBorder", {guifg = nord_colors.nord10})
-highlight("TelescopeMatching", {guifg = nord_colors.nord13})
+highlight("TelescopeBorder", {guifg = color("dark4")})
+highlight("TelescopePromptBorder", {guifg = color("blue3")})
+highlight("TelescopeMatching", {guifg = color("yellow")})

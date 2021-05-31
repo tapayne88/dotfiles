@@ -4,25 +4,69 @@ local wk = require("which-key")
 
 local utils = {}
 
-utils.nord_colors = {
-    nord0 = "#2E3440",
-    nord1 = "#3B4252",
-    nord2 = "#434C5E",
-    nord3 = "#4C566A",
-    nord3_bright = "#616E88",
-    nord4 = "#D8DEE9",
-    nord5 = "#E5E9F0",
-    nord6 = "#ECEFF4",
-    nord7 = "#8FBCBB",
-    nord8 = "#88C0D0",
-    nord9 = "#81A1C1",
-    nord10 = "#5E81AC",
-    nord11 = "#BF616A",
-    nord12 = "#D08770",
-    nord13 = "#EBCB8B",
-    nord14 = "#A3BE8C",
-    nord15 = "#B48EAD"
+local nord_colors = {
+    bg = "#2E3440", -- nord0
+    dark2 = "#3B4252", -- nord1
+    dark3 = "#434C5E", -- nord2
+    dark4 = "#4C566A", -- nord3
+    fg = "#D8DEE9", -- nord4
+    white2 = "#E5E9F0", -- nord5
+    white3 = "#ECEFF4", -- nord6
+    cyan = "#8FBCBB", -- nord7
+    blue1 = "#88C0D0", -- nord8
+    blue2 = "#81A1C1", -- nord9
+    blue3 = "#5E81AC", -- nord10
+    red = "#BF616A", -- nord11
+    orange = "#D08770", -- nord12
+    yellow = "#EBCB8B", -- nord13
+    green = "#A3BE8C", -- nord14
+    magenta = "#B48EAD" -- nord15
 }
+
+local tokyo_colors = {
+    none = "NONE",
+    bg_dark = "#1f2335",
+    bg = "#24283b",
+    bg_highlight = "#292e42",
+    terminal_black = "#414868",
+    fg = "#c0caf5",
+    fg_dark = "#a9b1d6",
+    fg_gutter = "#3b4261",
+    dark3 = "#545c7e",
+    comment = "#565f89",
+    dark5 = "#737aa2",
+    blue0 = "#3d59a1",
+    blue = "#7aa2f7",
+    cyan = "#7dcfff",
+    blue1 = "#2ac3de",
+    blue2 = "#0db9d7",
+    blue5 = "#89ddff",
+    blue6 = "#B4F9F8",
+    blue7 = "#394b70",
+    magenta = "#bb9af7",
+    purple = "#9d7cd8",
+    orange = "#ff9e64",
+    yellow = "#e0af68",
+    green = "#9ece6a",
+    green1 = "#73daca",
+    green2 = "#41a6b5",
+    teal = "#1abc9c",
+    red = "#f7768e",
+    red1 = "#db4b4b",
+    git = {
+        change = "#6183bb",
+        add = "#449dab",
+        delete = "#914c54",
+        conflict = "#bb7a61"
+    },
+    gitSigns = {add = "#164846", change = "#394b70", delete = "#823c41"}
+}
+
+function utils.color(name)
+    local colorscheme = vim.g.use_light_theme == true and tokyo_colors or
+                            nord_colors
+    return colorscheme[name]
+end
 
 utils.lsp_symbols = {
     error = "",
@@ -34,10 +78,10 @@ utils.lsp_symbols = {
 }
 
 utils.lsp_colors = {
-    error = utils.nord_colors.nord11,
-    warning = utils.nord_colors.nord13,
-    info = utils.nord_colors.nord4,
-    hint = utils.nord_colors.nord10
+    error = utils.color("red"),
+    warning = utils.color("yellow"),
+    info = utils.color("fg"),
+    hint = utils.color("blue3")
 }
 
 function utils.get_os_command_output_async(cmd, fn, cwd)
