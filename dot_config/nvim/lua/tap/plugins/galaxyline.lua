@@ -42,7 +42,7 @@ gl.section.left = {
                                                  {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
-                                            color("dark2")) or color("bg")
+                                            color("dark2")) or color("dark4")
 
                 highlight("GalaxyViMode",
                           {guifg = color("bg"), guibg = mode_color})
@@ -65,11 +65,16 @@ gl.section.left = {
         ASpace = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("bg")},
+            separator_highlight = {color("dark2"), color("dark4")},
             highlight = {color("fg"), color("dark2")}
         }
     },
-    {FileName = {provider = 'FileName', highlight = {color("fg"), color("bg")}}}
+    {
+        FileName = {
+            provider = 'FileName',
+            highlight = {color("fg"), color("dark4")}
+        }
+    }
 }
 
 gl.section.right = {
@@ -77,25 +82,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = {lsp_colors.error, color("bg")}
+            highlight = {lsp_colors.error, color("dark4")}
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = {lsp_colors.warning, color("bg")}
+            highlight = {lsp_colors.warning, color("dark4")}
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = {lsp_colors.hint, color("bg")}
+            highlight = {lsp_colors.hint, color("dark4")}
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = {lsp_colors.info, color("bg")}
+            highlight = {lsp_colors.info, color("dark4")}
         }
     }, {
         DiagnosticOk = {
@@ -113,7 +118,7 @@ gl.section.right = {
                 end
                 return ""
             end,
-            highlight = {color("fg"), color("bg")}
+            highlight = {color("fg"), color("dark4")}
         }
     }, {
         TscVersion = {
@@ -137,7 +142,7 @@ gl.section.right = {
                 return ""
             end,
             condition = condition.hide_in_width,
-            highlight = {color("fg"), color("bg")}
+            highlight = {color("fg"), color("dark4")}
         }
     }, {
         FileInfo = {
@@ -148,7 +153,7 @@ gl.section.right = {
                 return string.format(" %s%s ", icon, filetype)
             end,
             separator = section_separators[2],
-            separator_highlight = {color("dark2"), color("bg")},
+            separator_highlight = {color("dark2"), color("dark4")},
             highlight = {color("fg"), color("dark2")}
         }
     }, {
@@ -198,13 +203,13 @@ gl.section.short_line_left = {
         ASpaceInactive = {
             provider = function() return " " end,
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("bg")},
+            separator_highlight = {color("dark2"), color("dark4")},
             highlight = {color("fg"), color("dark2")}
         }
     }, {
         FileNameInactive = {
             provider = 'FileName',
-            highlight = {color("fg"), color("bg")}
+            highlight = {color("fg"), color("dark4")}
         }
     }
 }
@@ -218,7 +223,7 @@ gl.section.short_line_right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {color("fg"), color("bg")}
+            highlight = {color("fg"), color("dark4")}
         }
     }, {
         LineInfoInactive = {
@@ -226,14 +231,14 @@ gl.section.short_line_right = {
             icon = " ≡ ",
             condition = condition.hide_in_width,
             separator = component_separators[2],
-            separator_highlight = {color("fg"), color("bg")},
-            highlight = {color("fg"), color("bg")}
+            separator_highlight = {color("fg"), color("dark4")},
+            highlight = {color("fg"), color("dark4")}
         }
     }, {
         NotASpaceInactive = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = {color("fg"), color("bg")}
+            separator_highlight = {color("fg"), color("dark4")}
         }
     }, {
         PerCentInactive = {
