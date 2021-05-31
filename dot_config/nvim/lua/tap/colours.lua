@@ -60,4 +60,19 @@ augroup("OnColorScheme", {
     }
 })
 
+local function set_terminal_colorscheme(name)
+    vim.loop.spawn('kitty', {
+        args = {
+            '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
+            -- '-a', -- update for all windows
+            -- '-c', -- update for new windows
+            string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
+
+        }
+    }, nil)
+end
+
+_G.tap.updateColor =
+    function() set_terminal_colorscheme("kitty_tokyonight_day") end
+
 return module
