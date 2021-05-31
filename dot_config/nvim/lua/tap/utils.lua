@@ -34,10 +34,10 @@ utils.lsp_symbols = {
 }
 
 utils.lsp_colors = {
-    error = "#BF616A",
-    warning = "#EBCB8B",
-    info = "#D8DEE9",
-    hint = "#5E81AC"
+    error = utils.nord_colors.nord11,
+    warning = utils.nord_colors.nord13,
+    info = utils.nord_colors.nord4,
+    hint = utils.nord_colors.nord10
 }
 
 function utils.get_os_command_output_async(cmd, fn, cwd)
