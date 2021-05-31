@@ -3,5 +3,5 @@ function patch-nix {
 }
 
 function kitty {
-  nixGL command kitty
+  nixGL command kitty "$@"
 }
