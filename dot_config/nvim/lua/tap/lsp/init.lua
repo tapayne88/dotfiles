@@ -12,9 +12,9 @@ local servers = {"typescript", "diagnosticls", "lua", "json"}
 
 local function init_servers()
     for _, server_name in pairs(servers) do
-        local patch_server_config =
-            require("tap.lsp.servers." .. server_name).patch_install
-        if patch_server_config ~= nil then patch_server_config() end
+        pcall(function()
+            require("tap.lsp.servers." .. server_name).patch_install()
+        end)
     end
 end
 
