@@ -1,4 +1,10 @@
+local command = require("tap.utils").command
 local lspsaga = require("tap.plugins.lspsaga")
+
+command({
+    "LspInstalledServers",
+    function() print(vim.inspect(require'lspinstall'.installed_servers())) end
+})
 
 lspsaga.init()
 

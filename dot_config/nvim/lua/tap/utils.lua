@@ -226,6 +226,24 @@ function utils.augroup(name, commands)
     vim.cmd("augroup END")
 end
 
+-- Ditto above
+function utils.command(args)
+    local nargs = args.nargs or 0
+    local name = args[1]
+    local rhs = args[2]
+    local types = (args.types and type(args.types) == "table") and
+                      table.concat(args.types, " ") or ""
+
+    if type(rhs) == "function" then
+        local fn_id = tap._create(rhs)
+        rhs = string.format("lua tap._execute(%d%s)", fn_id,
+                            nargs > 0 and ", <f-args>" or "")
+    end
+
+    vim.cmd(
+        string.format("command! -nargs=%s %s %s %s", nargs, types, name, rhs))
+end
+
 function utils.join(value, str, sep)
     sep = sep or ","
     str = str or ""
