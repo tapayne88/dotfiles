@@ -22,6 +22,7 @@ local colors = {bg = nord_colors.nord3}
 local mode_map = {
     ['n'] = {'NORMAL', nord_colors.nord8},
     ['i'] = {'INSERT', nord_colors.nord6},
+    ['r'] = {'REPLACE', nord_colors.nord13},
     ['R'] = {'REPLACE', nord_colors.nord13},
     ['v'] = {'VISUAL', nord_colors.nord7},
     ['V'] = {'V-LINE', nord_colors.nord7},
