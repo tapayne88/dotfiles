@@ -17,23 +17,34 @@ require('telescope').setup {
     }
 }
 
-nnoremap("<leader>l",
-         "<cmd>lua require('telescope.builtin').buffers{ sort_lastused = true, show_all_buffers = true }<cr>")
-nnoremap("<leader>gf",
-         "<cmd>lua require('telescope.builtin').git_files{ use_git_root = false }<cr>")
-nnoremap("<leader>gF", "<cmd>lua require('telescope.builtin').git_files()<cr>")
+nnoremap("<leader>l", function()
+    require('telescope.builtin').buffers {
+        sort_lastused = true,
+        show_all_buffers = true
+    }
+end)
+nnoremap("<leader>gf", function()
+    require('telescope.builtin').git_files {use_git_root = false}
+end)
+nnoremap("<leader>gF", function() require('telescope.builtin').git_files() end)
 nnoremap("<leader>ff",
-         "<cmd>lua require('telescope.builtin').find_files{ hidden = true }<cr>")
-nnoremap("<leader>fb",
-         "<cmd>lua require('telescope.builtin').file_browser{ cwd = vim.fn.expand('%:p:h'), hidden = true }<cr>")
-nnoremap("<leader>fB",
-         "<cmd>lua require('telescope.builtin').file_browser{ hidden = true }<cr>")
-nnoremap("<leader>fh",
-         "<cmd>lua require('telescope.builtin').file_browser{ cwd = '~', hidden = true }<cr>")
-nnoremap("<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>")
-nnoremap("<leader>fw", "<cmd>lua require('telescope.builtin').grep_string()<cr>")
+         function() require('telescope.builtin').find_files {hidden = true} end)
+nnoremap("<leader>fb", function()
+    require('telescope.builtin').file_browser {
+        cwd = vim.fn.expand('%:p:h'),
+        hidden = true
+    }
+end)
+nnoremap("<leader>fB", function()
+    require('telescope.builtin').file_browser {hidden = true}
+end)
+nnoremap("<leader>fh", function()
+    require('telescope.builtin').file_browser {cwd = '~', hidden = true}
+end)
+nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end)
+nnoremap("<leader>fw", function() require('telescope.builtin').grep_string() end)
 nnoremap("<leader>ch",
-         "<cmd>lua require('telescope.builtin').command_history()<cr>")
+         function() require('telescope.builtin').command_history() end)
 
 highlight("TelescopeBorder", {guifg = nord_colors.nord3})
 highlight("TelescopePromptBorder", {guifg = nord_colors.nord10})
