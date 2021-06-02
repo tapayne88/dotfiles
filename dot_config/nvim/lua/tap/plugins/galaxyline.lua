@@ -67,29 +67,32 @@ local function get_theme()
     return themes.dark
 end
 
-local mode_map = {
-    ['n'] = {'NORMAL', color("blue1")},
-    ['i'] = {'INSERT', color("fg")},
-    ['r'] = {'REPLACE', color("yellow")},
-    ['R'] = {'REPLACE', color("yellow")},
-    ['v'] = {'VISUAL', color("cyan")},
-    ['V'] = {'V-LINE', color("cyan")},
-    ['c'] = {'COMMAND', color("blue1")},
-    ['s'] = {'SELECT', color("blue1")},
-    ['S'] = {'S-LINE', color("blue1")},
-    ['t'] = {'TERMINAL', color("blue1")},
-    [''] = {'V-BLOCK', color("cyan")},
-    [''] = {'S-BLOCK', color("blue1")},
-    ['Rv'] = {'VIRTUAL', color("red")},
-    ['rm'] = {'--MORE', color("red")}
-}
+local function mode_map(name)
+    local modes = {
+        ['n'] = {'NORMAL', color("blue1")},
+        ['i'] = {'INSERT', color("fg")},
+        ['r'] = {'REPLACE', color("yellow")},
+        ['R'] = {'REPLACE', color("yellow")},
+        ['v'] = {'VISUAL', color("cyan")},
+        ['V'] = {'V-LINE', color("cyan")},
+        ['c'] = {'COMMAND', color("blue1")},
+        ['s'] = {'SELECT', color("blue1")},
+        ['S'] = {'S-LINE', color("blue1")},
+        ['t'] = {'TERMINAL', color("blue1")},
+        [''] = {'V-BLOCK', color("cyan")},
+        [''] = {'S-BLOCK', color("blue1")},
+        ['Rv'] = {'VIRTUAL', color("red")},
+        ['rm'] = {'--MORE', color("red")}
+    }
+    return modes[name]
+end
 
 gl.section.left = {
     {
         ViMode = {
             provider = function()
                 local mode, mode_color = unpack(
-                                             mode_map[vim.fn.mode()] or
+                                             mode_map(vim.fn.mode()) or
                                                  {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
