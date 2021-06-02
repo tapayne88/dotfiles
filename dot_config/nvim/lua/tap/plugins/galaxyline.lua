@@ -59,14 +59,15 @@ gl.section.left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = {color("fg"), color("dark2")}
         }
     }, {
         ASpace = {
             provider = function() return " " end,
+            condition = condition.check_git_workspace,
+            highlight = {color("fg"), color("dark2")},
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("dark4")},
-            highlight = {color("fg"), color("dark2")}
+            separator_highlight = {color("dark2"), color("dark4")}
         }
     },
     {
@@ -152,18 +153,18 @@ gl.section.right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
+            highlight = {color("fg"), color("dark2")},
             separator = section_separators[2],
-            separator_highlight = {color("dark2"), color("dark4")},
-            highlight = {color("fg"), color("dark2")}
+            separator_highlight = {color("dark2"), color("dark4")}
         }
     }, {
         LineInfo = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
+            highlight = {color("fg"), color("dark2")},
             separator = component_separators[2],
-            separator_highlight = {color("fg"), color("dark2")},
-            highlight = {color("fg"), color("dark2")}
+            separator_highlight = {color("fg"), color("dark2")}
         }
     }, {
         NotASpace = {
@@ -197,14 +198,14 @@ gl.section.short_line_left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = {color("fg"), color("dark2")}
         }
     }, {
         ASpaceInactive = {
             provider = function() return " " end,
+            highlight = {color("fg"), color("dark2")},
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("dark4")},
-            highlight = {color("fg"), color("dark2")}
+            separator_highlight = {color("dark2"), color("dark4")}
         }
     }, {
         FileNameInactive = {
@@ -230,9 +231,9 @@ gl.section.short_line_right = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
+            highlight = {color("fg"), color("dark4")},
             separator = component_separators[2],
-            separator_highlight = {color("fg"), color("dark4")},
-            highlight = {color("fg"), color("dark4")}
+            separator_highlight = {color("fg"), color("dark4")}
         }
     }, {
         NotASpaceInactive = {
