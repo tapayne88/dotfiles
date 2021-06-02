@@ -39,22 +39,25 @@ augroup("ExplorerHighlights", {
     }
 })
 
+-- Patch CursorLine highlighting bug in NeoVim
+-- Messes with highlighting of current line in weird ways
+-- https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
+-- lua version
+local function CustomizeColors()
+    if vim.fn.has('gui_running') or vim.o.termguicolors or
+        vim.fn.exists('g:gonvim_running') then
+        highlight("CursorLine", {ctermfg = "white"})
+    else
+        highlight("CursorLine", {guifg = "white"})
+    end
+end
+
+augroup("OnColorScheme", {
+    {
+        events = {"ColorScheme", "BufEnter", "BufWinEnter"},
+        targets = {"*"},
+        command = CustomizeColors
+    }
+})
+
 return module
-
--- vim.cmd [[
--- " Patch CursorLine highlighting bug in NeoVim
--- " Messes with highlighting of current line in weird ways
--- " https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
--- function! s:CustomizeColors()
---     if has('gui_running') || &termguicolors || exists('g:gonvim_running')
---         hi CursorLine ctermfg=white
---     else
---         hi CursorLine guifg=white
---     endif
--- endfunction
-
--- augroup OnColorScheme
---     autocmd!
---     autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
--- augroup END
--- ]]

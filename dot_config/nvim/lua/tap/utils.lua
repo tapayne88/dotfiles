@@ -200,6 +200,12 @@ function utils.highlight(name, opts)
             if opts.guisp and opts.guisp ~= "" then
                 table.insert(cmd, "guisp=" .. opts.guisp)
             end
+            if opts.ctermfg and opts.ctermfg ~= "" then
+                table.insert(cmd, "ctermfg=" .. opts.ctermfg)
+            end
+            if opts.ctermbg and opts.ctermbg ~= "" then
+                table.insert(cmd, "ctermbg=" .. opts.ctermbg)
+            end
             if opts.cterm and opts.cterm ~= "" then
                 table.insert(cmd, "cterm=" .. opts.cterm)
             end
