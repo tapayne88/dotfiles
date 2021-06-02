@@ -16,6 +16,27 @@ local section_separators = vim.env.TERM_EMU == "kitty" and {"", ""} or
 local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
                                  {"|", "|"}
 
+local themes = {
+    dark = {
+        primary = {
+            highlight = {color("fg"), color("dark2")},
+            separator_highlight = {color("dark2"), color("dark4")},
+            sub_separator_highlight = {color("fg"), color("dark2")}
+        },
+        secondary = {
+            highlight = {color("fg"), color("dark4")},
+            sub_separator_highlight = {color("fg"), color("dark4")}
+        }
+    },
+    light = {}
+}
+
+local function get_theme()
+    if vim.g.use_light_theme then return themes.light end
+
+    return themes.dark
+end
+
 local mode_map = {
     ['n'] = {'NORMAL', color("blue1")},
     ['i'] = {'INSERT', color("white3")},
@@ -65,15 +86,14 @@ gl.section.left = {
         ASpace = {
             provider = function() return " " end,
             condition = condition.check_git_workspace,
-            highlight = {color("fg"), color("dark2")},
+            highlight = get_theme().primary.highlight,
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("dark4")}
+            separator_highlight = get_theme().primary.separator_highlight
         }
-    },
-    {
+    }, {
         FileName = {
             provider = 'FileName',
-            highlight = {color("fg"), color("dark4")}
+            highlight = get_theme().secondary.highlight
         }
     }
 }
@@ -119,7 +139,7 @@ gl.section.right = {
                 end
                 return ""
             end,
-            highlight = {color("fg"), color("dark4")}
+            highlight = get_theme().secondary.highlight
         }
     }, {
         TscVersion = {
@@ -143,7 +163,7 @@ gl.section.right = {
                 return ""
             end,
             condition = condition.hide_in_width,
-            highlight = {color("fg"), color("dark4")}
+            highlight = get_theme().secondary.highlight
         }
     }, {
         FileInfo = {
@@ -153,18 +173,18 @@ gl.section.right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {color("fg"), color("dark2")},
+            highlight = get_theme().primary.highlight,
             separator = section_separators[2],
-            separator_highlight = {color("dark2"), color("dark4")}
+            separator_highlight = get_theme().primary.separator_highlight
         }
     }, {
         LineInfo = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
-            highlight = {color("fg"), color("dark2")},
+            highlight = get_theme().primary.highlight,
             separator = component_separators[2],
-            separator_highlight = {color("fg"), color("dark2")}
+            separator_highlight = get_theme().primary.sub_separator_highlight
         }
     }, {
         NotASpace = {
@@ -198,19 +218,19 @@ gl.section.short_line_left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {color("fg"), color("dark2")}
+            highlight = get_theme().primary.highlight
         }
     }, {
         ASpaceInactive = {
             provider = function() return " " end,
-            highlight = {color("fg"), color("dark2")},
+            highlight = get_theme().primary.highlight,
             separator = section_separators[1] .. " ",
-            separator_highlight = {color("dark2"), color("dark4")}
+            separator_highlight = get_theme().primary.separator_highlight
         }
     }, {
         FileNameInactive = {
             provider = 'FileName',
-            highlight = {color("fg"), color("dark4")}
+            highlight = get_theme().secondary.highlight
         }
     }
 }
@@ -224,22 +244,22 @@ gl.section.short_line_right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {color("fg"), color("dark4")}
+            highlight = get_theme().secondary.highlight
         }
     }, {
         LineInfoInactive = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
-            highlight = {color("fg"), color("dark4")},
+            highlight = get_theme().secondary.highlight,
             separator = component_separators[2],
-            separator_highlight = {color("fg"), color("dark4")}
+            separator_highlight = get_theme().secondary.sub_separator_highlight
         }
     }, {
         NotASpaceInactive = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = {color("fg"), color("dark4")}
+            separator_highlight = get_theme().secondary.sub_separator_highlight
         }
     }, {
         PerCentInactive = {
@@ -256,7 +276,7 @@ gl.section.short_line_right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = {color("fg"), color("dark2")}
+            highlight = get_theme().primary.highlight
         }
     }
 }
