@@ -19,16 +19,46 @@ local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
 local themes = {
     dark = {
         primary = {
-            highlight = {color("fg"), color("dark2")},
-            separator_highlight = {color("dark2"), color("dark4")},
-            sub_separator_highlight = {color("fg"), color("dark2")}
+            highlight = function()
+                return {color("fg"), color("dark2")}
+            end,
+            separator_highlight = function()
+                return {color("dark2"), color("dark4")}
+            end,
+            sub_separator_highlight = function()
+                return {color("fg"), color("dark2")}
+            end
         },
         secondary = {
-            highlight = {color("fg"), color("dark4")},
-            sub_separator_highlight = {color("fg"), color("dark4")}
+            highlight = function()
+                return {color("fg"), color("dark4")}
+            end,
+            sub_separator_highlight = function()
+                return {color("fg"), color("dark4")}
+            end
         }
     },
-    light = {}
+    light = {
+        primary = {
+            highlight = function()
+                return {color("bg"), color("fg_gutter")}
+            end,
+            separator_highlight = function()
+                return {color("fg_gutter"), color("fg_dark")}
+            end,
+            sub_separator_highlight = function()
+                return {color("bg"), color("fg_gutter")}
+            end
+        },
+        secondary = {
+            highlight = function()
+                return {color("bg"), color("fg_dark")}
+            end,
+            sub_separator_highlight = function()
+                return {color("bg"), color("fg_dark")}
+            end
+        }
+    }
 }
 
 local function get_theme()
@@ -39,7 +69,7 @@ end
 
 local mode_map = {
     ['n'] = {'NORMAL', color("blue1")},
-    ['i'] = {'INSERT', color("white3")},
+    ['i'] = {'INSERT', color("fg")},
     ['r'] = {'REPLACE', color("yellow")},
     ['R'] = {'REPLACE', color("yellow")},
     ['v'] = {'VISUAL', color("cyan")},
