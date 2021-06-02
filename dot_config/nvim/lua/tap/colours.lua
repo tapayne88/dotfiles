@@ -1,6 +1,7 @@
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
+local command = require("tap.utils").command
 
 local function set_terminal_colorscheme(name)
     vim.loop.spawn('kitty', {
@@ -84,7 +85,8 @@ augroup("OnColorScheme", {
     }
 })
 
-_G.tap.toggle_color =
-    function() set_colorscheme(vim.g.use_light_theme == nil) end
+command({
+    "ToggleColor", function() set_colorscheme(vim.g.use_light_theme == nil) end
+})
 
 return module
