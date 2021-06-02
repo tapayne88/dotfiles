@@ -11,6 +11,9 @@ nnoremap('k', 'gk')
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
 
+-- search for current visual selection
+vnoremap('//', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>")
+
 nnoremap('<leader>x', ":cclose<CR>")
 nnoremap('<leader>h', ":set hlsearch!<CR>")
 nnoremap('<leader>n', ":set number!<CR>")
