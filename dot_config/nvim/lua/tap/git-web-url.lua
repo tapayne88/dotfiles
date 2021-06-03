@@ -11,8 +11,9 @@ local utils = require("tap.utils")
 local module = {}
 
 local function get_git_branch()
-    output, ret = utils.get_os_command_output(
-                      {"git", "branch", "--show-current"})
+    output, ret = utils.get_os_command_output({
+        "git", "branch", "--show-current"
+    })
 
     if ret ~= 0 then error('not git repo') end
 
@@ -20,10 +21,9 @@ local function get_git_branch()
 end
 
 local function get_git_filepath(filename)
-    output, ret = utils.get_os_command_output(
-                      {
-            "git", "rev-parse", "--show-toplevel", "--show-prefix", filename
-        })
+    output, ret = utils.get_os_command_output({
+        "git", "rev-parse", "--show-toplevel", "--show-prefix", filename
+    })
 
     if ret ~= 0 then error('not git repo') end
 
@@ -38,8 +38,9 @@ local function get_visual_selection_lines()
 end
 
 local function get_git_remote()
-    output, ret = utils.get_os_command_output(
-                      {"git", "remote", "get-url", "origin"})
+    output, ret = utils.get_os_command_output({
+        "git", "remote", "get-url", "origin"
+    })
 
     if ret ~= 0 then error("not git repo or origin remote doesn't exist") end
 
@@ -85,9 +86,9 @@ local git_provider_map = {
 }
 
 local function join(tbl)
-    table_without_empty_strings = vim.tbl_filter(
-                                      function(param) return param ~= "" end,
-                                      tbl)
+    table_without_empty_strings = vim.tbl_filter(function(param)
+        return param ~= ""
+    end, tbl)
 
     return table.concat(table_without_empty_strings, "/")
 end
