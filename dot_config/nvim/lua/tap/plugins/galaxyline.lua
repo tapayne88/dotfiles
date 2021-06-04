@@ -1,5 +1,4 @@
 local gl = require('galaxyline')
-local vcs = require('galaxyline.provider_vcs')
 local diagnostic = require('galaxyline.provider_diagnostic')
 local fileinfo = require('galaxyline.provider_fileinfo')
 local extension = require('galaxyline.provider_extensions')
@@ -59,10 +58,14 @@ gl.section.left = {
         }
     }, {
         GitBranch = {
-            provider = function()
-                return string.format(' %s ', vcs.get_git_branch())
-            end,
+            provider = 'GitBranch',
+            icon = ' ',
             condition = condition.check_git_workspace,
+            highlight = {'NONE', nord_colors.nord1}
+        }
+    }, {
+        ASpace = {
+            provider = function() return " " end,
             separator = section_separators[1] .. " ",
             separator_highlight = {nord_colors.nord1, colors.bg},
             highlight = {'NONE', nord_colors.nord1}
@@ -187,10 +190,14 @@ gl.section.right = {
 gl.section.short_line_left = {
     {
         GitBranchInactive = {
-            provider = function()
-                return string.format('   %s ', vcs.get_git_branch())
-            end,
+            provider = 'GitBranch',
+            icon = ' ',
             condition = condition.check_git_workspace,
+            highlight = {'NONE', nord_colors.nord1}
+        }
+    }, {
+        ASpaceInactive = {
+            provider = function() return " " end,
             separator = section_separators[1] .. " ",
             separator_highlight = {nord_colors.nord1, colors.bg},
             highlight = {'NONE', nord_colors.nord1}
