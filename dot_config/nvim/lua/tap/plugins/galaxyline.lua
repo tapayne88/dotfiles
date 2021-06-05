@@ -25,6 +25,9 @@ local function theme_wrapper(themes)
 end
 
 local theme = {
+    mode = {
+        highlight = theme_wrapper({dark = {color("bg")}, light = {color("fg")}})
+    },
     primary = {
         highlight = theme_wrapper({
             dark = {color("fg"), color("dark1")},
@@ -84,17 +87,20 @@ gl.section.left = {
                                                  {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
-                                            color("dark1")) or color("dark3")
+                                            theme.primary.highlight()[2]) or
+                                            theme.secondary.highlight()[2]
 
-                highlight("GalaxyViMode",
-                          {guifg = color("bg"), guibg = mode_color})
-                highlight("GalaxyViModeInv",
+                highlight("GalaxyViMode", {
+                    guifg = theme.mode.highlight()[1],
+                    guibg = mode_color
+                })
+                highlight("GalaxyViModeSep",
                           {guibg = next_section_bg, guifg = mode_color})
 
                 return string.format("  %s ", mode)
             end,
             separator = section_separators[1] .. " ",
-            separator_highlight = "GalaxyViModeInv"
+            separator_highlight = "GalaxyViModeSep"
         }
     }, {
         GitBranch = {
@@ -207,7 +213,7 @@ gl.section.right = {
         NotASpace = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = 'GalaxyViModeInv'
+            separator_highlight = 'GalaxyViModeSep'
         }
     }, {
         PerCent = {
@@ -224,7 +230,7 @@ gl.section.right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = 'GalaxyViModeInv'
+            highlight = 'GalaxyViModeSep'
         }
     }
 }
