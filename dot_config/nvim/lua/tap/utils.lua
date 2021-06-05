@@ -6,12 +6,12 @@ local utils = {}
 
 local nord_colors = {
     bg = "#2E3440", -- nord0
-    dark2 = "#3B4252", -- nord1
-    dark3 = "#434C5E", -- nord2
-    dark4 = "#4C566A", -- nord3
+    dark1 = "#3B4252", -- nord1
+    dark2 = "#434C5E", -- nord2
+    dark3 = "#4C566A", -- nord3
     fg = "#D8DEE9", -- nord4
-    white2 = "#E5E9F0", -- nord5
-    white3 = "#ECEFF4", -- nord6
+    white1 = "#E5E9F0", -- nord5
+    white2 = "#ECEFF4", -- nord6
     cyan = "#8FBCBB", -- nord7
     blue1 = "#88C0D0", -- nord8
     blue2 = "#81A1C1", -- nord9

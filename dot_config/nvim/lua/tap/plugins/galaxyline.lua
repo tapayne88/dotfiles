@@ -27,25 +27,25 @@ end
 local theme = {
     primary = {
         highlight = theme_wrapper({
-            dark = {color("fg"), color("dark2")},
+            dark = {color("fg"), color("dark1")},
             light = {color("bg"), color("fg_gutter")}
         }),
         separator_highlight = theme_wrapper({
-            dark = {color("dark2"), color("dark4")},
+            dark = {color("dark1"), color("dark3")},
             light = {color("fg_gutter"), color("fg_dark")}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {color("fg"), color("dark2")},
+            dark = {color("fg"), color("dark1")},
             light = {color("bg"), color("fg_gutter")}
         })
     },
     secondary = {
         highlight = theme_wrapper({
-            dark = {color("fg"), color("dark4")},
+            dark = {color("fg"), color("dark3")},
             light = {color("bg"), color("fg_dark")}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {color("fg"), color("dark4")},
+            dark = {color("fg"), color("dark3")},
             light = {color("bg"), color("fg_dark")}
         })
     }
@@ -80,7 +80,7 @@ gl.section.left = {
                                                  {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
-                                            color("dark2")) or color("dark4")
+                                            color("dark1")) or color("dark3")
 
                 highlight("GalaxyViMode",
                           {guifg = color("bg"), guibg = mode_color})
@@ -97,7 +97,7 @@ gl.section.left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {color("fg"), color("dark2")}
+            highlight = {color("fg"), color("dark1")}
         }
     }, {
         ASpace = {
@@ -116,25 +116,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = {lsp_colors.error, color("dark4")}
+            highlight = {lsp_colors.error, color("dark3")}
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = {lsp_colors.warning, color("dark4")}
+            highlight = {lsp_colors.warning, color("dark3")}
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = {lsp_colors.hint, color("dark4")}
+            highlight = {lsp_colors.hint, color("dark3")}
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = {lsp_colors.info, color("dark4")}
+            highlight = {lsp_colors.info, color("dark3")}
         }
     }, {
         DiagnosticOk = {
@@ -278,7 +278,7 @@ gl.section.short_line_right = {
         PerCentInactive = {
             provider = 'LinePercent',
             condition = condition.hide_in_width,
-            highlight = {color("dark2"), color("fg")}
+            highlight = {color("dark1"), color("fg")}
         }
     }, {
         ScrollBarInactive = {
