@@ -30,6 +30,10 @@ local theme = {
             dark = {color("fg"), color("dark1")},
             light = {color("bg"), color("fg_gutter")}
         }),
+        highlight_alt = theme_wrapper({
+            dark = {color("dark1"), color("fg")},
+            light = {color("fg_gutter"), color("bg")}
+        }),
         separator_highlight = theme_wrapper({
             dark = {color("dark1"), color("dark3")},
             light = {color("fg_gutter"), color("fg_dark")}
@@ -97,7 +101,7 @@ gl.section.left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {color("fg"), color("dark1")}
+            highlight = theme.primary.highlight
         }
     }, {
         ASpace = {
@@ -278,7 +282,7 @@ gl.section.short_line_right = {
         PerCentInactive = {
             provider = 'LinePercent',
             condition = condition.hide_in_width,
-            highlight = {color("dark1"), color("fg")}
+            highlight = theme.primary.highlight_alt
         }
     }, {
         ScrollBarInactive = {
