@@ -57,6 +57,10 @@ local theme = {
     }
 }
 
+local function diagnostic_color(color_name)
+    return function() return {color_name, theme.secondary.highlight()[2]} end
+end
+
 local function mode_map(name)
     local modes = {
         ['n'] = {'NORMAL', color("blue1")},
@@ -125,25 +129,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = {lsp_colors.error, color("dark3")}
+            highlight = diagnostic_color(lsp_colors.error)
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = {lsp_colors.warning, color("dark3")}
+            highlight = diagnostic_color(lsp_colors.warning)
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = {lsp_colors.hint, color("dark3")}
+            highlight = diagnostic_color(lsp_colors.hint)
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = {lsp_colors.info, color("dark3")}
+            highlight = diagnostic_color(lsp_colors.info)
         }
     }, {
         DiagnosticOk = {
