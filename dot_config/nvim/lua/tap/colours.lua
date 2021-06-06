@@ -39,9 +39,7 @@ end
 
 set_colorscheme(false)
 
-local module = {}
-
-function module.apply_user_highlights()
+local function apply_user_highlights()
     highlight('Search', {guibg = color("blue2"), guifg = color("bg")})
     highlight('IncSearch', {guibg = color("blue2"), guifg = color("bg")})
 
@@ -60,9 +58,11 @@ augroup("ExplorerHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
-        command = "lua require('tap.colours').apply_user_highlights()"
+        command = apply_user_highlights
     }
 })
+
+apply_user_highlights()
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways
@@ -88,5 +88,3 @@ augroup("OnColorScheme", {
 command({
     "ToggleColor", function() set_colorscheme(vim.g.use_light_theme == nil) end
 })
-
-return module

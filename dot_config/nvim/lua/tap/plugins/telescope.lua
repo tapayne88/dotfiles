@@ -2,6 +2,7 @@ local actions = require('telescope.actions')
 local nnoremap = require('tap.utils').nnoremap
 local highlight = require('tap.utils').highlight
 local color = require('tap.utils').color
+local augroup = require("tap.utils").augroup
 
 require('telescope').setup {
     defaults = {
@@ -53,6 +54,18 @@ nnoremap("<leader>ch",
          function() require('telescope.builtin').command_history() end,
          {name = "Command History"})
 
-highlight("TelescopeBorder", {guifg = color("dark3")})
-highlight("TelescopePromptBorder", {guifg = color("blue3")})
-highlight("TelescopeMatching", {guifg = color("yellow")})
+local function apply_user_highlights()
+    highlight("TelescopeBorder", {guifg = color("dark3")})
+    highlight("TelescopePromptBorder", {guifg = color("blue3")})
+    highlight("TelescopeMatching", {guifg = color("yellow")})
+end
+
+augroup("GitSignsHighlights", {
+    {
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = apply_user_highlights
+    }
+})
+
+apply_user_highlights()
