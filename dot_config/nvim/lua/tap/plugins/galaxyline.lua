@@ -18,42 +18,41 @@ local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
 
 local function theme_wrapper(themes)
     return function()
-        if vim.g.use_light_theme then return themes.light end
+        local color_names = (vim.g.use_light_theme and themes.light) or
+                                themes.dark
 
-        return themes.dark
+        return vim.tbl_map(color, color_names)
     end
 end
 
 local theme = {
-    mode = {
-        highlight = theme_wrapper({dark = {color("bg")}, light = {color("fg")}})
-    },
+    mode = {highlight = theme_wrapper({dark = {"bg"}, light = {"bg"}})},
     primary = {
         highlight = theme_wrapper({
-            dark = {color("fg"), color("dark1")},
-            light = {color("bg"), color("fg_gutter")}
+            dark = {"fg", "dark1"},
+            light = {"blue7", "fg_dark"}
         }),
         highlight_alt = theme_wrapper({
-            dark = {color("dark1"), color("fg")},
-            light = {color("fg_gutter"), color("bg")}
+            dark = {"dark1", "fg"},
+            light = {"fg_dark", "blue7"}
         }),
         separator_highlight = theme_wrapper({
-            dark = {color("dark1"), color("dark3")},
-            light = {color("fg_gutter"), color("fg_dark")}
+            dark = {"dark1", "dark3"},
+            light = {"fg_dark", "fg"}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {color("fg"), color("dark1")},
-            light = {color("bg"), color("fg_gutter")}
+            dark = {"fg", "dark1"},
+            light = {"blue7", "fg_dark"}
         })
     },
     secondary = {
         highlight = theme_wrapper({
-            dark = {color("fg"), color("dark3")},
-            light = {color("bg"), color("fg_dark")}
+            dark = {"fg", "dark3"},
+            light = {"blue7", "fg"}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {color("fg"), color("dark3")},
-            light = {color("bg"), color("fg_dark")}
+            dark = {"fg", "dark3"},
+            light = {"blue7", "fg"}
         })
     }
 }
