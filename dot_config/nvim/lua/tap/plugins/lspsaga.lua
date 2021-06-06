@@ -14,13 +14,13 @@ local apply_user_highlights = function()
                     {link = 'LspSagaDefPreviewBorder'})
 
     utils.highlight("LspDiagnosticsFloatingError",
-                    {guifg = utils.lsp_colors["error"]})
+                    {guifg = utils.lsp_colors("error")})
     utils.highlight("LspDiagnosticsFloatingWarning",
-                    {guifg = utils.lsp_colors["warning"]})
+                    {guifg = utils.lsp_colors("warning")})
     utils.highlight("LspDiagnosticsFloatingInfor",
-                    {guifg = utils.lsp_colors["info"]})
+                    {guifg = utils.lsp_colors("info")})
     utils.highlight("LspDiagnosticsFloatingHint",
-                    {guifg = utils.lsp_colors["hint"]})
+                    {guifg = utils.lsp_colors("hint")})
 end
 
 module.init = function()

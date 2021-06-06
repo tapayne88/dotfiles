@@ -58,7 +58,9 @@ local theme = {
 }
 
 local function diagnostic_color(color_name)
-    return function() return {color_name, theme.secondary.highlight()[2]} end
+    return function()
+        return {lsp_colors(color_name), theme.secondary.highlight()[2]}
+    end
 end
 
 local function mode_map(name)
@@ -129,25 +131,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = diagnostic_color(lsp_colors.error)
+            highlight = diagnostic_color("error")
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = diagnostic_color(lsp_colors.warning)
+            highlight = diagnostic_color("warning")
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = diagnostic_color(lsp_colors.hint)
+            highlight = diagnostic_color("hint")
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = diagnostic_color(lsp_colors.info)
+            highlight = diagnostic_color("info")
         }
     }, {
         DiagnosticOk = {

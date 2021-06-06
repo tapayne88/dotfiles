@@ -41,12 +41,15 @@ utils.lsp_symbols = {
     ok = " "
 }
 
-utils.lsp_colors = {
-    error = utils.color("red"),
-    warning = utils.color("yellow"),
-    info = utils.color("fg"),
-    hint = utils.color("blue3")
-}
+utils.lsp_colors = function(type)
+    local color_map = {
+        error = utils.color("red"),
+        warning = utils.color("yellow"),
+        info = utils.color("fg"),
+        hint = utils.color("blue3")
+    }
+    return color_map[type]
+end
 
 function utils.get_os_command_output_async(cmd, fn, cwd)
     if type(cmd) ~= "table" then

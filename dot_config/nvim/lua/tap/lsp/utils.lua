@@ -33,31 +33,31 @@ function module.on_attach(client, bufnr)
     utils.highlight("LspDiagnosticsUnderlineError", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["error"]
+        guisp = utils.lsp_colors("error")
     })
     utils.highlight("LspDiagnosticsUnderlineWarning", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["warning"]
+        guisp = utils.lsp_colors("warning")
     })
     utils.highlight("LspDiagnosticsUnderlineInformation", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["info"]
+        guisp = utils.lsp_colors("info")
     })
     utils.highlight("LspDiagnosticsUnderlineHint", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["hint"]
+        guisp = utils.lsp_colors("hint")
     })
 
     utils.highlight("LspDiagnosticsSignError",
-                    {guifg = utils.lsp_colors["error"]})
+                    {guifg = utils.lsp_colors("error")})
     utils.highlight("LspDiagnosticsSignWarning",
-                    {guifg = utils.lsp_colors["warning"]})
+                    {guifg = utils.lsp_colors("warning")})
     utils.highlight("LspDiagnosticsSignInformation",
-                    {guifg = utils.lsp_colors["info"]})
-    utils.highlight("LspDiagnosticsSignHint", {guifg = utils.lsp_colors["hint"]})
+                    {guifg = utils.lsp_colors("info")})
+    utils.highlight("LspDiagnosticsSignHint", {guifg = utils.lsp_colors("hint")})
 
     vim.fn.sign_define("LspDiagnosticsSignError", {
         text = utils.lsp_symbols["error"],
