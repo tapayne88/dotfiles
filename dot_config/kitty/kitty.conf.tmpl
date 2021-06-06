@@ -13,8 +13,6 @@ linux_display_server x11
 # Colors #
 ##########
 include colors/nord.conf
-allow_remote_control yes
-listen_on unix:/tmp/mykitty
 
 #########
 # Fonts #
@@ -25,6 +23,8 @@ font_size   {{ .terminal_font_size }}
 #############
 # Behaviour #
 #############
+allow_remote_control                yes
+listen_on 			    unix:/tmp/mykitty
 cursor_text_color                   background
 cursor_blink_interval               0
 disable_ligatures                   cursor
