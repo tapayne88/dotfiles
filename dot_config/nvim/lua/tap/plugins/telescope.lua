@@ -20,7 +20,8 @@ require('telescope').setup {
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
         sort_lastused = true,
-        show_all_buffers = true
+        show_all_buffers = true,
+        selection_strategy = "closest"
     }
 end)
 nnoremap("<leader>gf", function()
