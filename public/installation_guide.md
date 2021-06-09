@@ -40,8 +40,8 @@ Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
 
 ```console
 ❯ nix-channel --list
-home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
-nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
+home-manager https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz
+nixpkgs https://nixos.org/channels/nixpkgs-21.05-darwin
 nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
 
@@ -51,9 +51,9 @@ Note, nix on crostini needs the nixgl channel so `nixGL` can be installed. This 
 
 ```console
 ❯ nix-channel  --list
-home-manager https://github.com/nix-community/home-manager/archive/release-20.09.tar.gz
+home-manager https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz
 nixgl https://github.com/guibou/nixGL/archive/master.tar.gz
-nixpkgs https://nixos.org/channels/nixos-20.09
+nixpkgs https://nixos.org/channels/nixos-21.05
 nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
 
