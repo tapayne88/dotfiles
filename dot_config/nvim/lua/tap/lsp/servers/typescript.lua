@@ -74,43 +74,29 @@ local module = {}
 local server_name = "typescript"
 local lspconfig_name = "tsserver"
 
-function module.patch_install()
-    local config = require"lspinstall/util".extract_config(lspconfig_name)
-    config.default_config.cmd[1] =
-        "./node_modules/.bin/typescript-language-server"
-
-    require'lspinstall/servers'[server_name] =
-        vim.tbl_extend('error', config, {
-            install_script = [=[
-    ! test -f package.json && npm init -y --scope=lspinstall || true
-    npm install typescript-language-server@latest
-    ]=]
-        })
-end
-
 function module.setup()
-    get_tsserver_exec(function(tsserver_bin)
-        if (tsserver_bin == nil) then return end
+    -- Grab patched command following require('lspinstall').setup {}
+    local config = require'lspconfig/configs'.typescript.document_config
 
-        -- Grab patched command following require('lspinstall').setup {}
-        local config = require'lspconfig/configs'.typescript.document_config
+    lsp_utils.lspconfig_server_setup(server_name, {
+        handlers = {
+            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
+                "[" .. server_name .. "] ")
+        },
+        cmd = vim.tbl_flatten({
+            config.default_config.cmd,
+            {
+                "--tsserver-log-file",
+                vim.env.XDG_CACHE_HOME .. "/nvim/tsserver.log"
+            }, {"--tsserver-log-verbosity", "verbose"}
+        }),
+        on_attach = function(client, bufnr)
+            set_tsc_version(client.id)
 
-        lsp_utils.lspconfig_server_setup(server_name, {
-            handlers = {
-                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                    "[" .. server_name .. "] ")
-            },
-            cmd = vim.tbl_flatten({
-                config.default_config.cmd, {"--tsserver-path", tsserver_bin}
-            }),
-            on_attach = function(client, bufnr)
-                set_tsc_version(client.id)
-
-                client.resolved_capabilities.document_formatting = false
-                lsp_utils.on_attach(client, bufnr)
-            end
-        })
-    end)
+            client.resolved_capabilities.document_formatting = false
+            lsp_utils.on_attach(client, bufnr)
+        end
+    })
 end
 
 return module
