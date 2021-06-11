@@ -3,6 +3,10 @@ function nix-update() {
   nix-channel --update
   nix-env -u
   home-manager switch
+
+  # bug with nix neovim config writes init.vim which conflicts with my init.lua
+  # https://github.com/nix-community/home-manager/issues/1907
+  rm -rf $XDG_CONFIG_HOME/nvim/init.vim
 }
 
 function nix-clean() {
