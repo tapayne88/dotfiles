@@ -117,7 +117,7 @@ I've found in the past if neovim has to resolve the neovim npm module it can mea
 
 I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
 
-```vimscript
+```vim
 let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
 ```
 
