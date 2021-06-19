@@ -3,7 +3,7 @@ local utils = require("tap.utils")
 
 local module = {}
 
-module.apply_user_highlights = function()
+local apply_user_highlights = function()
     utils.highlight('LspSagaDiagnosticBorder',
                     {link = 'LspSagaDefPreviewBorder'})
     utils.highlight('LspSagaDiagnosticHeader',
@@ -24,7 +24,7 @@ module.apply_user_highlights = function()
 end
 
 module.init = function()
-    module.apply_user_highlights()
+    apply_user_highlights()
 
     saga.init_lsp_saga({
         error_sign = utils.lsp_symbols["error"],
@@ -46,6 +46,8 @@ module.on_attach = function()
         }
     })
 
+    utils.nnoremap("<leader>cc",
+                   "<cmd>lua require'lspsaga.diagnostic'.show_cursor_diagnostics()<CR>")
     utils.inoremap("<c-l>",
                    "<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>")
 
@@ -55,7 +57,7 @@ utils.augroup("LspSagaHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
-        command = "lua require('tap.plugins.lspsaga').apply_user_highlights()"
+        command = apply_user_highlights
     }
 })
 
