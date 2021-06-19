@@ -6,9 +6,9 @@ command({
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
 })
 
-lspsaga.init()
-
 local servers = {"typescript", "diagnosticls", "lua", "json"}
+
+local function init_plugins() lspsaga.init() end
 
 local function init_servers()
     for _, server_name in pairs(servers) do
@@ -18,13 +18,17 @@ local function init_servers()
     end
 end
 
-local function setup_servers()
+local function setup_servers(initialise)
     require'lspinstall'.setup()
     local installed_servers = require'lspinstall'.installed_servers()
+
+    -- if we have servers, init dependencies
+    if #installed_servers > 0 then initialise() end
+
     for _, server_name in pairs(installed_servers) do
         require("tap.lsp.servers." .. server_name).setup {}
     end
 end
 
 init_servers()
-setup_servers()
+setup_servers(init_plugins)
