@@ -21,7 +21,6 @@ local server_name = "typescript"
 local lspconfig_name = "tsserver"
 
 function module.setup()
-    -- Grab patched command following require('lspinstall').setup {}
     local config = require'lspconfig/configs'.typescript.document_config
 
     lsp_utils.lspconfig_server_setup(server_name, {
