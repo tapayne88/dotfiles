@@ -39,6 +39,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-sleuth'                              -- Detect indentation
     use 'christoomey/vim-tmux-navigator'                -- Seemless vim <-> tmux navigation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
+    use 'lbrayner/vim-rzip'                             -- support yarn PnP file using zipfile: URI scheme
     -- LuaFormatter on
 
     -- even better % navigation
