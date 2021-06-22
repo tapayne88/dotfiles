@@ -67,7 +67,7 @@ ssh-keygen -C `hostname`
 
 ## 4. Install dotfiles
 
-See [readme](./README.md#installation) for installation guide.
+See [readme](../README.md#installation) for installation guide.
 
 ## 5. Setup shell
 
