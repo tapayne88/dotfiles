@@ -66,9 +66,6 @@ echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
 mkdir -p $NIX_HOME_DIR
 echo "$NIX_HOME_BOOTSTRAP" > $NIX_HOME_FILE
 
-echo "Installing tmux plugin manager"
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 echo ""
 echo "Next stps:"
 
