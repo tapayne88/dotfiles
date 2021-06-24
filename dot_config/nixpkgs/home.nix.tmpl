@@ -2,7 +2,7 @@
 
 let
   unstable = import <nixpkgs-unstable> { config = pkgs.config; };
-  nixgl = import <nixgl> {};
+  nixgl = import <nixgl> { pkgs = unstable; };
 
   {{- if ne "macOS" .ostype }}
   unixPkgs = with pkgs; [
@@ -26,6 +26,7 @@ let
   crostiniPkgs = with pkgs; [
     alacritty        	     # alacritty terminal
     kitty           	     # kitty terminal
+    glxinfo                  # utility for inspect openGL config
     nixgl.nixGLDefault       # OpenGL wrapper for nix programs
   ];
   {{- else }}
