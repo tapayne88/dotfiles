@@ -34,8 +34,8 @@ I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage 
 
 | Terminal                                                  | Tested OS                                                               | Managed config | Notes                                                                                                                                                            |
 | --------------------------------------------------------- | ----------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Alacritty](https://github.com/alacritty/alacritty)       | <ul><li>MacOS</li><li>Chrome OS</li><li>Linux</li><li>Windows</li></ul> | Yes            | <ul><li>GPU accelerated</li><li>Very slim feature set (needs tmux)</li><li>Doesn't support ligatures</li><li>Doesn't support powerline fonts very well</li></ul> |
 | [Kitty](https://sw.kovidgoyal.net/kitty/)                 | <ul><li>MacOS</li><li>Chrome OS</li></ul>                               | Yes            | <ul><li>GPU accelerated</li><li>Supports ligatures</li><li>Supports powerline fonts well</li></ul>                                                               |
+| [Alacritty](https://github.com/alacritty/alacritty)       | <ul><li>MacOS</li><li>Chrome OS</li><li>Linux</li><li>Windows</li></ul> | Yes            | <ul><li>GPU accelerated</li><li>Very slim feature set (needs tmux)</li><li>Doesn't support ligatures</li><li>Doesn't support powerline fonts very well</li></ul> |
 | [Windows Terminal](https://github.com/microsoft/terminal) | <ul><li>Windows</li></ul>                                               | No             | <ul><li>Works well on windows</li></ul>                                                                                                                          |
 
 ## Colour scheme
@@ -57,14 +57,11 @@ To get ligature/italic font support there are a number of steps. You'll want to 
 
 ### Linux
 
-- Ensure `chezmoi` has applied the fonts to `~/.local/share/fonts`
-- Force the font cache to reload
-
 ```shell
 sudo fc-cache -f -v
 ```
 
-- Configure new terminfo to ensure correct escape characters are used
+- Ensure `chezmoi` has applied the fonts to `~/.local/share/fonts`
 
 ### MacOS
 
@@ -108,28 +105,3 @@ Include ~/git/dotfiles/misc/ssh_config
 | [xdg-open-wsl](https://github.com/cpbotha/xdg-open-wsl) | Make things like vim's `MarkdownPreview` work                                        |
 | [sharpkeys](https://github.com/randyrants/sharpkeys)    | Remap individual keys - useful for HHKB on windows without messing with dip switches |
 | [PowerToys](https://github.com/microsoft/PowerToys)     | Nice tools, good for keyboard chord remapping                                        |
-
-## Troubleshooting
-
-### CoC Slow
-
-I've found in the past if neovim has to resolve the neovim npm module it can mean some plugins are slow. I noticed this with CoC being slow to show and move between options in the autocomplete menu. To fix this you can set the `node_host_prog` manually to point to the correct location (may differ per host).
-
-I've configured neovim to look for a `~/.vimrc.local` file and load it if found. To fix the above problem it should look something like
-
-```vim
-let g:node_host_prog = '/home/linuxbrew/.linuxbrew/lib/node_modules/neovim'
-```
-
-A good way to get the path to the `neovim` module is using the following. Ensure you have your system `npm` active when running.
-
-```bash
-npm config get prefix
-```
-
-It should return something like below, simply add `lib/node_modules/neovim`
-
-```bash
-❯ ~ npm config get prefix
-/nix/store/vbbqhpb47jlz6acgb698hgf75i53scm2-nodejs-12.18.0
-```

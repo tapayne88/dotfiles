@@ -78,12 +78,3 @@ sudo passwd `whoami`
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
 ```
-
-## 6. Setup terminfo
-
-Dotfiles includes tmux terminfo which needs installing. Likely want to `sudo tic` the terminfo so they are accessible to all system users (like root).
-
-```shell
-sudo tic terminfo/tmux.terminfo
-sudo tic terminfo/tmux-256color.terminfo
-```
