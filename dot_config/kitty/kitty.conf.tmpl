@@ -2,6 +2,12 @@
 # env #
 #######
 env TERM_EMU=kitty
+{{- if eq "crostini" .ostype }}
+# Force crostini to use x11 as 'auto' uses 'wayland' which seemingly isn't supported
+# by crostini's compositor (sommelier). Using wayland we get the following error
+# [glfw error 65544]: Wayland: Failed to find xdg-shell in your compositor
+linux_display_server x11
+{{- end }}
 
 ##########
 # Colors #
