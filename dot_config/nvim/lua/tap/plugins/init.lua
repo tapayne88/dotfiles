@@ -37,10 +37,26 @@ return require('packer').startup(function(use)
     use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
     use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
     use 'tpope/vim-sleuth'                              -- Detect indentation
-    use 'christoomey/vim-tmux-navigator'                -- Seemless vim <-> tmux navigation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'lbrayner/vim-rzip'                             -- support yarn PnP file using zipfile: URI scheme
     -- LuaFormatter on
+
+    -- Seemless vim <-> tmux navigation
+    use {
+        'aserowy/tmux.nvim',
+        config = function()
+            require("tmux").setup({
+                navigation = {
+                    -- cycles to opposite pane while navigating into the border
+                    cycle_navigation = false,
+                    -- enables default keybindings (C-hjkl) for normal mode
+                    enable_default_keybindings = true,
+                    -- prevents unzoom tmux when navigating beyond vim border
+                    persist_zoom = true
+                }
+            })
+        end
+    }
 
     -- even better % navigation
     use {
