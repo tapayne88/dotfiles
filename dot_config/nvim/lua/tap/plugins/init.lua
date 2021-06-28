@@ -174,43 +174,43 @@ return require('packer').startup(function(use)
             }
             vim.g.dashboard_custom_footer = {''}
             vim.g.dashboard_custom_section = {
-                old_files = {
-                    position = 1,
+                row1 = {
                     description = {
                         '  Recent files                                      '
                     },
                     command = 'Telescope oldfiles'
                 },
-                git_files = {
-                    position = 2,
+                row2 = {
                     description = {
                         '  Git file                                <leader>gf'
                     },
                     command = 'norm ,gf'
                 },
-                find_files = {
-                    position = 3,
+                row3 = {
                     description = {
                         '  Find file                               <leader>ff'
                     },
                     command = 'norm ,ff'
                 },
-                new_file = {
-                    position = 4,
+                row4 = {
                     description = {
                         '  New file                                          '
                     },
                     command = 'enew'
                 },
-                find_word = {
-                    position = 5,
+                row5 = {
+                    description = {
+                        '  File browser                            <leader>fb'
+                    },
+                    command = 'norm ,fb'
+                },
+                row6 = {
                     description = {
                         '  Find word                               <leader>fg'
                     },
                     command = 'norm ,fg'
                 },
-                book_marks = {
-                    position = 6,
+                row7 = {
                     description = {
                         '  Jump to bookmarks                                 '
                     },
