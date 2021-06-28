@@ -23,29 +23,35 @@ nnoremap("<leader>l", function()
         show_all_buffers = true,
         selection_strategy = "closest"
     }
-end)
+end, {name = "List buffers"})
 nnoremap("<leader>gf", function()
     require('telescope.builtin').git_files {use_git_root = false}
-end)
-nnoremap("<leader>gF", function() require('telescope.builtin').git_files() end)
-nnoremap("<leader>ff",
-         function() require('telescope.builtin').find_files {hidden = true} end)
+end, {name = "Relative git file"})
+nnoremap("<leader>gF", function() require('telescope.builtin').git_files() end,
+         {name = "All git files"})
+nnoremap("<leader>ff", function()
+    require('telescope.builtin').find_files {hidden = true}
+end, {name = "Find File"})
 nnoremap("<leader>fb", function()
     require('telescope.builtin').file_browser {
         cwd = vim.fn.expand('%:p:h'),
         hidden = true
     }
-end)
+end, {name = "Relative File Browser"})
 nnoremap("<leader>fB", function()
     require('telescope.builtin').file_browser {hidden = true}
-end)
+end, {name = "CWD File Browser"})
 nnoremap("<leader>fh", function()
     require('telescope.builtin').file_browser {cwd = '~', hidden = true}
-end)
-nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end)
-nnoremap("<leader>fw", function() require('telescope.builtin').grep_string() end)
+end, {name = "Home Files"})
+nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end,
+         {name = "Live Grep"})
+nnoremap("<leader>fw",
+         function() require('telescope.builtin').grep_string() end,
+         {name = "Find Word"})
 nnoremap("<leader>ch",
-         function() require('telescope.builtin').command_history() end)
+         function() require('telescope.builtin').command_history() end,
+         {name = "Command History"})
 
 highlight("TelescopeBorder", {guifg = nord_colors.nord3})
 highlight("TelescopePromptBorder", {guifg = nord_colors.nord10})

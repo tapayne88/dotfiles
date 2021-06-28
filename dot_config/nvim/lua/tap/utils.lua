@@ -1,5 +1,6 @@
 local api = vim.api
 local Job = require('plenary.job')
+local wk = require("which-key")
 
 local utils = {}
 
@@ -133,6 +134,18 @@ local function make_mapper(mode, o)
         else
             -- don't pass this invalid key to set keymap
             _opts.check_existing = nil
+        end
+
+        if _opts.name ~= nil then
+            local wk_opts = {
+                rhs,
+                _opts.name,
+                mode = mode,
+                noremap = _opts.noremap,
+                silent = _opts.silent,
+                buffer = _opts.bufnr
+            }
+            return wk.register({[lhs] = wk_opts})
         end
 
         -- add functions to a global table keyed by their index
