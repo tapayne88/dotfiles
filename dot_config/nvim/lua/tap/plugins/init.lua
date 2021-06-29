@@ -26,10 +26,7 @@ return require('packer').startup(function(use)
     use {'alker0/chezmoi.vim', opt = true}
 
     -- LuaFormatter off
-    use {
-        'tapayne88/nvcode-color-schemes.vim',
-        branch = 'fix-nord-ts-text-et-al'
-    } -- treesitter colorscheme
+    use 'ChristianChiarulli/nvcode-color-schemes.vim'   -- treesitter colorscheme
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
     use 'tpope/vim-commentary'                          -- Adds 'gc' & 'gcc' commands for commenting lines
