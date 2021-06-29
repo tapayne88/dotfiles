@@ -96,14 +96,6 @@ bind '_' split-window -v -c "#{pane_current_path}"
 # Reset pane sizes to current layout
 bind '=' select-layout
 
-{{- if eq "macOS" .ostype }}
-################################### WARNING ###################################
-# Due to something super strange happening on my MBP the Ctrl-h, Ctrl-j, etc. 
-# bindings for swapping panes no longer work. This seems to be down to the ps
-# command or resolving the tty inside the tmux pane. It causes the terminal to
-# lock up and require a forced shutdown
-###############################################################################
-{{- else }}
 # Smart pane switching with awareness of Vim splits.
 # See: https://github.com/christoomey/vim-tmux-navigator
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
@@ -127,7 +119,6 @@ bind-key -T copy-mode-vi 'C-h' if -F '#{pane_at_left}' '' 'select-pane -L'
 bind-key -T copy-mode-vi 'C-j' if -F '#{pane_at_bottom}' '' 'select-pane -D'
 bind-key -T copy-mode-vi 'C-k' if -F '#{pane_at_top}' '' 'select-pane -U'
 bind-key -T copy-mode-vi 'C-l' if -F '#{pane_at_right}' '' 'select-pane -R'
-{{- end }}
 
 # Provide way to clear terminal (since Ctrl-l is taken)
 bind -n C-M-l run "tmux send-keys C-l"
