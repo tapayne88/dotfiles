@@ -36,10 +36,8 @@ module.init = function()
     })
 end
 
-module.on_attach = function(_, bufnr)
-    -- use bufnr in group name to avoid each new attach wiping previous
-    -- group keeping it to 1 augroup per buffer
-    utils.augroup("LspSagaCursor" .. bufnr, {
+module.on_attach = function()
+    utils.augroup("LspSagaCursor", {
         {
             events = {"CursorHold"},
             targets = {"<buffer>"},

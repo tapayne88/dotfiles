@@ -227,10 +227,28 @@ function utils.highlight(name, opts)
     end
 end
 
--- Ditto above
+-- try to figure out if the commands are <buffer> targets so we can clear the
+-- group appropraitely
+local function has_buffer_target(commands)
+    return #vim.tbl_filter(function(item)
+        return #vim.tbl_filter(function(target)
+            -- Only supports <buffer>, more complicated for things like
+            -- <buffer=N>
+            return target == "<buffer>"
+        end, item.targets or {}) > 0
+    end, commands) > 0
+end
+
 function utils.augroup(name, commands)
     vim.cmd("augroup " .. name)
-    vim.cmd("autocmd!")
+
+    -- Clear autogroup appropraitely for <buffer> targets
+    if has_buffer_target(commands) then
+        vim.cmd("autocmd! * <buffer>")
+    else
+        vim.cmd("autocmd!")
+    end
+
     for _, c in ipairs(commands) do
         local command = c.command
         if type(command) == "function" then
