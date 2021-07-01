@@ -8,7 +8,11 @@ function module.setup()
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[jsonls] ")
         },
-        on_attach = lsp_utils.on_attach
+        on_attach = function(client, bufnr)
+            -- Prevent document_formatting, that's diagnosticls' job
+            client.resolved_capabilities.document_formatting = false
+            lsp_utils.on_attach(client, bufnr)
+        end
     })
 end
 
