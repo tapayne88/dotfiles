@@ -104,12 +104,14 @@ function module.on_attach(client, bufnr)
 
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
-        vim.api.nvim_exec([[
-      augroup lsp_formatting
-        autocmd! * <buffer>
-        autocmd BufWritePre <buffer> lua require'tap.lsp.utils'.format()
-      augroup END
-    ]], false)
+        utils.augroup("LspFormatting", {
+            {
+                events = {"BufWritePre"},
+                targets = {"<buffer>"},
+                command = "lua require'tap.lsp.utils'.format()"
+
+            }
+        })
 
         nnoremap("<leader>tf", toggle_format, opts)
         nnoremap("<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
