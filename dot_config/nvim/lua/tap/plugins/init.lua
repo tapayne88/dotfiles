@@ -122,8 +122,7 @@ return require('packer').startup(function(use)
     }
     -- whizzy command-p launcher
     use {
-        'tapayne88/telescope.nvim',
-        branch = 'feature/selection-strategy-closest',
+        'nvim-telescope/telescope.nvim',
         config = [[require("tap.plugins.telescope")]],
         requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}
     }
