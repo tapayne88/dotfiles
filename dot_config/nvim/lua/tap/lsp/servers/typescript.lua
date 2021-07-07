@@ -52,6 +52,7 @@ function module.setup()
     local config = require'lspconfig/configs'.typescript.document_config
 
     lsp_utils.lspconfig_server_setup(server_name, {
+        init_options = {hostInfo = "neovim", logVerbosity = "verbose"},
         handlers = {
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[" .. server_name .. "] "),
