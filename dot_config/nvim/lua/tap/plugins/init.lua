@@ -53,9 +53,6 @@ return require('packer').startup(function(use)
 
                 autocmd zip BufReadCmd zipfile:*,zipfile:*/* call rzip#Read(ParseURI(expand('<amatch>')), 1)
                 exe "au zip BufReadCmd ".g:zipPlugin_ext." call rzip#Browse(ParseURI(expand('<amatch>')))"
-
-"                autocmd zip BufEnter zipfile:*,zipfile:*/* call rzip#Read(ParseURI(expand('<amatch>')), 1)
-"                exe "au zip BufEnter ".g:zipPlugin_ext." call rzip#Browse(ParseURI(expand('<amatch>')))"
             endfunction
 
             autocmd VimEnter * call RzipOverride()
