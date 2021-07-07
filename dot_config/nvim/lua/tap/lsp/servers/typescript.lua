@@ -1,5 +1,9 @@
 local lsp_utils = require('tap.lsp.utils')
 
+local log = require 'vim.lsp.log'
+local util = require 'vim.lsp.util'
+local api = vim.api
+
 local set_tsc_version = function(client_id, version)
     if vim.g.tsc_version == nil then vim.g.tsc_version = {} end
 
@@ -20,6 +24,30 @@ local module = {}
 local server_name = "typescript"
 local lspconfig_name = "tsserver"
 
+local function location_handler(_, method, result)
+    if result == nil or vim.tbl_isempty(result) then
+        local _ = log.info() and log.info(method, 'No location found')
+        return nil
+    end
+
+    -- textDocument/definition can return Location or Location[]
+    -- https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition
+
+    print(vim.inspect(result))
+
+    if vim.tbl_islist(result) then
+        util.jump_to_location(result[1])
+
+        if #result > 1 then
+            util.set_qflist(util.locations_to_items(result))
+            api.nvim_command("copen")
+            api.nvim_command("wincmd p")
+        end
+    else
+        util.jump_to_location(result)
+    end
+end
+
 function module.setup()
     local config = require'lspconfig/configs'.typescript.document_config
 
@@ -27,6 +55,15 @@ function module.setup()
         handlers = {
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[" .. server_name .. "] "),
+            ["textDocument/definition"] = function(_, method, result)
+                local patched_paths = vim.tbl_map(function(entry)
+                    local uri = entry.uri:gsub("%%3A%%3A", "::"):gsub("%%40",
+                                                                      "@")
+
+                    return vim.tbl_extend("force", entry, {uri = uri})
+                end, result)
+                location_handler(_, method, result)
+            end,
             ["window/logMessage"] = function(_, _, result, client_id)
                 local msg = result.message:match(
                                 "%[tsclient%] processMessage (.*)")
