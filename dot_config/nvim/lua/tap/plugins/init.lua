@@ -35,8 +35,33 @@ return require('packer').startup(function(use)
     use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
     use 'tpope/vim-sleuth'                              -- Detect indentation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
-    use 'lbrayner/vim-rzip'                             -- support yarn PnP file using zipfile: URI scheme
     -- LuaFormatter on
+
+    -- support yarn PnP file using zipfile: URI scheme
+    use {
+        'lbrayner/vim-rzip',
+        config = function()
+            vim.cmd [[
+            function! ParseURI(uri)
+                return substitute(a:uri, '%\([a-fA-F0-9][a-fA-F0-9]\)', '\=nr2char("0x" . submatch(1))', "g")
+            endfunction
+
+            function! RzipOverride()
+                echom "overriding"
+                autocmd! zip BufReadCmd zipfile:*,zipfile:*/*
+                exe "au! zip BufReadCmd ".g:zipPlugin_ext
+
+                autocmd zip BufReadCmd zipfile:*,zipfile:*/* call rzip#Read(ParseURI(expand('<amatch>')), 1)
+                exe "au zip BufReadCmd ".g:zipPlugin_ext." call rzip#Browse(ParseURI(expand('<amatch>')))"
+
+"                autocmd zip BufEnter zipfile:*,zipfile:*/* call rzip#Read(ParseURI(expand('<amatch>')), 1)
+"                exe "au zip BufEnter ".g:zipPlugin_ext." call rzip#Browse(ParseURI(expand('<amatch>')))"
+            endfunction
+
+            autocmd VimEnter * call RzipOverride()
+            ]]
+        end
+    }
 
     -- Seemless vim <-> tmux navigation
     use {
