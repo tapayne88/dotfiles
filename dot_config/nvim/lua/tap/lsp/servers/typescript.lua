@@ -85,7 +85,9 @@ function module.setup()
             end
         },
         cmd = vim.tbl_flatten({
-            config.default_config.cmd,
+            vim.env.HOME ..
+                "/git/github.com/typescript-language-server/server/lib/cli.js",
+            {"--stdio"},
             -- need verbose log level to get telemetry window/logMessage messages (needed above)
             {"--log-level", "4"},
             {
