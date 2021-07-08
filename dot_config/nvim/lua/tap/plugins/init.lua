@@ -47,10 +47,10 @@ return require('packer').startup(function(use)
             endfunction
 
             function! RzipOverride()
-                echom "overriding"
                 autocmd! zip BufReadCmd zipfile:*,zipfile:*/*
                 exe "au! zip BufReadCmd ".g:zipPlugin_ext
 
+                autocmd zip BufReadCmd zipfile:*,zipfile:*/* exe "keepalt file " . fnameescape(ParseURI(expand('<amatch>')))
                 autocmd zip BufReadCmd zipfile:*,zipfile:*/* call rzip#Read(ParseURI(expand('<amatch>')), 1)
                 exe "au zip BufReadCmd ".g:zipPlugin_ext." call rzip#Browse(ParseURI(expand('<amatch>')))"
             endfunction
