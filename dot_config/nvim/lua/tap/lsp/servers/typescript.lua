@@ -2,7 +2,6 @@ local lsp_utils = require('tap.lsp.utils')
 
 local log = require 'vim.lsp.log'
 local util = require 'vim.lsp.util'
-local uri = require 'vim.uri'
 local api = vim.api
 local uv = vim.loop
 
@@ -45,7 +44,7 @@ end
 -- @param uri (string): The URI
 -- @return bufnr.
 -- @note Creates buffer but does not load it
-local function uri_to_bufnr(uri)
+local uri_to_bufnr = with_logger("uri_to_bufnr", function(uri)
     local scheme = assert(uri:match('^([a-zA-Z]+[a-zA-Z0-9+-.]*):.*'),
                           'URI must contain a scheme: ' .. uri)
     if scheme == 'file' then
@@ -53,7 +52,7 @@ local function uri_to_bufnr(uri)
     else
         return vim.fn.bufadd(uri)
     end
-end
+end)
 
 -- @private
 local function sort_by_key(fn)
@@ -76,7 +75,7 @@ end)
 -- @param uri string uri of the resource to get the lines from
 -- @param rows number[] zero-indexed line numbers
 -- @return table<number string> a table mapping rows to lines
-local function get_lines(uri, rows)
+local get_lines = with_logger("get_lines", function(uri, rows)
     rows = type(rows) == "table" and rows or {rows}
 
     local function buf_lines(bufnr)
@@ -133,14 +132,14 @@ local function get_lines(uri, rows)
     -- change any lines we didn't find to the empty string
     for i, line in pairs(lines) do if line == true then lines[i] = "" end end
     return lines
-end
+end)
 
 --- Returns the items with the byte position calculated correctly and in sorted
 --- order, for display in quickfix and location lists.
 ---
 -- @param locations (table) list of `Location`s or `LocationLink`s
 -- @returns (table) list of items
-local function locations_to_items(locations)
+local locations_to_items = with_logger("locations_to_items", function(locations)
     local items = {}
     local grouped = setmetatable({}, {
         __index = function(t, k)
@@ -189,13 +188,13 @@ local function locations_to_items(locations)
         end
     end
     return items
-end
+end)
 
 --- Jumps to a location.
 ---
 -- @param location (`Location`|`LocationLink`)
 -- @returns `true` if the jump succeeded
-local function jump_to_location(location)
+local jump_to_location = with_logger("jump_to_location", function(location)
     -- location may be Location or LocationLink
     local uri = location.uri or location.targetUri
     if uri == nil then return end
@@ -216,7 +215,7 @@ local function jump_to_location(location)
     local col = util._get_line_byte_from_position(0, range.start)
     api.nvim_win_set_cursor(0, {row + 1, col})
     return true
-end
+end)
 
 -- @private
 --- Jumps to a location. Used as a handler for multiple LSP methods.
@@ -224,7 +223,8 @@ end
 -- @param method (string) LSP method name
 -- @param result (table) result of LSP method; a location or a list of locations.
 ---(`textDocument/definition` can return `Location` or `Location[]`
-local function location_handler(_, method, result)
+local location_handler = with_logger("location_handler",
+                                     function(_, method, result)
     if result == nil or vim.tbl_isempty(result) then
         local _ = log.info() and log.info(method, 'No location found')
         return nil
@@ -243,7 +243,7 @@ local function location_handler(_, method, result)
     else
         jump_to_location(result)
     end
-end
+end)
 
 function module.setup()
     local config = require'lspconfig/configs'.typescript.document_config
