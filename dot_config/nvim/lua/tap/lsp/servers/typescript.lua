@@ -46,10 +46,10 @@ end
 -- @return bufnr.
 -- @note Creates buffer but does not load it
 local function uri_to_bufnr(uri)
-    local scheme = assert(uri:match(URI_SCHEME_PATTERN),
+    local scheme = assert(uri:match('^([a-zA-Z]+[a-zA-Z0-9+-.]*):.*'),
                           'URI must contain a scheme: ' .. uri)
     if scheme == 'file' then
-        return vim.fn.bufadd(uri_to_fname(uri))
+        return vim.fn.bufadd(vim.uri_to_fname(uri))
     else
         return vim.fn.bufadd(uri)
     end
@@ -76,7 +76,7 @@ end)
 -- @param uri string uri of the resource to get the lines from
 -- @param rows number[] zero-indexed line numbers
 -- @return table<number string> a table mapping rows to lines
-function M.get_lines(uri, rows)
+local function get_lines(uri, rows)
     rows = type(rows) == "table" and rows or {rows}
 
     local function buf_lines(bufnr)
@@ -91,7 +91,7 @@ function M.get_lines(uri, rows)
     -- load the buffer if this is not a file uri
     -- Custom language server protocol extensions can result in servers sending URIs with custom schemes. Plugins are able to load these via `BufReadCmd` autocmds.
     if uri:sub(1, 4) ~= "file" then
-        local bufnr = vim.uri_to_bufnr(uri)
+        local bufnr = uri_to_bufnr(uri)
         vim.fn.bufload(bufnr)
         return buf_lines(bufnr)
     end
@@ -140,7 +140,7 @@ end
 ---
 -- @param locations (table) list of `Location`s or `LocationLink`s
 -- @returns (table) list of items
-function M.locations_to_items(locations)
+local function locations_to_items(locations)
     local items = {}
     local grouped = setmetatable({}, {
         __index = function(t, k)
@@ -173,7 +173,7 @@ function M.locations_to_items(locations)
         end
 
         -- get all the lines for this uri
-        local lines = M.get_lines(uri, uri_rows)
+        local lines = get_lines(uri, uri_rows)
 
         for _, temp in ipairs(rows) do
             local pos = temp.start
@@ -195,11 +195,11 @@ end
 ---
 -- @param location (`Location`|`LocationLink`)
 -- @returns `true` if the jump succeeded
-function M.jump_to_location(location)
+local function jump_to_location(location)
     -- location may be Location or LocationLink
     local uri = location.uri or location.targetUri
     if uri == nil then return end
-    local bufnr = vim.uri_to_bufnr(uri)
+    local bufnr = uri_to_bufnr(uri)
     -- Save position in jumplist
     vim.cmd "normal! m'"
 
@@ -213,7 +213,7 @@ function M.jump_to_location(location)
     api.nvim_buf_set_option(0, 'buflisted', true)
     local range = location.range or location.targetSelectionRange
     local row = range.start.line
-    local col = get_line_byte_from_position(0, range.start)
+    local col = util._get_line_byte_from_position(0, range.start)
     api.nvim_win_set_cursor(0, {row + 1, col})
     return true
 end
@@ -234,14 +234,14 @@ local function location_handler(_, method, result)
     -- https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition
 
     if vim.tbl_islist(result) then
-        util.jump_to_location(result[1])
+        jump_to_location(result[1])
 
         if #result > 1 then
-            util.set_qflist(util.locations_to_items(result))
+            util.set_qflist(locations_to_items(result))
             api.nvim_command("copen")
         end
     else
-        util.jump_to_location(result)
+        jump_to_location(result)
     end
 end
 
