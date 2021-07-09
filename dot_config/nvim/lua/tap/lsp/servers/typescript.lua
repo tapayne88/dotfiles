@@ -26,17 +26,31 @@ local module = {}
 local server_name = "typescript"
 local lspconfig_name = "tsserver"
 
+local function with_logger(name, fn)
+    return function(...)
+        print("[START] " .. name)
+        local res = fn(...)
+        print("[ END ] " .. name)
+        return res
+    end
+end
+
+local function printBufs()
+    print("printBufs", vim.inspect(vim.tbl_map(function(bufnr)
+        return "[" .. bufnr .. "] " .. vim.api.nvim_buf_get_name(bufnr)
+    end, vim.api.nvim_list_bufs())))
+end
+
 --- Return or create a buffer for a uri.
 -- @param uri (string): The URI
 -- @return bufnr.
 -- @note Creates buffer but does not load it
 local function uri_to_bufnr(uri)
-    local scheme = assert(uri:match('^([a-zA-Z]+[a-zA-Z0-9+-.]*):.*'),
+    local scheme = assert(uri:match(URI_SCHEME_PATTERN),
                           'URI must contain a scheme: ' .. uri)
     if scheme == 'file' then
-        return vim.fn.bufadd(vim.uri_to_fname(uri))
+        return vim.fn.bufadd(uri_to_fname(uri))
     else
-        print(uri)
         return vim.fn.bufadd(uri)
     end
 end
@@ -62,7 +76,7 @@ end)
 -- @param uri string uri of the resource to get the lines from
 -- @param rows number[] zero-indexed line numbers
 -- @return table<number string> a table mapping rows to lines
-function get_lines(uri, rows)
+function M.get_lines(uri, rows)
     rows = type(rows) == "table" and rows or {rows}
 
     local function buf_lines(bufnr)
@@ -74,20 +88,15 @@ function get_lines(uri, rows)
         return lines
     end
 
-    print("get_lines", uri)
     -- load the buffer if this is not a file uri
     -- Custom language server protocol extensions can result in servers sending URIs with custom schemes. Plugins are able to load these via `BufReadCmd` autocmds.
     if uri:sub(1, 4) ~= "file" then
-        local bufnr = uri_to_bufnr(uri)
-        print("bufs", vim.inspect(vim.api.nvim_list_bufs()))
-        print("vim.fn.bufload", bufnr)
+        local bufnr = vim.uri_to_bufnr(uri)
         vim.fn.bufload(bufnr)
-        print("buf_lines")
         return buf_lines(bufnr)
     end
 
     local filename = vim.uri_to_fname(uri)
-    print("get_lines", filename)
 
     -- use loaded buffers if available
     if vim.fn.bufloaded(filename) == 1 then
@@ -131,8 +140,7 @@ end
 ---
 -- @param locations (table) list of `Location`s or `LocationLink`s
 -- @returns (table) list of items
-local function locations_to_items(locations)
-    print('here')
+function M.locations_to_items(locations)
     local items = {}
     local grouped = setmetatable({}, {
         __index = function(t, k)
@@ -148,7 +156,6 @@ local function locations_to_items(locations)
         table.insert(grouped[uri], {start = range.start})
     end
 
-    print('here', 2)
     local keys = vim.tbl_keys(grouped)
     table.sort(keys)
     -- TODO(ashkan) I wish we could do this lazily.
@@ -156,8 +163,6 @@ local function locations_to_items(locations)
         local rows = grouped[uri]
         table.sort(rows, position_sort)
         local filename = vim.uri_to_fname(uri)
-
-        print('here', 3)
 
         -- list of row numbers
         local uri_rows = {}
@@ -168,7 +173,7 @@ local function locations_to_items(locations)
         end
 
         -- get all the lines for this uri
-        local lines = get_lines(uri, uri_rows)
+        local lines = M.get_lines(uri, uri_rows)
 
         for _, temp in ipairs(rows) do
             local pos = temp.start
@@ -183,9 +188,6 @@ local function locations_to_items(locations)
             })
         end
     end
-
-    print(vim.inspect(items))
-
     return items
 end
 
@@ -193,11 +195,11 @@ end
 ---
 -- @param location (`Location`|`LocationLink`)
 -- @returns `true` if the jump succeeded
-local function jump_to_location(location)
+function M.jump_to_location(location)
     -- location may be Location or LocationLink
     local uri = location.uri or location.targetUri
     if uri == nil then return end
-    local bufnr = uri_to_bufnr(uri)
+    local bufnr = vim.uri_to_bufnr(uri)
     -- Save position in jumplist
     vim.cmd "normal! m'"
 
@@ -211,19 +213,17 @@ local function jump_to_location(location)
     api.nvim_buf_set_option(0, 'buflisted', true)
     local range = location.range or location.targetSelectionRange
     local row = range.start.line
-    local col = util._get_line_byte_from_position(0, range.start)
+    local col = get_line_byte_from_position(0, range.start)
     api.nvim_win_set_cursor(0, {row + 1, col})
     return true
 end
 
---- Fills quickfix list with given list of items.
---- Can be obtained with e.g. |vim.lsp.util.locations_to_items()|.
----
--- @param items (table) list of items
-local function set_qflist(items)
-    vim.fn.setqflist({}, ' ', {title = 'Language Server', items = items})
-end
-
+-- @private
+--- Jumps to a location. Used as a handler for multiple LSP methods.
+-- @param _ (not used)
+-- @param method (string) LSP method name
+-- @param result (table) result of LSP method; a location or a list of locations.
+---(`textDocument/definition` can return `Location` or `Location[]`
 local function location_handler(_, method, result)
     if result == nil or vim.tbl_isempty(result) then
         local _ = log.info() and log.info(method, 'No location found')
@@ -233,21 +233,15 @@ local function location_handler(_, method, result)
     -- textDocument/definition can return Location or Location[]
     -- https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition
 
-    print(vim.inspect(result))
-    print("is_list", vim.tbl_islist(result))
-
     if vim.tbl_islist(result) then
         util.jump_to_location(result[1])
 
-        print("no.", #result)
-
         if #result > 1 then
-            set_qflist(locations_to_items(result))
+            util.set_qflist(util.locations_to_items(result))
             api.nvim_command("copen")
-            api.nvim_command("wincmd p")
         end
     else
-        jump_to_location(result)
+        util.jump_to_location(result)
     end
 end
 
