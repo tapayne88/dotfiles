@@ -26,31 +26,41 @@ local server_name = "typescript"
 local lspconfig_name = "tsserver"
 
 local function with_logger(name, fn)
+    local print_in_context = function(msgs)
+        msgs = type(msgs) == "table" and msgs or {msgs}
+        vim.tbl_map(function(item) print("       ", item, "\n") end, msgs)
+    end
     return function(...)
         print("[START] " .. name)
-        local res = fn(...)
+        local res = fn(print_in_context, ...)
         print("[ END ] " .. name)
         return res
     end
 end
 
-local function printBufs()
-    print("printBufs", vim.inspect(vim.tbl_map(function(bufnr)
+local function getBufs()
+    return vim.tbl_map(function(bufnr)
         return "[" .. bufnr .. "] " .. vim.api.nvim_buf_get_name(bufnr)
-    end, vim.api.nvim_list_bufs())))
+    end, vim.api.nvim_list_bufs())
 end
 
 --- Return or create a buffer for a uri.
 -- @param uri (string): The URI
 -- @return bufnr.
 -- @note Creates buffer but does not load it
-local uri_to_bufnr = with_logger("uri_to_bufnr", function(uri)
+local uri_to_bufnr = with_logger("uri_to_bufnr", function(print, uri)
     local scheme = assert(uri:match('^([a-zA-Z]+[a-zA-Z0-9+-.]*):.*'),
                           'URI must contain a scheme: ' .. uri)
+    print("uri " .. uri)
+    print({"bufs", unpack(getBufs())})
     if scheme == 'file' then
-        return vim.fn.bufadd(vim.uri_to_fname(uri))
+        local f = vim.fn.bufadd(vim.uri_to_fname(uri))
+        print({"file bufs", unpack(getBufs())})
+        return f
     else
-        return vim.fn.bufadd(uri)
+        local f = vim.fn.bufadd(uri)
+        print({"other bufs", unpack(getBufs())})
+        return f
     end
 end)
 
@@ -75,7 +85,7 @@ end)
 -- @param uri string uri of the resource to get the lines from
 -- @param rows number[] zero-indexed line numbers
 -- @return table<number string> a table mapping rows to lines
-local get_lines = with_logger("get_lines", function(uri, rows)
+local get_lines = with_logger("get_lines", function(print, uri, rows)
     rows = type(rows) == "table" and rows or {rows}
 
     local function buf_lines(bufnr)
@@ -139,7 +149,8 @@ end)
 ---
 -- @param locations (table) list of `Location`s or `LocationLink`s
 -- @returns (table) list of items
-local locations_to_items = with_logger("locations_to_items", function(locations)
+local locations_to_items = with_logger("locations_to_items",
+                                       function(print, locations)
     local items = {}
     local grouped = setmetatable({}, {
         __index = function(t, k)
@@ -194,7 +205,8 @@ end)
 ---
 -- @param location (`Location`|`LocationLink`)
 -- @returns `true` if the jump succeeded
-local jump_to_location = with_logger("jump_to_location", function(location)
+local jump_to_location = with_logger("jump_to_location",
+                                     function(print, location)
     -- location may be Location or LocationLink
     local uri = location.uri or location.targetUri
     if uri == nil then return end
@@ -224,7 +236,7 @@ end)
 -- @param result (table) result of LSP method; a location or a list of locations.
 ---(`textDocument/definition` can return `Location` or `Location[]`
 local location_handler = with_logger("location_handler",
-                                     function(_, method, result)
+                                     function(print, _, method, result)
     if result == nil or vim.tbl_isempty(result) then
         local _ = log.info() and log.info(method, 'No location found')
         return nil
