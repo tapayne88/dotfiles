@@ -5,13 +5,9 @@ endfunction
 
 function! ClearDuplicateBuffers(uri)
     if ParseURI(a:uri) !=# a:uri
-        if bufexists(ParseURI(a:uri))
-            sil! exe "bwipeout! " . fnameescape(ParseURI(a:uri))
-        endif
+        sil! exe "bwipeout " . fnameescape(ParseURI(a:uri))
         exe "keepalt file " . fnameescape(ParseURI(a:uri))
-        if bufexists(a:uri)
-            exe "bwipeout! " . fnameescape(a:uri)
-        endif
+        sil! exe "bwipeout " . fnameescape(a:uri)
     endif
 endfunction
 
