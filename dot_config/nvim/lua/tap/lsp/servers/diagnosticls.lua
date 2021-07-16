@@ -83,6 +83,7 @@ end
 
 function module.setup()
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
+        print(prettier_bin)
 
         lsp_utils.lspconfig_server_setup(server_name, {
             handlers = {

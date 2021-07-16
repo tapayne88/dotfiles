@@ -132,7 +132,30 @@ function module.on_attach(client, bufnr)
     end
 end
 
+local function is_directory(path)
+    local stat = vim.loop.fs_stat(path)
+    return stat ~= nil and stat.type == "directory"
+end
+
+local function resolve_module(start_dir, path)
+    if is_directory(start_dir) then
+        local candidate = vim.loop.fs_realpath(start_dir .. "/" .. path)
+        if candidate ~= nil then return candidate end
+    end
+
+    local parent = vim.loop.fs_realpath(start_dir .. "/..")
+    if parent ~= start_dir then return resolve_module(parent, path) end
+
+    return nil
+end
+
 function module.get_bin_path(cmd, fn)
+    local yarnSdk = resolve_module(vim.loop.cwd(),
+                                   ".yarn/sdks/prettier/index.js")
+
+    print("yarnSdk", yarnSdk)
+    if yarnSdk ~= nil then return fn(yarnSdk) end
+
     return utils.get_os_command_output_async({"yarn", "bin", cmd},
                                              function(result, code, signal)
         if code ~= 0 then
