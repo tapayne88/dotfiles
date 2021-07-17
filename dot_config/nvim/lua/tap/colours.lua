@@ -30,20 +30,14 @@ local function set_colorscheme(use_light_theme)
     if (use_light_theme) then
         vim.g.use_light_theme = true
         set_terminal_colorscheme("kitty_tokyonight_day")
+
         vim.o.background = "light"
         vim.cmd [[colorscheme tokyonight]]
     else
-        vim.g.nvcode_termcolors = 256
-
-        -- Nord config if/when they merge treesitter support
-        vim.g.nord_italic = 1
-        vim.g.nord_italic_comments = 1
-        vim.g.nord_underline = 1
-        vim.g.nord_uniform_diff_background = 1
-        vim.g.nord_cursor_line_number_background = 1
-
-        vim.g.use_light_theme = nil
+        vim.g.use_light_theme = false
         set_terminal_colorscheme("nord")
+
+        vim.g.nvcode_termcolors = 256
         vim.o.background = "dark"
         vim.cmd [[colorscheme nord]]
     end
@@ -98,5 +92,5 @@ augroup("OnColorScheme", {
 })
 
 command({
-    "ToggleColor", function() set_colorscheme(vim.g.use_light_theme == nil) end
+    "ToggleColor", function() set_colorscheme(not vim.g.use_light_theme) end
 })
