@@ -60,7 +60,7 @@ local function apply_user_highlights()
     highlight("TelescopeMatching", {guifg = color("yellow")})
 end
 
-augroup("GitSignsHighlights", {
+augroup("TelescopeHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
