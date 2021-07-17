@@ -3,7 +3,19 @@ local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
 local command = require("tap.utils").command
 
+local term_theme_fname = vim.fn
+                             .expand(vim.env.XDG_CONFIG_HOME .. '/.term_theme')
+
+local function get_term_theme()
+    local success, theme = pcall(vim.fn.readfile, term_theme_fname)
+    if success then return theme[1] end
+    return nil
+end
+
+local function set_term_theme(name) vim.fn.writefile({name}, term_theme_fname) end
+
 local function set_terminal_colorscheme(name)
+    set_term_theme(name)
     vim.loop.spawn('kitty', {
         args = {
             '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
@@ -37,7 +49,7 @@ local function set_colorscheme(use_light_theme)
     end
 end
 
-set_colorscheme(false)
+set_colorscheme(get_term_theme() == "kitty_tokyonight_day")
 
 local function apply_user_highlights()
     highlight('Search', {guibg = color("blue2"), guifg = color("bg")})
