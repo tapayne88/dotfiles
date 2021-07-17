@@ -19,12 +19,7 @@ function module.format()
     return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
 end
 
-function module.on_attach(client, bufnr)
-
-    lspsaga.on_attach(client, bufnr)
-
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+local apply_user_highlights = function()
     utils.highlight("LspDiagnosticsDefaultError", {guifg = "none"})
     utils.highlight("LspDiagnosticsDefaultWarning", {guifg = "none"})
     utils.highlight("LspDiagnosticsDefaultInformation", {guifg = "none"})
@@ -33,31 +28,31 @@ function module.on_attach(client, bufnr)
     utils.highlight("LspDiagnosticsUnderlineError", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["error"]
+        guisp = utils.lsp_colors("error")
     })
     utils.highlight("LspDiagnosticsUnderlineWarning", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["warning"]
+        guisp = utils.lsp_colors("warning")
     })
     utils.highlight("LspDiagnosticsUnderlineInformation", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["info"]
+        guisp = utils.lsp_colors("info")
     })
     utils.highlight("LspDiagnosticsUnderlineHint", {
         guifg = "none",
         gui = "undercurl",
-        guisp = utils.lsp_colors["hint"]
+        guisp = utils.lsp_colors("hint")
     })
 
     utils.highlight("LspDiagnosticsSignError",
-                    {guifg = utils.lsp_colors["error"]})
+                    {guifg = utils.lsp_colors("error")})
     utils.highlight("LspDiagnosticsSignWarning",
-                    {guifg = utils.lsp_colors["warning"]})
+                    {guifg = utils.lsp_colors("warning")})
     utils.highlight("LspDiagnosticsSignInformation",
-                    {guifg = utils.lsp_colors["info"]})
-    utils.highlight("LspDiagnosticsSignHint", {guifg = utils.lsp_colors["hint"]})
+                    {guifg = utils.lsp_colors("info")})
+    utils.highlight("LspDiagnosticsSignHint", {guifg = utils.lsp_colors("hint")})
 
     vim.fn.sign_define("LspDiagnosticsSignError", {
         text = utils.lsp_symbols["error"],
@@ -74,6 +69,23 @@ function module.on_attach(client, bufnr)
     vim.fn.sign_define("LspDiagnosticsSignHint", {
         text = utils.lsp_symbols["hint"],
         texthl = "LspDiagnosticsSignHint"
+    })
+end
+
+function module.on_attach(client, bufnr)
+
+    lspsaga.on_attach(client, bufnr)
+
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    apply_user_highlights()
+
+    utils.augroup("LspHighlights", {
+        {
+            events = {"VimEnter", "ColorScheme"},
+            targets = {"*"},
+            command = apply_user_highlights
+        }
     })
 
     -- Mappings.

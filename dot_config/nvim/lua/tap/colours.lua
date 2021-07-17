@@ -1,24 +1,53 @@
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
-local nord_colors = require("tap.utils").nord_colors
+local color = require("tap.utils").color
+local command = require("tap.utils").command
 
-vim.g.nvcode_termcolors = 256
+local term_theme_fname = vim.fn
+                             .expand(vim.env.XDG_CONFIG_HOME .. '/.term_theme')
 
--- Nord config if/when they merge treesitter support
-vim.g.nord_italic = 1
-vim.g.nord_italic_comments = 1
-vim.g.nord_underline = 1
-vim.g.nord_uniform_diff_background = 1
-vim.g.nord_cursor_line_number_background = 1
+local function get_term_theme()
+    local success, theme = pcall(vim.fn.readfile, term_theme_fname)
+    if success then return theme[1] end
+    return nil
+end
 
-vim.cmd [[colorscheme nord]]
+local function set_term_theme(name) vim.fn.writefile({name}, term_theme_fname) end
 
-local module = {}
+local function set_terminal_colorscheme(name)
+    set_term_theme(name)
+    vim.loop.spawn('kitty', {
+        args = {
+            '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
+            -- '-a', -- update for all windows
+            -- '-c', -- update for new windows
+            string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
+        }
+    }, nil)
+end
 
-function module.apply_user_highlights()
-    highlight('Search', {guibg = nord_colors.nord9, guifg = nord_colors.nord0})
-    highlight('IncSearch',
-              {guibg = nord_colors.nord9, guifg = nord_colors.nord0})
+local function set_colorscheme(use_light_theme)
+    if (use_light_theme) then
+        vim.g.use_light_theme = true
+        set_terminal_colorscheme("kitty_tokyonight_day")
+
+        vim.o.background = "light"
+        vim.cmd [[colorscheme tokyonight]]
+    else
+        vim.g.use_light_theme = false
+        set_terminal_colorscheme("nord")
+
+        vim.g.nvcode_termcolors = 256
+        vim.o.background = "dark"
+        vim.cmd [[colorscheme nord]]
+    end
+end
+
+set_colorscheme(get_term_theme() == "kitty_tokyonight_day")
+
+local function apply_user_highlights()
+    highlight('Search', {guibg = color("blue2"), guifg = color("bg")})
+    highlight('IncSearch', {guibg = color("blue2"), guifg = color("bg")})
 
     -- Treesitter overrides
     highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
@@ -35,9 +64,11 @@ augroup("ExplorerHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
-        command = "lua require('tap.colours').apply_user_highlights()"
+        command = apply_user_highlights
     }
 })
+
+apply_user_highlights()
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways
@@ -60,4 +91,6 @@ augroup("OnColorScheme", {
     }
 })
 
-return module
+command({
+    "ToggleColor", function() set_colorscheme(not vim.g.use_light_theme) end
+})

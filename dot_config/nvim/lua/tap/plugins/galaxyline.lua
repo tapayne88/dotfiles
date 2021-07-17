@@ -3,7 +3,7 @@ local diagnostic = require('galaxyline.provider_diagnostic')
 local fileinfo = require('galaxyline.provider_fileinfo')
 local extension = require('galaxyline.provider_extensions')
 local condition = require('galaxyline.condition')
-local nord_colors = require("tap.utils").nord_colors
+local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
@@ -16,61 +16,114 @@ local section_separators = vim.env.TERM_EMU == "kitty" and {"", ""} or
 local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
                                  {"|", "|"}
 
-local colors = {bg = nord_colors.nord3}
+local function theme_wrapper(themes)
+    return function()
+        local color_names = (vim.g.use_light_theme and themes.light) or
+                                themes.dark
 
-local mode_map = {
-    ['n'] = {'NORMAL', nord_colors.nord8},
-    ['i'] = {'INSERT', nord_colors.nord6},
-    ['r'] = {'REPLACE', nord_colors.nord13},
-    ['R'] = {'REPLACE', nord_colors.nord13},
-    ['v'] = {'VISUAL', nord_colors.nord7},
-    ['V'] = {'V-LINE', nord_colors.nord7},
-    ['c'] = {'COMMAND', nord_colors.nord8},
-    ['s'] = {'SELECT', nord_colors.nord8},
-    ['S'] = {'S-LINE', nord_colors.nord8},
-    ['t'] = {'TERMINAL', nord_colors.nord8},
-    [''] = {'V-BLOCK', nord_colors.nord7},
-    [''] = {'S-BLOCK', nord_colors.nord8},
-    ['Rv'] = {'VIRTUAL', nord_colors.nord11},
-    ['rm'] = {'--MORE', nord_colors.nord11}
+        return vim.tbl_map(color, color_names)
+    end
+end
+
+local theme = {
+    mode = {highlight = theme_wrapper({dark = {"bg"}, light = {"bg"}})},
+    primary = {
+        highlight = theme_wrapper({
+            dark = {"fg", "dark1"},
+            light = {"blue7", "fg_dark"}
+        }),
+        highlight_alt = theme_wrapper({
+            dark = {"dark1", "fg"},
+            light = {"fg_dark", "blue7"}
+        }),
+        separator_highlight = theme_wrapper({
+            dark = {"dark1", "dark3"},
+            light = {"fg_dark", "fg"}
+        }),
+        sub_separator_highlight = theme_wrapper({
+            dark = {"fg", "dark1"},
+            light = {"blue7", "fg_dark"}
+        })
+    },
+    secondary = {
+        highlight = theme_wrapper({
+            dark = {"fg", "dark3"},
+            light = {"blue7", "fg"}
+        }),
+        sub_separator_highlight = theme_wrapper({
+            dark = {"fg", "dark3"},
+            light = {"blue7", "fg"}
+        })
+    }
 }
+
+local function diagnostic_color(color_name)
+    return function()
+        return {lsp_colors(color_name), theme.secondary.highlight()[2]}
+    end
+end
+
+local function mode_map(name)
+    local modes = {
+        ['n'] = {'NORMAL', color("blue1")},
+        ['i'] = {'INSERT', color("fg")},
+        ['r'] = {'REPLACE', color("yellow")},
+        ['R'] = {'REPLACE', color("yellow")},
+        ['v'] = {'VISUAL', color("cyan")},
+        ['V'] = {'V-LINE', color("cyan")},
+        ['c'] = {'COMMAND', color("blue1")},
+        ['s'] = {'SELECT', color("blue1")},
+        ['S'] = {'S-LINE', color("blue1")},
+        ['t'] = {'TERMINAL', color("blue1")},
+        [''] = {'V-BLOCK', color("cyan")},
+        [''] = {'S-BLOCK', color("blue1")},
+        ['Rv'] = {'VIRTUAL', color("red")},
+        ['rm'] = {'--MORE', color("red")}
+    }
+    return modes[name]
+end
 
 gl.section.left = {
     {
         ViMode = {
             provider = function()
-                local mode, color = unpack(
-                                        mode_map[vim.fn.mode()] or
-                                            {"unknown", nord_colors.nord11})
+                local mode, mode_color = unpack(
+                                             mode_map(vim.fn.mode()) or
+                                                 {"unknown", color("red")})
 
                 local next_section_bg = (condition.check_git_workspace() and
-                                            nord_colors.nord1) or colors.bg
+                                            theme.primary.highlight()[2]) or
+                                            theme.secondary.highlight()[2]
 
-                highlight("GalaxyViMode",
-                          {guifg = nord_colors.nord0, guibg = color})
-                highlight("GalaxyViModeInv",
-                          {guibg = next_section_bg, guifg = color})
+                highlight("GalaxyViMode", {
+                    guifg = theme.mode.highlight()[1],
+                    guibg = mode_color
+                })
+                highlight("GalaxyViModeSep",
+                          {guibg = next_section_bg, guifg = mode_color})
 
                 return string.format("  %s ", mode)
             end,
             separator = section_separators[1] .. " ",
-            separator_highlight = "GalaxyViModeInv"
+            separator_highlight = "GalaxyViModeSep"
         }
     }, {
         GitBranch = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = theme.primary.highlight
         }
     }, {
         ASpace = {
             provider = function() return " " end,
+            condition = condition.check_git_workspace,
+            highlight = theme.primary.highlight,
             separator = section_separators[1] .. " ",
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = theme.primary.separator_highlight
         }
-    }, {FileName = {provider = 'FileName', highlight = {'NONE', colors.bg}}}
+    },
+    {FileName = {provider = 'FileName', highlight = theme.secondary.highlight}}
 }
 
 gl.section.right = {
@@ -78,25 +131,25 @@ gl.section.right = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = lsp_symbols["error"] .. " ",
-            highlight = {lsp_colors.error, colors.bg}
+            highlight = diagnostic_color("error")
         }
     }, {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = lsp_symbols["warning"] .. " ",
-            highlight = {lsp_colors.warning, colors.bg}
+            highlight = diagnostic_color("warning")
         }
     }, {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = lsp_symbols["hint"] .. " ",
-            highlight = {lsp_colors.hint, colors.bg}
+            highlight = diagnostic_color("hint")
         }
     }, {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = lsp_symbols["info"] .. " ",
-            highlight = {lsp_colors.info, colors.bg}
+            highlight = diagnostic_color("info")
         }
     }, {
         DiagnosticOk = {
@@ -114,7 +167,7 @@ gl.section.right = {
                 end
                 return ""
             end,
-            highlight = {'NONE', colors.bg}
+            highlight = theme.secondary.highlight
         }
     }, {
         TscVersion = {
@@ -138,7 +191,7 @@ gl.section.right = {
                 return ""
             end,
             condition = condition.hide_in_width,
-            highlight = {'NONE', colors.bg}
+            highlight = theme.secondary.highlight
         }
     }, {
         FileInfo = {
@@ -148,24 +201,24 @@ gl.section.right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
+            highlight = theme.primary.highlight,
             separator = section_separators[2],
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = theme.primary.separator_highlight
         }
     }, {
         LineInfo = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
+            highlight = theme.primary.highlight,
             separator = component_separators[2],
-            separator_highlight = {'NONE', nord_colors.nord1},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = theme.primary.sub_separator_highlight
         }
     }, {
         NotASpace = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = 'GalaxyViModeInv'
+            separator_highlight = 'GalaxyViModeSep'
         }
     }, {
         PerCent = {
@@ -182,7 +235,7 @@ gl.section.right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = 'GalaxyViModeInv'
+            highlight = 'GalaxyViModeSep'
         }
     }
 }
@@ -193,20 +246,19 @@ gl.section.short_line_left = {
             provider = 'GitBranch',
             icon = ' ',
             condition = condition.check_git_workspace,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = theme.primary.highlight
         }
     }, {
         ASpaceInactive = {
             provider = function() return " " end,
+            highlight = theme.primary.highlight,
             separator = section_separators[1] .. " ",
-            separator_highlight = {nord_colors.nord1, colors.bg},
-            highlight = {'NONE', nord_colors.nord1}
+            separator_highlight = theme.primary.separator_highlight
         }
-    },
-    {
+    }, {
         FileNameInactive = {
             provider = 'FileName',
-            highlight = {'NONE', colors.bg}
+            highlight = theme.secondary.highlight
         }
     }
 }
@@ -220,28 +272,28 @@ gl.section.short_line_right = {
                 local icon = fileinfo.get_file_icon()
                 return string.format(" %s%s ", icon, filetype)
             end,
-            highlight = {'NONE', colors.bg}
+            highlight = theme.secondary.highlight
         }
     }, {
         LineInfoInactive = {
             provider = 'LineColumn',
             icon = " ≡ ",
             condition = condition.hide_in_width,
+            highlight = theme.secondary.highlight,
             separator = component_separators[2],
-            separator_highlight = {'NONE', colors.bg},
-            highlight = {'NONE', colors.bg}
+            separator_highlight = theme.secondary.sub_separator_highlight
         }
     }, {
         NotASpaceInactive = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = {'NONE', colors.bg}
+            separator_highlight = theme.secondary.sub_separator_highlight
         }
     }, {
         PerCentInactive = {
             provider = 'LinePercent',
             condition = condition.hide_in_width,
-            highlight = {nord_colors.nord1, nord_colors.nord4}
+            highlight = theme.primary.highlight_alt
         }
     }, {
         ScrollBarInactive = {
@@ -252,7 +304,7 @@ gl.section.short_line_right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = {'NONE', nord_colors.nord1}
+            highlight = theme.primary.highlight
         }
     }
 }
