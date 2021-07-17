@@ -1,49 +1,49 @@
 -- Improve scrolling performance with cursorline
-vim.o.lazyredraw = true
+vim.opt.lazyredraw = true
 
 -- Number of lines from vertical edge to start scrolling
-vim.o.scrolloff = 4
+vim.opt.scrolloff = 4
 
 -- Better terminal color support in neovim
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 
 -- Better command options
-vim.o.wildmode = 'longest:full,full'
-vim.o.wildignorecase = true
+vim.opt.wildmode = {'longest:full', 'full'}
+vim.opt.wildignorecase = true
 
 -- Better split opening defaults
-vim.o.splitbelow = true
-vim.o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 -- Better searching
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-vim.o.swapfile = false
-vim.o.hidden = true
+vim.opt.swapfile = false
+vim.opt.hidden = true
 
 -- Hide the default mode text (e.g. -- INSERT -- below the statusline)
-vim.o.showmode = false
-vim.o.spelllang = 'en'
+vim.opt.showmode = false
+vim.opt.spelllang = 'en'
 
 -- Tab stuff
-vim.o.tabstop = 4
-vim.o.softtabstop = 2
-vim.o.expandtab = true
-vim.o.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 2
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
 
 -- Better folding
-vim.o.foldmethod = 'syntax'
-vim.o.foldcolumn = '2'
-vim.o.foldlevelstart = 99
+vim.opt.foldmethod = 'syntax'
+vim.opt.foldcolumn = '2'
+vim.opt.foldlevelstart = 99
 
 --Decrease update time
-vim.o.updatetime = 250
+vim.opt.updatetime = 250
 
-vim.wo.number = true
-vim.wo.cursorline = true
-vim.wo.colorcolumn = '80'
-vim.wo.signcolumn="yes"
+vim.opt.number = true
+vim.opt.cursorline = true
+vim.opt.colorcolumn = '80'
+vim.opt.signcolumn = 'yes'
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
