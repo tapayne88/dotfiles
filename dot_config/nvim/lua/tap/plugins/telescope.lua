@@ -45,6 +45,8 @@ end, {name = "CWD File Browser"})
 nnoremap("<leader>fh", function()
     require('telescope.builtin').file_browser {cwd = '~', hidden = true}
 end, {name = "Home Files"})
+nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
+         {name = "Help Tags"})
 nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end,
          {name = "Live Grep"})
 nnoremap("<leader>fw",
