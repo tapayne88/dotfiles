@@ -91,21 +91,26 @@ gl.section.left = {
                                              mode_map(vim.fn.mode()) or
                                                  {"unknown", color("red")})
 
-                local next_section_bg = (condition.check_git_workspace() and
-                                            theme.primary.highlight()[2]) or
-                                            theme.secondary.highlight()[2]
+                local next_section_git = theme.primary.highlight()[2]
+                local next_section_no_git = theme.secondary.highlight()[2]
 
                 highlight("GalaxyViMode", {
                     guifg = theme.mode.highlight()[1],
                     guibg = mode_color
                 })
-                highlight("GalaxyViModeSep",
-                          {guibg = next_section_bg, guifg = mode_color})
+                highlight("GalaxyViModeSepGit",
+                          {guibg = next_section_git, guifg = mode_color})
+                highlight("GalaxyViModeSepNoGit",
+                          {guibg = next_section_no_git, guifg = mode_color})
 
                 return string.format("  %s ", mode)
             end,
             separator = section_separators[1] .. " ",
-            separator_highlight = "GalaxyViModeSep"
+            separator_highlight = function()
+                return
+                    condition.check_git_workspace() and "GalaxyViModeSepGit" or
+                        "GalaxyViModeSepNoGit"
+            end
         }
     }, {
         GitBranch = {
@@ -218,7 +223,7 @@ gl.section.right = {
         NotASpace = {
             provider = function() return "" end,
             separator = section_separators[2],
-            separator_highlight = 'GalaxyViModeSep'
+            separator_highlight = 'GalaxyViModeSepGit'
         }
     }, {
         PerCent = {
@@ -235,7 +240,7 @@ gl.section.right = {
                 }
                 return extension.scrollbar_instance(scrollbars)
             end,
-            highlight = 'GalaxyViModeSep'
+            highlight = 'GalaxyViModeSepGit'
         }
     }
 }
