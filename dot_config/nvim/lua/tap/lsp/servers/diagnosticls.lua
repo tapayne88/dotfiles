@@ -5,17 +5,35 @@ local install_path = require'lspinstall/util'.install_path
 local diagnosticls_languages = {
     html = {formatters = {"prettier"}},
     lua = {formatters = {"lua_format"}},
-    javascript = {linters = {"eslint"}, formatters = {"eslint", "prettier"}},
+    javascript = {
+        linters = {"eslint"},
+        formatters = {
+            -- "eslint",
+            "prettier"
+        }
+    },
     javascriptreact = {
         linters = {"eslint"},
-        formatters = {"eslint", "prettier"}
+        formatters = {
+            -- "eslint",
+            "prettier"
+        }
     },
     json = {formatters = {"prettier"}},
     markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
-    typescript = {linters = {"eslint"}, formatters = {"eslint", "prettier"}},
+    typescript = {
+        linters = {"eslint"},
+        formatters = {
+            -- "eslint",
+            "prettier"
+        }
+    },
     typescriptreact = {
         linters = {"eslint"},
-        formatters = {"eslint", "prettier"}
+        formatters = {
+            -- "eslint",
+            "prettier"
+        }
     }
 }
 
