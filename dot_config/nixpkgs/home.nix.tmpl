@@ -25,7 +25,7 @@ let
   {{- if eq "crostini" .ostype }}
   crostiniPkgs = with pkgs; [
     alacritty        	     # alacritty terminal
-    kitty           	     # kitty terminal
+    unstable.kitty           # kitty terminal
     glxinfo                  # utility for inspect openGL config
     nixgl.nixGLDefault       # OpenGL wrapper for nix programs
   ];
