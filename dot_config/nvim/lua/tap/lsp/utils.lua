@@ -168,17 +168,12 @@ function module.on_publish_diagnostics(prefix)
     end
 end
 
-local get_config_capabilities = function(config) return
-    config.capabilities or {} end
-
 function module.lspconfig_server_setup(server_name, config)
     local server = lspconfig[server_name]
 
     if (server == nil) then return end
 
-    server.setup(vim.tbl_extend("force", {
-        capabilities = get_config_capabilities(server)
-    }, config))
+    server.setup(config)
     server.manager.try_add_wrapper()
 
     return server
