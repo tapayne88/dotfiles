@@ -21,6 +21,7 @@ require('telescope').setup {
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
         sort_lastused = true,
+        sort_mru = true,
         show_all_buffers = true,
         selection_strategy = "closest"
     }
@@ -30,6 +31,12 @@ nnoremap("<leader>gf", function()
 end, {name = "Relative git file"})
 nnoremap("<leader>gF", function() require('telescope.builtin').git_files() end,
          {name = "All git files"})
+nnoremap("<leader>rf", function()
+    require('telescope.builtin').git_files {
+        use_git_root = false,
+        cwd = vim.fn.expand('%:p:h')
+    }
+end, {name = "Git files relative to current file"})
 nnoremap("<leader>ff", function()
     require('telescope.builtin').find_files {hidden = true}
 end, {name = "Find File"})
