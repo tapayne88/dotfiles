@@ -9,4 +9,4 @@ function tap._create(f)
     return #tap._store
 end
 
-function tap._execute(id, args) tap._store[id](args) end
+function tap._execute(id, ...) tap._store[id](...) end

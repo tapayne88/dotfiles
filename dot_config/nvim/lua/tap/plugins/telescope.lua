@@ -3,6 +3,7 @@ local nnoremap = require('tap.utils').nnoremap
 local highlight = require('tap.utils').highlight
 local color = require('tap.utils').color
 local augroup = require("tap.utils").augroup
+local command = require("tap.utils").command
 
 require('telescope').setup {
     defaults = {
@@ -56,9 +57,11 @@ nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
          {name = "Help Tags"})
 nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end,
          {name = "Live Grep"})
-nnoremap("<leader>fw",
-         function() require('telescope.builtin').grep_string() end,
-         {name = "Find Word"})
+nnoremap("<leader>fw", function()
+    require('telescope.builtin').grep_string {
+        prompt_title = "Grep: " .. vim.fn.expand("<cword>")
+    }
+end, {name = "Find Word"})
 nnoremap("<leader>ch",
          function() require('telescope.builtin').command_history() end,
          {name = "Command History"})
@@ -75,6 +78,21 @@ augroup("TelescopeHighlights", {
         targets = {"*"},
         command = apply_user_highlights
     }
+})
+
+command({
+    "Fw",
+    function(word, ...)
+        local search_dirs = {...}
+        local args = #search_dirs > 0 and {search_dirs = search_dirs} or {}
+
+        args.search = word
+        args.prompt_title = string.format("Grep: %s", word)
+
+        require('telescope.builtin').grep_string(args)
+    end,
+    nargs = "+",
+    extra = "-complete=dir"
 })
 
 apply_user_highlights()
