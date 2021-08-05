@@ -89,6 +89,7 @@ command({
 
         args.search = word
         args.prompt_title = string.format("Grep: %s", word)
+        args.use_regex = true
 
         require('telescope.builtin').grep_string(args)
     end,
