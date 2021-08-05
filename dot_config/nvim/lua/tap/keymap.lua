@@ -14,7 +14,14 @@ vnoremap('>', '>gv')
 -- search for current visual selection
 vnoremap('//', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>")
 
-nnoremap('<leader>x', ":cclose<CR>")
+-- quickfix mappings
+nnoremap('<c-q>', ":copen<CR>")
+nnoremap('[c', ":cprev<CR>")
+nnoremap(']c', ":cnext<CR>")
+nnoremap('<LocalLeader>q', ":lopen<CR>")
+nnoremap('[a', ":lprev<CR>")
+nnoremap(']a', ":lnext<CR>")
+
 nnoremap('<leader>h', ":set hlsearch!<CR>")
 nnoremap('<leader>n', ":set number!<CR>")
 nnoremap('<leader>fp', ":echo @%<CR>")
