@@ -75,12 +75,6 @@ return require('packer').startup(function(use)
 
     -- Async vim compiler plugins (used to run mocha test below)
     use {'tpope/vim-dispatch', cmd = 'Dispatch'}
-    -- easy testing
-    use {
-        'janko-m/vim-test',
-        cmd = {'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'},
-        setup = [[require("tap.plugins.vim-test")]]
-    }
     -- easier vim startup time profiling
     use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
     -- Markdown previewing commands
