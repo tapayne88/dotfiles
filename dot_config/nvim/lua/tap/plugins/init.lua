@@ -78,8 +78,8 @@ return require('packer').startup(function(use)
     -- easy testing
     use {
         'janko-m/vim-test',
-        config = [[require("tap.plugins.vim-test")]],
-        cmd = {'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'}
+        cmd = {'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'},
+        setup = [[require("tap.plugins.vim-test")]]
     }
     -- easier vim startup time profiling
     use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
