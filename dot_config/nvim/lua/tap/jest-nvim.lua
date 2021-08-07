@@ -5,7 +5,7 @@ local get_test_command = function(file_name, pattern)
     local cmd = {"yarn", "exec", "jest", file_name, "--", "--watch"}
     if pattern then
         return vim.tbl_flatten({
-            cmd, {"--testNamePattern", string.format("\"%s\"", pattern)}
+            cmd, {"--testNamePattern", string.format('"%s"', pattern)}
         })
     end
 
@@ -53,8 +53,7 @@ local run_in_term = function(buf_name, cmd, cwd, pattern)
 
         -- open new split on right
         vim.cmd("vertical new")
-        vim.cmd("call termopen('" .. get_command_string(cmd) .. "', {'cwd':'" ..
-                    cwd .. "'})")
+        vim.fn.termopen(get_command_string(cmd), {cwd = cwd})
         vim.api.nvim_buf_set_name(0, buf_name)
     end
 
@@ -97,24 +96,37 @@ local node_is_target = function(node, buf, target_fn)
     return find_in_children(node, buf, target_fn)
 end
 
-local get_pattern_from_test_node = function(buf, node)
-    local str_node = find_in_children(node, buf, function(child_node)
-        return child_node:type() == "string"
-    end)
-
-    return str_node and vim.treesitter.get_node_text(str_node:child(1), buf) or
-               nil
+local tbl_reverse = function(tbl)
+    local rev_tbl = {}
+    for i = #tbl, 1, -1 do table.insert(rev_tbl, tbl[i]) end
+    return rev_tbl
 end
 
-local function find_test_node(buf, root, node)
-    if root == node then return nil end
+local get_pattern_from_test_node = function(buf, nodes)
+    local test_strings = vim.tbl_map(function(node)
+        local str_node = find_in_children(node, buf, function(child_node)
+            return child_node:type() == "string"
+        end)
 
-    if node_is_target(node, buf, node_is_test_function) then return node end
+        return
+            str_node and vim.treesitter.get_node_text(str_node:child(1), buf) or
+                nil
+    end, nodes)
 
-    return find_test_node(buf, root, node:parent())
+    return table.concat(tbl_reverse(test_strings), " ")
 end
 
-local get_test_node_from_cursor = function(buf, cursor)
+local function find_test_nodes(buf, root, node, acc)
+    if root == node then return acc end
+
+    if node_is_target(node, buf, node_is_test_function) then
+        table.insert(acc, node)
+    end
+
+    return find_test_nodes(buf, root, node:parent(), acc)
+end
+
+local get_test_nodes_from_cursor = function(buf, cursor)
     local line = cursor[1] - 1
     local col = cursor[2]
 
@@ -125,7 +137,7 @@ local get_test_node_from_cursor = function(buf, cursor)
         local root = tree:root()
         if root then
             local node = root:descendant_for_range(line, col, line, col)
-            ret = find_test_node(buf, root, node)
+            ret = find_test_nodes(buf, root, node, {})
         end
     end)
     return ret
@@ -134,11 +146,11 @@ end
 local get_nearest_pattern = function()
     local bufnr = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.fn.win_getid())
-    local test_node = get_test_node_from_cursor(bufnr, cursor)
+    local test_nodes = get_test_nodes_from_cursor(bufnr, cursor)
 
-    if test_node == nil then return nil end
+    if #test_nodes == 0 then return nil end
 
-    return get_pattern_from_test_node(bufnr, test_node)
+    return get_pattern_from_test_node(bufnr, test_nodes)
 end
 
 local test_nearest = function()
