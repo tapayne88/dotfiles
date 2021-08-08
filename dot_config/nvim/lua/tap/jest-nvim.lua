@@ -29,11 +29,16 @@ local sleep = a.wrap(function(delay, done)
     end)
 end, "vararg")
 
+local schedule = a.async(function(func)
+    vim.schedule(func)
+    a.await(a.scheduler)
+end)
+
 local send_keys = a.async(function(keys)
     print("send_keys", keys)
     if keys == nil then return end
 
-    a.await(a.scheduler(function()
+    a.await(schedule(function()
         print("sent", keys)
         vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
     end))
@@ -70,10 +75,10 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
 
     print("done")
 
-    a.scheduler(function()
+    a.await(schedule(function()
         -- swap back to previous window which is left
         vim.cmd("wincmd h")
-    end)
+    end))
 end)
 
 local test_file = function()
