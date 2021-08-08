@@ -1,5 +1,6 @@
-local timer = vim.loop.new_timer()
+local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
+local a = require("plenary.async_lib.async")
 
 local get_test_command = function(file_name, pattern)
     local cmd = {"yarn", "exec", "jest", file_name, "--", "--watch"}
@@ -18,23 +19,33 @@ local get_buffer_name = function(file_name)
     return string.format("jest-nvim:%s", file_name)
 end
 
-local sleep = function(delay)
+local sleep = a.wrap(function(delay, done)
     delay = delay or 1000
-    timer:start(delay, 0, function() timer:close() end)
-end
+    local timer = new_timer()
+    timer:start(delay, 0, function()
+        print("timer done", os.time())
+        timer:close()
+        done()
+    end)
+end, "vararg")
 
-local send_keys = function(keys)
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
+local send_keys = a.async(function(keys)
+    print("send_keys", keys)
+    if keys == nil then return end
 
-    -- TODO: swap to sleep function above, requires async
-    vim.cmd("sleep 1")
-end
+    a.await(a.scheduler(function()
+        print("sent", keys)
+        vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
+    end))
 
-local run_in_term = function(buf_name, cmd, cwd, pattern)
-    -- print("args", buf_name, vim.inspect(cmd), cwd, pattern)
+    a.await(sleep(1000))
+end)
+
+local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
+    print("args", buf_name, vim.inspect(cmd), cwd, pattern)
 
     if vim.fn.bufexists(buf_name) ~= 0 then
-        -- print("buf found")
+        print("buf found")
 
         local term_bufnr = vim.fn.bufnr(buf_name)
         local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
@@ -45,11 +56,11 @@ local run_in_term = function(buf_name, cmd, cwd, pattern)
 
         vim.cmd("vsplit " .. buf_name)
 
-        send_keys("t")
-        if pattern then send_keys(pattern) end
-        send_keys("\r")
+        a.await(send_keys("t"))
+        a.await(send_keys(pattern))
+        a.await(send_keys("\r"))
     else
-        -- print("buf not found")
+        print("buf not found")
 
         -- open new split on right
         vim.cmd("vertical new")
@@ -57,9 +68,13 @@ local run_in_term = function(buf_name, cmd, cwd, pattern)
         vim.api.nvim_buf_set_name(0, buf_name)
     end
 
-    -- swap back to previous window which is left
-    vim.cmd("wincmd h")
-end
+    print("done")
+
+    a.scheduler(function()
+        -- swap back to previous window which is left
+        vim.cmd("wincmd h")
+    end)
+end)
 
 local test_file = function()
     local cwd = vim.fn.expand("%:p:h")
@@ -68,7 +83,7 @@ local test_file = function()
     local cmd = get_test_command(file_name)
 
     local buf_name = get_buffer_name(vim.fn.expand("%"))
-    run_in_term(buf_name, cmd, cwd)
+    a.run(run_in_term(buf_name, cmd, cwd))
 end
 
 local node_is_test_function = function(node, buf)
@@ -167,7 +182,7 @@ local test_nearest = function()
     end
 
     local buf_name = get_buffer_name(vim.fn.expand("%"))
-    run_in_term(buf_name, cmd, cwd, pattern)
+    a.run(run_in_term(buf_name, cmd, cwd, pattern))
 end
 
 nnoremap('t<C-f>', test_file)
