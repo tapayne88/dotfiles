@@ -20,10 +20,8 @@ local get_buffer_name = function(file_name)
 end
 
 local sleep = a.wrap(function(delay, done)
-    delay = delay or 1000
     local timer = new_timer()
     timer:start(delay, 0, function()
-        print("timer done", os.time())
         timer:close()
         done()
     end)
@@ -35,11 +33,9 @@ local schedule = a.async(function(func)
 end)
 
 local send_keys = a.async(function(keys)
-    print("send_keys", keys)
     if keys == nil then return end
 
     a.await(schedule(function()
-        print("sent", keys)
         vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
     end))
 
@@ -47,11 +43,7 @@ local send_keys = a.async(function(keys)
 end)
 
 local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
-    print("args", buf_name, vim.inspect(cmd), cwd, pattern)
-
     if vim.fn.bufexists(buf_name) ~= 0 then
-        print("buf found")
-
         local term_bufnr = vim.fn.bufnr(buf_name)
         local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
 
@@ -65,15 +57,11 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
         a.await(send_keys(pattern))
         a.await(send_keys("\r"))
     else
-        print("buf not found")
-
         -- open new split on right
         vim.cmd("vertical new")
         vim.fn.termopen(get_command_string(cmd), {cwd = cwd})
         vim.api.nvim_buf_set_name(0, buf_name)
     end
-
-    print("done")
 
     a.await(schedule(function()
         -- swap back to previous window which is left
@@ -178,7 +166,6 @@ local test_nearest = function()
     local file_name = vim.fn.expand("%:t")
 
     local pattern = get_nearest_pattern()
-    print("pattern", pattern)
     local cmd = get_test_command(file_name, pattern)
 
     if pattern == nil then
