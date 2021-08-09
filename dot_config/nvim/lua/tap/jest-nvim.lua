@@ -43,7 +43,7 @@ local send_keys = a.async(function(keys)
         vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
     end))
 
-    a.await(sleep(1000))
+    a.await(sleep(500))
 end)
 
 local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
