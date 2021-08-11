@@ -16,7 +16,7 @@ end
 local get_command_string = function(cmd) return table.concat(cmd, " ") end
 
 local get_buffer_name = function(file_name)
-    return string.format("jest-nvim:%s", file_name)
+    return string.format("jest-nvim:%s:terminal", file_name)
 end
 
 local sleep = a.wrap(function(delay, done)
@@ -36,6 +36,7 @@ local send_keys = a.async(function(keys)
     if keys == nil then return end
 
     a.await(schedule(function()
+        -- TODO: escape keys sent somehow
         vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
     end))
 
