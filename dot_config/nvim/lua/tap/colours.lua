@@ -74,22 +74,23 @@ apply_user_highlights()
 -- Messes with highlighting of current line in weird ways
 -- https://github.com/neovim/neovim/issues/9019#issuecomment-714806259
 -- lua version
-local function CustomizeColors()
-    if vim.fn.has('gui_running') or vim.o.termguicolors or
-        vim.fn.exists('g:gonvim_running') then
-        highlight("CursorLine", {ctermfg = "white"})
-    else
-        highlight("CursorLine", {guifg = "white"})
-    end
-end
+-- Disable due to messing with neovim terminal colours
+-- local function CustomizeColors()
+--     if vim.fn.has('gui_running') or vim.o.termguicolors or
+--         vim.fn.exists('g:gonvim_running') then
+--         highlight("CursorLine", {ctermfg = "white"})
+--     else
+--         highlight("CursorLine", {guifg = "white"})
+--     end
+-- end
 
-augroup("OnColorScheme", {
-    {
-        events = {"ColorScheme", "BufEnter", "BufWinEnter"},
-        targets = {"*"},
-        command = CustomizeColors
-    }
-})
+-- augroup("OnColorScheme", {
+--     {
+--         events = {"ColorScheme", "BufEnter", "BufWinEnter"},
+--         targets = {"*"},
+--         command = CustomizeColors
+--     }
+-- })
 
 command({
     "ToggleColor", function() set_colorscheme(not vim.g.use_light_theme) end
