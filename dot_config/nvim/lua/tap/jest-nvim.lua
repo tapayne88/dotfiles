@@ -70,16 +70,6 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
     end))
 end)
 
-local test_file = function()
-    local cwd = vim.fn.expand("%:p:h")
-    local file_name = vim.fn.expand("%:t")
-
-    local cmd = get_test_command(file_name)
-
-    local buf_name = get_buffer_name(vim.fn.expand("%"))
-    a.run(run_in_term(buf_name, cmd, cwd))
-end
-
 local node_is_test_function = function(node, buf)
     local target_text = {"test", "it", "describe"}
 
@@ -162,7 +152,39 @@ local get_nearest_pattern = function()
     return get_pattern_from_test_node(bufnr, test_nodes)
 end
 
-local test_nearest = function()
+local regex_escape = function(regex)
+    -- Vim regex needs to escape (, ) and |
+    -- Because this is lua, we need to escape the escaping, hence \\ not \
+    return vim.fn.escape(vim.fn.escape(regex, "()|"), "\\")
+end
+
+local file_pattern = regex_escape(
+                         "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
+
+local with_validate_file_path = function(fn)
+    return function()
+        local file_path = vim.fn.expand("%")
+
+        if vim.regex(file_pattern):match_str(file_path) ~= nil then
+            print("not a test file")
+            return
+        end
+
+        return fn(file_path)
+    end
+end
+
+local test_file = with_validate_file_path(function(file_path)
+    local cwd = vim.fn.expand("%:p:h")
+    local file_name = vim.fn.expand("%:t")
+
+    local cmd = get_test_command(file_name)
+
+    local buf_name = get_buffer_name(file_path)
+    a.run(run_in_term(buf_name, cmd, cwd))
+end)
+
+local test_nearest = with_validate_file_path(function(file_path)
     local cwd = vim.fn.expand("%:p:h")
     local file_name = vim.fn.expand("%:t")
 
@@ -174,9 +196,9 @@ local test_nearest = function()
         return
     end
 
-    local buf_name = get_buffer_name(vim.fn.expand("%"))
+    local buf_name = get_buffer_name(file_path)
     a.run(run_in_term(buf_name, cmd, cwd, pattern))
-end
+end)
 
 nnoremap('t<C-f>', test_file)
 nnoremap('t<C-n>', test_nearest)
