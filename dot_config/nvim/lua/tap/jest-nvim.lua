@@ -2,11 +2,20 @@ local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async_lib.async")
 
+local escape_terminal_keys = function(keys)
+    -- Escape characters with special meaning in shells
+    return vim.fn.escape(keys, "*")
+end
+
 local get_test_command = function(file_name, pattern)
     local cmd = {"yarn", "exec", "jest", file_name, "--", "--watch"}
     if pattern then
         return vim.tbl_flatten({
-            cmd, {"--testNamePattern", string.format('"%s"', pattern)}
+            cmd,
+            {
+                "--testNamePattern",
+                string.format('"%s"', escape_terminal_keys(pattern))
+            }
         })
     end
 
@@ -36,8 +45,8 @@ local send_keys = a.async(function(keys)
     if keys == nil then return end
 
     a.await(schedule(function()
-        -- TODO: escape keys sent somehow
-        vim.api.nvim_chan_send(vim.b.terminal_job_id, keys)
+        vim.api
+            .nvim_chan_send(vim.b.terminal_job_id, escape_terminal_keys(keys))
     end))
 
     a.await(sleep(250))
