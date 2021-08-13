@@ -36,6 +36,7 @@ return require('packer').startup(function(use)
     use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
     use 'tpope/vim-sleuth'                              -- Detect indentation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
+    use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
     -- LuaFormatter on
 
     -- Interactive neovim scratchpad for lua
