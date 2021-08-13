@@ -1,6 +1,7 @@
 local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async_lib.async")
+local log = require("plenary.log")
 
 local escape_terminal_keys = function(keys)
     -- Escape characters with special meaning in shells
@@ -79,11 +80,18 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
     end))
 end)
 
-local function find_in_children(node, buf, predicate)
+local function find_in_children(node, buf, predicate, max_depth)
+    max_depth = max_depth or 5
+
+    if max_depth == 0 then
+        log.warn("find_in_children max_depth reached, aborting")
+        return nil
+    end
+
     for child_node in node:iter_children() do
         if predicate(child_node) then return child_node end
 
-        local ret = find_in_children(child_node, buf, predicate)
+        local ret = find_in_children(child_node, buf, predicate, max_depth - 1)
         if ret ~= nil then return ret end
     end
 
@@ -99,7 +107,7 @@ local get_test_expression = function(node, buf)
         return child_node:type() == "identifier" and
                    vim.tbl_contains(target_text, vim.treesitter
                                         .get_node_text(child_node, buf))
-    end)
+    end, 1)
 
     return child_test_node ~= nil and node or nil
 end
@@ -141,10 +149,10 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         local str_node = find_in_children(node, buf, function(child_node)
             -- TODO: handle variables as test strings
             return child_node:type() == "string"
-        end)
+        end, 3)
 
         if str_node == nil then
-            print("warning: found child of test node that isn't string")
+            log.warn("couldn't find child string of test node")
             return ""
         end
 
@@ -178,7 +186,7 @@ local with_validate_file_path = function(fn)
         local file_path = vim.fn.expand("%")
 
         if vim.regex(file_pattern):match_str(file_path) ~= nil then
-            print("not a test file")
+            log.info("not a test file")
             return
         end
 
@@ -204,7 +212,7 @@ local test_nearest = with_validate_file_path(function(file_path)
     local cmd = get_test_command(file_name, pattern)
 
     if pattern == nil then
-        print("couldn't find pattern")
+        log.info("couldn't find pattern")
         return
     end
 
