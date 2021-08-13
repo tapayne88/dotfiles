@@ -79,59 +79,38 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
     end))
 end)
 
-local node_is_test_function = function(node, buf)
-    local target_text = {"test", "it", "describe"}
-
-    return node:type() == "identifier" and
-               vim.tbl_contains(target_text,
-                                vim.treesitter.get_node_text(node, buf))
-end
-
-local function find_in_children(node, buf, target_fn)
+local function find_in_children(node, buf, predicate)
     for child_node in node:iter_children() do
-        if target_fn(child_node, buf) then return child_node end
+        if predicate(child_node) then return child_node end
 
-        local ret = find_in_children(child_node, buf, target_fn)
+        local ret = find_in_children(child_node, buf, predicate)
         if ret ~= nil then return ret end
     end
 
     return nil
 end
 
-local node_is_target = function(node, buf, target_fn)
-    if node:type() ~= "call_expression" then return end
+local get_test_expression = function(node, buf)
+    local target_text = {"test", "it", "describe"}
 
-    return find_in_children(node, buf, target_fn)
+    if node:type() ~= "call_expression" then return nil end
+
+    local child_test_node = find_in_children(node, buf, function(child_node)
+        return child_node:type() == "identifier" and
+                   vim.tbl_contains(target_text, vim.treesitter
+                                        .get_node_text(child_node, buf))
+    end)
+
+    return child_test_node ~= nil and node or nil
 end
 
-local tbl_reverse = function(tbl)
-    local rev_tbl = {}
-    for i = #tbl, 1, -1 do table.insert(rev_tbl, tbl[i]) end
-    return rev_tbl
-end
-
-local get_pattern_from_test_node = function(buf, nodes)
-    local test_strings = vim.tbl_map(function(node)
-        local str_node = find_in_children(node, buf, function(child_node)
-            return child_node:type() == "string"
-        end)
-
-        return
-            str_node and vim.treesitter.get_node_text(str_node:child(1), buf) or
-                nil
-    end, nodes)
-
-    return table.concat(tbl_reverse(test_strings), " ")
-end
-
-local function find_test_nodes(buf, root, node, acc)
+local function find_in_ancestors(node, buf, root, selector, acc)
     if root == node then return acc end
 
-    if node_is_target(node, buf, node_is_test_function) then
-        table.insert(acc, node)
-    end
+    local target_node = selector(node, buf)
+    if target_node ~= nil then table.insert(acc, target_node) end
 
-    return find_test_nodes(buf, root, node:parent(), acc)
+    return find_in_ancestors(node:parent(), buf, root, selector, acc)
 end
 
 local get_test_nodes_from_cursor = function(buf, cursor)
@@ -145,10 +124,34 @@ local get_test_nodes_from_cursor = function(buf, cursor)
         local root = tree:root()
         if root then
             local node = root:descendant_for_range(line, col, line, col)
-            ret = find_test_nodes(buf, root, node, {})
+            ret = find_in_ancestors(node, buf, root, get_test_expression, {})
         end
     end)
     return ret
+end
+
+local tbl_reverse = function(tbl)
+    local rev_tbl = {}
+    for i = #tbl, 1, -1 do table.insert(rev_tbl, tbl[i]) end
+    return rev_tbl
+end
+
+local get_pattern_from_test_nodes = function(nodes, buf)
+    local test_strings = vim.tbl_map(function(node)
+        local str_node = find_in_children(node, buf, function(child_node)
+            -- TODO: handle variables as test strings
+            return child_node:type() == "string"
+        end)
+
+        if str_node == nil then
+            print("warning: found child of test node that isn't string")
+            return ""
+        end
+
+        return vim.treesitter.get_node_text(str_node:child(1), buf)
+    end, nodes)
+
+    return table.concat(tbl_reverse(test_strings), " ")
 end
 
 local get_nearest_pattern = function()
@@ -158,7 +161,7 @@ local get_nearest_pattern = function()
 
     if #test_nodes == 0 then return nil end
 
-    return get_pattern_from_test_node(bufnr, test_nodes)
+    return get_pattern_from_test_nodes(test_nodes, bufnr)
 end
 
 local regex_escape = function(regex)
