@@ -1,12 +1,11 @@
 local inoremap = require('tap.utils').inoremap
 local termcodes = require('tap.utils').termcodes
-local augroup = require('tap.utils').augroup
 
 -- Avoid showing message extra message when using completion
-vim.o.shortmess = vim.o.shortmess .. "c"
+vim.opt.shortmess:append("c")
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
+vim.opt.completeopt = {"menuone", "noselect"}
 
 _G.completion_nvim = {}
 
