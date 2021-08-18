@@ -37,9 +37,10 @@ local function set_colorscheme(use_light_theme)
         vim.g.use_light_theme = false
         set_terminal_colorscheme("nord")
 
-        vim.g.nvcode_termcolors = 256
+        vim.g.nightfox_style = "nordfox"
+        vim.g.nightfox_italic_comments = 1
         vim.o.background = "dark"
-        vim.cmd [[colorscheme nord]]
+        vim.cmd [[colorscheme nightfox]]
     end
 end
 

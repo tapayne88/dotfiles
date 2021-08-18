@@ -26,7 +26,7 @@ return require('packer').startup(function(use)
     use {'alker0/chezmoi.vim', opt = true}
 
     -- LuaFormatter off
-    use 'ChristianChiarulli/nvcode-color-schemes.vim'   -- treesitter colorscheme
+    use 'EdenEast/nightfox.nvim'                        -- treesitter colorscheme
     use 'folke/tokyonight.nvim'                         -- light colorscheme
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
