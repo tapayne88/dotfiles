@@ -39,10 +39,9 @@ Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
 ### MacOS
 
 ```console
-❯ nix-channel --list
-home-manager https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz
-nixpkgs https://nixos.org/channels/nixpkgs-21.05-darwin
-nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
+nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz home-manager; \
+nix-channel --add https://nixos.org/channels/nixpkgs-21.05-darwin nixpkgs; \
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable;
 ```
 
 ### \*nix
@@ -50,11 +49,10 @@ nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 Note, nix on crostini needs the nixgl channel so `nixGL` can be installed. This enables kitty terminal and probably other nix installed openGL programs to work.
 
 ```console
-❯ nix-channel  --list
-home-manager https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz
-nixgl https://github.com/guibou/nixGL/archive/main.tar.gz
-nixpkgs https://nixos.org/channels/nixos-21.05
-nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
+nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz home-manager; \
+nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl; \
+nix-channel --add https://nixos.org/channels/nixos-21.05 nixpkgs; \
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable;
 ```
 
 ## 4. Generate ssh key
