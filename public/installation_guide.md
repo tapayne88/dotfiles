@@ -52,7 +52,7 @@ Note, nix on crostini needs the nixgl channel so `nixGL` can be installed. This 
 ```console
 ❯ nix-channel  --list
 home-manager https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz
-nixgl https://github.com/guibou/nixGL/archive/master.tar.gz
+nixgl https://github.com/guibou/nixGL/archive/main.tar.gz
 nixpkgs https://nixos.org/channels/nixos-21.05
 nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
 ```
