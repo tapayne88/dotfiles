@@ -11,9 +11,9 @@ local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
 
 gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
 
-local section_separators = vim.env.TERM_EMU == "kitty" and {"", ""} or
+local section_separators = vim.env.TERM == "xterm-kitty" and {"", ""} or
                                {"", ""}
-local component_separators = vim.env.TERM_EMU == "kitty" and {'\\', '\\'} or
+local component_separators = vim.env.TERM == "xterm-kitty" and {'\\', '\\'} or
                                  {"|", "|"}
 
 local function theme_wrapper(themes)

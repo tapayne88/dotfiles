@@ -4,8 +4,9 @@ set -sg escape-time 0
 set -g allow-rename off
 set -g default-command ""
 
-if-shell '[ $TERM_EMU = "kitty" ]' {
-  set -g default-terminal "xterm-kitty"
+set -g default-terminal "${TERM}"
+
+if-shell '[ $TERM = "xterm-kitty" ]' {
   set -sa terminal-overrides ',xterm-256color:RGB'
   set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
   set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
@@ -72,7 +73,7 @@ set -g message-command-style fg=cyan,bg=brightblack
 # Status bar
 set -g status on
 set -g status-left-length 15
-if-shell '[ $TERM_EMU = "kitty" ]' {
+if-shell '[ $TERM = "xterm-kitty" ]' {
   set -g status-left "#[fg=black,bg=blue,bold]  #S "
   set -g status-right "#{prefix_highlight}#[fg=black,bg=brightblack]#[fg=white,bg=brightblack,nobold,noitalics,nounderscore] %a %d-%m-%Y #[fg=white,bg=brightblack,nobold,noitalics,nounderscore]/#[fg=white,bg=brightblack] %H:%M  #[fg=brightblack,bg=cyan]#[fg=black,bg=cyan] #H #{?#{battery_percentage},#[fg=cyan#,bg=brightblack]#[fg=yellow#,bg=brightblack] #{battery_percentage} ,}"
 } {
@@ -84,7 +85,7 @@ set -g status-right-length 150
 
 # Window
 set -g window-status-separator ""
-if-shell '[ $TERM_EMU = "kitty" ]' {
+if-shell '[ $TERM = "xterm-kitty" ]' {
   set -g window-status-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I  #W #[fg=black,bg=brightblack]"
   set -g window-status-current-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I #[fg=cyan,bg=brightblack]#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #W [#{window_panes}] "
   set -g window-status-bell-style "italics,bold"
@@ -139,7 +140,7 @@ bind -T copy-mode-vi 'v' send -X begin-selection
 set -g @prefix_highlight_fg black
 set -g @prefix_highlight_bg brightcyan
 set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow'
-if-shell '[ $TERM_EMU = "kitty" ]' {
+if-shell '[ $TERM = "xterm-kitty" ]' {
   set -g @prefix_highlight_output_prefix ' '
   set -g @prefix_highlight_output_suffix ' '
 } {
