@@ -21,5 +21,5 @@ inoremap("<C-k>", "v:lua.completion_nvim.smart_pumvisible('<C-p>', '<C-k>')",
 
 vim.g.coq_settings = {
     auto_start = true,
-    keymap = {recommended = false, bigger_preview = ""}
+    keymap = {recommended = false, bigger_preview = "", jump_to_mark = ""}
 }
