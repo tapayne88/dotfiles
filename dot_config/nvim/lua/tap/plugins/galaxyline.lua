@@ -213,7 +213,7 @@ gl.section.right = {
     }, {
         LineInfo = {
             provider = 'LineColumn',
-            icon = " ≡ ",
+            icon = "  ",
             condition = condition.hide_in_width,
             highlight = theme.primary.highlight,
             separator = component_separators[2],
@@ -282,7 +282,7 @@ gl.section.short_line_right = {
     }, {
         LineInfoInactive = {
             provider = 'LineColumn',
-            icon = " ≡ ",
+            icon = "  ",
             condition = condition.hide_in_width,
             highlight = theme.secondary.highlight,
             separator = component_separators[2],
