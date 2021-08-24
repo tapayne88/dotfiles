@@ -46,8 +46,10 @@ end
 set_colorscheme(get_term_theme() == "kitty_tokyonight_day")
 
 local function apply_user_highlights()
-    highlight('Search', {guibg = color("blue2"), guifg = color("bg")})
-    highlight('IncSearch', {guibg = color("blue2"), guifg = color("bg")})
+    highlight('Search',
+              {guibg = color("blue2"), guifg = color("bg"), gui = "NONE"})
+    highlight('IncSearch',
+              {guibg = color("blue2"), guifg = color("bg"), gui = "NONE"})
 
     -- Treesitter overrides
     highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
