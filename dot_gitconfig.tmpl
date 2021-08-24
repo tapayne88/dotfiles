@@ -79,7 +79,7 @@
   prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
-  which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1\"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
+  which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1 \"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
 
 [diff]
   renameLimit = 5000
