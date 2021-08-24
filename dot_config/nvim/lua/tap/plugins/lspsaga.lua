@@ -4,14 +4,11 @@ local utils = require("tap.utils")
 local module = {}
 
 local apply_user_highlights = function()
-    utils.highlight('LspSagaDiagnosticBorder',
-                    {link = 'LspSagaDefPreviewBorder'})
-    utils.highlight('LspSagaDiagnosticHeader',
-                    {link = 'LspSagaDefPreviewBorder'})
+    utils.highlight('LspSagaDiagnosticBorder', {link = 'LspFloatWinBorder'})
+    utils.highlight('LspSagaDiagnosticHeader', {link = 'LspFloatWinBorder'})
     utils.highlight('LspSagaDiagnosticTruncateLine',
-                    {link = 'LspSagaDefPreviewBorder'})
-    utils.highlight('LspSagaSignatureHelpBorder',
-                    {link = 'LspSagaDefPreviewBorder'})
+                    {link = 'LspFloatWinBorder'})
+    utils.highlight('LspSagaSignatureHelpBorder', {link = 'LspFloatWinBorder'})
 
     utils.highlight("LspDiagnosticsFloatingError",
                     {guifg = utils.lsp_colors("error")})
