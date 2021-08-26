@@ -1,3 +1,8 @@
+local safe_call = function(fn)
+    local success, value = pcall(fn)
+    return success and value or nil
+end
+
 -- Improve scrolling performance with cursorline
 vim.opt.lazyredraw = true
 
@@ -45,7 +50,9 @@ vim.opt.cursorline = true
 vim.opt.colorcolumn = '80'
 vim.opt.signcolumn = 'yes'
 
-vim.opt.grepprg = table.concat(require("telescope.config").values.vimgrep_arguments, " ")
+vim.opt.grepprg = table.concat(safe_call(function()
+    return require("telescope.config").values.vimgrep_arguments
+end) or {}, " ")
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
