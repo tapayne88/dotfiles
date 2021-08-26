@@ -145,19 +145,7 @@ return require('packer').startup(function(use)
     }
 
     -- Auto completion plugin for nvim
-    use {
-        'hrsh7th/nvim-compe',
-        config = [[require("tap.plugins.nvim-compe")]],
-        disable = true
-    }
-    use {
-        'ms-jpq/coq_nvim',
-        branch = 'coq',
-        config = [[require("tap.plugins.coq_nvim")]],
-        requires = {
-            {'ms-jpq/coq.artifacts', branch = 'artifacts'} -- 9000+ Snippets
-        }
-    }
+    use {'hrsh7th/nvim-compe', config = [[require("tap.plugins.nvim-compe")]]}
 
     -- statusline in lua
     use {

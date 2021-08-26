@@ -173,7 +173,7 @@ function module.lspconfig_server_setup(server_name, config)
 
     if (server == nil) then return end
 
-    server.setup(require("coq")().lsp_ensure_capabilities(config))
+    server.setup(config)
     server.manager.try_add_wrapper()
 
     return server
