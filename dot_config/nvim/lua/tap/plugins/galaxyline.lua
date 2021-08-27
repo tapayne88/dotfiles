@@ -4,6 +4,7 @@ local fileinfo = require('galaxyline.provider_fileinfo')
 local extension = require('galaxyline.provider_extensions')
 local condition = require('galaxyline.condition')
 local color = require("tap.utils").color
+local colors = require("tap.utils").colors
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
@@ -18,41 +19,43 @@ local component_separators = vim.env.TERM == "xterm-kitty" and {'\\', '\\'} or
 
 local function theme_wrapper(themes)
     return function()
-        local color_names = (vim.g.use_light_theme and themes.light) or
-                                themes.dark
-
-        return vim.tbl_map(color, color_names)
+        return (vim.g.use_light_theme and themes.light) or themes.dark
     end
 end
 
 local theme = {
-    mode = {highlight = theme_wrapper({dark = {"bg"}, light = {"bg"}})},
+    mode = {
+        highlight = theme_wrapper({
+            dark = {colors.nord.nord0_gui},
+            light = {colors.tokyo.bg}
+        })
+    },
     primary = {
         highlight = theme_wrapper({
-            dark = {"fg", "dark1"},
-            light = {"blue7", "fg_dark"}
+            dark = {colors.nord.nord4_gui, colors.nord.nord1_gui},
+            light = {colors.tokyo.blue7, colors.tokyo.fg_dark}
         }),
         highlight_alt = theme_wrapper({
-            dark = {"dark1", "fg"},
-            light = {"fg_dark", "blue7"}
+            dark = {colors.nord.nord1_gui, colors.nord.nord4_gui},
+            light = {colors.tokyo.fg_dark, colors.tokyo.blue7}
         }),
         separator_highlight = theme_wrapper({
-            dark = {"dark1", "dark3"},
-            light = {"fg_dark", "fg"}
+            dark = {colors.nord.nord1_gui, colors.nord.nord3_gui},
+            light = {colors.tokyo.fg_dark, colors.tokyo.fg}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {"fg", "dark1"},
-            light = {"blue7", "fg_dark"}
+            dark = {colors.nord.nord4_gui, colors.nord.nord1_gui},
+            light = {colors.tokyo.blue7, colors.tokyo.fg_dark}
         })
     },
     secondary = {
         highlight = theme_wrapper({
-            dark = {"fg", "dark3"},
-            light = {"blue7", "fg"}
+            dark = {colors.nord.nord4_gui, colors.nord.nord3_gui},
+            light = {colors.tokyo.blue7, colors.tokyo.fg}
         }),
         sub_separator_highlight = theme_wrapper({
-            dark = {"fg", "dark3"},
-            light = {"blue7", "fg"}
+            dark = {colors.nord.nord4_gui, colors.nord.nord3_gui},
+            light = {colors.tokyo.blue7, colors.tokyo.fg}
         })
     }
 }
@@ -65,20 +68,20 @@ end
 
 local function mode_map(name)
     local modes = {
-        ['n'] = {'NORMAL', color("blue1")},
-        ['i'] = {'INSERT', color("fg")},
-        ['r'] = {'REPLACE', color("yellow")},
-        ['R'] = {'REPLACE', color("yellow")},
-        ['v'] = {'VISUAL', color("cyan")},
-        ['V'] = {'V-LINE', color("cyan")},
-        ['c'] = {'COMMAND', color("blue1")},
-        ['s'] = {'SELECT', color("blue1")},
-        ['S'] = {'S-LINE', color("blue1")},
-        ['t'] = {'TERMINAL', color("blue1")},
-        [''] = {'V-BLOCK', color("cyan")},
-        [''] = {'S-BLOCK', color("blue1")},
-        ['Rv'] = {'VIRTUAL', color("red")},
-        ['rm'] = {'--MORE', color("red")}
+        ['n'] = {'NORMAL', color({dark = "nord8_gui", light = "blue"})},
+        ['i'] = {'INSERT', color({dark = "nord4_gui", light = "fg"})},
+        ['r'] = {'REPLACE', color({dark = "nord13_gui", light = "yellow"})},
+        ['R'] = {'REPLACE', color({dark = "nord13_gui", light = "yellow"})},
+        ['v'] = {'VISUAL', color({dark = "nord7_gui", light = "cyan"})},
+        ['V'] = {'V-LINE', color({dark = "nord7_gui", light = "cyan"})},
+        ['c'] = {'COMMAND', color({dark = "nord8_gui", light = "blue"})},
+        ['s'] = {'SELECT', color({dark = "nord8_gui", light = "blue"})},
+        ['S'] = {'S-LINE', color({dark = "nord8_gui", light = "blue"})},
+        ['t'] = {'TERMINAL', color({dark = "nord8_gui", light = "blue"})},
+        [''] = {'V-BLOCK', color({dark = "nord7_gui", light = "cyan"})},
+        [''] = {'S-BLOCK', color({dark = "nord8_gui", light = "blue"})},
+        ['Rv'] = {'VIRTUAL', color({dark = "nord11_gui", light = "red"})},
+        ['rm'] = {'--MORE', color({dark = "nord11_gui", light = "red"})}
     }
     return modes[name]
 end

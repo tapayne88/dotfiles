@@ -68,9 +68,12 @@ nnoremap("<leader>ch",
          {name = "Command History"})
 
 local function apply_user_highlights()
-    highlight("TelescopeBorder", {guifg = color("dark3")})
-    highlight("TelescopePromptBorder", {guifg = color("blue3")})
-    highlight("TelescopeMatching", {guifg = color("yellow")})
+    highlight("TelescopeBorder",
+              {guifg = color({dark = "nord3_gui", light = "dark3"})})
+    highlight("TelescopePromptBorder",
+              {guifg = color({dark = "nord10_gui", light = "blue3"})})
+    highlight("TelescopeMatching",
+              {guifg = color({dark = "nord13_gui", light = "yellow"})})
 end
 
 augroup("TelescopeHighlights", {

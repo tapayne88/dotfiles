@@ -1,35 +1,19 @@
 local api = vim.api
 local Job = require('plenary.job')
 local wk = require("which-key")
-local tokyo_setup = require("tokyonight.colors").setup
+local nord = require("nord.colors")
+local tokyo_setup = require("tokyonight.colors").setup {style = "day"}
 
 local utils = {}
 
-local nord_colors = {
-    bg = "#2E3440", -- nord0
-    dark1 = "#3B4252", -- nord1
-    dark2 = "#434C5E", -- nord2
-    dark3 = "#4C566A", -- nord3
-    fg = "#D8DEE9", -- nord4
-    white1 = "#E5E9F0", -- nord5
-    white2 = "#ECEFF4", -- nord6
-    cyan = "#8FBCBB", -- nord7
-    blue1 = "#88C0D0", -- nord8
-    blue2 = "#81A1C1", -- nord9
-    blue3 = "#5E81AC", -- nord10
-    red = "#BF616A", -- nord11
-    orange = "#D08770", -- nord12
-    yellow = "#EBCB8B", -- nord13
-    green = "#A3BE8C", -- nord14
-    magenta = "#B48EAD" -- nord15
-}
+-- Export underlying theme colors
+utils.colors = {nord = nord, tokyo = tokyo_setup}
 
-local tokyo_colors = tokyo_setup {style = "day"}
+function utils.color(color)
+    if type(color) ~= "table" then color = {light = color, dark = color} end
 
-function utils.color(name)
-    local colorscheme = vim.g.use_light_theme == true and tokyo_colors or
-                            nord_colors
-    return colorscheme[name]
+    return vim.g.use_light_theme == true and utils.colors.tokyo[color.light] or
+               utils.colors.nord[color.dark]
 end
 
 utils.lsp_symbols = {
@@ -43,10 +27,10 @@ utils.lsp_symbols = {
 
 utils.lsp_colors = function(type)
     local color_map = {
-        error = utils.color("red"),
-        warning = utils.color("yellow"),
-        info = utils.color("fg"),
-        hint = utils.color("blue3")
+        error = utils.color({dark = "nord11_gui", light = "red"}),
+        warning = utils.color({dark = "nord13_gui", light = "yellow"}),
+        info = utils.color({dark = "nord4_gui", light = "fg"}),
+        hint = utils.color({dark = "nord10_gui", light = "blue2"})
     }
     return color_map[type]
 end
