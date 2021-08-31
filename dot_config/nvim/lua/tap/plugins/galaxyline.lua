@@ -17,46 +17,52 @@ local section_separators = vim.env.TERM == "xterm-kitty" and {"", ""} or
 local component_separators = vim.env.TERM == "xterm-kitty" and {'\\', '\\'} or
                                  {"|", "|"}
 
-local function theme_wrapper(themes)
-    return function()
-        return (vim.g.use_light_theme and themes.light) or themes.dark
-    end
-end
-
 local theme = {
     mode = {
-        highlight = theme_wrapper({
-            dark = {colors.nord.nord0_gui},
-            light = {colors.tokyo.bg}
-        })
+        highlight = function()
+            return {color({dark = "nord0_gui", light = "bg"})}
+        end
     },
     primary = {
-        highlight = theme_wrapper({
-            dark = {colors.nord.nord4_gui, colors.nord.nord1_gui},
-            light = {colors.tokyo.blue7, colors.tokyo.fg_dark}
-        }),
-        highlight_alt = theme_wrapper({
-            dark = {colors.nord.nord1_gui, colors.nord.nord4_gui},
-            light = {colors.tokyo.fg_dark, colors.tokyo.blue7}
-        }),
-        separator_highlight = theme_wrapper({
-            dark = {colors.nord.nord1_gui, colors.nord.nord3_gui},
-            light = {colors.tokyo.fg_dark, colors.tokyo.fg}
-        }),
-        sub_separator_highlight = theme_wrapper({
-            dark = {colors.nord.nord4_gui, colors.nord.nord1_gui},
-            light = {colors.tokyo.blue7, colors.tokyo.fg_dark}
-        })
+        highlight = function()
+            local c = {
+                color({dark = "nord4_gui", light = "blue7"}),
+                color({dark = "nord1_gui", light = "fg_dark"})
+            }
+            return c
+        end,
+        highlight_alt = function()
+            return {
+                color({dark = "nord1_gui", light = "fg_dark"}),
+                color({dark = "nord4_gui", light = "blue7"})
+            }
+        end,
+        separator_highlight = function()
+            return {
+                color({dark = "nord1_gui", light = "fg_dark"}),
+                color({dark = "nord3_gui", light = "fg"})
+            }
+        end,
+        sub_separator_highlight = function()
+            return {
+                color({dark = "nord4_gui", light = "blue7"}),
+                color({dark = "nord1_gui", light = "fg_dark"})
+            }
+        end
     },
     secondary = {
-        highlight = theme_wrapper({
-            dark = {colors.nord.nord4_gui, colors.nord.nord3_gui},
-            light = {colors.tokyo.blue7, colors.tokyo.fg}
-        }),
-        sub_separator_highlight = theme_wrapper({
-            dark = {colors.nord.nord4_gui, colors.nord.nord3_gui},
-            light = {colors.tokyo.blue7, colors.tokyo.fg}
-        })
+        highlight = function()
+            return {
+                color({dark = "nord4_gui", light = "blue7"}),
+                color({dark = "nord3_gui", light = "fg"})
+            }
+        end,
+        sub_separator_highlight = function()
+            return {
+                color({dark = "nord4_gui", light = "blue7"}),
+                color({dark = "nord3_gui", light = "fg"})
+            }
+        end
     }
 }
 
