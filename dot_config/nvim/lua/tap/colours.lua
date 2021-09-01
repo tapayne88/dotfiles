@@ -120,3 +120,7 @@ apply_user_highlights()
 command({
     "ToggleColor", function() set_colorscheme(not vim.g.use_light_theme) end
 })
+command({
+    "RefreshColor",
+    function() set_colorscheme(get_term_theme() == "kitty_tokyonight_day") end
+})
