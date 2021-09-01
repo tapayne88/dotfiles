@@ -82,9 +82,9 @@ command_echo() {
   THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
   THEME=$(cat $THEME_FNAME)
   if [ "$THEME" = "nord" ]; then
-    msg "dark"
+    echo "dark"
   else
-    msg "light"
+    echo "light"
   fi
 }
 
@@ -102,7 +102,6 @@ command_toggle() {
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
-  tmux setenv THEME $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -114,7 +113,6 @@ command_light() {
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
-  tmux setenv THEME $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -126,7 +124,6 @@ command_dark() {
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
-  tmux setenv THEME $THEME
   tmux source-file ~/.tmux.conf
 }
 
