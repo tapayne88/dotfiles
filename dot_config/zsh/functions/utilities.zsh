@@ -22,8 +22,10 @@ function toggle_color() {
 
   if [ "$THEME" = "nord" ]; then
     THEME="kitty_tokyonight_day"
+    export BAT_THEME="base16"
   else
     THEME="nord"
+    export BAT_THEME="Nord"
   fi
 
   echo $THEME > $THEME_FNAME
