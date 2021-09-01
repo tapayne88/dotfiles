@@ -21,7 +21,7 @@ function toggle_color() {
   local THEME=$(cat $THEME_FNAME)
 
   if [ "$THEME" = "nord" ]; then
-    THEME="kitty_tokyonight_day"
+    THEME="tokyonight_day"
     export BAT_THEME="base16"
   else
     THEME="nord"

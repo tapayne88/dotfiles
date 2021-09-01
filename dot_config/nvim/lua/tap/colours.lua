@@ -40,9 +40,8 @@ local function set_colorscheme(use_light_theme)
     if (use_light_theme) then
         vim.g.use_light_theme = true
         a.run_all({
-            set_kitty_colorscheme("kitty_tokyonight_day"),
-            set_tmux_theme("kitty_tokyonight_day"),
-            persist_theme("kitty_tokyonight_day")
+            set_kitty_colorscheme("tokyonight_day"),
+            set_tmux_theme("tokyonight_day"), persist_theme("tokyonight_day")
         })
 
         vim.o.background = "light"
@@ -60,7 +59,7 @@ local function set_colorscheme(use_light_theme)
     end
 end
 
-set_colorscheme(get_term_theme() == "kitty_tokyonight_day")
+set_colorscheme(get_term_theme() == "tokyonight_day")
 
 local function apply_user_highlights()
     highlight('Search', {
@@ -122,5 +121,5 @@ command({
 })
 command({
     "RefreshColor",
-    function() set_colorscheme(get_term_theme() == "kitty_tokyonight_day") end
+    function() set_colorscheme(get_term_theme() == "tokyonight_day") end
 })
