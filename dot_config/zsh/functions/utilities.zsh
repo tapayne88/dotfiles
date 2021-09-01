@@ -15,21 +15,3 @@ function ctop() {
   # local LOCAL_TERM=$(echo -n "$TERM" | sed -e s/tmux/screen/)
   TERM=xterm-256color command ctop "$@"
 }
-
-function toggle_color() {
-  local THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
-  local THEME=$(cat $THEME_FNAME)
-
-  if [ "$THEME" = "nord" ]; then
-    THEME="tokyonight_day"
-    export BAT_THEME="base16"
-  else
-    THEME="nord"
-    export BAT_THEME="Nord"
-  fi
-
-  echo $THEME > $THEME_FNAME
-  kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
-  tmux setenv THEME $THEME
-  tmux source-file ~/.tmux.conf
-}

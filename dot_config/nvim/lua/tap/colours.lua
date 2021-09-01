@@ -2,7 +2,6 @@ local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
 local command = require("tap.utils").command
-local a = require("plenary.async_lib.async")
 
 local term_theme_fname = vim.fn
                              .expand(vim.env.XDG_CONFIG_HOME .. '/.term_theme')
@@ -13,45 +12,16 @@ local function get_term_theme()
     return nil
 end
 
-local function persist_theme(name) vim.fn.writefile({name}, term_theme_fname) end
-
-local spawn_async = a.wrap(vim.loop.spawn, "vararg")
-
-local tmux_conf = vim.env.HOME .. '/.tmux.conf'
-local set_tmux_theme = a.async(function(name)
-    -- set tmux var
-    a.await(spawn_async('tmux', {args = {'setenv', 'THEME', name}}))
-    -- reload tmux
-    a.await(spawn_async('tmux', {args = {'source-file', tmux_conf}}))
-end)
-
-local set_kitty_colorscheme = a.async(function(name)
-    a.await(spawn_async('kitty', {
-        args = {
-            '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
-            -- '-a', -- update for all windows
-            -- '-c', -- update for new windows
-            string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
-        }
-    }))
-end)
-
 local function set_colorscheme(use_light_theme)
     if (use_light_theme) then
         vim.g.use_light_theme = true
-        a.run_all({
-            set_kitty_colorscheme("tokyonight_day"),
-            set_tmux_theme("tokyonight_day"), persist_theme("tokyonight_day")
-        })
+        vim.loop.spawn("toggle_color", {}, nil)
 
         vim.o.background = "light"
         vim.cmd [[colorscheme tokyonight]]
     else
         vim.g.use_light_theme = false
-        a.run_all({
-            set_kitty_colorscheme("nord"), set_tmux_theme("nord"),
-            persist_theme("nord")
-        })
+        vim.loop.spawn("toggle_color", {}, nil)
 
         vim.g.nord_italic = true
         vim.o.background = "dark"
