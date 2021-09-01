@@ -15,13 +15,13 @@ end
 local function set_colorscheme(use_light_theme)
     if (use_light_theme) then
         vim.g.use_light_theme = true
-        vim.loop.spawn("toggle_color", {}, nil)
+        vim.loop.spawn("term-theme", {args = {"light"}}, nil)
 
         vim.o.background = "light"
         vim.cmd [[colorscheme tokyonight]]
     else
         vim.g.use_light_theme = false
-        vim.loop.spawn("toggle_color", {}, nil)
+        vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
 
         vim.g.nord_italic = true
         vim.o.background = "dark"
