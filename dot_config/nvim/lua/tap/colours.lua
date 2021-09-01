@@ -13,43 +13,46 @@ local function get_term_theme()
     return nil
 end
 
-local function set_term_theme(name) vim.fn.writefile({name}, term_theme_fname) end
+local function persist_theme(name) vim.fn.writefile({name}, term_theme_fname) end
 
 local spawn_async = a.wrap(vim.loop.spawn, "vararg")
 
 local tmux_conf = vim.env.HOME .. '/.tmux.conf'
-local function set_tmux_theme(name)
-    a.run(a.future(function()
-        -- set tmux var
-        a.await(spawn_async('tmux', {args = {'setenv', 'THEME', name}}))
-        -- reload tmux
-        a.await(spawn_async('tmux', {args = {'source-file', tmux_conf}}))
-    end))
-end
+local set_tmux_theme = a.async(function(name)
+    -- set tmux var
+    a.await(spawn_async('tmux', {args = {'setenv', 'THEME', name}}))
+    -- reload tmux
+    a.await(spawn_async('tmux', {args = {'source-file', tmux_conf}}))
+end)
 
-local function set_terminal_colorscheme(name)
-    set_term_theme(name)
-    set_tmux_theme(name)
-    vim.loop.spawn('kitty', {
+local set_kitty_colorscheme = a.async(function(name)
+    a.await(spawn_async('kitty', {
         args = {
             '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
             -- '-a', -- update for all windows
             -- '-c', -- update for new windows
             string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
         }
-    }, nil)
-end
+    }))
+end)
 
 local function set_colorscheme(use_light_theme)
     if (use_light_theme) then
         vim.g.use_light_theme = true
-        set_terminal_colorscheme("kitty_tokyonight_day")
+        a.run_all({
+            set_kitty_colorscheme("kitty_tokyonight_day"),
+            set_tmux_theme("kitty_tokyonight_day"),
+            persist_theme("kitty_tokyonight_day")
+        })
 
         vim.o.background = "light"
         vim.cmd [[colorscheme tokyonight]]
     else
         vim.g.use_light_theme = false
-        set_terminal_colorscheme("nord")
+        a.run_all({
+            set_kitty_colorscheme("nord"), set_tmux_theme("nord"),
+            persist_theme("nord")
+        })
 
         vim.g.nord_italic = true
         vim.o.background = "dark"
