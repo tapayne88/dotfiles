@@ -24,6 +24,10 @@ local function set_terminal_colorscheme(name)
             string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
         }
     }, nil)
+    -- set tmux var
+    vim.loop.spawn('tmux', {args = {'setenv', 'THEME', name}}, nil)
+    -- reload tmux
+    vim.loop.spawn('tmux', {args = {'source-file', '~/.tmux.conf'}}, nil)
 end
 
 local function set_colorscheme(use_light_theme)

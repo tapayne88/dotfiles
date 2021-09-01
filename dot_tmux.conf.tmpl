@@ -21,8 +21,12 @@ set -g focus-events on
 # Source local config file - if it exists
 source-file -q "$HOME/.tmux.local.conf"
 
-# Source tmux "theme"
-source-file -q "$HOME/.tmux/nord.conf"
+# Unset theme should defualt to nord
+if-shell '[ $(tmux showenv THEME) = "THEME=kitty_tokyonight_day" ]' {
+  source-file -q "$HOME/.tmux/tmux_tokyonight_day.conf"
+} {
+  source-file -q "$HOME/.tmux/tmux_nord.conf"
+}
 
 # New window at current path
 bind > new-window -c "#{pane_current_path}"

@@ -28,4 +28,6 @@ function toggle_color() {
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
+  tmux setenv THEME $THEME
+  tmux source-file ~/.tmux.conf
 }
