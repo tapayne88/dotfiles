@@ -2,6 +2,7 @@ local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
 local command = require("tap.utils").command
+local a = require("plenary.async_lib.async")
 
 local term_theme_fname = vim.fn
                              .expand(vim.env.XDG_CONFIG_HOME .. '/.term_theme')
@@ -14,8 +15,21 @@ end
 
 local function set_term_theme(name) vim.fn.writefile({name}, term_theme_fname) end
 
+local spawn_async = a.wrap(vim.loop.spawn, "vararg")
+
+local tmux_conf = vim.env.HOME .. '/.tmux.conf'
+local function set_tmux_theme(name)
+    a.run(a.future(function()
+        -- set tmux var
+        a.await(spawn_async('tmux', {args = {'setenv', 'THEME', name}}))
+        -- reload tmux
+        a.await(spawn_async('tmux', {args = {'source-file', tmux_conf}}))
+    end))
+end
+
 local function set_terminal_colorscheme(name)
     set_term_theme(name)
+    set_tmux_theme(name)
     vim.loop.spawn('kitty', {
         args = {
             '@', '--to', vim.env.KITTY_LISTEN_ON, 'set-colors',
@@ -24,10 +38,6 @@ local function set_terminal_colorscheme(name)
             string.format('~/.config/kitty/colors/%s.conf', name) -- path to kitty colorscheme
         }
     }, nil)
-    -- set tmux var
-    vim.loop.spawn('tmux', {args = {'setenv', 'THEME', name}}, nil)
-    -- reload tmux
-    vim.loop.spawn('tmux', {args = {'source-file', '~/.tmux.conf'}}, nil)
 end
 
 local function set_colorscheme(use_light_theme)
