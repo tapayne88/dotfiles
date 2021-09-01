@@ -21,6 +21,9 @@ set -g focus-events on
 # Source local config file - if it exists
 source-file -q "$HOME/.tmux.local.conf"
 
+# Source tmux "theme"
+source-file -q "$HOME/.tmux/nord.conf"
+
 # New window at current path
 bind > new-window -c "#{pane_current_path}"
 
@@ -60,40 +63,11 @@ bind -r L resize-pane -R 2
 # reload config
 bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
 
-# Colors
-set -g status-style fg=white,bg=black
-set -g pane-border-style fg=brightblack,bg=black
-set -g pane-active-border-style fg=brightblack,bg=black
-set -g display-panes-colour black
-set -g display-panes-active-colour brightblack
-set -g clock-mode-colour cyan
-set -g message-style fg=cyan,bg=brightblack
-set -g message-command-style fg=cyan,bg=brightblack
-
-# Status bar
+# Status bar / window
 set -g status on
 set -g status-left-length 15
-if-shell '[ $TERM = "xterm-kitty" ]' {
-  set -g status-left "#[fg=black,bg=blue,bold]  #S "
-  set -g status-right "#{prefix_highlight}#[fg=black,bg=brightblack]#[fg=white,bg=brightblack,nobold,noitalics,nounderscore] %a %d-%m-%Y #[fg=white,bg=brightblack,nobold,noitalics,nounderscore]/#[fg=white,bg=brightblack] %H:%M  #[fg=brightblack,bg=cyan]#[fg=black,bg=cyan] #H #{?#{battery_percentage},#[fg=cyan#,bg=brightblack]#[fg=yellow#,bg=brightblack] #{battery_percentage} ,}"
-} {
-  set -g status-left "#[fg=black,bg=blue,bold]  #S "
-  set -g status-right "#{prefix_highlight}#[fg=white,bg=brightblack,nobold,noitalics,nounderscore] %a %d-%m-%Y #[fg=white,bg=brightblack,nobold,noitalics,nounderscore]|#[fg=white,bg=brightblack] %H:%M  #[fg=black,bg=cyan] #H #{?#{battery_percentage},#[fg=yellow#,bg=brightblack] #{battery_percentage} ,}"
-}
-
 set -g status-right-length 150
-
-# Window
 set -g window-status-separator ""
-if-shell '[ $TERM = "xterm-kitty" ]' {
-  set -g window-status-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I  #W #[fg=black,bg=brightblack]"
-  set -g window-status-current-format "#[fg=black,bg=brightblack] #[fg=white,bg=brightblack]#I #[fg=cyan,bg=brightblack]#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #W [#{window_panes}] "
-  set -g window-status-bell-style "italics,bold"
-} {
-  set -g window-status-format " #[fg=white,bg=brightblack] #I  #W "
-  set -g window-status-current-format " #[fg=white,bg=brightblack] #I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #W [#{window_panes}] "
-  set -g window-status-bell-style "italics,bold"
-}
 
 # Split creation
 bind '|' split-window -h -c "#{pane_current_path}"
@@ -137,16 +111,6 @@ bind -T copy-mode-vi 'v' send -X begin-selection
 ######################################
 # tmux-plugins/tmux-prefix-highlight #
 ######################################
-set -g @prefix_highlight_fg black
-set -g @prefix_highlight_bg brightcyan
-set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow'
-if-shell '[ $TERM = "xterm-kitty" ]' {
-  set -g @prefix_highlight_output_prefix ' '
-  set -g @prefix_highlight_output_suffix ' '
-} {
-  set -g @prefix_highlight_output_prefix ' '
-  set -g @prefix_highlight_output_suffix ' '
-}
 set -g @prefix_highlight_prefix_prompt '^b'
 set -g @prefix_highlight_show_copy_mode 'on'
 set -g @prefix_highlight_copy_prompt 'copy'
