@@ -73,6 +73,10 @@ parse_params() {
   return 0
 }
 
+set_bat_theme() {
+  echo "--theme=\"$1\"" > "$XDG_CONFIG_HOME/bat/config"
+}
+
 parse_params "$@"
 setup_colors
 
@@ -94,10 +98,10 @@ command_toggle() {
 
   if [ "$THEME" = "nord" ]; then
     THEME="tokyonight_day"
-    export BAT_THEME="base16"
+    set_bat_theme "base16"
   else
     THEME="nord"
-    export BAT_THEME="Nord"
+    set_bat_theme "Nord"
   fi
 
   echo $THEME > $THEME_FNAME
@@ -109,7 +113,7 @@ command_light() {
   THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
 
   THEME="tokyonight_day"
-  export BAT_THEME="base16"
+  set_bat_theme "base16"
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
@@ -120,7 +124,7 @@ command_dark() {
   THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
 
   THEME="nord"
-  export BAT_THEME="Nord"
+  set_bat_theme "Nord"
 
   echo $THEME > $THEME_FNAME
   kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
