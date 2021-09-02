@@ -69,9 +69,14 @@ bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
 
 # Status bar / window
 set -g status on
+set -g status-justify "left"
 set -g status-left-length 15
 set -g status-right-length 150
 set -g window-status-separator ""
+
+# Reset styles
+set -g status-left-style NONE
+set -g status-right-style NONE
 
 # Split creation
 bind '|' split-window -h -c "#{pane_current_path}"
