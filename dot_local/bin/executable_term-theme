@@ -77,6 +77,11 @@ set_bat_theme() {
   echo "--theme=\"$1\"" > "$XDG_CONFIG_HOME/bat/config"
 }
 
+set_kitty_theme() {
+  echo "include $1.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+  kitty @ --to $KITTY_LISTEN_ON set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
+}
+
 parse_params "$@"
 setup_colors
 
@@ -105,7 +110,7 @@ command_toggle() {
   fi
 
   echo $THEME > $THEME_FNAME
-  kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
+  set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -116,7 +121,7 @@ command_light() {
   set_bat_theme "base16"
 
   echo $THEME > $THEME_FNAME
-  kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
+  set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -127,7 +132,7 @@ command_dark() {
   set_bat_theme "Nord"
 
   echo $THEME > $THEME_FNAME
-  kitty @ --to $KITTY_LISTEN_ON set-colors "~/.config/kitty/colors/$THEME.conf"
+  set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
