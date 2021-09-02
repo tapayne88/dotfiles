@@ -2,34 +2,43 @@ local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
 local command = require("tap.utils").command
+local get_os_command_output_async =
+    require("tap.utils").get_os_command_output_async
+local a = require("plenary.async_lib.async")
+local log = require("plenary.log")
 
-local term_theme_fname = vim.fn
-                             .expand(vim.env.XDG_CONFIG_HOME .. '/.term_theme')
+local a_spawn = a.wrap(get_os_command_output_async, 3)
 
-local function get_term_theme()
-    local success, theme = pcall(vim.fn.readfile, term_theme_fname)
-    if success then return theme[1] end
-    return nil
+local get_term_theme = a.async(function()
+    return a.await(a_spawn({"term-theme", "echo"}, nil))[1]
+end)
+
+local set_colorscheme = function(theme_future)
+    -- set nord colorscheme upfront to avoid flickering from "default" scheme
+    vim.cmd [[colorscheme nord]]
+    return a.run(a.future(function()
+        local theme = a.await(theme_future)
+
+        if (theme == "light") then
+            vim.g.use_light_theme = true
+            vim.loop.spawn("term-theme", {args = {"light"}}, nil)
+
+            vim.o.background = "light"
+            vim.cmd [[colorscheme tokyonight]]
+        elseif (theme == "dark") then
+            vim.g.use_light_theme = false
+            vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
+
+            vim.g.nord_italic = true
+            vim.o.background = "dark"
+            vim.cmd [[colorscheme nord]]
+        else
+            log.error("unknown colorscheme " .. theme)
+        end
+    end))
 end
 
-local function set_colorscheme(use_light_theme)
-    if (use_light_theme) then
-        vim.g.use_light_theme = true
-        vim.loop.spawn("term-theme", {args = {"light"}}, nil)
-
-        vim.o.background = "light"
-        vim.cmd [[colorscheme tokyonight]]
-    else
-        vim.g.use_light_theme = false
-        vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
-
-        vim.g.nord_italic = true
-        vim.o.background = "dark"
-        vim.cmd [[colorscheme nord]]
-    end
-end
-
-set_colorscheme(get_term_theme() == "tokyonight_day")
+set_colorscheme(a.future(function() return a.await(get_term_theme()) end))
 
 local function apply_user_highlights()
     highlight('Search', {
@@ -87,9 +96,20 @@ apply_user_highlights()
 -- })
 
 command({
-    "ToggleColor", function() set_colorscheme(not vim.g.use_light_theme) end
+    "ToggleColor", function()
+        set_colorscheme(a.future(function()
+            if a.await(get_term_theme()) == "dark" then
+                return "light"
+            else
+                return "dark"
+            end
+        end))
+    end
 })
 command({
-    "RefreshColor",
-    function() set_colorscheme(get_term_theme() == "tokyonight_day") end
+    "RefreshColor", function()
+        set_colorscheme(a.future(function()
+            return a.await(get_term_theme())
+        end))
+    end
 })

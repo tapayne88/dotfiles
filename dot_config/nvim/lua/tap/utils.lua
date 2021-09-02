@@ -35,7 +35,7 @@ utils.lsp_colors = function(type)
     return color_map[type]
 end
 
-function utils.get_os_command_output_async(cmd, fn, cwd)
+function utils.get_os_command_output_async(cmd, cwd, fn)
     if type(cmd) ~= "table" then
         print('[get_os_command_output_async]: cmd has to be a table')
         return {}

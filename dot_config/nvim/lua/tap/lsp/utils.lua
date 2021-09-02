@@ -133,7 +133,7 @@ function module.on_attach(client, bufnr)
 end
 
 function module.get_bin_path(cmd, fn)
-    return utils.get_os_command_output_async({"yarn", "bin", cmd},
+    return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
                                              function(result, code, signal)
         if code ~= 0 then
             print("`yarn bin " .. cmd .. "` failed")
