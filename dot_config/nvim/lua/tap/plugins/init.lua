@@ -137,7 +137,7 @@ return require('packer').startup(function(use)
     -- native neovim LSP support
     use {
         'neovim/nvim-lspconfig', -- LSP server config
-        config = [[require("tap.lsp")]],
+        config = [[require("tap.plugins.lspconfig")]],
         requires = {
             'kabouzeid/nvim-lspinstall', -- install LSP servers
             'tapayne88/lspsaga.nvim' -- Better LSP diagnostics display
