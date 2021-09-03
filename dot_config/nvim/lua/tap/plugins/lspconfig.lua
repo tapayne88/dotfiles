@@ -1,6 +1,8 @@
 local command = require("tap.utils").command
 local lspsaga = require("tap.plugins.lspsaga")
 
+if vim.env.LSP_DEBUG then vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG) end
+
 command({
     "LspInstalledServers",
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
