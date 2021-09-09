@@ -160,9 +160,11 @@ local publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
 
 function module.on_publish_diagnostics(prefix)
     return function(err, method, params, client_id, bufnr, config)
-        vim.tbl_map(function(value)
-            value.message = prefix .. value.message
-        end, params.diagnostics)
+        if params.diagnostics ~= nil then
+            vim.tbl_map(function(value)
+                value.message = prefix .. value.message
+            end, params.diagnostics)
+        end
 
         publish_diagnostics(err, method, params, client_id, bufnr, config)
     end
