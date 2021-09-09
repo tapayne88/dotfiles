@@ -5,7 +5,7 @@
 # This way you can customize which branches should be skipped when
 # prepending commit message.
 if [ -z "$BRANCHES_TO_SKIP" ]; then
-  BRANCHES_TO_SKIP=(master release)
+  BRANCHES_TO_SKIP=(master release main)
 fi
 
 # BRANCH_NAME from git, then
