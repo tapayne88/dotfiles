@@ -27,6 +27,7 @@ function module.setup()
         handlers = {
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[" .. server_name .. "] "),
+            -- No longer works
             ["window/logMessage"] = function(_, _, result, client_id)
                 if result == nil or result.message == nil then
                     return
@@ -52,12 +53,12 @@ function module.setup()
         },
         cmd = vim.tbl_flatten({
             config.default_config.cmd,
-            -- need verbose log level to get telemetry window/logMessage messages (needed above)
-            {"--log-level", "4"},
+            vim.env.LSP_DEBUG and {"--log-level", "4"} or {},
             {
                 "--tsserver-log-file",
                 vim.env.XDG_CACHE_HOME .. "/nvim/tsserver.log"
-            }, {"--tsserver-log-verbosity", "verbose"}
+            },
+            vim.env.LSP_DEBUG and {"--tsserver-log-verbosity", "verbose"} or {}
         }),
         on_attach = function(client, bufnr)
             client.resolved_capabilities.document_formatting = false
