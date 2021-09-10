@@ -27,8 +27,7 @@ function module.setup()
         handlers = {
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[" .. server_name .. "] "),
-            -- No longer works
-            ["window/logMessage"] = function(_, _, result, client_id)
+            ["window/logMessage"] = function(_, result, header)
                 if result == nil or result.message == nil then
                     return
                 end
@@ -48,12 +47,11 @@ function module.setup()
 
                 if body.payload.version == nil then return end
 
-                set_tsc_version(client_id, body.payload.version)
+                set_tsc_version(header.client_id, body.payload.version)
             end
         },
         cmd = vim.tbl_flatten({
-            config.default_config.cmd,
-            vim.env.LSP_DEBUG and {"--log-level", "4"} or {},
+            config.default_config.cmd, {"--log-level", "4"},
             {
                 "--tsserver-log-file",
                 vim.env.XDG_CACHE_HOME .. "/nvim/tsserver.log"
