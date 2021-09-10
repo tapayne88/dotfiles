@@ -28,6 +28,10 @@ function module.setup()
             ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
                 "[" .. server_name .. "] "),
             ["window/logMessage"] = function(_, _, result, client_id)
+                if result == nil or result.message == nil then
+                    return
+                end
+
                 local msg = result.message:match(
                                 "%[tsclient%] processMessage (.*)")
 
