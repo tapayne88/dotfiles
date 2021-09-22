@@ -9,16 +9,16 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
+function prepend_path {
+  for p in $@; do
+    if (test -d $p); then
+      export PATH="$p:$PATH"
+    fi
+  done
+}
+
 # executable search path (last to first order)
-PATHS=(
-  /usr/local/bin
-  /usr/local/sbin
-)
-for p in $PATHS; do
-  if (test -d $p); then
-    export PATH="$p:$PATH"
-  fi
-done
+prepend_path "/usr/local/bin" "/usr/local/sbin"
 
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
@@ -119,7 +119,7 @@ antigen apply
 sourceOPSession
 
 # Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
-export PATH="$HOME/.local/bin:$PATH"
+prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
 
 # Need to run this after oh-my-zsh lib/completion as it resets it
 # for the benefit of macOS
