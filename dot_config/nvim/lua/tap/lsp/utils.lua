@@ -20,56 +20,52 @@ function module.format()
 end
 
 local apply_user_highlights = function()
-    utils.highlight("LspDiagnosticsDefaultError", {guifg = "none"})
-    utils.highlight("LspDiagnosticsDefaultWarning", {guifg = "none"})
-    utils.highlight("LspDiagnosticsDefaultInformation", {guifg = "none"})
-    utils.highlight("LspDiagnosticsDefaultHint", {guifg = "none"})
-
-    utils.highlight("LspDiagnosticsUnderlineError", {
+    utils.highlight("DiagnosticUnderlineError", {
         guifg = "none",
         gui = "undercurl",
         guisp = utils.lsp_colors("error")
     })
-    utils.highlight("LspDiagnosticsUnderlineWarning", {
+    utils.highlight("DiagnosticUnderlineWarn", {
         guifg = "none",
         gui = "undercurl",
         guisp = utils.lsp_colors("warning")
     })
-    utils.highlight("LspDiagnosticsUnderlineInformation", {
+    utils.highlight("DiagnosticUnderlineInfo", {
         guifg = "none",
         gui = "undercurl",
         guisp = utils.lsp_colors("info")
     })
-    utils.highlight("LspDiagnosticsUnderlineHint", {
+    utils.highlight("DiagnosticUnderlineHint", {
         guifg = "none",
         gui = "undercurl",
         guisp = utils.lsp_colors("hint")
     })
 
-    utils.highlight("LspDiagnosticsSignError",
-                    {guifg = utils.lsp_colors("error")})
-    utils.highlight("LspDiagnosticsSignWarning",
-                    {guifg = utils.lsp_colors("warning")})
-    utils.highlight("LspDiagnosticsSignInformation",
-                    {guifg = utils.lsp_colors("info")})
-    utils.highlight("LspDiagnosticsSignHint", {guifg = utils.lsp_colors("hint")})
+    local signs = {
+        Error = {
+            guifg = utils.lsp_colors("error"),
+            icon = utils.lsp_symbols["error"]
+        },
+        Warn = {
+            guifg = utils.lsp_colors("warning"),
+            icon = utils.lsp_symbols["warning"]
+        },
+        Hint = {
+            guifg = utils.lsp_colors("hint"),
+            icon = utils.lsp_symbols["hint"]
+        },
+        Info = {
+            guifg = utils.lsp_colors("info"),
+            icon = utils.lsp_symbols["info"]
+        }
+    }
 
-    vim.fn.sign_define("LspDiagnosticsSignError", {
-        text = utils.lsp_symbols["error"],
-        texthl = "LspDiagnosticsSignError"
-    })
-    vim.fn.sign_define("LspDiagnosticsSignWarning", {
-        text = utils.lsp_symbols["warning"],
-        texthl = "LspDiagnosticsSignWarning"
-    })
-    vim.fn.sign_define("LspDiagnosticsSignInformation", {
-        text = utils.lsp_symbols["info"],
-        texthl = "LspDiagnosticsSignInformation"
-    })
-    vim.fn.sign_define("LspDiagnosticsSignHint", {
-        text = utils.lsp_symbols["hint"],
-        texthl = "LspDiagnosticsSignHint"
-    })
+    for type, config in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        utils.highlight(hl, {guifg = config.guifg})
+        vim.fn.sign_define(hl, {text = config.icon, texthl = hl, numhl = ""})
+    end
+
 end
 
 function module.on_attach(client, bufnr)
