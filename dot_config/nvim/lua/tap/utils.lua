@@ -17,11 +17,11 @@ function utils.color(color)
 end
 
 utils.lsp_symbols = {
-    error = "",
-    warning = "",
-    info = "",
-    hint = "",
-    hint_alt = "",
+    error = " ",
+    warning = " ",
+    info = " ",
+    hint = " ",
+    hint_alt = " ",
     ok = " "
 }
 
