@@ -52,7 +52,7 @@ in
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "20.09";
+  home.stateVersion = "21.05";
 
   {{- if ne "macOS" .ostype }}
   # Fix I/O error with XML write - root cause unknown
@@ -100,7 +100,6 @@ in
 
     # Unstable Packages
     unstable._1password   # 1password version is quite old - unstable is much newer
-    unstable.cargo        # needed newer version of rust to compile vim-clap binary
     unstable.tmux         # terminal multiplexer
   ] ++ darwinPkgs ++ crostiniPkgs ++ linuxPkgs;
 
