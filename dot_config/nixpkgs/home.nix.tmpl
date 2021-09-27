@@ -5,11 +5,12 @@ let
   nixgl = import <nixgl> { pkgs = unstable; };
 
   {{- if ne "macOS" .ostype }}
-  unixPkgs = with pkgs; [
+  linuxPkgs = with pkgs; [
+    gcc # neovim - building nvim-treesitter parsers
     nq  # linux queue utility
   ];
   {{- else }}
-  unixPkgs = [];
+  linuxPkgs = [];
   {{- end }}
 
   {{- if eq "macOS" .ostype }}
@@ -32,13 +33,6 @@ let
   {{- else }}
   crostiniPkgs = [];
   {{- end }}
-
-  neovimNightlyPkgs = with pkgs; [
-    {{- if ne "macOS" .ostype }}
-    gcc   # Needed more modern version (not too sure why) for nvim-treesitter - not needed and breaks things on MacOS
-    {{- end }}
-    ruby  # Needed to locally build nvcode treesitter color schemes
-  ];
 in
 
 {
@@ -93,6 +87,7 @@ in
     ripgrep                       # rg searching
     silver-searcher               # ag searching
     neofetch                      # pretty print of system info
+    ruby                          # always useful to have ruby
     tmuxp                         # declaritive tmux session launcher
     tree                          # print directory structure
     up                            # utlimate plumber - unix pipes tool
@@ -107,7 +102,7 @@ in
     unstable._1password   # 1password version is quite old - unstable is much newer
     unstable.cargo        # needed newer version of rust to compile vim-clap binary
     unstable.tmux         # terminal multiplexer
-  ] ++ darwinPkgs ++ crostiniPkgs ++ unixPkgs ++ neovimNightlyPkgs;
+  ] ++ darwinPkgs ++ crostiniPkgs ++ linuxPkgs;
 
   # Neovim nightly
   nixpkgs.overlays = [
