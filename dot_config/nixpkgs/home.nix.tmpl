@@ -2,7 +2,10 @@
 
 let
   unstable = import <nixpkgs-unstable> { config = pkgs.config; };
-  nixgl = import <nixgl> { pkgs = unstable; };
+  nixgl = import <nixgl> {
+    pkgs = unstable;
+    enable32bits = false; # hopefully temporary patch for https://github.com/guibou/nixGL/issues/81#issuecomment-927519206
+  };
 
   {{- if ne "macOS" .ostype }}
   linuxPkgs = with pkgs; [
