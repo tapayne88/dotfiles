@@ -104,6 +104,15 @@ local function validate_mappings(lhs, rhs, opts)
     }
 end
 
+local rhs_to_string = function(rhs)
+    -- add functions to a global table keyed by their index
+    if type(rhs) == "function" then
+        local fn_id = tap._create(rhs)
+        return string.format("<cmd>lua tap._execute(%s)<CR>", fn_id)
+    end
+    return rhs
+end
+
 -- Shamelessly stolen from akinsho/dotfiles
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/utils.lua
 ---create a mapping function factory
@@ -131,33 +140,28 @@ local function make_mapper(mode, o)
             _opts.check_existing = nil
         end
 
-        if _opts.name ~= nil then
+        local options = vim.tbl_extend("keep", _opts, parent_opts)
+        if options.name ~= nil then
             local wk_opts = {
                 rhs,
-                _opts.name,
+                options.name,
                 mode = mode,
-                noremap = _opts.noremap,
-                silent = _opts.silent,
-                buffer = _opts.bufnr
+                noremap = options.noremap,
+                silent = options.silent,
+                buffer = options.bufnr
             }
             return wk.register({[lhs] = wk_opts})
         end
 
-        -- add functions to a global table keyed by their index
-        if type(rhs) == "function" then
-            local fn_id = tap._create(rhs)
-            rhs = string.format("<cmd>lua tap._execute(%s)<CR>", fn_id)
-        end
+        rhs = rhs_to_string(rhs)
 
-        if _opts.bufnr then
+        if options.bufnr then
             -- Remove the buffer from the args sent to the key map function
-            local bufnr = _opts.bufnr
-            _opts.bufnr = nil
-            _opts = vim.tbl_extend("keep", _opts, parent_opts)
-            api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, _opts)
+            local bufnr = options.bufnr
+            options.bufnr = nil
+            api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
         else
-            api.nvim_set_keymap(mode, lhs, rhs,
-                                vim.tbl_extend("keep", _opts, parent_opts))
+            api.nvim_set_keymap(mode, lhs, rhs, options)
         end
     end
 end
