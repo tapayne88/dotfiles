@@ -3,9 +3,9 @@ function patch-nix {
 }
 
 function kitty {
-  nixGL command kitty "$@"
+  nixGLIntel command kitty "$@"
 }
 
 function glxinfo {
-  nixGL command glxinfo "$@"
+  nixGLIntel command glxinfo "$@"
 }
