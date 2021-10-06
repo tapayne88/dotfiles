@@ -166,12 +166,21 @@ function module.on_publish_diagnostics(prefix)
     end
 end
 
+local function get_config(config)
+    local base_config = {
+        capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
+                                                                       .protocol
+                                                                       .make_client_capabilities())
+    }
+    return vim.tbl_deep_extend("error", base_config, config)
+end
+
 function module.lspconfig_server_setup(server_name, config)
     local server = lspconfig[server_name]
 
     if (server == nil) then return end
 
-    server.setup(config)
+    server.setup(get_config(config))
     server.manager.try_add_wrapper()
 
     return server

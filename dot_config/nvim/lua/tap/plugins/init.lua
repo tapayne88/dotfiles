@@ -145,7 +145,15 @@ return require('packer').startup(function(use)
     }
 
     -- Auto completion plugin for nvim
-    use {'hrsh7th/nvim-compe', config = [[require("tap.plugins.nvim-compe")]]}
+    use {
+        'hrsh7th/nvim-cmp',
+        config = [[require("tap.plugins.nvim-cmp")]],
+        requires = {
+            'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer',
+            'onsails/lspkind-nvim', 'L3MON4D3/LuaSnip',
+            'saadparwaiz1/cmp_luasnip'
+        }
+    }
 
     -- statusline in lua
     use {
