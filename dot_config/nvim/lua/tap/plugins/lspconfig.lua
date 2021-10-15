@@ -8,7 +8,7 @@ command({
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
 })
 
-local servers = {"typescript", "diagnosticls", "lua", "json"}
+local servers = {"typescript", "diagnosticls", "lua", "json", "eslint"}
 
 local function init_plugins() lspsaga.init() end
 

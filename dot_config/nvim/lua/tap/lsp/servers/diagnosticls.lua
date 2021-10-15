@@ -5,43 +5,18 @@ local install_path = require'lspinstall/util'.install_path
 local diagnosticls_languages = {
     html = {formatters = {"prettier"}},
     lua = {formatters = {"lua_format"}},
-    javascript = {
-        linters = {"eslint"},
-        formatters = {
-            -- "eslint",
-            "prettier"
-        }
-    },
-    javascriptreact = {
-        linters = {"eslint"},
-        formatters = {
-            -- "eslint",
-            "prettier"
-        }
-    },
+    javascript = {linters = {}, formatters = {"prettier"}},
+    javascriptreact = {linters = {}, formatters = {"prettier"}},
     json = {formatters = {"prettier"}},
     markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
-    typescript = {
-        linters = {"eslint"},
-        formatters = {
-            -- "eslint",
-            "prettier"
-        }
-    },
-    typescriptreact = {
-        linters = {"eslint"},
-        formatters = {
-            -- "eslint",
-            "prettier"
-        }
-    }
+    typescript = {linters = {}, formatters = {"prettier"}},
+    typescriptreact = {linters = {}, formatters = {"prettier"}}
 }
 
 local npm_packages = [[
   ! test -f package.json && npm init -y --scope=lspinstall || true
   npm install \
     diagnostic-languageserver@latest \
-    eslint_d@latest \
     prettier@latest \
     markdownlint-cli@latest
 ]]
@@ -92,26 +67,6 @@ function module.setup()
             on_attach = lsp_utils.on_attach,
             init_options = {
                 linters = {
-                    eslint = {
-                        command = npm_path("eslint_d"),
-                        rootPatterns = {"package.json", ".eslintrc.js"},
-                        debounce = 100,
-                        args = {
-                            "--stdin", "--stdin-filename", "%filepath",
-                            "--format", "json"
-                        },
-                        sourceName = "eslint",
-                        parseJson = {
-                            errorsRoot = "[0].messages",
-                            line = "line",
-                            column = "column",
-                            endLine = "endLine",
-                            endColumn = "endColumn",
-                            message = "[eslint] ${message} [${ruleId}]",
-                            security = "severity"
-                        },
-                        securities = {[2] = "error", [1] = "warning"}
-                    },
                     markdownlint = {
                         command = npm_path("markdownlint"),
                         isStderr = true,
@@ -134,15 +89,6 @@ function module.setup()
                 filetypes = utils.map_table_to_key(diagnosticls_languages,
                                                    "linters"),
                 formatters = {
-                    eslint = {
-                        command = npm_path("eslint_d"),
-                        rootPatterns = {"package.json", ".eslintrc.js"},
-                        debounce = 100,
-                        args = {
-                            "--fix-to-stdout", "--stdin", "--stdin-filename",
-                            "%filepath"
-                        }
-                    },
                     prettier = {
                         command = prettier_bin or npm_path("prettier"),
                         args = {"--stdin-filepath", "%filepath"},
