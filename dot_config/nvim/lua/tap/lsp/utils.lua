@@ -139,8 +139,8 @@ function module.get_bin_path(cmd, fn)
     end)
 end
 
-local publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
-                                             .on_publish_diagnostics, {
+module.on_publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
+                                                 .on_publish_diagnostics, {
     -- show underline
     underline = true,
     -- Enable signs
@@ -153,18 +153,6 @@ local publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
     -- show diagnostics on exit from insert
     update_in_insert = true
 })
-
-function module.on_publish_diagnostics(prefix)
-    return function(err, method, params, client_id, bufnr, config)
-        if params.diagnostics ~= nil then
-            vim.tbl_map(function(value)
-                value.message = prefix .. value.message
-            end, params.diagnostics)
-        end
-
-        publish_diagnostics(err, method, params, client_id, bufnr, config)
-    end
-end
 
 local function get_config(config)
     local base_config = {

@@ -5,8 +5,7 @@ local module = {}
 function module.setup()
     lsp_utils.lspconfig_server_setup("json", {
         handlers = {
-            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                "[jsonls] ")
+            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics
         },
         on_attach = function(client, bufnr)
             -- Prevent document_formatting, that's diagnosticls' job

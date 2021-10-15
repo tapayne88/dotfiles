@@ -25,8 +25,7 @@ function module.setup()
 
     lsp_utils.lspconfig_server_setup(server_name, {
         handlers = {
-            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                "[" .. server_name .. "] "),
+            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics,
             ["window/logMessage"] = function(_, result, header)
                 if result == nil or result.message == nil then
                     return

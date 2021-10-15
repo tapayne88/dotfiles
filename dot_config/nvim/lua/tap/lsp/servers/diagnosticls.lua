@@ -86,8 +86,7 @@ function module.setup()
 
         lsp_utils.lspconfig_server_setup(server_name, {
             handlers = {
-                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics(
-                    "")
+                ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics
             },
             filetypes = vim.tbl_keys(diagnosticls_languages),
             on_attach = lsp_utils.on_attach,
