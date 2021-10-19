@@ -30,7 +30,8 @@ utils.lsp_colors = function(type)
         error = utils.color({dark = "nord11_gui", light = "red"}),
         warning = utils.color({dark = "nord13_gui", light = "yellow"}),
         info = utils.color({dark = "nord4_gui", light = "fg"}),
-        hint = utils.color({dark = "nord10_gui", light = "blue2"})
+        hint = utils.color({dark = "nord10_gui", light = "blue2"}),
+        ok = utils.color({dark = "nord14_gui", light = "green"})
     }
     return color_map[type]
 end
