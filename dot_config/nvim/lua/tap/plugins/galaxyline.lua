@@ -4,7 +4,6 @@ local fileinfo = require('galaxyline.provider_fileinfo')
 local extension = require('galaxyline.provider_extensions')
 local condition = require('galaxyline.condition')
 local color = require("tap.utils").color
-local colors = require("tap.utils").colors
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
@@ -65,12 +64,6 @@ local theme = {
         end
     }
 }
-
-local function diagnostic_color(color_name)
-    return function()
-        return {lsp_colors(color_name), theme.secondary.highlight()[2]}
-    end
-end
 
 local function mode_map(name)
     local modes = {
@@ -142,48 +135,6 @@ gl.section.left = {
 
 gl.section.right = {
     {
-        DiagnosticError = {
-            provider = 'DiagnosticError',
-            icon = lsp_symbols["error"] .. " ",
-            highlight = diagnostic_color("error")
-        }
-    }, {
-        DiagnosticWarn = {
-            provider = 'DiagnosticWarn',
-            icon = lsp_symbols["warning"] .. " ",
-            highlight = diagnostic_color("warning")
-        }
-    }, {
-        DiagnosticHint = {
-            provider = 'DiagnosticHint',
-            icon = lsp_symbols["hint"] .. " ",
-            highlight = diagnostic_color("hint")
-        }
-    }, {
-        DiagnosticInfo = {
-            provider = 'DiagnosticInfo',
-            icon = lsp_symbols["info"] .. " ",
-            highlight = diagnostic_color("info")
-        }
-    }, {
-        DiagnosticOk = {
-            provider = function()
-                local diags = {
-                    diagnostic.get_diagnostic_error(),
-                    diagnostic.get_diagnostic_warn(),
-                    diagnostic.get_diagnostic_hint(),
-                    diagnostic.get_diagnostic_info()
-                }
-
-                local diag_string = table.concat(vim.tbl_values(diags))
-                if diag_string == "" then
-                    return lsp_symbols["ok"] .. " "
-                end
-                return ""
-            end,
-            highlight = theme.secondary.highlight
-        }
-    }, {
         TscVersion = {
             provider = function()
                 if vim.g.tsc_version ~= nil then
@@ -206,6 +157,108 @@ gl.section.right = {
             end,
             condition = condition.hide_in_width,
             highlight = theme.secondary.highlight
+        }
+    }, {
+        DiagnosticError = {
+            provider = function()
+                local diag = diagnostic.get_diagnostic_error()
+                local content = diag == nil and "" or
+                                    (" " .. lsp_symbols["error"] .. diag)
+
+                return string.format("%s%s", section_separators[1], content)
+            end,
+            highlight = function()
+                return {theme.secondary.highlight()[2], lsp_colors("error")}
+            end
+        }
+    }, {
+        DiagnosticWarn = {
+            provider = function()
+                local diag = diagnostic.get_diagnostic_warn()
+                local content = diag == nil and "" or
+                                    (" " .. lsp_symbols["warning"] .. diag)
+
+                return content
+            end,
+            highlight = function()
+                return {theme.secondary.highlight()[2], lsp_colors("warning")}
+            end,
+            separator = section_separators[1],
+            separator_highlight = function()
+                return {lsp_colors("error"), lsp_colors("warning")}
+            end
+        }
+    }, {
+        DiagnosticHint = {
+            provider = function()
+                local diag = diagnostic.get_diagnostic_hint()
+                local content = diag == nil and "" or
+                                    (" " .. lsp_symbols["hint"] .. diag)
+
+                return content
+            end,
+            highlight = function()
+                return {theme.secondary.highlight()[2], lsp_colors("hint")}
+            end,
+            separator = section_separators[1],
+            separator_highlight = function()
+                return {lsp_colors("warning"), lsp_colors("hint")}
+            end
+        }
+    }, {
+        DiagnosticInfo = {
+            provider = function()
+                local diag = diagnostic.get_diagnostic_info()
+                local content = diag == nil and "" or
+                                    (" " .. lsp_symbols["info"] .. diag)
+
+                return content
+            end,
+            highlight = function()
+                return {theme.secondary.highlight()[2], lsp_colors("info")}
+            end,
+            separator = section_separators[1],
+            separator_highlight = function()
+                return {lsp_colors("hint"), lsp_colors("info")}
+            end
+        }
+    }, {
+        DiagnosticOk = {
+            provider = function()
+                local diags = {
+                    diagnostic.get_diagnostic_error(),
+                    diagnostic.get_diagnostic_warn(),
+                    diagnostic.get_diagnostic_hint(),
+                    diagnostic.get_diagnostic_info()
+                }
+
+                local diag_string = table.concat(vim.tbl_values(diags))
+                if diag_string == "" then
+                    return " " .. lsp_symbols["ok"]
+                end
+                return ""
+            end,
+            highlight = function()
+                return {theme.secondary.highlight()[2], lsp_colors("ok")}
+            end,
+            separator = section_separators[1],
+            separator_highlight = function()
+                return {lsp_colors("info"), lsp_colors("ok")}
+            end
+        }
+    }, {
+        DiagnosticClose = {
+            provider = function() return " " end,
+            highlight = function()
+                return {
+                    theme.secondary.highlight()[2],
+                    theme.secondary.highlight()[2]
+                }
+            end,
+            separator = section_separators[1],
+            separator_highlight = function()
+                return {lsp_colors("ok"), theme.secondary.highlight()[2]}
+            end
         }
     }, {
         FileInfo = {
