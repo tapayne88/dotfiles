@@ -76,7 +76,18 @@ prompt_git() {
     dirty=$(git status --porcelain --ignore-submodules=dirty 2> /dev/null | tail -n1)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev | head -n1 2> /dev/null)"
     prompt_segment default white "on "
+
+    local has_worktree
+    [[ $(git worktree list | wc -l) -gt 1 ]] && has_worktree="TRUE"
+    if [[ -n $has_worktree ]]; then
+      local worktree_name=$(basename $(git root))
+      if [[ -n ${worktree_name} ]]; then
+        prompt_segment default "8m" "${worktree_name}/"
+      fi
+    fi
+
     prompt_segment default green "${ref/refs\/heads\//} "
+
     if [ -n "$dirty" ]; then
       prompt_segment default white "$DIRTY_SYM"
     else
