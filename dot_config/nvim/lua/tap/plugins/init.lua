@@ -140,7 +140,18 @@ return require('packer').startup(function(use)
         'neovim/nvim-lspconfig', -- LSP server config
         config = [[require("tap.plugins.lspconfig")]],
         requires = {
-            'kabouzeid/nvim-lspinstall' -- install LSP servers
+            'kabouzeid/nvim-lspinstall', -- install LSP servers
+            {
+                'rmagatti/goto-preview',
+                config = function()
+                    require('goto-preview').setup {
+                        border = {
+                            "↖", "─", "╮", "│", "╯", "─", "╰",
+                            "│"
+                        }
+                    }
+                end
+            }
         }
     }
 
