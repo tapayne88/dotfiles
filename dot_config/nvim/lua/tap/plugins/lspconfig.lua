@@ -1,16 +1,13 @@
-local command = require("tap.utils").command
-local lspsaga = require("tap.plugins.lspsaga")
+local utils = require("tap.utils")
 
 if vim.env.LSP_DEBUG then vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG) end
 
-command({
+utils.command({
     "LspInstalledServers",
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
 })
 
 local servers = {"typescript", "diagnosticls", "lua", "json", "eslint"}
-
-local function init_plugins() lspsaga.init() end
 
 local function init_servers()
     for _, server_name in pairs(servers) do
@@ -32,5 +29,17 @@ local function setup_servers(initialise)
     end
 end
 
+local apply_user_highlights = function()
+    utils.highlight('FloatBorder', {link = 'LspFloatWinBorder'})
+end
+
+utils.augroup("LspSagaHighlights", {
+    {
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = apply_user_highlights
+    }
+})
+
 init_servers()
-setup_servers(init_plugins)
+setup_servers(apply_user_highlights)

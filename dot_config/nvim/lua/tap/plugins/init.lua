@@ -141,7 +141,17 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.lspconfig")]],
         requires = {
             'kabouzeid/nvim-lspinstall', -- install LSP servers
-            'tapayne88/lspsaga.nvim' -- Better LSP diagnostics display
+            {
+                'rmagatti/goto-preview',
+                config = function()
+                    require('goto-preview').setup {
+                        border = {
+                            "↖", "─", "╮", "│", "╯", "─", "╰",
+                            "│"
+                        }
+                    }
+                end
+            }
         }
     }
 
