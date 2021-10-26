@@ -189,4 +189,6 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    use {'mfussenegger/nvim-dap', config = [[require("tap.plugins.nvim-dap")]]}
 end)
