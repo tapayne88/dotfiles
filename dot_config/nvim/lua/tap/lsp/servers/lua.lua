@@ -32,9 +32,6 @@ function module.setup()
     }
 
     lsp_utils.lspconfig_server_setup(server_name, {
-        handlers = {
-            ["textDocument/publishDiagnostics"] = lsp_utils.on_publish_diagnostics
-        },
         on_attach = lsp_utils.on_attach,
         settings = settings
     })

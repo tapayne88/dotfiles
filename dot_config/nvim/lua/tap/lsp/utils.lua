@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local lspsaga = require("tap.plugins.lspsaga")
 local utils = require("tap.utils")
 local nnoremap = require('tap.utils').nnoremap
 
@@ -70,8 +69,6 @@ end
 
 function module.on_attach(client, bufnr)
 
-    lspsaga.on_attach(client, bufnr)
-
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     apply_user_highlights()
@@ -87,11 +84,10 @@ function module.on_attach(client, bufnr)
     -- Mappings.
     local opts = {bufnr = bufnr}
     nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>', opts)
-    nnoremap('gd', '<cmd>Lspsaga preview_definition<CR>', opts)
+    nnoremap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>', opts)
-    nnoremap('K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>',
-             opts)
+    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     nnoremap('<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
     nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
@@ -139,23 +135,49 @@ function module.get_bin_path(cmd, fn)
     end)
 end
 
-module.on_publish_diagnostics = vim.lsp.with(vim.lsp.diagnostic
-                                                 .on_publish_diagnostics, {
-    -- show underline
-    underline = true,
-    -- Enable signs
-    signs = {
-        -- Make priority higher than vim-signify
-        priority = 100
-    },
-    -- Disable virtual_text
-    virtual_text = false,
-    -- show diagnostics on exit from insert
-    update_in_insert = true
-})
+local border_window_style = 'rounded'
+
+local function init_diagnositcs()
+    vim.diagnostic.config({
+        underline = true,
+        update_in_insert = true,
+        virtual_text = false,
+        signs = {
+            -- Make priority higher than vim-signify
+            priority = 100
+        },
+        severity_sort = true,
+        float = {
+            show_header = false,
+            source = 'always',
+            border = border_window_style
+        }
+    })
+
+    utils.augroup("LspDiagnosticsCursor", {
+        {
+            events = {"CursorHold"},
+            targets = {"<buffer>"},
+            command = "lua vim.lsp.diagnostic.show_position_diagnostics()"
+
+        }
+    })
+
+    utils.nnoremap("<leader>cc",
+                   "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
+end
 
 local function get_config(config)
     local base_config = {
+        handlers = {
+            ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers
+                                                              .signature_help, {
+                border = border_window_style
+            }),
+            ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+                border = border_window_style
+            })
+        },
         capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
                                                                        .protocol
                                                                        .make_client_capabilities())
@@ -168,6 +190,7 @@ function module.lspconfig_server_setup(server_name, config)
 
     if (server == nil) then return end
 
+    init_diagnositcs()
     server.setup(get_config(config))
     server.manager.try_add_wrapper()
 
