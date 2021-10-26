@@ -1,6 +1,9 @@
 local utils = require("tap.utils")
 
-if vim.env.LSP_DEBUG then vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG) end
+if vim.env.LSP_DEBUG then
+    vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
+    print("LSP debug log: " .. vim.lsp.get_log_path())
+end
 
 utils.command({
     "LspInstalledServers",
