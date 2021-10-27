@@ -1,4 +1,5 @@
 local utils = require("tap.utils")
+local lsp_utils = require("tap.lsp.utils")
 
 if vim.env.LSP_DEBUG then
     vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
@@ -45,4 +46,7 @@ utils.augroup("LspSagaHighlights", {
 })
 
 init_servers()
-setup_servers(apply_user_highlights)
+setup_servers(function()
+    apply_user_highlights()
+    lsp_utils.init_diagnositcs()
+end)

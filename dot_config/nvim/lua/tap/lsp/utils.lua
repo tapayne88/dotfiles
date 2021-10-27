@@ -81,6 +81,15 @@ function module.on_attach(client, bufnr)
         }
     })
 
+    utils.augroup("LspDiagnosticsCursor", {
+        {
+            events = {"CursorHold"},
+            targets = {"<buffer>"},
+            command = "lua vim.lsp.diagnostic.show_position_diagnostics()"
+
+        }
+    })
+
     -- Mappings.
     local opts = {bufnr = bufnr}
     nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>', opts)
@@ -92,6 +101,8 @@ function module.on_attach(client, bufnr)
     nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     nnoremap('<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
     nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    nnoremap("<leader>cc",
+             "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
 
     -- other mappings, not sure about these
     nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>',
@@ -139,7 +150,7 @@ end
 
 local border_window_style = 'rounded'
 
-local function init_diagnositcs()
+function module.init_diagnositcs()
     vim.diagnostic.config({
         underline = true,
         update_in_insert = true,
@@ -155,18 +166,6 @@ local function init_diagnositcs()
             border = border_window_style
         }
     })
-
-    utils.augroup("LspDiagnosticsCursor", {
-        {
-            events = {"CursorHold"},
-            targets = {"<buffer>"},
-            command = "lua vim.lsp.diagnostic.show_position_diagnostics()"
-
-        }
-    })
-
-    utils.nnoremap("<leader>cc",
-                   "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
 end
 
 local function get_config(config)
@@ -192,7 +191,6 @@ function module.lspconfig_server_setup(server_name, config)
 
     if (server == nil) then return end
 
-    init_diagnositcs()
     server.setup(get_config(config))
     server.manager.try_add_wrapper()
 
