@@ -3,6 +3,8 @@
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
+THEME_FNAME="$XDG_CONFIG_HOME/term_theme"
+
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 usage() {
@@ -82,15 +84,21 @@ set_kitty_theme() {
   kitty @ --to $KITTY_LISTEN_ON set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
 }
 
+read_theme() {
+  echo $(cat $THEME_FNAME 2> /dev/null)
+}
+
 parse_params "$@"
 setup_colors
 
 # script logic
 
 command_echo() {
-  THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
-  THEME=$(cat $THEME_FNAME)
-  if [ "$THEME" = "nord" ]; then
+  THEME=$(read_theme)
+
+  if [ "$THEME" = "" ]; then
+    die "no theme set, try running \`term-theme dark\` or \`term-theme light\`"
+  elif [ "$THEME" = "nord" ]; then
     echo "dark"
   else
     echo "light"
@@ -98,10 +106,11 @@ command_echo() {
 }
 
 command_toggle() {
-  THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
-  THEME=$(cat $THEME_FNAME)
+  THEME=$(read_theme)
 
-  if [ "$THEME" = "nord" ]; then
+  if [ "$THEME" = "" ]; then
+    die "no theme set, try running \`term-theme dark\` or \`term-theme light\`"
+  elif [ "$THEME" = "nord" ]; then
     THEME="tokyonight_day"
     set_bat_theme "base16"
   else
@@ -115,8 +124,6 @@ command_toggle() {
 }
 
 command_light() {
-  THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
-
   THEME="tokyonight_day"
   set_bat_theme "base16"
 
@@ -126,8 +133,6 @@ command_light() {
 }
 
 command_dark() {
-  THEME_FNAME="$XDG_CONFIG_HOME/.term_theme"
-
   THEME="nord"
   set_bat_theme "Nord"
 
