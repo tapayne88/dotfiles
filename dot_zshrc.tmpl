@@ -36,11 +36,6 @@ for p in $SRC_FILES; do
   fi
 done
 
-{{- if ne "macOS" .ostype }}
-# Patch lib path to include nix's gcc library location
-export LD_LIBRARY_PATH=$(nix eval --raw 'nixpkgs#stdenv.cc.cc.lib')/lib:$LD_LIBRARY_PATH
-{{- end }}
-
 # ZSH completions
 for profile in ''${(z)NIX_PROFILES}; do
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
