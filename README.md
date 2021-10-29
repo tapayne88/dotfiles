@@ -8,9 +8,11 @@ A place for all my dotfiles and each one in its place.
 
 ```bash
 curl -sfL https://git.io/JsiiF | sh
+```
 
-# or
+or
 
+```bash
 git clone https://github.com/tapayne88/dotfiles
 ```
 
