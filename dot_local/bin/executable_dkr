@@ -121,22 +121,29 @@ command_rmi() {
 }
 
 command_shell() {
+  container_shell="${args[1]-}"
+
   docker_cmd=$(get_docker_cmd)
   container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
-  container_shell=$(eval "$docker_cmd exec --interactive --tty $container cat /etc/shells" | grep "^/" | $(get_fzf_cmd) --header="Pick shell" | sed 's/\r$//')
+  if [ -z "$container_shell" ]; then
+    container_shell=$(eval "$docker_cmd exec --interactive --tty $container cat /etc/shells" | grep "^/" | $(get_fzf_cmd) --header="Pick shell" | sed 's/\r$//')
+  fi
+
   eval "$docker_cmd exec --interactive --tty $container $container_shell"
 }
 
 command_exec() {
-  SHELL_PATH="${args[1]}"
-  if [ -z "$SHELL_PATH" ]; then
-    echo "pass shell path as first argument, i.e. drr /bin/bash"
-    return 1
-  fi
+  cmd="${args[1]-}"
 
   docker_cmd=$(get_docker_cmd)
   xargs_cmd=$(get_xargs_cmd)
-  eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd -I '{}' --open-tty $docker_cmd exec --interactive --tty {} $SHELL_PATH"
+  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+
+  if [ -z "$cmd" ]; then
+    read -p "Enter cmd: " cmd
+  fi
+
+  eval "$docker_cmd exec --interactive --tty $container $cmd"
 }
 
 command_run() {
