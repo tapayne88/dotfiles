@@ -77,46 +77,41 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-# script logic
+# helpers
 
-command_ps() {
-  # Do we need to sudo?
+docker_cmd() {
   docker ps > /dev/null 2>&1
   if [ $? -eq 1 ]; then
-    command="sudo docker"
+    echo "sudo docker"
   else
-    command="docker"
+    echo "docker"
   fi
-  eval "$command ps --all"
+}
+
+xargs_cmd() {
+  echo "test" | xargs --no-run-if-empty > /dev/null 2>&1
+  if [ $? -eq 1 ]; then
+    echo "xargs"
+  else
+    echo "xargs --no-run-if-empty"
+  fi
+}
+
+# commands
+
+command_ps() {
+  eval "$(docker_cmd) ps --all"
 }
 
 command_rm() {
-  # Do we need to sudo?
-  docker ps > /dev/null 2>&1
-  if [ $? -eq 1 ]; then
-    # If we need to sudo then we're not on mac, therefore we likely have GNU tools not BSD,
-    # hence the --no-run-if-empty (which BSD seems to have by default)
-    command="sudo docker"
-    xargs="xargs --no-run-if-empty"
-  else
-    command="docker"
-    xargs="xargs"
-  fi
+  command=$(docker_cmd)
+  xargs=$(xargs_cmd)
   eval "$command ps --all" | fzf --height 15 --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs $command rm --force"
 }
 
 command_rmi() {
-  # Do we need to sudo?
-  docker ps > /dev/null 2>&1
-  if [ $? -eq 1 ]; then
-    # If we need to sudo then we're not on mac, therefore we likely have GNU tools not BSD,
-    # hence the --no-run-if-empty (which BSD seems to have by default)
-    command="sudo docker"
-    xargs="xargs --no-run-if-empty"
-  else
-    command="docker"
-    xargs="xargs"
-  fi
+  command=$(docker_cmd)
+  xargs=$(xargs_cmd)
   eval "$command images --all" | fzf --height 15 --multi --header-lines=1 | awk '{ print $3 }' | eval "$xargs $command rmi --force"
 }
 
@@ -127,17 +122,8 @@ command_exec() {
     return 1
   fi
 
-  # Do we need to sudo?
-  docker ps > /dev/null 2>&1
-  if [ $? -eq 1 ]; then
-    # If we need to sudo then we're not on mac, therefore we likely have GNU tools not BSD,
-    # hence the --no-run-if-empty (which BSD seems to have by default)
-    command="sudo docker"
-    xargs="xargs --no-run-if-empty"
-  else
-    command="docker"
-    xargs="xargs"
-  fi
+  command=$(docker_cmd)
+  xargs=$(xargs_cmd)
   eval "$command ps" | fzf --height 15 --header-lines=1 | awk '{ print $1 }' | eval "$xargs -I '{}' --open-tty $command exec --interactive --tty {} $SHELL_PATH"
 }
 
