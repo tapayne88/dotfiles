@@ -80,7 +80,7 @@ setup_colors
 
 # helpers
 
-docker_cmd() {
+get_docker_cmd() {
   docker ps > /dev/null 2>&1
   if [ $? -eq 1 ]; then
     echo "sudo docker"
@@ -89,7 +89,7 @@ docker_cmd() {
   fi
 }
 
-xargs_cmd() {
+get_xargs_cmd() {
   echo "test" | xargs --no-run-if-empty > /dev/null 2>&1
   if [ $? -eq 1 ]; then
     echo "xargs"
@@ -98,29 +98,33 @@ xargs_cmd() {
   fi
 }
 
+get_fzf_cmd() {
+  echo "fzf --height 15"
+}
+
 # commands
 
 command_ps() {
-  eval "$(docker_cmd) ps --all"
+  eval "$(get_docker_cmd) ps --all"
 }
 
 command_rm() {
-  command=$(docker_cmd)
-  xargs=$(xargs_cmd)
-  eval "$command ps --all" | fzf --height 15 --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs $command rm --force"
+  docker_cmd=$(get_docker_cmd)
+  xargs_cmd=$(get_xargs_cmd)
+  eval "$docker_cmd ps --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd $docker_cmd rm --force"
 }
 
 command_rmi() {
-  command=$(docker_cmd)
-  xargs=$(xargs_cmd)
-  eval "$command images --all" | fzf --height 15 --multi --header-lines=1 | awk '{ print $3 }' | eval "$xargs $command rmi --force"
+  docker_cmd=$(get_docker_cmd)
+  xargs_cmd=$(get_xargs_cmd)
+  eval "$docker_cmd images --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $3 }' | eval "$xargs_cmd $docker_cmd rmi --force"
 }
 
 command_shell() {
-  command=$(docker_cmd)
-  container=$(eval "$command ps" | fzf --height 15 --header-lines=1 | awk '{ print $1 }')
-  container_shell=$(eval "$command exec --interactive --tty $container cat /etc/shells" | grep "^/" | fzf --height 15 --header="Pick shell" | sed 's/\r$//')
-  eval "$command exec --interactive --tty $container $container_shell"
+  docker_cmd=$(get_docker_cmd)
+  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  container_shell=$(eval "$docker_cmd exec --interactive --tty $container cat /etc/shells" | grep "^/" | $(get_fzf_cmd) --header="Pick shell" | sed 's/\r$//')
+  eval "$docker_cmd exec --interactive --tty $container $container_shell"
 }
 
 command_exec() {
@@ -130,9 +134,9 @@ command_exec() {
     return 1
   fi
 
-  command=$(docker_cmd)
-  xargs=$(xargs_cmd)
-  eval "$command ps" | fzf --height 15 --header-lines=1 | awk '{ print $1 }' | eval "$xargs -I '{}' --open-tty $command exec --interactive --tty {} $SHELL_PATH"
+  docker_cmd=$(get_docker_cmd)
+  xargs_cmd=$(get_xargs_cmd)
+  eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd -I '{}' --open-tty $docker_cmd exec --interactive --tty {} $SHELL_PATH"
 }
 
 command_run() {
