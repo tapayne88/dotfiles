@@ -16,6 +16,7 @@ Options:
   -v, --verbose   Print script debug info
 
 Commands:
+  ps              List all containers using \`docker ps --all\`
   rm              Remove docker containers with force
   rmi             Remove docker images with force
   exec            Exec into a running container
@@ -78,6 +79,17 @@ setup_colors
 
 # script logic
 
+command_ps() {
+  # Do we need to sudo?
+  docker ps > /dev/null 2>&1
+  if [ $? -eq 1 ]; then
+    command="sudo docker"
+  else
+    command="docker"
+  fi
+  eval "$command ps --all"
+}
+
 command_rm() {
   # Do we need to sudo?
   docker ps > /dev/null 2>&1
@@ -135,6 +147,7 @@ command_run() {
 
 while :; do
   case "${args[0]}" in
+  ps) command_ps ;;
   rm) command_rm ;;
   rmi) command_rmi ;;
   exec) command_exec ;;
