@@ -19,6 +19,7 @@ Commands:
   ps              List all containers using \`docker ps --all\`
   rm              Remove docker containers with force
   rmi             Remove docker images with force
+  shell           Start shell in a running container
   exec            Exec into a running container
   run             Run a container image
 
@@ -115,6 +116,13 @@ command_rmi() {
   eval "$command images --all" | fzf --height 15 --multi --header-lines=1 | awk '{ print $3 }' | eval "$xargs $command rmi --force"
 }
 
+command_shell() {
+  command=$(docker_cmd)
+  container=$(eval "$command ps" | fzf --height 15 --header-lines=1 | awk '{ print $1 }')
+  container_shell=$(eval "$command exec --interactive --tty $container cat /etc/shells" | grep "^/" | fzf --height 15 --header="Pick shell" | sed 's/\r$//')
+  eval "$command exec --interactive --tty $container $container_shell"
+}
+
 command_exec() {
   SHELL_PATH="${args[1]}"
   if [ -z "$SHELL_PATH" ]; then
@@ -136,6 +144,7 @@ while :; do
   ps) command_ps ;;
   rm) command_rm ;;
   rmi) command_rmi ;;
+  shell) command_shell ;;
   exec) command_exec ;;
   run) command_run ;;
   *) die "Unknown command: $1" ;;
