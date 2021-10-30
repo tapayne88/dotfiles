@@ -125,6 +125,7 @@ command_shell() {
 
   docker_cmd=$(get_docker_cmd)
   container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+
   if [ -z "$container_shell" ]; then
     container_shell=$(eval "$docker_cmd exec --interactive --tty $container cat /etc/shells" | grep "^/" | $(get_fzf_cmd) --header="Pick shell" | sed 's/\r$//')
   fi
@@ -147,7 +148,17 @@ command_exec() {
 }
 
 command_run() {
-  die "not yet implemented"
+  cmd="${args[1]-}"
+
+  docker_cmd=$(get_docker_cmd)
+  xargs_cmd=$(get_xargs_cmd)
+  container=$(eval "$docker_cmd images" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $3 }')
+
+  if [ -z "$cmd" ]; then
+    read -p "Enter cmd: " cmd
+  fi
+
+  eval "$docker_cmd run --interactive --tty $container $cmd"
 }
 
 while :; do
