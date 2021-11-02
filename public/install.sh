@@ -85,4 +85,7 @@ https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
 
 # Install the provisioned packages
 \$ ${CMD_COLOR}home-manager switch${NO_COLOR}
+
+# Install asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
+\$ ${CMD_COLOR}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1${NO_COLOR}
 "

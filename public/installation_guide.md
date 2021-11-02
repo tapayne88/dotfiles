@@ -76,3 +76,18 @@ sudo passwd `whoami`
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
 ```
+
+## 6. Install [`asdf`](https://asdf-vm.com/#/)
+
+Installing should just be cloning the repo into `~/.asdf` and installing the plugins ([docs](https://asdf-vm.com/guide/getting-started.html#_2-download-asdf)).
+
+```bash
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
+```
+
+Install the required plugins
+
+```bash
+asdf plugin-add nodejs
+asdf plugin-add yarn
+```
