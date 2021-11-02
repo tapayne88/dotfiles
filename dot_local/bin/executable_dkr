@@ -81,9 +81,14 @@ setup_colors
 # helpers
 
 get_docker_cmd() {
-  docker ps > /dev/null 2>&1
+  docker_msg=$(docker ps 2>&1)
   if [ $? -eq 1 ]; then
-    echo "sudo docker"
+    if [[ $(echo $docker_msg | grep "^Cannot connect to Docker daemon") ]]; then
+      msg "$docker_msg"
+      echo ""
+    else
+      echo "sudo docker"
+    fi
   else
     echo "docker"
   fi
@@ -105,17 +110,30 @@ get_fzf_cmd() {
 # commands
 
 command_ps() {
-  eval "$(get_docker_cmd) ps --all"
+  docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
+  eval "$docker_cmd ps --all"
 }
 
 command_rm() {
   docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
   xargs_cmd=$(get_xargs_cmd)
   eval "$docker_cmd ps --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd $docker_cmd rm --force"
 }
 
 command_rmi() {
   docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
   xargs_cmd=$(get_xargs_cmd)
   eval "$docker_cmd images --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $3 }' | eval "$xargs_cmd $docker_cmd rmi --force"
 }
@@ -124,8 +142,11 @@ command_shell() {
   container_shell="${args[1]-}"
 
   docker_cmd=$(get_docker_cmd)
-  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
 
+  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
   if [ -z "$container" ]; then
     exit 0
   fi
@@ -145,6 +166,10 @@ command_exec() {
   cmd="${args[1]-}"
 
   docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
   xargs_cmd=$(get_xargs_cmd)
   container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
 
@@ -163,6 +188,10 @@ command_run() {
   cmd="${args[1]-}"
 
   docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
   xargs_cmd=$(get_xargs_cmd)
   container=$(eval "$docker_cmd images" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $3 }')
 
