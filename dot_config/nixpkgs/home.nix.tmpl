@@ -1,9 +1,6 @@
 { pkgs, ... }:
 
 let
-  unstable = import <nixpkgs-unstable> { config = pkgs.config; };
-  nixgl = import <nixgl> { pkgs = unstable; };
-
   {{- if ne "macOS" .ostype }}
   linuxPkgs = with pkgs; [
     gcc # neovim - building nvim-treesitter parsers
@@ -52,7 +49,6 @@ in
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "21.11";
 
   {{- if ne "macOS" .ostype }}
   # Fix I/O error with XML write - root cause unknown
@@ -105,13 +101,6 @@ in
     unstable._1password   # 1password version is quite old - unstable is much newer
     unstable.tmux         # terminal multiplexer
   ] ++ darwinPkgs ++ crostiniPkgs ++ linuxPkgs;
-
-  # Neovim nightly
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
-  ];
 
   programs.neovim = {
     enable = true;
