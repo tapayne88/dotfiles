@@ -126,7 +126,10 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope.nvim',
         config = [[require("tap.plugins.telescope")]],
-        requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}
+        requires = {
+            'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope-live-grep-raw.nvim'
+        }
     }
     -- + & - in column for changed lines
     use {

@@ -56,7 +56,10 @@ nnoremap("<leader>fh", function()
 end, {name = "Home Files"})
 nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
          {name = "Help Tags"})
-nnoremap("<leader>fg", function() require('telescope.builtin').live_grep() end,
+nnoremap("<leader>fg", function()
+    require("telescope").extensions.live_grep_raw.live_grep_raw()
+end, {name = "Live Grep"})
+nnoremap("<leader>fG", function() require('telescope.builtin').live_grep() end,
          {name = "Live Grep"})
 nnoremap("<leader>fw", function()
     require('telescope.builtin').grep_string {
