@@ -85,6 +85,8 @@ local function mode_map(name)
     return modes[name]
 end
 
+local function has_diagnostic(diag) return diag ~= nil and diag ~= "" end
+
 gl.section.left = {
     {
         ViMode = {
@@ -162,8 +164,8 @@ gl.section.right = {
         DiagnosticError = {
             provider = function()
                 local diag = diagnostic.get_diagnostic_error()
-                local content = diag == nil and "" or
-                                    (" " .. lsp_symbols["error"] .. diag)
+                local content = has_diagnostic(diag) and
+                                    (" " .. lsp_symbols["error"] .. diag) or ""
 
                 return string.format("%s%s", section_separators[1], content)
             end,
@@ -175,8 +177,9 @@ gl.section.right = {
         DiagnosticWarn = {
             provider = function()
                 local diag = diagnostic.get_diagnostic_warn()
-                local content = diag == nil and "" or
-                                    (" " .. lsp_symbols["warning"] .. diag)
+                local content = has_diagnostic(diag) and
+                                    (" " .. lsp_symbols["warning"] .. diag) or
+                                    ""
 
                 return content
             end,
@@ -192,8 +195,8 @@ gl.section.right = {
         DiagnosticHint = {
             provider = function()
                 local diag = diagnostic.get_diagnostic_hint()
-                local content = diag == nil and "" or
-                                    (" " .. lsp_symbols["hint"] .. diag)
+                local content = has_diagnostic(diag) and
+                                    (" " .. lsp_symbols["hint"] .. diag) or ""
 
                 return content
             end,
@@ -209,8 +212,8 @@ gl.section.right = {
         DiagnosticInfo = {
             provider = function()
                 local diag = diagnostic.get_diagnostic_info()
-                local content = diag == nil and "" or
-                                    (" " .. lsp_symbols["info"] .. diag)
+                local content = has_diagnostic(diag) and
+                                    (" " .. lsp_symbols["info"] .. diag) or ""
 
                 return content
             end,
