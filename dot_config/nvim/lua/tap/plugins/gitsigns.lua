@@ -1,5 +1,3 @@
-local nnoremap = require('tap.utils').nnoremap
-
 require('gitsigns').setup {
     keymaps = {
         -- Default keymap options
@@ -22,6 +20,3 @@ require('gitsigns').setup {
         ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
     }
 }
-
-nnoremap("gh", "<cmd>lua require('gitsigns').next_hunk()<CR>")
-nnoremap("gH", "<cmd>lua require('gitsigns').prev_hunk()<CR>")
