@@ -205,4 +205,15 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    -- persistent terminals
+    use {
+        "akinsho/toggleterm.nvim",
+        config = function()
+            require("toggleterm").setup {
+                open_mapping = [[<leader>tt]],
+                shade_terminals = false
+            }
+        end
+    }
 end)
