@@ -49,8 +49,9 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 `asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn.
 
 ```bash
-asdf plugin-add nodejs
-asdf plugin-add yarn
+asdf plugin add nodejs
+asdf plugin add yarn
+asdf plugin add pnpm
 ```
 
 ## Fonts
