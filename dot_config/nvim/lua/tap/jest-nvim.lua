@@ -83,6 +83,8 @@ end)
 local function find_in_children(node, buf, predicate, max_depth)
     max_depth = max_depth or 5
 
+    -- TODO: Improve depth detection, most children will be dead ends so below
+    -- warning is too crude
     if max_depth == 0 then
         log.warn("find_in_children max_depth reached, aborting")
         return nil
@@ -158,6 +160,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
 
         return vim.treesitter.get_node_text(str_node:child(1), buf)
     end, nodes)
+
+    print(vim.inspect(test_strings))
 
     return table.concat(tbl_reverse(test_strings), " ")
 end
