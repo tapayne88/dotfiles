@@ -9,7 +9,7 @@ local escape_terminal_keys = function(keys)
 end
 
 local get_test_command = function(file_name, pattern)
-    local cmd = {"yarn", "exec", "jest", file_name, "--", "--watch"}
+    local cmd = {"npx", "jest", file_name, "--watch"}
     if pattern then
         return vim.tbl_flatten({
             cmd,
@@ -196,7 +196,7 @@ end
 
 local test_file = with_validate_file_path(function(file_path)
     local cwd = vim.fn.expand("%:p:h")
-    local file_name = vim.fn.expand("%:t")
+    local file_name = vim.fn.expand("%:p")
 
     local cmd = get_test_command(file_name)
 
@@ -206,7 +206,7 @@ end)
 
 local test_nearest = with_validate_file_path(function(file_path)
     local cwd = vim.fn.expand("%:p:h")
-    local file_name = vim.fn.expand("%:t")
+    local file_name = vim.fn.expand("%:p")
 
     local pattern = get_nearest_pattern()
     local cmd = get_test_command(file_name, pattern)
