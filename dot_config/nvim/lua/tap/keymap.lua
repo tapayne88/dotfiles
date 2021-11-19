@@ -1,7 +1,6 @@
 local nnoremap = require("tap.utils").nnoremap
 local vnoremap = require("tap.utils").vnoremap
 local tnoremap = require("tap.utils").tnoremap
-local xnoremap = require("tap.utils").xnoremap
 
 -- Makes up/down on line wrapped lines work better (more intuitive)
 nnoremap('j', 'gj')
@@ -32,7 +31,3 @@ nnoremap('<leader>sv', ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
 -- Esc (C-[) to escape terminal insert mode
 tnoremap('<Esc>', [[<C-\><C-n>]])
 tnoremap('<A-[>', '<Esc>')
-
-nnoremap('<leader>gp', ":lua require('tap.git-web-url').get_line_url()<CR>")
-xnoremap('<leader>gp',
-         ":<c-u>lua require('tap.git-web-url').get_block_url()<CR>")

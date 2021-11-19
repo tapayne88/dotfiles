@@ -98,7 +98,15 @@ return require('packer').startup(function(use)
     }
 
     -- Git integration ':Gstatus' etc.
-    use {'tpope/vim-fugitive', config = [[require("tap.plugins.fugitive")]]}
+    use {
+        'tpope/vim-fugitive',
+        config = [[require("tap.plugins.fugitive")]],
+        requires = {
+            'tpope/vim-rhubarb', -- :GBrowse github
+            'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
+            'tommcdo/vim-fubitive' -- :GBrowse bitbucket
+        }
+    }
     -- Easier find & replace
     use {'wincent/scalpel', config = [[require("tap.plugins.scalpel")]]}
     -- Simple plugin to easily resize windows

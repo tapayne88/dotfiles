@@ -1,6 +1,8 @@
 local nnoremap = require("tap.utils").nnoremap
+local xnoremap = require("tap.utils").xnoremap
 
 vim.g.fugitive_dynamic_colors = 0
+vim.g.fubitive_domain_patterns = {'stash'}
 
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
@@ -18,3 +20,5 @@ nnoremap('<leader>gb', ':Git blame<CR>')
 nnoremap('<leader>go', ':Git checkout<Space>')
 nnoremap('<leader>gps', ':Dispatch! git push<CR>')
 nnoremap('<leader>gpl', ':Dispatch! git pull<CR>')
+nnoremap('<leader>gp', ":GBrowse<CR>")
+xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
