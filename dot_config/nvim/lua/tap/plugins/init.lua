@@ -124,7 +124,8 @@ return require('packer').startup(function(use)
         {
             'nvim-treesitter/nvim-treesitter',
             config = [[require("tap.plugins.treesitter")]],
-            run = ':TSUpdate'
+            run = ':TSUpdate',
+            requires = {'JoosepAlviste/nvim-ts-context-commentstring'}
         },
         {
             'nvim-treesitter/playground',
