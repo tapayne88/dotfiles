@@ -8,7 +8,8 @@ function module.setup()
             -- Prevent document_formatting, that's diagnosticls' job
             client.resolved_capabilities.document_formatting = false
             lsp_utils.on_attach(client, bufnr)
-        end
+        end,
+        settings = {json = {schemas = require('schemastore').json.schemas()}}
     })
 end
 
