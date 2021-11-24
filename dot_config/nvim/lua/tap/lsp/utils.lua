@@ -1,3 +1,4 @@
+local lsp_settings = require("nvim-lsp-installer.settings")
 local lspconfig = require("lspconfig")
 local utils = require("tap.utils")
 local nnoremap = require('tap.utils').nnoremap
@@ -171,6 +172,8 @@ end
 function module.get_default_config(config)
     local base_config = {
         autostart = true,
+        -- set cmd_cwd to nvim-lsp-installer dir to ensure node version consistency
+        cmd_cwd = lsp_settings.current.install_root_dir,
         handlers = {
             ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers
                                                               .signature_help, {
