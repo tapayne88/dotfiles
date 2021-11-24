@@ -186,8 +186,7 @@ function module.get_default_config(config)
                                                                        .protocol
                                                                        .make_client_capabilities())
     }
-    return vim.tbl_deep_extend("error", base_config, config)
-end
+    return vim.tbl_deep_extend("force", base_config, config)
 
 function module.lspconfig_server_setup(server_name, config)
     local server = lspconfig[server_name]
