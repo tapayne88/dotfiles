@@ -1,25 +1,10 @@
-local utils = require("tap.utils")
-local lsp_utils = require('tap.lsp.utils')
-local install_path = require'lspinstall/util'.install_path
-
-local diagnosticls_languages = {
-    html = {formatters = {"prettier"}},
-    lua = {formatters = {"lua_format"}},
-    javascript = {linters = {}, formatters = {"prettier"}},
-    javascriptreact = {linters = {}, formatters = {"prettier"}},
-    json = {formatters = {"prettier"}},
-    markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
-    typescript = {linters = {}, formatters = {"prettier"}},
-    typescriptreact = {linters = {}, formatters = {"prettier"}}
-}
-
-local npm_packages = [[
-  ! test -f package.json && npm init -y --scope=lspinstall || true
-  npm install \
-    diagnostic-languageserver@latest \
-    prettier@latest \
-    markdownlint-cli@latest
-]]
+local server = require "nvim-lsp-installer.server"
+local servers = require "nvim-lsp-installer.servers"
+local installers = require "nvim-lsp-installer.installers"
+local npm = require "nvim-lsp-installer.installers.npm"
+local shell = require "nvim-lsp-installer.installers.shell"
+local utils = require "tap.utils"
+local lsp_utils = require "tap.lsp.utils"
 
 local lua_format = [[
   os=$(uname -s | tr "[:upper:]" "[:lower:]")
@@ -40,32 +25,44 @@ local lua_format = [[
 local module = {}
 
 local server_name = "diagnosticls"
-local lspconfig_name = "diagnosticls"
 
 function module.patch_install()
-    local config = require"lspinstall/util".extract_config(lspconfig_name)
-    config.default_config.cmd[1] =
-        "./node_modules/.bin/diagnostic-languageserver"
+    local _, og_server = servers.get_server(server_name)
 
-    require'lspinstall/servers'[server_name] =
-        vim.tbl_extend('error', config,
-                       {install_script = npm_packages .. lua_format})
+    local patched_server = server.Server:new(
+                               vim.tbl_extend("force", og_server, {
+            installer = installers.pipe {
+                npm.packages {
+                    "diagnostic-languageserver", "prettier", "markdownlint"
+                }, shell.bash(lua_format)
+            },
+            default_options = og_server:get_default_options()
+        }))
+
+    servers.register(patched_server)
 end
 
-local function npm_path(bin)
-    return install_path(server_name) .. "/node_modules/.bin/" .. bin
-end
+local diagnosticls_languages = {
+    html = {formatters = {"prettier"}},
+    lua = {formatters = {"lua_format"}},
+    javascript = {linters = {}, formatters = {"prettier"}},
+    javascriptreact = {linters = {}, formatters = {"prettier"}},
+    json = {formatters = {"prettier"}},
+    markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
+    typescript = {linters = {}, formatters = {"prettier"}},
+    typescriptreact = {linters = {}, formatters = {"prettier"}}
+}
 
-function module.setup()
+function module.setup(lsp_server)
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
 
-        lsp_utils.lspconfig_server_setup(server_name, {
+        lsp_server:setup(lsp_utils.get_default_config({
             filetypes = vim.tbl_keys(diagnosticls_languages),
             on_attach = lsp_utils.on_attach,
             init_options = {
                 linters = {
                     markdownlint = {
-                        command = npm_path("markdownlint"),
+                        command = npm.executable("markdownlint"),
                         isStderr = true,
                         debounce = 100,
                         args = {
@@ -87,7 +84,7 @@ function module.setup()
                                                    "linters"),
                 formatters = {
                     prettier = {
-                        command = prettier_bin or npm_path("prettier"),
+                        command = prettier_bin or npm.executable("prettier"),
                         args = {"--stdin-filepath", "%filepath"},
                         rootPatterns = {
                             "package.json", ".prettierrc", ".prettierrc.json",
@@ -99,13 +96,14 @@ function module.setup()
                         }
                     },
                     lua_format = {
-                        command = install_path(server_name) .. "/lua-format"
+                        command = servers.get_server_install_path(server_name) ..
+                            "/lua-format"
                     }
                 },
                 formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
                                                          "formatters")
             }
-        })
+        }))
     end)
 end
 

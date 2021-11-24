@@ -1,3 +1,4 @@
+local lsp_installer = require("nvim-lsp-installer")
 local utils = require("tap.utils")
 local lsp_utils = require("tap.lsp.utils")
 
@@ -11,26 +12,32 @@ utils.command({
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
 })
 
-local servers = {"typescript", "diagnosticls", "lua", "json", "eslint"}
+local servers = {"diagnosticls"}
 
 local function init_servers()
-    for _, server_name in pairs(servers) do
+    for _, name in pairs(servers) do
         pcall(function()
-            require("tap.lsp.servers." .. server_name).patch_install()
+            require("tap.lsp.servers." .. name).patch_install()
         end)
     end
 end
 
 local function setup_servers(initialise)
-    require'lspinstall'.setup()
-    local installed_servers = require'lspinstall'.installed_servers()
-
-    -- if we have servers, init dependencies
-    if #installed_servers > 0 then initialise() end
-
-    for _, server_name in pairs(installed_servers) do
-        require("tap.lsp.servers." .. server_name).setup {}
+    for _, name in pairs(servers) do
+        local ok, server = lsp_installer.get_server(name)
+        -- Check that the server is supported in nvim-lsp-installer
+        if ok then
+            if not server:is_installed() then
+                print("Installing " .. name)
+                server:install()
+            end
+            server:on_ready(function()
+                require("tap.lsp.servers." .. name).setup(server)
+            end)
+        end
     end
+
+    -- TODO: Implement initialise probably using lsp_installer.on_server_ready
 end
 
 local apply_user_highlights = function()

@@ -168,8 +168,9 @@ function module.init_diagnositcs()
     })
 end
 
-local function get_config(config)
+function module.get_default_config(config)
     local base_config = {
+        autostart = true,
         handlers = {
             ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers
                                                               .signature_help, {
