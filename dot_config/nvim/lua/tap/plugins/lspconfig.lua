@@ -37,7 +37,7 @@ local function setup_servers(initialise)
         end
     end
 
-    -- TODO: Implement initialise probably using lsp_installer.on_server_ready
+    lsp_installer.on_server_ready(initialise)
 end
 
 local apply_user_highlights = function()
