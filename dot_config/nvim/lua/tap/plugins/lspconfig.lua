@@ -7,11 +7,6 @@ if vim.env.LSP_DEBUG then
     print("LSP debug log: " .. vim.lsp.get_log_path())
 end
 
-utils.command({
-    "LspInstalledServers",
-    function() print(vim.inspect(require'lspinstall'.installed_servers())) end
-})
-
 local servers = {"diagnosticls", "eslint", "jsonls", "sumneko_lua", "tsserver"}
 
 local function init_servers()
