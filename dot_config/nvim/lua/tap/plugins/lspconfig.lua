@@ -12,7 +12,7 @@ utils.command({
     function() print(vim.inspect(require'lspinstall'.installed_servers())) end
 })
 
-local servers = {"diagnosticls", "eslint", "jsonls"}
+local servers = {"diagnosticls", "eslint", "jsonls", "sumneko_lua"}
 
 local function init_servers()
     for _, name in pairs(servers) do
