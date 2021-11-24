@@ -33,15 +33,14 @@
           "type": "number",
           "description": "Font size to use in terminal, JetBrains Mono recommends 13",
           "default": 13
+        },
+        "fugitive_bitbucket_domains": {
+          "type": "string",
+          "description": "Non cloud domains for bitbucket fugitive plugin, allows :GBrowse"
         }
       },
       "additionalProperties": false,
-      "required": [
-        "ostype",
-        "email",
-        "terminal_font",
-        "terminal_font_size"
-      ]
+      "required": ["ostype", "email", "terminal_font", "terminal_font_size"]
     }
   }
 }
