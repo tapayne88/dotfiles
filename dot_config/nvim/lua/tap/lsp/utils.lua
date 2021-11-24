@@ -187,16 +187,6 @@ function module.get_default_config(config)
                                                                        .make_client_capabilities())
     }
     return vim.tbl_deep_extend("force", base_config, config)
-
-function module.lspconfig_server_setup(server_name, config)
-    local server = lspconfig[server_name]
-
-    if (server == nil) then return end
-
-    server.setup(get_config(config))
-    server.manager.try_add_wrapper()
-
-    return server
 end
 
 function module.get_lsp_clients()
