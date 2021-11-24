@@ -1,7 +1,6 @@
-local lsp_settings = require("nvim-lsp-installer.settings")
-local lspconfig = require("lspconfig")
-local utils = require("tap.utils")
-local nnoremap = require('tap.utils').nnoremap
+local lsp_settings = require "nvim-lsp-installer.settings"
+local utils = require "tap.utils"
+local nnoremap = require"tap.utils".nnoremap
 
 local function toggle_format()
     if (vim.b.disable_format == nil) then

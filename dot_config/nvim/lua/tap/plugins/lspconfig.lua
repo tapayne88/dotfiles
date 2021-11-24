@@ -1,6 +1,6 @@
-local lsp_installer = require("nvim-lsp-installer")
-local utils = require("tap.utils")
-local lsp_utils = require("tap.lsp.utils")
+local lsp_installer = require "nvim-lsp-installer"
+local utils = require "tap.utils"
+local lsp_utils = require "tap.lsp.utils"
 
 if vim.env.LSP_DEBUG then
     vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
