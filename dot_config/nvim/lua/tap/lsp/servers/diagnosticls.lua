@@ -1,4 +1,3 @@
-local server = require "nvim-lsp-installer.server"
 local servers = require "nvim-lsp-installer.servers"
 local installers = require "nvim-lsp-installer.installers"
 local npm = require "nvim-lsp-installer.installers.npm"
@@ -28,8 +27,9 @@ local server_name = "diagnosticls"
 
 function module.patch_install()
     lsp_utils.patch_lsp_installer(server_name, installers.pipe {
-        npm.packages {"diagnostic-languageserver", "prettier", "markdownlint"},
-        shell.bash(lua_format)
+        npm.packages {
+            "diagnostic-languageserver", "prettier", "markdownlint-cli"
+        }, shell.bash(lua_format)
     })
 end
 
@@ -45,6 +45,7 @@ local diagnosticls_languages = {
 }
 
 function module.setup(lsp_server)
+    local root_dir = servers.get_server_install_path(lsp_server.name)
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
 
         lsp_server:setup(lsp_utils.merge_with_default_config({
@@ -52,7 +53,7 @@ function module.setup(lsp_server)
             init_options = {
                 linters = {
                     markdownlint = {
-                        command = npm.executable("markdownlint"),
+                        command = npm.executable(root_dir, "markdownlint"),
                         isStderr = true,
                         debounce = 100,
                         args = {
@@ -74,7 +75,8 @@ function module.setup(lsp_server)
                                                    "linters"),
                 formatters = {
                     prettier = {
-                        command = prettier_bin or npm.executable("prettier"),
+                        command = prettier_bin or
+                            npm.executable(root_dir, "prettier"),
                         args = {"--stdin-filepath", "%filepath"},
                         rootPatterns = {
                             "package.json", ".prettierrc", ".prettierrc.json",
