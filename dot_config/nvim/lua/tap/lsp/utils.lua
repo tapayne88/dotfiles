@@ -16,6 +16,7 @@ end
 
 local module = {}
 
+-- LSP format wrapper which detects if formatting has been disabled for the buffer
 function module.format()
     return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
 end
@@ -69,6 +70,10 @@ local apply_user_highlights = function()
 
 end
 
+-- on_attach function for lsp.setup calls
+-- @param client Client
+-- @param bufnr number
+-- @return nil
 function module.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -139,6 +144,10 @@ function module.on_attach(client, bufnr)
     end
 end
 
+-- Find npm executable path
+-- @param cmd string
+-- @param fn function
+-- @return nil
 function module.get_bin_path(cmd, fn)
     return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
                                              function(result, code, signal)
@@ -152,6 +161,7 @@ end
 
 local border_window_style = 'rounded'
 
+-- Init vim.diagnostic with appropriate config
 function module.init_diagnositcs()
     vim.diagnostic.config({
         underline = true,
@@ -170,6 +180,9 @@ function module.init_diagnositcs()
     })
 end
 
+-- Merge passed config with default config for consistent lsp.setup calls
+-- @param config Config
+-- @return Config
 function module.get_default_config(config)
     local base_config = {
         autostart = true,
