@@ -39,7 +39,7 @@ local apply_user_highlights = function()
     utils.highlight('FloatBorder', {link = 'LspFloatWinBorder'})
 end
 
-utils.augroup("LspSagaHighlights", {
+utils.augroup("LspUserHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
