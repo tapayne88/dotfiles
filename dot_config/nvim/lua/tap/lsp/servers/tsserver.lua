@@ -29,7 +29,7 @@ end
 function module.setup(lsp_server)
     local default_options = lsp_server:get_default_options()
 
-    lsp_server:setup(lsp_utils.get_default_config({
+    lsp_server:setup(lsp_utils.merge_with_default_config({
         handlers = {
             ["window/logMessage"] = function(_, result, header)
                 if result == nil or result.message == nil then

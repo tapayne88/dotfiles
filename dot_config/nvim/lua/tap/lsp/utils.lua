@@ -180,10 +180,11 @@ function module.init_diagnositcs()
     })
 end
 
--- Merge passed config with default config for consistent lsp.setup calls
+-- Merge passed config with default config for consistent lsp.setup calls, preserve
+-- passed config
 -- @param config Config
 -- @return Config
-function module.get_default_config(config)
+function module.merge_with_default_config(config)
     local base_config = {
         autostart = true,
         on_attach = module.on_attach,

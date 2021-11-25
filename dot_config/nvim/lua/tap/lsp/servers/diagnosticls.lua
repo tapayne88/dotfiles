@@ -47,7 +47,7 @@ local diagnosticls_languages = {
 function module.setup(lsp_server)
     lsp_utils.get_bin_path("prettier", function(prettier_bin)
 
-        lsp_server:setup(lsp_utils.get_default_config({
+        lsp_server:setup(lsp_utils.merge_with_default_config({
             filetypes = vim.tbl_keys(diagnosticls_languages),
             init_options = {
                 linters = {

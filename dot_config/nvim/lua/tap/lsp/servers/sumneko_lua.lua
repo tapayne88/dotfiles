@@ -28,7 +28,7 @@ function module.setup(lsp_server)
         }
     }
 
-    lsp_server:setup(lsp_utils.get_default_config({settings = settings}))
+    lsp_server:setup(lsp_utils.merge_with_default_config({settings = settings}))
 end
 
 return module
