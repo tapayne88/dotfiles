@@ -1,3 +1,5 @@
+local installers = require "nvim-lsp-installer.installers"
+local npm = require "nvim-lsp-installer.installers.npm"
 local lsp_utils = require "tap.lsp.utils"
 
 local set_tsc_version = function(client_id, version)
@@ -17,8 +19,15 @@ end
 
 local module = {}
 
+function module.patch_install()
+    lsp_utils.patch_lsp_installer("tsserver", installers.pipe {
+        -- Copy of default tsserver installer but pin ts-ls to 0.6.5
+        npm.packages {"typescript-language-server@0.6.5", "typescript"}
+    })
+end
+
 function module.setup(lsp_server)
-    local default_options= lsp_server:get_default_options()
+    local default_options = lsp_server:get_default_options()
 
     lsp_server:setup(lsp_utils.get_default_config({
         handlers = {
