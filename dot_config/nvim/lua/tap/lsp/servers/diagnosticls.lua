@@ -23,10 +23,8 @@ local lua_format = [[
 
 local module = {}
 
-local server_name = "diagnosticls"
-
 function module.patch_install()
-    lsp_utils.patch_lsp_installer(server_name, installers.pipe {
+    lsp_utils.patch_lsp_installer("diagnosticls", installers.pipe {
         npm.packages {
             "diagnostic-languageserver", "prettier", "markdownlint-cli"
         }, shell.bash(lua_format)
@@ -87,10 +85,7 @@ function module.setup(lsp_server)
                             "prettier.config.cjs"
                         }
                     },
-                    lua_format = {
-                        command = servers.get_server_install_path(server_name) ..
-                            "/lua-format"
-                    }
+                    lua_format = {command = root_dir .. "/lua-format"}
                 },
                 formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
                                                          "formatters")
