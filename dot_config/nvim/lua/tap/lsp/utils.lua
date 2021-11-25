@@ -1,3 +1,5 @@
+local server = require "nvim-lsp-installer.server"
+local servers = require "nvim-lsp-installer.servers"
 local lsp_settings = require "nvim-lsp-installer.settings"
 local utils = require "tap.utils"
 local nnoremap = require"tap.utils".nnoremap
@@ -194,6 +196,23 @@ function module.get_lsp_clients()
     local active_clients = vim.lsp.get_active_clients()
 
     return active_clients
+end
+
+-- Patch nvim-lsp-installer for existing lsp server, copying the config and
+-- overriding installer step
+-- @param server_name string
+-- @param installer function
+-- @return nil
+function module.patch_lsp_installer(server_name, installer)
+    local _, og_server = servers.get_server(server_name)
+
+    local patched_server = server.Server:new(
+                               vim.tbl_extend("force", og_server, {
+            installer = installer,
+            default_options = og_server:get_default_options()
+        }))
+
+    servers.register(patched_server)
 end
 
 return module

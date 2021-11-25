@@ -27,19 +27,10 @@ local module = {}
 local server_name = "diagnosticls"
 
 function module.patch_install()
-    local _, og_server = servers.get_server(server_name)
-
-    local patched_server = server.Server:new(
-                               vim.tbl_extend("force", og_server, {
-            installer = installers.pipe {
-                npm.packages {
-                    "diagnostic-languageserver", "prettier", "markdownlint"
-                }, shell.bash(lua_format)
-            },
-            default_options = og_server:get_default_options()
-        }))
-
-    servers.register(patched_server)
+    lsp_utils.patch_lsp_installer(server_name, installers.pipe {
+        npm.packages {"diagnostic-languageserver", "prettier", "markdownlint"},
+        shell.bash(lua_format)
+    })
 end
 
 local diagnosticls_languages = {
