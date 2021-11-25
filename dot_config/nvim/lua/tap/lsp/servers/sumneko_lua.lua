@@ -28,10 +28,7 @@ function module.setup(lsp_server)
         }
     }
 
-    lsp_server:setup(lsp_utils.get_default_config({
-        on_attach = lsp_utils.on_attach,
-        settings = settings
-    }))
+    lsp_server:setup(lsp_utils.get_default_config({settings = settings}))
 end
 
 return module

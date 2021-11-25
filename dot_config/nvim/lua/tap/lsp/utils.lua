@@ -186,6 +186,7 @@ end
 function module.get_default_config(config)
     local base_config = {
         autostart = true,
+        on_attach = module.on_attach,
         -- set cmd_cwd to nvim-lsp-installer dir to ensure node version consistency
         cmd_cwd = lsp_settings.current.install_root_dir,
         handlers = {

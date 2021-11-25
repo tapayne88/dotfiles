@@ -49,7 +49,6 @@ function module.setup(lsp_server)
 
         lsp_server:setup(lsp_utils.get_default_config({
             filetypes = vim.tbl_keys(diagnosticls_languages),
-            on_attach = lsp_utils.on_attach,
             init_options = {
                 linters = {
                     markdownlint = {

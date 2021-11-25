@@ -4,7 +4,6 @@ local module = {}
 
 function module.setup(lsp_server)
     lsp_server:setup(lsp_utils.get_default_config({
-        on_attach = lsp_utils.on_attach,
         settings = {packageManager = 'yarn'}
     }))
 end
