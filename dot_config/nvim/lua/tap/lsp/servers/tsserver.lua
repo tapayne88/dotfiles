@@ -1,4 +1,4 @@
-local lsp_utils = require('tap.lsp.utils')
+local lsp_utils = require "tap.lsp.utils"
 
 local set_tsc_version = function(client_id, version)
     if vim.g.tsc_version == nil then vim.g.tsc_version = {} end
@@ -17,13 +17,10 @@ end
 
 local module = {}
 
-local server_name = "typescript"
-local lspconfig_name = "tsserver"
+function module.setup(lsp_server)
+    local default_options = lsp_server:get_default_options()
 
-function module.setup()
-    local config = require'lspconfig/configs'.typescript.document_config
-
-    lsp_utils.lspconfig_server_setup(server_name, {
+    lsp_server:setup(lsp_utils.merge_with_default_config({
         handlers = {
             ["window/logMessage"] = function(_, result, header)
                 if result == nil or result.message == nil then
@@ -49,7 +46,7 @@ function module.setup()
             end
         },
         cmd = vim.tbl_flatten({
-            config.default_config.cmd, {"--log-level", "4"},
+            default_options.cmd, {"--log-level", "4"},
             {
                 "--tsserver-log-file",
                 vim.env.XDG_CACHE_HOME .. "/nvim/tsserver.log"
@@ -60,7 +57,7 @@ function module.setup()
             client.resolved_capabilities.document_formatting = false
             lsp_utils.on_attach(client, bufnr)
         end
-    })
+    }))
 end
 
 return module

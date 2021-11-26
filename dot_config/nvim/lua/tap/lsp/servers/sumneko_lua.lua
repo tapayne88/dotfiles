@@ -1,11 +1,8 @@
-local lsp_utils = require('tap.lsp.utils')
+local lsp_utils = require "tap.lsp.utils"
 
 local module = {}
 
-local server_name = "lua"
-local lspconfig_name = "sumneko_lua"
-
-function module.setup()
+function module.setup(lsp_server)
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, "lua/?.lua")
     table.insert(runtime_path, "lua/?/init.lua")
@@ -31,10 +28,7 @@ function module.setup()
         }
     }
 
-    lsp_utils.lspconfig_server_setup(server_name, {
-        on_attach = lsp_utils.on_attach,
-        settings = settings
-    })
+    lsp_server:setup(lsp_utils.merge_with_default_config({settings = settings}))
 end
 
 return module

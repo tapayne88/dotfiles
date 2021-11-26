@@ -1,6 +1,8 @@
-local lspconfig = require("lspconfig")
-local utils = require("tap.utils")
-local nnoremap = require('tap.utils').nnoremap
+local server = require "nvim-lsp-installer.server"
+local servers = require "nvim-lsp-installer.servers"
+local lsp_settings = require "nvim-lsp-installer.settings"
+local utils = require "tap.utils"
+local nnoremap = require"tap.utils".nnoremap
 
 local function toggle_format()
     if (vim.b.disable_format == nil) then
@@ -14,6 +16,7 @@ end
 
 local module = {}
 
+-- LSP format wrapper which detects if formatting has been disabled for the buffer
 function module.format()
     return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
 end
@@ -67,6 +70,10 @@ local apply_user_highlights = function()
 
 end
 
+-- on_attach function for lsp.setup calls
+-- @param client Client
+-- @param bufnr number
+-- @return nil
 function module.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -137,6 +144,10 @@ function module.on_attach(client, bufnr)
     end
 end
 
+-- Find npm executable path
+-- @param cmd string
+-- @param fn function
+-- @return nil
 function module.get_bin_path(cmd, fn)
     return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
                                              function(result, code, signal)
@@ -150,6 +161,7 @@ end
 
 local border_window_style = 'rounded'
 
+-- Init vim.diagnostic with appropriate config
 function module.init_diagnositcs()
     vim.diagnostic.config({
         underline = true,
@@ -168,8 +180,16 @@ function module.init_diagnositcs()
     })
 end
 
-local function get_config(config)
+-- Merge passed config with default config for consistent lsp.setup calls, preserve
+-- passed config
+-- @param config Config
+-- @return Config
+function module.merge_with_default_config(config)
     local base_config = {
+        autostart = true,
+        on_attach = module.on_attach,
+        -- set cmd_cwd to nvim-lsp-installer dir to ensure node version consistency
+        cmd_cwd = lsp_settings.current.install_root_dir,
         handlers = {
             ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers
                                                               .signature_help, {
@@ -183,18 +203,7 @@ local function get_config(config)
                                                                        .protocol
                                                                        .make_client_capabilities())
     }
-    return vim.tbl_deep_extend("error", base_config, config)
-end
-
-function module.lspconfig_server_setup(server_name, config)
-    local server = lspconfig[server_name]
-
-    if (server == nil) then return end
-
-    server.setup(get_config(config))
-    server.manager.try_add_wrapper()
-
-    return server
+    return vim.tbl_deep_extend("force", base_config, config)
 end
 
 function module.get_lsp_clients()
@@ -202,6 +211,23 @@ function module.get_lsp_clients()
     local active_clients = vim.lsp.get_active_clients()
 
     return active_clients
+end
+
+-- Patch nvim-lsp-installer for existing lsp server, copying the config and
+-- overriding installer step
+-- @param server_name string
+-- @param installer function
+-- @return nil
+function module.patch_lsp_installer(server_name, installer)
+    local _, og_server = servers.get_server(server_name)
+
+    local patched_server = server.Server:new(
+                               vim.tbl_extend("force", og_server, {
+            installer = installer,
+            default_options = og_server:get_default_options()
+        }))
+
+    servers.register(patched_server)
 end
 
 return module

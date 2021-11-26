@@ -1,13 +1,12 @@
-local lsp_utils = require('tap.lsp.utils')
+local lsp_utils = require "tap.lsp.utils"
 
 local module = {}
 
-function module.setup()
-    lsp_utils.lspconfig_server_setup("json", {
-        on_attach = lsp_utils.on_attach,
+function module.setup(lsp_server)
+    lsp_server:setup(lsp_utils.merge_with_default_config({
         init_options = {provideFormatter = false},
         settings = {json = {schemas = require('schemastore').json.schemas()}}
-    })
+    }))
 end
 
 return module

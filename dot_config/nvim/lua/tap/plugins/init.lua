@@ -153,7 +153,7 @@ return require('packer').startup(function(use)
         'neovim/nvim-lspconfig', -- LSP server config
         config = [[require("tap.plugins.lspconfig")]],
         requires = {
-            'kabouzeid/nvim-lspinstall', -- install LSP servers
+            'williamboman/nvim-lsp-installer', -- install LSP servers
             'b0o/schemastore.nvim', -- jsonls schemas
             {
                 'rmagatti/goto-preview',
