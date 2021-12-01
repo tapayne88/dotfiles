@@ -31,8 +31,8 @@
         };
       };
       overlay-nixgl = final: prev: {
-        unstable = import inputs.nixgl {
-          pkgs = inputs.nixpkgs;
+        nixgl = import inputs.nixgl {
+          pkgs = inputs.nixpkgs.legacyPackages.${prev.system};
         };
       };
       overlays = [
