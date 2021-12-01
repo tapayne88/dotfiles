@@ -39,6 +39,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'tpope/vim-unimpaired'                          -- Complementary pairs of mappings for common actions
+    use 'tpope/vim-vinegar'                             -- Nicer netrw defaults
     -- LuaFormatter on
 
     -- Interactive neovim scratchpad for lua

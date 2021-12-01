@@ -19,7 +19,7 @@ nnoremap('<LocalLeader>q', ":lopen<CR>")
 
 nnoremap('<leader>fp', ":echo @%<CR>")
 nnoremap('<leader>cm', ":!chezmoi apply -v<CR>")
--- nnoremap('<leader>ff', ":Ex<CR>") -- Replacing with Telescope file_browser (though borrowing shortcut for find_files)
+nnoremap('<leader>ex', ":Ex<CR>")
 
 -- vimrc sourcing
 nnoremap('<leader>evv', ":vsplit " .. vim.g.chezmoi_source_dir ..
