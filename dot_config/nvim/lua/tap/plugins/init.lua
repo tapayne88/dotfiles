@@ -49,21 +49,7 @@ return require('packer').startup(function(use)
     use {'lbrayner/vim-rzip', config = [[require("tap.plugins.vim-rzip")]]}
 
     -- Seemless vim <-> tmux navigation
-    use {
-        'aserowy/tmux.nvim',
-        config = function()
-            require("tmux").setup({
-                navigation = {
-                    -- cycles to opposite pane while navigating into the border
-                    cycle_navigation = false,
-                    -- enables default keybindings (C-hjkl) for normal mode
-                    enable_default_keybindings = true,
-                    -- prevents unzoom tmux when navigating beyond vim border
-                    persist_zoom = true
-                }
-            })
-        end
-    }
+    use {'aserowy/tmux.nvim', config = [[require("tap.plugins.tmux-nvim")]]}
 
     -- even better % navigation
     use {
