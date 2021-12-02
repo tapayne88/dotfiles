@@ -49,7 +49,7 @@
     ) //
     {
       homeConfigurations = {
-        tapayne88 = inputs.home-manager.lib.homeManagerConfiguration {
+        "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
           system = "x86_64-linux";
           homeDirectory = "/home/tapayne88";
           username = "tapayne88";
@@ -66,7 +66,5 @@
             };
         };
     };
-    cfg = self.homeConfigurations.tapayne88.activationPackage;
-    defaultPackage.x86_64-linux = self.cfg;
   };
 }
