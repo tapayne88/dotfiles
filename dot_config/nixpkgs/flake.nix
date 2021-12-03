@@ -16,8 +16,6 @@
       url = "github:nix-community/home-manager/release-21.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, ... }@inputs:
@@ -41,12 +39,6 @@
         inputs.neovim-nightly-overlay.overlay
       ];
     in
-    # legacyPackages attribute for declarative channels (used by compat/default.nix)
-    inputs.flake-utils.lib.eachDefaultSystem (system:
-    {
-      legacyPackages = inputs.nixpkgs.legacyPackages.${system};
-    }
-    ) //
     {
       homeConfigurations = {
         "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
