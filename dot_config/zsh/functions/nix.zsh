@@ -2,6 +2,7 @@ function nix-update() {
   set -x
   nix-channel --update
   nix-env -u
+  nix flake update $XDG_CONFIG_HOME/nixpkgs
   home-manager switch
 
   # bug with nix neovim config writes init.vim which conflicts with my init.lua
