@@ -61,7 +61,7 @@
               };
 
               imports = [
-                ./home.nix
+                ./modules/home.nix
               ];
             };
         };
