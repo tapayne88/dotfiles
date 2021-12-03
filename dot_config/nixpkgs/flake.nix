@@ -62,6 +62,8 @@
 
               imports = [
                 ./modules/home.nix
+                ./modules/crostini.nix
+                ./modules/linux.nix
               ];
             };
         };
