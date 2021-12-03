@@ -53,6 +53,7 @@
           system = "x86_64-linux";
           homeDirectory = "/home/tapayne88";
           username = "tapayne88";
+          stateVersion = "21.05";
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
@@ -67,6 +68,25 @@
               ];
             };
         };
+        "thomas.payne@SBGML05573" = inputs.home-manager.lib.homeManagerConfiguration {
+          system = "x86_64-darwin";
+          homeDirectory = "/Users/thomas.payne";
+          username = "thomas.payne";
+          stateVersion = "21.05";
+          configuration = { pkgs, ... }:
+            {
+              nixpkgs.overlays = overlays;
+              nixpkgs.config = {
+                allowUnfree = true;
+              };
+
+              imports = [
+                ./modules/home.nix
+                ./modules/darwin.nix
+              ];
+            };
+        };
+        # TODO: Setup WSL host
     };
   };
 }
