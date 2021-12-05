@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-set -x
+HOME_MANAGER_HOME=$XDG_CONFIG_HOME/nixpkgs
 
 nix-channel --update
 nix-env -u
-nix flake update $XDG_CONFIG_HOME/nixpkgs
+nix flake update $HOME_MANAGER_HOME
 home-manager switch
+
+FLAKE_LOCKFILE=$HOME_MANAGER_HOME/flake.lock
+CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path $FLAKE_LOCKFILE)
+command cp $FLAKE_LOCKFILE $CHEZMOI_FLAKE_LOCKFILE
+if [[ -n $(command git status --short $CHEZMOI_FLAKE_LOCKFILE) ]]; then
+  echo "changes made to flake.lock, please commit them"
+fi
 
 # bug with nix neovim config writes init.vim which conflicts with my init.lua
 # https://github.com/nix-community/home-manager/issues/1907
