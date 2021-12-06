@@ -33,6 +33,7 @@
     silver-searcher               # ag searching
     neofetch                      # pretty print of system info
     ruby                          # always useful to have ruby
+    rnix-lsp                      # nix lsp & formatter
     tmuxp                         # declaritive tmux session launcher
     tree                          # print directory structure
     up                            # utlimate plumber - unix pipes tool

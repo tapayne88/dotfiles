@@ -7,7 +7,9 @@ if vim.env.LSP_DEBUG then
     print("LSP debug log: " .. vim.lsp.get_log_path())
 end
 
-local servers = {"diagnosticls", "eslint", "jsonls", "sumneko_lua", "tsserver"}
+local servers = {
+    "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua", "tsserver"
+}
 
 local function init_servers()
     for _, name in pairs(servers) do
@@ -29,6 +31,9 @@ local function setup_servers(initialise)
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
             end)
+        else
+            -- non-nvim-lsp-installer servers like rnix
+            require("tap.lsp.servers." .. name).setup(server)
         end
     end
 
