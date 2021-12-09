@@ -8,7 +8,8 @@ if vim.env.LSP_DEBUG then
 end
 
 local servers = {
-    "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua", "tsserver"
+    "bashls", "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua",
+    "tsserver"
 }
 
 local function init_servers()
