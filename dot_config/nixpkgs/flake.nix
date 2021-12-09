@@ -23,9 +23,7 @@
       overlay-unstable = final: prev: {
         unstable = import inputs.nixpkgs-unstable {
           system = prev.system;
-          config = {
-            allowUnfree = true;
-          };
+          config.allowUnfree = true;
         };
       };
       overlay-nixgl = final: prev: {
@@ -41,6 +39,7 @@
     in
     {
       homeConfigurations = {
+        # Pixelbook
         "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
           system = "x86_64-linux";
           homeDirectory = "/home/tapayne88";
@@ -49,9 +48,7 @@
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
-              nixpkgs.config = {
-                allowUnfree = true;
-              };
+              nixpkgs.config.allowUnfree = true;
 
               imports = [
                 ./modules/home.nix
@@ -60,6 +57,7 @@
               ];
             };
         };
+        # MacBook Pro
         "thomas.payne@SBGML05573" = inputs.home-manager.lib.homeManagerConfiguration {
           system = "x86_64-darwin";
           homeDirectory = "/Users/thomas.payne";
@@ -68,9 +66,7 @@
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
-              nixpkgs.config = {
-                allowUnfree = true;
-              };
+              nixpkgs.config.allowUnfree = true;
 
               imports = [
                 ./modules/home.nix
