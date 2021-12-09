@@ -127,9 +127,13 @@ function module.on_attach(client, bufnr)
              opts)
     nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     nnoremap('<space>e', show_line_diagnositcs, opts)
-    nnoremap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-    nnoremap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
     nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+    -- float = false, CursorHold will show diagnostic
+    nnoremap('[d', function() vim.diagnostic.goto_prev({float = false}) end,
+             opts)
+    nnoremap(']d', function() vim.diagnostic.goto_next({float = false}) end,
+             opts)
 
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
