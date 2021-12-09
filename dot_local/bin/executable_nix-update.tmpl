@@ -82,7 +82,7 @@ function main {
   FLAKE_LOCKFILE=$HOME_MANAGER_HOME/flake.lock
   CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path $FLAKE_LOCKFILE)
   command cp $FLAKE_LOCKFILE $CHEZMOI_FLAKE_LOCKFILE
-  if [[ -n $(command git status --short $CHEZMOI_FLAKE_LOCKFILE) ]]; then
+  if [[ -n $(command git -C {{ .chezmoi.sourceDir }} status --short $CHEZMOI_FLAKE_LOCKFILE) ]]; then
     msg "${YELLOW}changes made to flake.lock, please commit them${NOFORMAT}"
   fi
 
