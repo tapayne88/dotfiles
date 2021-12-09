@@ -16,7 +16,6 @@
     fzf                           # fuzzy-finder
     gawk                          # gnu awk
     gitAndTools.diff-so-fancy     # fancy git diffs
-    git                           # git...
     gnupg                         # gnu pretty good privacy
     gti                           # alias for git, with a gti
     htop                          # pretty top
@@ -27,7 +26,6 @@
     ncdu                          # disk usage tool
     netcat                        # netcat implementaion
     nodejs                        # nodejs...
-    openssh                       # ssh
     poppler_utils                 # pdf utils - pdfunite to combine pdfs
     python3                       # python38
     python38Packages.pip          # pip for python38
