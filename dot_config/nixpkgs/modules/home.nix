@@ -1,63 +1,7 @@
 { pkgs, ... }:
-
-let
-  unstable = import <nixpkgs-unstable> { config = pkgs.config; };
-  nixgl = import <nixgl> { pkgs = unstable; };
-
-  {{- if ne "macOS" .ostype }}
-  linuxPkgs = with pkgs; [
-    gcc # neovim - building nvim-treesitter parsers
-    nq  # linux queue utility
-  ];
-  {{- else }}
-  linuxPkgs = [];
-  {{- end }}
-
-  {{- if eq "macOS" .ostype }}
-  darwinPkgs = with pkgs; [
-    coreutils   # gnu utilities
-    gnugrep     # gnu grep
-    gnused      # gnu sed
-  ];
-  {{- else }}
-  darwinPkgs = [];
-  {{- end }}
-
-  {{- if eq "crostini" .ostype }}
-  crostiniPkgs = with pkgs; [
-    alacritty        	     # alacritty terminal
-    unstable.kitty           # kitty terminal
-    glxinfo                  # utility for inspect openGL config
-    nixgl.nixGLIntel         # OpenGL wrapper for nix programs - Pixelbook specific
-  ];
-  {{- else }}
-  crostiniPkgs = [];
-  {{- end }}
-in
-
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "{{ .chezmoi.username }}";
-  home.homeDirectory = "{{ .chezmoi.homeDir }}";
-
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "21.11";
-
-  {{- if ne "macOS" .ostype }}
-  # Fix I/O error with XML write - root cause unknown
-  xdg.mime.enable = false;
-  {{- end }}
 
   home.packages = with pkgs; [
     antigen                       # zsh plugin manager
@@ -72,7 +16,6 @@ in
     fzf                           # fuzzy-finder
     gawk                          # gnu awk
     gitAndTools.diff-so-fancy     # fancy git diffs
-    git                           # git...
     gnupg                         # gnu pretty good privacy
     gti                           # alias for git, with a gti
     htop                          # pretty top
@@ -83,7 +26,6 @@ in
     ncdu                          # disk usage tool
     netcat                        # netcat implementaion
     nodejs                        # nodejs...
-    openssh                       # ssh
     poppler_utils                 # pdf utils - pdfunite to combine pdfs
     python3                       # python38
     python38Packages.pip          # pip for python38
@@ -104,13 +46,6 @@ in
     # Unstable Packages
     unstable._1password   # 1password version is quite old - unstable is much newer
     unstable.tmux         # terminal multiplexer
-  ] ++ darwinPkgs ++ crostiniPkgs ++ linuxPkgs;
-
-  # Neovim nightly
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
   ];
 
   programs.neovim = {
