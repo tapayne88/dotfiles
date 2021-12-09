@@ -38,6 +38,7 @@ local diagnosticls_languages = {
     javascriptreact = {linters = {}, formatters = {"prettier"}},
     json = {formatters = {"prettier"}},
     markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
+    sh = {linters = {"shellcheck"}},
     typescript = {linters = {}, formatters = {"prettier"}},
     typescriptreact = {linters = {}, formatters = {"prettier"}}
 }
@@ -66,6 +67,26 @@ function module.setup(lsp_server)
                         formatPattern = {
                             "^.*?:\\s?(\\d+)(:(\\d+)?)?\\s(MD\\d{3}\\/[A-Za-z0-9-/]+)\\s(.*)$",
                             {line = 1, column = 3, message = {4}}
+                        }
+                    },
+                    shellcheck = {
+                        command = "shellcheck",
+                        debounce = 100,
+                        args = {"--format", "json", "-"},
+                        sourceName = "shellcheck",
+                        parseJson = {
+                            line = "line",
+                            column = "column",
+                            endLine = "endLine",
+                            endColumn = "endColumn",
+                            message = "${message} [${code}]",
+                            security = "level"
+                        },
+                        securities = {
+                            error = "error",
+                            warning = "warning",
+                            info = "info",
+                            style = "hint"
                         }
                     }
                 },
