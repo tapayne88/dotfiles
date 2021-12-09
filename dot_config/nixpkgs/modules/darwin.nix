@@ -5,8 +5,8 @@
     old.openssh
     old.git
 
-    coreutils   # gnu utilities
-    gnugrep     # gnu grep
-    gnused      # gnu sed
+    coreutils # gnu utilities
+    gnugrep # gnu grep
+    gnused # gnu sed
   ];
 }

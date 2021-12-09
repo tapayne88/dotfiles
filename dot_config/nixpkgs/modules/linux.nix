@@ -6,6 +6,6 @@
     git
 
     gcc # neovim - building nvim-treesitter parsers
-    nq  # linux queue utility
+    nq # linux queue utility
   ];
 }
