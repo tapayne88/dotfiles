@@ -212,7 +212,7 @@ function module.merge_with_default_config(config)
                                                                        .protocol
                                                                        .make_client_capabilities())
     }
-    return vim.tbl_deep_extend("force", base_config, config)
+    return vim.tbl_deep_extend("force", base_config, config or {})
 end
 
 function module.get_lsp_clients()
