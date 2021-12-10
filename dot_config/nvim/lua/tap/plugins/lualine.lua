@@ -40,6 +40,7 @@ local nord_theme = {
 }
 
 local conditions = {
+    has_lsp = function() return #get_lsp_clients() > 0 end,
     hide_in_width = function() return vim.fn.winwidth(0) > 80 end
 }
 
@@ -141,8 +142,8 @@ local diagnostic_section = function(cfg)
                 return ''
             end
         end,
-        always_visible = true
-
+        always_visible = true,
+        cond = conditions.has_lsp
     }
     return vim.tbl_extend("force", default_cfg, cfg)
 end
