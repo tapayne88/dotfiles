@@ -10,18 +10,6 @@ local colors = {
     green = '#8ec07c'
 }
 
-local theme = {
-    normal = {
-        a = {fg = colors.white, bg = colors.black},
-        b = {fg = colors.white, bg = colors.grey},
-        c = {fg = colors.black, bg = colors.white},
-        z = {fg = colors.white, bg = colors.black}
-    },
-    insert = {a = {fg = colors.black, bg = colors.light_green}},
-    visual = {a = {fg = colors.black, bg = colors.orange}},
-    replace = {a = {fg = colors.black, bg = colors.green}}
-}
-
 local empty = require('lualine.component'):extend()
 function empty:draw(default_highlight)
     self.status = ''
@@ -29,27 +17,6 @@ function empty:draw(default_highlight)
     self:apply_highlights(default_highlight)
     self:apply_section_separators()
     return self.status
-end
-
--- Put proper separators and gaps between components in sections
-local function process_sections(sections)
-    for name, section in pairs(sections) do
-        local left = name:sub(9, 10) < 'x'
-        for pos = 1, name ~= 'lualine_z' and #section or #section - 1 do
-            table.insert(section, pos * 2, {
-                empty,
-                color = {fg = colors.white, bg = colors.white}
-            })
-        end
-        for id, comp in ipairs(section) do
-            if type(comp) ~= 'table' then
-                comp = {comp}
-                section[id] = comp
-            end
-            comp.separator = left and {right = ''} or {left = ''}
-        end
-    end
-    return sections
 end
 
 local function modified()
@@ -99,11 +66,13 @@ end
 
 require('lualine').setup {
     options = {
-        theme = theme,
-        component_separators = '',
-        section_separators = {left = '', right = ''}
+        theme = 'nord',
+        component_separators = vim.env.TERM == "xterm-kitty" and
+            {left = '\\', right = '\\'} or {left = "|", right = "|"},
+        section_separators = vim.env.TERM == "xterm-kitty" and
+            {left = "", right = ""} or {left = "", right = ""}
     },
-    sections = process_sections {
+    sections = {
         lualine_a = {'mode'},
         lualine_b = {{'branch', icon = ''}},
         lualine_c = {
