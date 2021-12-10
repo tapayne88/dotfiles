@@ -251,3 +251,12 @@ require('lualine').setup {
     inactive_sections = vim.tbl_deep_extend("force", sections,
                                             {lualine_a = {}, lualine_x = {}})
 }
+
+local M = {}
+
+function M.set_theme(theme_name)
+    local theme = theme_name == 'nord_custom' and nord_theme or 'tokyonight'
+    require('lualine').setup {options = {theme = theme}}
+end
+
+return M
