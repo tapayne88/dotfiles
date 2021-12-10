@@ -170,7 +170,6 @@ return require('packer').startup(function(use)
     -- statusline in lua
     use {
         'tapayne88/lualine.nvim',
-        branch = 'feat/diagnostic-renderer',
         config = [[require("tap.plugins.lualine")]],
         requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
