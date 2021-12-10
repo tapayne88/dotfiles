@@ -260,7 +260,9 @@ require('lualine').setup {
             literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
             {'%l:%c', icon = "  "}
         },
-        lualine_z = {'%p%%', {scrollbar, padding = 0}}
+        lualine_z = {
+            '%p%%', {scrollbar, padding = 0, color = {gui = "inverse"}}
+        }
     },
     inactive_sections = {lualine_c = {'%f %y %m'}, lualine_x = {}}
 }
