@@ -54,11 +54,12 @@ local nord_theme = {
     },
     inactive = {
         a = {
-            bg = color({dark = "nord1_gui", light = "gray"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
+            bg = color({dark = "nord4_gui", light = "blue7"}),
+            fg = color({dark = "nord1_gui", light = "fg_dark"})
         },
         b = nord_theme_b,
-        c = nord_theme_c
+        c = nord_theme_c,
+        y = nord_theme_c
     }
 }
 
@@ -166,86 +167,87 @@ local diagnostic_section = function(cfg)
     return vim.tbl_extend("force", default_cfg, cfg)
 end
 
+local sections = {
+    lualine_a = {'mode'},
+    lualine_b = {{'branch', icon = ''}},
+    lualine_c = {
+        {'filename', file_status = false}, modified, {
+            '%r',
+            fmt = function() return '' end,
+            cond = function() return vim.bo.readonly end
+        }
+    },
+    lualine_x = {
+        tscVersion, diagnostic_section {
+            sections = {'error'},
+            diagnostics_color = {
+                error = {
+                    bg = lsp_colors("error"),
+                    fg = color({dark = "nord3_gui", light = "fg"})
+                }
+            },
+            symbols = {error = lsp_symbols.error}
+        }, diagnostic_section {
+            sections = {'warn'},
+            diagnostics_color = {
+                warn = {
+                    bg = lsp_colors("warning"),
+                    fg = color({dark = "nord3_gui", light = "fg"})
+                }
+            },
+            symbols = {warn = lsp_symbols.warning}
+
+        }, diagnostic_section {
+            sections = {'hint'},
+            diagnostics_color = {
+                hint = {
+                    bg = lsp_colors("hint"),
+                    fg = color({dark = "nord3_gui", light = "fg"})
+                }
+            },
+            symbols = {hint = lsp_symbols.hint}
+
+        }, diagnostic_section {
+            sections = {'info'},
+            diagnostics_color = {
+                info = {
+                    bg = lsp_colors("info"),
+                    fg = color({dark = "nord3_gui", light = "fg"})
+                }
+            },
+            symbols = {info = lsp_symbols.info}
+        }, diagnostic_section {
+            diagnotic_ok,
+            sections = {'error', 'warn', 'hint', 'info'},
+            color = {
+                bg = lsp_colors("ok"),
+                fg = color({dark = "nord3_gui", light = "fg"})
+            },
+            colored = false,
+            render = function(_, count) return count end,
+            fmt = function(status)
+                if status == "0 0 0 0" then
+                    return string.format(" %s ", lsp_symbols.ok)
+                end
+                return ''
+            end
+        }, literal(' ')
+    },
+    lualine_y = {
+        {'filetype', colored = false},
+        literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
+        {'%l:%c', icon = "  "}
+    },
+    lualine_z = {'%p%%', {scrollbar, padding = 0, color = {gui = "inverse"}}}
+}
+
 require('lualine').setup {
     options = {
         theme = nord_theme,
         component_separators = {left = "", right = ""},
         section_separators = section_separators
     },
-    sections = {
-        lualine_a = {'mode'},
-        lualine_b = {{'branch', icon = ''}},
-        lualine_c = {
-            {'filename', file_status = false}, modified, {
-                '%r',
-                fmt = function() return '' end,
-                cond = function() return vim.bo.readonly end
-            }
-        },
-        lualine_x = {
-            tscVersion, diagnostic_section {
-                sections = {'error'},
-                diagnostics_color = {
-                    error = {
-                        bg = lsp_colors("error"),
-                        fg = color({dark = "nord3_gui", light = "fg"})
-                    }
-                },
-                symbols = {error = lsp_symbols.error}
-            }, diagnostic_section {
-                sections = {'warn'},
-                diagnostics_color = {
-                    warn = {
-                        bg = lsp_colors("warning"),
-                        fg = color({dark = "nord3_gui", light = "fg"})
-                    }
-                },
-                symbols = {warn = lsp_symbols.warning}
-
-            }, diagnostic_section {
-                sections = {'hint'},
-                diagnostics_color = {
-                    hint = {
-                        bg = lsp_colors("hint"),
-                        fg = color({dark = "nord3_gui", light = "fg"})
-                    }
-                },
-                symbols = {hint = lsp_symbols.hint}
-
-            }, diagnostic_section {
-                sections = {'info'},
-                diagnostics_color = {
-                    info = {
-                        bg = lsp_colors("info"),
-                        fg = color({dark = "nord3_gui", light = "fg"})
-                    }
-                },
-                symbols = {info = lsp_symbols.info}
-            }, diagnostic_section {
-                diagnotic_ok,
-                sections = {'error', 'warn', 'hint', 'info'},
-                color = {
-                    bg = lsp_colors("ok"),
-                    fg = color({dark = "nord3_gui", light = "fg"})
-                },
-                colored = false,
-                render = function(_, count) return count end,
-                fmt = function(status)
-                    if status == "0 0 0 0" then
-                        return string.format(" %s ", lsp_symbols.ok)
-                    end
-                    return ''
-                end
-            }, literal(' ')
-        },
-        lualine_y = {
-            {'filetype', colored = false},
-            literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
-            {'%l:%c', icon = "  "}
-        },
-        lualine_z = {
-            '%p%%', {scrollbar, padding = 0, color = {gui = "inverse"}}
-        }
-    },
-    inactive_sections = {lualine_c = {'%f %y %m'}, lualine_x = {}}
+    sections = sections,
+    inactive_sections = vim.tbl_deep_extend("force", sections,
+                                            {lualine_a = {}, lualine_x = {}})
 }
