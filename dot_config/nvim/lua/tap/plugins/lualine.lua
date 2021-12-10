@@ -39,6 +39,10 @@ local nord_theme = {
     }
 }
 
+local conditions = {
+    hide_in_width = function() return vim.fn.winwidth(0) > 80 end
+}
+
 local function literal(str)
     local comp = require('lualine.component'):extend()
     function comp:draw(default_highlight)
@@ -154,7 +158,7 @@ local sections = {
         }
     },
     lualine_x = {
-        tscVersion, diagnostic_section {
+        {tscVersion, cond = conditions.hide_in_width}, diagnostic_section {
             sections = {'error'},
             diagnostics_color = {
                 error = {
@@ -172,7 +176,6 @@ local sections = {
                 }
             },
             symbols = {warn = lsp_symbols.warning}
-
         }, diagnostic_section {
             sections = {'hint'},
             diagnostics_color = {
@@ -182,7 +185,6 @@ local sections = {
                 }
             },
             symbols = {hint = lsp_symbols.hint}
-
         }, diagnostic_section {
             sections = {'info'},
             diagnostics_color = {
@@ -210,11 +212,20 @@ local sections = {
         }, literal(' ')
     },
     lualine_y = {
-        {'filetype', colored = false},
-        literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
+        {'filetype', colored = false, icon_only = true}, {
+            'filetype',
+            colored = false,
+            icons_enabled = false,
+            padding = 0,
+            cond = conditions.hide_in_width,
+            fmt = function(status) return status .. " " end
+        }, literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
         {'%l:%c', icon = "  "}
     },
-    lualine_z = {'%p%%', {scrollbar, padding = 0, color = {gui = "inverse"}}}
+    lualine_z = {
+        {'%p%%', cond = conditions.hide_in_width},
+        {scrollbar, padding = 0, color = {gui = "inverse"}}
+    }
 }
 
 require('lualine').setup {
