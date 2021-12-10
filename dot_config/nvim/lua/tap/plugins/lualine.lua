@@ -1,13 +1,65 @@
+local color = require("tap.utils").color
+local lsp_colors = require("tap.utils").lsp_colors
+local lsp_symbols = require("tap.utils").lsp_symbols
 local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
 
-local colors = {
-    red = '#ca1243',
-    grey = '#a0a1a7',
-    black = '#383a42',
-    white = '#f3f3f3',
-    light_green = '#83a598',
-    orange = '#fe8019',
-    green = '#8ec07c'
+local nord_theme_b = {
+    bg = color({dark = "nord1_gui", light = "fg_dark"}),
+    fg = color({dark = "nord4_gui", light = "blue7"})
+}
+local nord_theme_c = {
+    bg = color({dark = "nord3_gui", light = "fg"}),
+    fg = color({dark = "nord4_gui", light = "blue7"})
+}
+local nord_theme = {
+    normal = {
+        a = {
+            bg = color({dark = "nord8_gui", light = "blue"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    },
+    insert = {
+        a = {
+            bg = color({dark = "nord4_gui", light = "fg"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    },
+    visual = {
+        a = {
+            bg = color({dark = "nord7_gui", light = "cyan"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    },
+    replace = {
+        a = {
+            bg = color({dark = "nord13_gui", light = "yellow"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    },
+    command = {
+        a = {
+            bg = color({dark = "nord8_gui", light = "blue"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    },
+    inactive = {
+        a = {
+            bg = color({dark = "nord1_gui", light = "gray"}),
+            fg = color({dark = "nord0_gui", light = "bg"})
+        },
+        b = nord_theme_b,
+        c = nord_theme_c
+    }
 }
 
 local function literal(str)
@@ -70,7 +122,7 @@ end
 
 require('lualine').setup {
     options = {
-        theme = 'nord',
+        theme = nord_theme,
         component_separators = {left = "", right = ""},
         section_separators = vim.env.TERM == "xterm-kitty" and
             {left = "", right = ""} or {left = "", right = ""}
