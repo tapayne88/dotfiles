@@ -173,7 +173,8 @@ require('lualine').setup {
             }
         },
         lualine_y = {
-            'filetype', literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
+            {'filetype', colored = false},
+            literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
             {'%l:%c', icon = "  "}
         },
         lualine_z = {'%p%%', {scrollbar, padding = 0}}
