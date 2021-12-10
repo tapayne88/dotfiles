@@ -127,6 +127,14 @@ local diagnostic_separators = vim.env.TERM == "xterm-kitty" and
                                   {left = "", right = ""} or
                                   {left = "", right = ""}
 
+local function diagnostic_renderer(icon, count)
+    if count > 0 then
+        return string.format(" %s%s ", icon, count)
+    else
+        return ''
+    end
+end
+
 require('lualine').setup {
     options = {
         theme = nord_theme,
@@ -153,6 +161,8 @@ require('lualine').setup {
                 },
                 symbols = {error = lsp_symbols.error},
                 separator = diagnostic_separators,
+                padding = 0,
+                render = diagnostic_renderer,
                 always_visible = true
 
             }, {
@@ -167,6 +177,8 @@ require('lualine').setup {
                 },
                 symbols = {warn = lsp_symbols.warning},
                 separator = diagnostic_separators,
+                padding = 0,
+                render = diagnostic_renderer,
                 always_visible = true
 
             }, {
@@ -181,6 +193,8 @@ require('lualine').setup {
                 },
                 symbols = {hint = lsp_symbols.hint},
                 separator = diagnostic_separators,
+                padding = 0,
+                render = diagnostic_renderer,
                 always_visible = true
 
             }, {
@@ -195,6 +209,8 @@ require('lualine').setup {
                 },
                 symbols = {info = lsp_symbols.info},
                 separator = diagnostic_separators,
+                padding = 0,
+                render = diagnostic_renderer,
                 always_visible = true
             }, -- TODO: ok diagnotic
             literal(' ')
