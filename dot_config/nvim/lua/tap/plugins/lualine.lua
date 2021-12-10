@@ -1,3 +1,5 @@
+local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
+
 local colors = {
     red = '#ca1243',
     grey = '#a0a1a7',
@@ -50,23 +52,49 @@ local function process_sections(sections)
     return sections
 end
 
-local function search_result()
-    if vim.v.hlsearch == 0 then return '' end
-    local last_search = vim.fn.getreg '/'
-    if not last_search or last_search == '' then return '' end
-    local searchcount = vim.fn.searchcount {maxcount = 9999}
-    return
-        last_search .. '(' .. searchcount.current .. '/' .. searchcount.total ..
-            ')'
+local function modified()
+    if vim.bo.modified then return '' end
+    return ''
 end
 
-local function modified()
-    if vim.bo.modified then
-        return '+'
-    elseif vim.bo.modifiable == false or vim.bo.readonly == true then
-        return '-'
+local function tscVersion()
+    if vim.g.tsc_version ~= nil then
+        local client_version = vim.tbl_map(function(client)
+            return vim.g.tsc_version["client_" .. client.id]
+        end, get_lsp_clients())
+
+        local file_versions = vim.tbl_filter(function(version)
+            return version ~= nil
+        end, client_version)
+
+        if #file_versions > 0 then
+            return string.format("v%s ", file_versions[1])
+
+        end
     end
-    return ''
+    return ""
+end
+
+local function scrollbar()
+    local current_line = vim.fn.line('.')
+    local total_lines = vim.fn.line('$')
+    local chars = {
+        '██', '▇▇', '▆▆', '▅▅', '▄▄', '▃▃', '▂▂',
+        '▁▁', '__'
+    }
+    local index = 1
+
+    if current_line == 1 then
+        index = 1
+    elseif current_line == total_lines then
+        index = #chars
+    else
+        local line_no_fraction = vim.fn.floor(current_line) /
+                                     vim.fn.floor(total_lines)
+        index = vim.fn.float2nr(line_no_fraction * #chars)
+        if index == 0 then index = 1 end
+    end
+    return chars[index]
 end
 
 require('lualine').setup {
@@ -77,8 +105,13 @@ require('lualine').setup {
     },
     sections = process_sections {
         lualine_a = {'mode'},
-        lualine_b = {
-            'branch', 'diff', {
+        lualine_b = {{'branch', icon = ''}},
+        lualine_c = {
+            {'filename', file_status = false}, modified,
+            {'%r', cond = function() return vim.bo.readonly end}
+        },
+        lualine_x = {
+            tscVersion, {
                 'diagnostics',
                 source = {'nvim'},
                 sections = {'error'},
@@ -92,18 +125,31 @@ require('lualine').setup {
                 diagnostics_color = {
                     warn = {bg = colors.orange, fg = colors.white}
                 }
-            }, {'filename', file_status = false, path = 1},
-            {modified, color = {bg = colors.red}},
-            {'%w', cond = function() return vim.wo.previewwindow end},
-            {'%r', cond = function() return vim.bo.readonly end},
-            {'%q', cond = function()
-                return vim.bo.buftype == 'quickfix'
-            end}
+            }, {
+                'diagnostics',
+                source = {'nvim'},
+                sections = {'hint'},
+                diagnostics_color = {
+                    warn = {bg = colors.orange, fg = colors.white}
+                }
+            }, {
+                'diagnostics',
+                source = {'nvim'},
+                sections = {'info'},
+                diagnostics_color = {
+                    warn = {bg = colors.orange, fg = colors.white}
+                }
+            }, {
+                'diagnostics',
+                source = {'nvim'},
+                sections = {'ok'},
+                diagnostics_color = {
+                    warn = {bg = colors.orange, fg = colors.white}
+                }
+            }
         },
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {search_result, 'filetype'},
-        lualine_z = {'%l:%c', '%p%%/%L'}
+        lualine_y = {'filetype', {'%l:%c', icon = "  "}},
+        lualine_z = {'%p%%', scrollbar}
     },
     inactive_sections = {lualine_c = {'%f %y %m'}, lualine_x = {}}
 }
