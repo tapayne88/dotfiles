@@ -10,13 +10,17 @@ local colors = {
     green = '#8ec07c'
 }
 
-local empty = require('lualine.component'):extend()
-function empty:draw(default_highlight)
-    self.status = ''
-    self.applied_separator = ''
-    self:apply_highlights(default_highlight)
-    self:apply_section_separators()
-    return self.status
+local function literal(str)
+    local comp = require('lualine.component'):extend()
+    function comp:draw(default_highlight)
+        self.status = str or ''
+        self.applied_separator = ''
+        self:apply_highlights(default_highlight)
+        self:apply_section_separators()
+        return self.status
+    end
+
+    return comp
 end
 
 local function modified()
@@ -67,8 +71,7 @@ end
 require('lualine').setup {
     options = {
         theme = 'nord',
-        component_separators = vim.env.TERM == "xterm-kitty" and
-            {left = '\\', right = '\\'} or {left = "|", right = "|"},
+        component_separators = {left = "", right = ""},
         section_separators = vim.env.TERM == "xterm-kitty" and
             {left = "", right = ""} or {left = "", right = ""}
     },
@@ -117,8 +120,11 @@ require('lualine').setup {
                 }
             }
         },
-        lualine_y = {'filetype', {'%l:%c', icon = "  "}},
-        lualine_z = {'%p%%', scrollbar}
+        lualine_y = {
+            'filetype', literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
+            {'%l:%c', icon = "  "}
+        },
+        lualine_z = {'%p%%', {scrollbar, padding = 0}}
     },
     inactive_sections = {lualine_c = {'%f %y %m'}, lualine_x = {}}
 }
