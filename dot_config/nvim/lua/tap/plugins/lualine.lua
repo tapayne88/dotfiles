@@ -167,8 +167,11 @@ require('lualine').setup {
         lualine_a = {'mode'},
         lualine_b = {{'branch', icon = ''}},
         lualine_c = {
-            {'filename', file_status = false}, modified,
-            {'%r', cond = function() return vim.bo.readonly end}
+            {'filename', file_status = false}, modified, {
+                '%r',
+                fmt = function() return '' end,
+                cond = function() return vim.bo.readonly end
+            }
         },
         lualine_x = {
             tscVersion, {
