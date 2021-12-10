@@ -145,16 +145,25 @@ end
 local section_separators = vim.env.TERM == "xterm-kitty" and
                                {left = "", right = ""} or
                                {left = "", right = ""}
-local diagnostic_separators = vim.env.TERM == "xterm-kitty" and
-                                  {left = "", right = ""} or
-                                  {left = "", right = ""}
 
-local function diagnostic_renderer(icon, count)
-    if count > 0 then
-        return string.format(" %s%s ", icon, count)
-    else
-        return ''
-    end
+local diagnostic_section = function(cfg)
+    local default_cfg = {
+        'diagnostics',
+        source = {'nvim_diagnostic'},
+        separator = vim.env.TERM == "xterm-kitty" and
+            {left = "", right = ""} or {left = "", right = ""},
+        padding = 0,
+        render = function(icon, count)
+            if count > 0 then
+                return string.format(" %s%s ", icon, count)
+            else
+                return ''
+            end
+        end,
+        always_visible = true
+
+    }
+    return vim.tbl_extend("force", default_cfg, cfg)
 end
 
 require('lualine').setup {
@@ -174,9 +183,7 @@ require('lualine').setup {
             }
         },
         lualine_x = {
-            tscVersion, {
-                'diagnostics',
-                source = {'nvim_diagnostic'},
+            tscVersion, diagnostic_section {
                 sections = {'error'},
                 diagnostics_color = {
                     error = {
@@ -184,15 +191,8 @@ require('lualine').setup {
                         fg = color({dark = "nord3_gui", light = "fg"})
                     }
                 },
-                symbols = {error = lsp_symbols.error},
-                separator = diagnostic_separators,
-                padding = 0,
-                render = diagnostic_renderer,
-                always_visible = true
-
-            }, {
-                'diagnostics',
-                source = {'nvim_diagnostic'},
+                symbols = {error = lsp_symbols.error}
+            }, diagnostic_section {
                 sections = {'warn'},
                 diagnostics_color = {
                     warn = {
@@ -200,15 +200,9 @@ require('lualine').setup {
                         fg = color({dark = "nord3_gui", light = "fg"})
                     }
                 },
-                symbols = {warn = lsp_symbols.warning},
-                separator = diagnostic_separators,
-                padding = 0,
-                render = diagnostic_renderer,
-                always_visible = true
+                symbols = {warn = lsp_symbols.warning}
 
-            }, {
-                'diagnostics',
-                source = {'nvim_diagnostic'},
+            }, diagnostic_section {
                 sections = {'hint'},
                 diagnostics_color = {
                     hint = {
@@ -216,15 +210,9 @@ require('lualine').setup {
                         fg = color({dark = "nord3_gui", light = "fg"})
                     }
                 },
-                symbols = {hint = lsp_symbols.hint},
-                separator = diagnostic_separators,
-                padding = 0,
-                render = diagnostic_renderer,
-                always_visible = true
+                symbols = {hint = lsp_symbols.hint}
 
-            }, {
-                'diagnostics',
-                source = {'nvim_diagnostic'},
+            }, diagnostic_section {
                 sections = {'info'},
                 diagnostics_color = {
                     info = {
@@ -232,24 +220,16 @@ require('lualine').setup {
                         fg = color({dark = "nord3_gui", light = "fg"})
                     }
                 },
-                symbols = {info = lsp_symbols.info},
-                separator = diagnostic_separators,
-                padding = 0,
-                render = diagnostic_renderer,
-                always_visible = true
-            }, {
+                symbols = {info = lsp_symbols.info}
+            }, diagnostic_section {
                 diagnotic_ok,
-                source = {'nvim_diagnostic'},
                 sections = {'error', 'warn', 'hint', 'info'},
                 color = {
                     bg = lsp_colors("ok"),
                     fg = color({dark = "nord3_gui", light = "fg"})
                 },
                 colored = false,
-                symbols = {error = '', warn = '', hint = '', info = ''},
-                separator = diagnostic_separators,
-                padding = 0,
-                always_visible = true,
+                render = function(_, count) return count end,
                 fmt = function(status)
                     if status == "0 0 0 0" then
                         return string.format(" %s ", lsp_symbols.ok)
