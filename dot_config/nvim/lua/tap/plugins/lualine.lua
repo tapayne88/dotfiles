@@ -75,6 +75,28 @@ local function literal(str)
     return comp
 end
 
+local diagnotic_ok = require('lualine.components.diagnostics'):extend()
+function diagnotic_ok:draw(default_highlight, is_focused)
+    -- Copied from lualine.component and modified to allow empty status to render
+    self.status = ''
+    self.applied_separator = ''
+
+    if self.options.cond ~= nil and self.options.cond() ~= true then
+        return self.status
+    end
+    local status = self:update_status(is_focused)
+    if self.options.fmt then status = self.options.fmt(status or '') end
+    -- if type(status) == 'string' and #status > 0 then
+    self.status = status
+    self:apply_icon()
+    self:apply_padding()
+    self:apply_highlights(default_highlight)
+    self:apply_section_separators()
+    self:apply_separator()
+    -- end
+    return self.status
+end
+
 local function modified()
     if vim.bo.modified then return '' end
     return ''
@@ -212,8 +234,26 @@ require('lualine').setup {
                 padding = 0,
                 render = diagnostic_renderer,
                 always_visible = true
-            }, -- TODO: ok diagnotic
-            literal(' ')
+            }, {
+                diagnotic_ok,
+                source = {'nvim_diagnostic'},
+                sections = {'error', 'warn', 'hint', 'info'},
+                color = {
+                    bg = lsp_colors("ok"),
+                    fg = color({dark = "nord3_gui", light = "fg"})
+                },
+                colored = false,
+                symbols = {error = '', warn = '', hint = '', info = ''},
+                separator = diagnostic_separators,
+                padding = 0,
+                always_visible = true,
+                fmt = function(status)
+                    if status == "0 0 0 0" then
+                        return string.format(" %s ", lsp_symbols.ok)
+                    end
+                    return ''
+                end
+            }, literal(' ')
         },
         lualine_y = {
             {'filetype', colored = false},
