@@ -120,12 +120,18 @@ local function scrollbar()
     return chars[index]
 end
 
+local section_separators = vim.env.TERM == "xterm-kitty" and
+                               {left = "", right = ""} or
+                               {left = "", right = ""}
+local diagnostic_separators = vim.env.TERM == "xterm-kitty" and
+                                  {left = "", right = ""} or
+                                  {left = "", right = ""}
+
 require('lualine').setup {
     options = {
         theme = nord_theme,
         component_separators = {left = "", right = ""},
-        section_separators = vim.env.TERM == "xterm-kitty" and
-            {left = "", right = ""} or {left = "", right = ""}
+        section_separators = section_separators
     },
     sections = {
         lualine_a = {'mode'},
@@ -137,40 +143,61 @@ require('lualine').setup {
         lualine_x = {
             tscVersion, {
                 'diagnostics',
-                source = {'nvim'},
+                source = {'nvim_diagnostic'},
                 sections = {'error'},
                 diagnostics_color = {
-                    error = {bg = colors.red, fg = colors.white}
-                }
+                    error = {
+                        bg = lsp_colors("error"),
+                        fg = color({dark = "nord3_gui", light = "fg"})
+                    }
+                },
+                symbols = {error = lsp_symbols.error},
+                separator = diagnostic_separators,
+                always_visible = true
+
             }, {
                 'diagnostics',
-                source = {'nvim'},
+                source = {'nvim_diagnostic'},
                 sections = {'warn'},
                 diagnostics_color = {
-                    warn = {bg = colors.orange, fg = colors.white}
-                }
+                    warn = {
+                        bg = lsp_colors("warning"),
+                        fg = color({dark = "nord3_gui", light = "fg"})
+                    }
+                },
+                symbols = {warn = lsp_symbols.warning},
+                separator = diagnostic_separators,
+                always_visible = true
+
             }, {
                 'diagnostics',
-                source = {'nvim'},
+                source = {'nvim_diagnostic'},
                 sections = {'hint'},
                 diagnostics_color = {
-                    warn = {bg = colors.orange, fg = colors.white}
-                }
+                    hint = {
+                        bg = lsp_colors("hint"),
+                        fg = color({dark = "nord3_gui", light = "fg"})
+                    }
+                },
+                symbols = {hint = lsp_symbols.hint},
+                separator = diagnostic_separators,
+                always_visible = true
+
             }, {
                 'diagnostics',
-                source = {'nvim'},
+                source = {'nvim_diagnostic'},
                 sections = {'info'},
                 diagnostics_color = {
-                    warn = {bg = colors.orange, fg = colors.white}
-                }
-            }, {
-                'diagnostics',
-                source = {'nvim'},
-                sections = {'ok'},
-                diagnostics_color = {
-                    warn = {bg = colors.orange, fg = colors.white}
-                }
-            }
+                    info = {
+                        bg = lsp_colors("info"),
+                        fg = color({dark = "nord3_gui", light = "fg"})
+                    }
+                },
+                symbols = {info = lsp_symbols.info},
+                separator = diagnostic_separators,
+                always_visible = true
+            }, -- TODO: ok diagnotic
+            literal(' ')
         },
         lualine_y = {
             {'filetype', colored = false},
