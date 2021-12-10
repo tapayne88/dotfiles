@@ -3,60 +3,36 @@ local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
 
-local nord_theme_b = {
-    bg = color({dark = "nord1_gui", light = "fg_dark"}),
-    fg = color({dark = "nord4_gui", light = "blue7"})
-}
-local nord_theme_c = {
-    bg = color({dark = "nord3_gui", light = "fg"}),
-    fg = color({dark = "nord4_gui", light = "blue7"})
-}
+local nord_theme_b = {bg = color("nord1_gui"), fg = color("nord4_gui")}
+local nord_theme_c = {bg = color("nord3_gui"), fg = color("nord4_gui")}
 local nord_theme = {
     normal = {
-        a = {
-            bg = color({dark = "nord8_gui", light = "blue"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
-        },
+        a = {bg = color("nord8_gui"), fg = color("nord0_gui")},
         b = nord_theme_b,
         c = nord_theme_c
     },
     insert = {
-        a = {
-            bg = color({dark = "nord4_gui", light = "fg"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
-        },
+        a = {bg = color("nord4_gui"), fg = color("nord0_gui")},
         b = nord_theme_b,
         c = nord_theme_c
     },
     visual = {
-        a = {
-            bg = color({dark = "nord7_gui", light = "cyan"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
-        },
+        a = {bg = color("nord7_gui"), fg = color("nord0_gui")},
         b = nord_theme_b,
         c = nord_theme_c
     },
     replace = {
-        a = {
-            bg = color({dark = "nord13_gui", light = "yellow"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
-        },
+        a = {bg = color("nord13_gui"), fg = color("nord0_gui")},
         b = nord_theme_b,
         c = nord_theme_c
     },
     command = {
-        a = {
-            bg = color({dark = "nord8_gui", light = "blue"}),
-            fg = color({dark = "nord0_gui", light = "bg"})
-        },
+        a = {bg = color("nord8_gui"), fg = color("nord0_gui")},
         b = nord_theme_b,
         c = nord_theme_c
     },
     inactive = {
-        a = {
-            bg = color({dark = "nord4_gui", light = "blue7"}),
-            fg = color({dark = "nord1_gui", light = "fg_dark"})
-        },
+        a = {bg = color("nord4_gui"), fg = color("nord1_gui")},
         b = nord_theme_b,
         c = nord_theme_c,
         y = nord_theme_c
