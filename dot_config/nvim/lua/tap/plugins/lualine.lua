@@ -80,8 +80,8 @@ function filetype:draw(default_highlight, is_focused)
     return self.status
 end
 
-local diagnotic_ok = require('lualine.components.diagnostics'):extend()
-function diagnotic_ok:draw(default_highlight, is_focused)
+local diagnostic_empty = require('lualine.components.diagnostics'):extend()
+function diagnostic_empty:draw(default_highlight, is_focused)
     -- Copied from lualine.component and modified to allow empty status to render
     self.status = ''
     self.applied_separator = ''
@@ -141,27 +141,26 @@ local section_separators = vim.env.TERM == "xterm-kitty" and
 
 local diagnostic_section = function(cfg)
     local default_cfg = {
-        'diagnostics',
+        diagnostic_empty,
         source = {'nvim_diagnostic'},
         separator = vim.env.TERM == "xterm-kitty" and
             {left = "", right = ""} or {left = "", right = ""},
         -- no padding so the slanty isn't too wide when no diagnostics
         padding = 0,
         fmt = function(status)
-            -- parse status which looks like
-            -- %#lualine_diagnostics_info_0_1_2_no_mode# 0
-            local hightlight, icon, num =
-                string.match(status, '([%%#%w_]+)(.+) (%d+)')
-
-            if num and tonumber(num, 10) > 0 then
+            if tonumber(status, 10) > 0 then
                 -- stitch everything back together with some padding
                 -- only want the padding if we're not empty
-                return string.format('%s %s %s ', hightlight, icon, num)
+                return string.format(' %s%s ', cfg.symbol, status)
             end
 
-            -- Count is 0 so return highlight so we still get the colored slants
-            return hightlight
+            -- Count is 0 so don't return content
+            return ''
         end,
+        -- supress the symbols, default still shows 'E: 1' etc.
+        symbols = {error = '', warn = '', hint = '', info = ''},
+        -- don't want any color output adding to the diagnostics
+        colored = false,
         -- always show the slanty, it'll be empty if there are none for that type
         always_visible = true,
         -- only show when we have an lsp attached - this may need updating if I
@@ -184,51 +183,38 @@ local sections = {
     lualine_x = {
         {tscVersion, cond = conditions.hide_in_width}, diagnostic_section {
             sections = {'error'},
-            diagnostics_color = {
-                error = {
-                    bg = lsp_colors("error"),
-                    fg = color({dark = "nord3_gui", light = "fg"})
-                }
+            color = {
+                bg = lsp_colors("error"),
+                fg = color({dark = "nord3_gui", light = "fg"})
             },
-            symbols = {error = lsp_symbols.error}
+            symbol = lsp_symbols.error
         }, diagnostic_section {
             sections = {'warn'},
-            diagnostics_color = {
-                warn = {
-                    bg = lsp_colors("warning"),
-                    fg = color({dark = "nord3_gui", light = "fg"})
-                }
+            color = {
+                bg = lsp_colors("warning"),
+                fg = color({dark = "nord3_gui", light = "fg"})
             },
-            symbols = {warn = lsp_symbols.warning}
+            symbol = lsp_symbols.warning
         }, diagnostic_section {
             sections = {'hint'},
-            diagnostics_color = {
-                hint = {
-                    bg = lsp_colors("hint"),
-                    fg = color({dark = "nord3_gui", light = "fg"})
-                }
+            color = {
+                bg = lsp_colors("hint"),
+                fg = color({dark = "nord3_gui", light = "fg"})
             },
-            symbols = {hint = lsp_symbols.hint}
+            symbol = lsp_symbols.hint
         }, diagnostic_section {
             sections = {'info'},
-            diagnostics_color = {
-                info = {
-                    bg = lsp_colors("info"),
-                    fg = color({dark = "nord3_gui", light = "fg"})
-                }
+            color = {
+                bg = lsp_colors("info"),
+                fg = color({dark = "nord3_gui", light = "fg"})
             },
-            symbols = {info = lsp_symbols.info}
+            symbol = lsp_symbols.info
         }, diagnostic_section {
-            diagnotic_ok,
             sections = {'error', 'warn', 'hint', 'info'},
             color = {
                 bg = lsp_colors("ok"),
                 fg = color({dark = "nord3_gui", light = "fg"})
             },
-            -- supress the symbols, default still shows 'E: 1' etc.
-            symbols = {error = '', warn = '', hint = '', info = ''},
-            -- don't want any color output adding to the diagnostics
-            colored = false,
             fmt = function(status)
                 -- diagnostics will only report numbers so if they are all 0
                 -- then we are all ok
