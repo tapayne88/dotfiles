@@ -2,6 +2,7 @@ local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
+local get_tsc_version = require("tap.lsp.servers.tsserver").get_tsc_version
 
 local nord_theme_b = {bg = color("nord1_gui"), fg = color("nord4_gui")}
 local nord_theme_c = {bg = color("nord3_gui"), fg = color("nord4_gui")}
@@ -107,21 +108,9 @@ local function modified()
 end
 
 local function tscVersion()
-    if vim.g.tsc_version ~= nil then
-        local client_version = vim.tbl_map(function(client)
-            return vim.g.tsc_version["client_" .. client.id]
-        end, get_lsp_clients())
+    local tsc_version = get_tsc_version()
 
-        local file_versions = vim.tbl_filter(function(version)
-            return version ~= nil
-        end, client_version)
-
-        if #file_versions > 0 then
-            return string.format("v%s ", file_versions[1])
-
-        end
-    end
-    return ""
+    return tsc_version and string.format("v%s", tsc_version) or ""
 end
 
 local function scrollbar()
