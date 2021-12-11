@@ -70,6 +70,13 @@ local apply_user_highlights = function()
 
 end
 
+local show_cursor_diagnositcs = function()
+    vim.diagnostic.open_float({scope = "cursor"})
+end
+local show_line_diagnositcs = function()
+    vim.diagnostic.open_float({scope = "line"})
+end
+
 -- on_attach function for lsp.setup calls
 -- @param client Client
 -- @param bufnr number
@@ -92,7 +99,7 @@ function module.on_attach(client, bufnr)
         {
             events = {"CursorHold"},
             targets = {"<buffer>"},
-            command = "lua vim.lsp.diagnostic.show_position_diagnostics()"
+            command = show_cursor_diagnositcs
 
         }
     })
@@ -108,8 +115,7 @@ function module.on_attach(client, bufnr)
     nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     nnoremap('<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
     nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    nnoremap("<leader>cc",
-             "<cmd>lua vim.lsp.diagnostic.show_position_diagnostics()<CR>")
+    nnoremap("<leader>cc", show_cursor_diagnositcs)
 
     -- other mappings, not sure about these
     nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>',
@@ -120,11 +126,14 @@ function module.on_attach(client, bufnr)
              '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
              opts)
     nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    nnoremap('<space>e',
-             '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    nnoremap('[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    nnoremap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    nnoremap('<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    nnoremap('<space>e', show_line_diagnositcs, opts)
+    nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+    -- float = false, CursorHold will show diagnostic
+    nnoremap('[d', function() vim.diagnostic.goto_prev({float = false}) end,
+             opts)
+    nnoremap(']d', function() vim.diagnostic.goto_next({float = false}) end,
+             opts)
 
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
