@@ -145,15 +145,27 @@ local diagnostic_section = function(cfg)
         source = {'nvim_diagnostic'},
         separator = vim.env.TERM == "xterm-kitty" and
             {left = "", right = ""} or {left = "", right = ""},
+        -- no padding so the slanty isn't too wide when no diagnostics
         padding = 0,
-        render = function(icon, count)
-            if count > 0 then
-                return string.format(" %s%s ", icon, count)
-            else
-                return ''
+        fmt = function(status)
+            -- parse status which looks like
+            -- %#lualine_diagnostics_info_0_1_2_no_mode# 0
+            local hightlight, icon, num =
+                string.match(status, '([%%#%w_]+)(.+) (%d+)')
+
+            if num and tonumber(num, 10) > 0 then
+                -- stitch everything back together with some padding
+                -- only want the padding if we're not empty
+                return string.format('%s %s %s ', hightlight, icon, num)
             end
+
+            -- Count is 0 so return highlight so we still get the colored slants
+            return hightlight
         end,
+        -- always show the slanty, it'll be empty if there are none for that type
         always_visible = true,
+        -- only show when we have an lsp attached - this may need updating if I
+        -- use other sources for diagnostics
         cond = conditions.has_lsp
     }
     return vim.tbl_extend("force", default_cfg, cfg)
@@ -213,9 +225,13 @@ local sections = {
                 bg = lsp_colors("ok"),
                 fg = color({dark = "nord3_gui", light = "fg"})
             },
+            -- supress the symbols, default still shows 'E: 1' etc.
+            symbols = {error = '', warn = '', hint = '', info = ''},
+            -- don't want any color output adding to the diagnostics
             colored = false,
-            render = function(_, count) return count end,
             fmt = function(status)
+                -- diagnostics will only report numbers so if they are all 0
+                -- then we are all ok
                 if status == "0 0 0 0" then
                     return string.format(" %s ", lsp_symbols.ok)
                 end
