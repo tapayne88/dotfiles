@@ -57,6 +57,28 @@ local function literal(str)
     return comp
 end
 
+local filetype = require('lualine.components.filetype'):extend()
+function filetype:draw(default_highlight, is_focused)
+    -- Copied from lualine.component and modified to allow empty status to render
+    self.status = ''
+    self.applied_separator = ''
+
+    if self.options.cond ~= nil and self.options.cond() ~= true then
+        return self.status
+    end
+    local status = self:update_status(is_focused)
+    if self.options.fmt then status = self.options.fmt(status or '') end
+    -- if type(status) == 'string' and #status > 0 then
+    self.status = status
+    self:apply_icon()
+    self:apply_padding()
+    self:apply_highlights(default_highlight)
+    self:apply_section_separators()
+    self:apply_separator()
+    -- end
+    return self.status
+end
+
 local diagnotic_ok = require('lualine.components.diagnostics'):extend()
 function diagnotic_ok:draw(default_highlight, is_focused)
     -- Copied from lualine.component and modified to allow empty status to render
@@ -213,15 +235,15 @@ local sections = {
         }, literal(' ')
     },
     lualine_y = {
-        {'filetype', colored = false, icon_only = true}, {
-            'filetype',
+        literal(' '), {
+            filetype,
             colored = false,
-            icons_enabled = false,
             padding = 0,
-            cond = conditions.hide_in_width,
-            fmt = function(status) return status .. " " end
+            fmt = function(status)
+                return conditions.hide_in_width() and status .. " " or ""
+            end
         }, literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
-        {'%l:%c', icon = "  "}
+        {'%l:%c', icon = ""}
     },
     lualine_z = {
         {'%p%%', cond = conditions.hide_in_width},
