@@ -80,8 +80,11 @@ echo "
 \$ ${CMD_COLOR}home-manager switch${NO_COLOR}
 
 # Apply dotfiles with chezmoi, chechout the required schema with this URL
-https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
+# https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
 \$ ${CMD_COLOR}chezmoi apply -v${NO_COLOR}
+
+# Remove temporary home-manager file
+\$ ${CMD_COLOR}rm $NIX_HOME_FILE${NO_COLOR}
 
 # Install the provisioned packages
 \$ ${CMD_COLOR}home-manager switch${NO_COLOR}
