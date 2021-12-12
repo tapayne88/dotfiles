@@ -169,10 +169,9 @@ return require('packer').startup(function(use)
 
     -- statusline in lua
     use {
-        'tmwitczak/galaxyline.nvim',
-        branch = 'git-branch-head-state',
-        config = [[require("tap.plugins.galaxyline")]],
-        requires = {'kyazdani42/nvim-web-devicons'}
+        'nvim-lualine/lualine.nvim',
+        config = [[require("tap.plugins.lualine")]],
+        requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
 
     use {
