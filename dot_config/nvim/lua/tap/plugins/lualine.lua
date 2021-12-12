@@ -1,6 +1,8 @@
 local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
+local highlight = require("tap.utils").highlight
+local augroup = require("tap.utils").augroup
 local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
 local get_tsc_version = require("tap.lsp.servers.tsserver").get_tsc_version
 
@@ -183,38 +185,23 @@ local sections = {
     lualine_x = {
         {tscVersion, cond = conditions.hide_in_width}, diagnostic_section {
             sections = {'error'},
-            color = {
-                bg = lsp_colors("error"),
-                fg = color({dark = "nord3_gui", light = "fg"})
-            },
+            color = 'LualineDiagnosticError',
             symbol = lsp_symbols.error
         }, diagnostic_section {
             sections = {'warn'},
-            color = {
-                bg = lsp_colors("warning"),
-                fg = color({dark = "nord3_gui", light = "fg"})
-            },
+            color = 'LualineDiagnosticWarn',
             symbol = lsp_symbols.warning
         }, diagnostic_section {
             sections = {'hint'},
-            color = {
-                bg = lsp_colors("hint"),
-                fg = color({dark = "nord3_gui", light = "fg"})
-            },
+            color = 'LualineDiagnosticHint',
             symbol = lsp_symbols.hint
         }, diagnostic_section {
             sections = {'info'},
-            color = {
-                bg = lsp_colors("info"),
-                fg = color({dark = "nord3_gui", light = "fg"})
-            },
+            color = 'LualineDiagnosticInfo',
             symbol = lsp_symbols.info
         }, diagnostic_section {
             sections = {'error', 'warn', 'hint', 'info'},
-            color = {
-                bg = lsp_colors("ok"),
-                fg = color({dark = "nord3_gui", light = "fg"})
-            },
+            color = 'LualineDiagnosticOk',
             fmt = function(status)
                 -- diagnostics will only report numbers so if they are all 0
                 -- then we are all ok
@@ -241,6 +228,39 @@ local sections = {
         {scrollbar, padding = 0, color = {gui = "inverse"}}
     }
 }
+
+local function apply_user_highlights()
+    highlight('LualineDiagnosticError', {
+        guibg = lsp_colors("error"),
+        guifg = color({dark = "nord3_gui", light = "fg"})
+    })
+    highlight('LualineDiagnosticWarn', {
+        guibg = lsp_colors("warning"),
+        guifg = color({dark = "nord3_gui", light = "fg"})
+    })
+    highlight('LualineDiagnosticHint', {
+        guibg = lsp_colors("hint"),
+        guifg = color({dark = "nord3_gui", light = "fg"})
+    })
+    highlight('LualineDiagnosticInfo', {
+        guibg = lsp_colors("info"),
+        guifg = color({dark = "nord3_gui", light = "fg"})
+    })
+    highlight('LualineDiagnosticOk', {
+        guibg = lsp_colors("ok"),
+        guifg = color({dark = "nord3_gui", light = "fg"})
+    })
+end
+
+augroup("LualineHighlights", {
+    {
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = apply_user_highlights
+    }
+})
+
+apply_user_highlights()
 
 require('lualine').setup {
     options = {
