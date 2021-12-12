@@ -145,14 +145,15 @@ local diagnostic_section = function(cfg)
     local default_cfg = {
         diagnostic_empty,
         source = {'nvim_diagnostic'},
-        separator = vim.env.TERM == "xterm-kitty" and
-            {left = "", right = ""} or {left = "", right = ""},
+        separator = {
+            left = section_separators.right,
+            right = section_separators.left
+        },
         -- no padding so the slanty isn't too wide when no diagnostics
         padding = 0,
         fmt = function(status)
             if tonumber(status, 10) > 0 then
-                -- stitch everything back together with some padding
-                -- only want the padding if we're not empty
+                -- stitch the icon onto the count
                 return string.format(' %s%s ', cfg.symbol, status)
             end
 
@@ -276,7 +277,7 @@ require('lualine').setup {
 local M = {}
 
 function M.set_theme(theme_name)
-    local theme = theme_name == 'nord_custom' and nord_theme or 'tokyonight'
+    local theme = theme_name == 'nord_custom' and nord_theme or theme_name
     require('lualine').setup {options = {theme = theme}}
 end
 
