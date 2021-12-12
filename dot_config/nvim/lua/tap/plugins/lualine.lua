@@ -60,50 +60,6 @@ local function literal(str)
     return comp
 end
 
-local filetype = require('lualine.components.filetype'):extend()
-function filetype:draw(default_highlight, is_focused)
-    -- Copied from lualine.component and modified to allow empty status to render
-    self.status = ''
-    self.applied_separator = ''
-
-    if self.options.cond ~= nil and self.options.cond() ~= true then
-        return self.status
-    end
-    local status = self:update_status(is_focused)
-    if self.options.fmt then status = self.options.fmt(status or '') end
-    -- if type(status) == 'string' and #status > 0 then
-    self.status = status
-    self:apply_icon()
-    self:apply_padding()
-    self:apply_highlights(default_highlight)
-    self:apply_section_separators()
-    self:apply_separator()
-    -- end
-    return self.status
-end
-
-local diagnostic_empty = require('lualine.components.diagnostics'):extend()
-function diagnostic_empty:draw(default_highlight, is_focused)
-    -- Copied from lualine.component and modified to allow empty status to render
-    self.status = ''
-    self.applied_separator = ''
-
-    if self.options.cond ~= nil and self.options.cond() ~= true then
-        return self.status
-    end
-    local status = self:update_status(is_focused)
-    if self.options.fmt then status = self.options.fmt(status or '') end
-    -- if type(status) == 'string' and #status > 0 then
-    self.status = status
-    self:apply_icon()
-    self:apply_padding()
-    self:apply_highlights(default_highlight)
-    self:apply_section_separators()
-    self:apply_separator()
-    -- end
-    return self.status
-end
-
 local function modified()
     if vim.bo.modified then return '' end
     return ''
@@ -143,7 +99,8 @@ local section_separators = vim.env.TERM == "xterm-kitty" and
 
 local diagnostic_section = function(cfg)
     local default_cfg = {
-        diagnostic_empty,
+        'diagnostics',
+        allow_empty = true,
         source = {'nvim_diagnostic'},
         separator = {
             left = section_separators.right,
@@ -215,7 +172,8 @@ local sections = {
     },
     lualine_y = {
         literal(' '), {
-            filetype,
+            'filetype',
+            allow_empty = true,
             colored = false,
             padding = 0,
             fmt = function(status)
