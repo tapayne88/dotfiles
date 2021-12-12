@@ -85,6 +85,6 @@
             };
         };
         # TODO: Setup WSL host
+      };
     };
-  };
 }

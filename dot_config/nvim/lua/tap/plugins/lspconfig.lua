@@ -7,7 +7,10 @@ if vim.env.LSP_DEBUG then
     print("LSP debug log: " .. vim.lsp.get_log_path())
 end
 
-local servers = {"diagnosticls", "eslint", "jsonls", "sumneko_lua", "tsserver"}
+local servers = {
+    "bashls", "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua",
+    "tsserver"
+}
 
 local function init_servers()
     for _, name in pairs(servers) do
@@ -29,10 +32,13 @@ local function setup_servers(initialise)
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
             end)
+        else
+            -- non-nvim-lsp-installer servers like rnix
+            require("tap.lsp.servers." .. name).setup(server)
         end
     end
 
-    lsp_installer.on_server_ready(initialise)
+    initialise()
 end
 
 local apply_user_highlights = function()
