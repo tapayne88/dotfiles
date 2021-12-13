@@ -25,13 +25,14 @@ INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 # Ensure location doesn't exist
 if [ -d "$INSTALL_LOCATION" ]; then
   echo "${RED}Install location already exists, halting${NOFORMAT}"
+  echo "${YELLOW}$(cd "$INSTALL_LOCATION"; pwd)${NOFORMAT}"
   exit 1
 fi
 
 # Ensure location path does exist
 if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
   echo "${RED}Install location path invalid, halting${NOFORMAT}"
-  echo "$INSTALL_LOCATION"
+  echo "${YELLOW}$INSTALL_LOCATION${NOFORMAT}"
   exit 1
 fi
 
