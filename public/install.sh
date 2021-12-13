@@ -62,11 +62,6 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
   ];
 }"
 
-if [ -d "$INSTALL_LOCATION" ]; then
-  echo "Found $INSTALL_LOCATION, halting"
-  exit 1
-fi
-
 echo "Cloning $REPO to $INSTALL_LOCATION"
 git clone $REPO "$INSTALL_LOCATION"
 chmod 700 "$INSTALL_LOCATION"
