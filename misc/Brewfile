@@ -1,0 +1,5 @@
+brew "dark-mode"
+brew "keepingyouawake"
+brew "kitty"
+cask "raycast"
+cask "rectangle"
