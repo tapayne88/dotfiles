@@ -69,28 +69,13 @@ sudo fc-cache -f -v
 ### MacOS
 
 - Double click and install each font in [here](./dot_local/share/fonts)
-- Configure new terminfo to ensure correct escape characters are used
 
 ### Windows
 
 - Double click and install each font in [here](./dot_local/share/fonts/windows)
 - Windows Terminal doesn't support italics
-- Configure new terminfo to ensure correct escape characters are used
 
 _N.B._ As of writing this alacritty does not support ligatures.
-
-## Terminfo
-
-Likely want to `sudo tic` the terminfo so they are accessible to all system users (like root).
-
-From `man tic`
-
-> Secondly, if tic cannot write in /etc/terminfo or the location specified using your TERMINFO variable, it looks for the directory $HOME/.terminfo (or hashed database $HOME/.terminfo.db); if that location exists, the entry is placed there.
-
-```bash
-sudo tic terminfo/tmux.terminfo
-sudo tic terminfo/tmux-256color.terminfo
-```
 
 ## SSH
 
