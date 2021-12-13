@@ -5,10 +5,12 @@ cask "kitty"
 cask "moom"
 cask "raycast"
 cask "rectangle"
+
+# mas seems a little flakey and can sometime not realise it's installed an app
+# This means every time the bundle is installed it'll try install the app,
+# usually succeed but write `null` to the lockfile
 mas "Hidden Bar", id: 1452453066
 mas "MenuBar Stats", id: 714196447
-# Installs Microsoft Remote Desktop but doesn't show in `mas list` and will
-# always say it's being installed :shrug:
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Tailscale", id: 1475387142
 mas "Todoist", id: 585829637
