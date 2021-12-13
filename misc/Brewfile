@@ -5,6 +5,7 @@ cask "kitty"
 cask "moom"
 cask "raycast"
 cask "rectangle"
+mas "Hidden Bar", id: 1452453066
 mas "MenuBar Stats", id: 714196447
 # Installs Microsoft Remote Desktop but doesn't show in `mas list` and will
 # always say it's being installed :shrug:
