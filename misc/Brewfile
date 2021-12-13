@@ -1,5 +1,13 @@
 brew "dark-mode"
+brew "mas"
 cask "keepingyouawake"
 cask "kitty"
+cask "moom"
 cask "raycast"
 cask "rectangle"
+mas "MenuBar Stats", id: 714196447
+# Installs Microsoft Remote Desktop but doesn't show in `mas list` and will
+# always say it's being installed :shrug:
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Tailscale", id: 1475387142
+mas "Todoist", id: 585829637
