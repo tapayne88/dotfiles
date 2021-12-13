@@ -60,7 +60,15 @@ ssh-keygen -C `hostname`
 
 ## 4. Install dotfiles
 
-See [readme](../README.md#installation) for installation guide.
+```bash
+curl -sfL https://git.io/JsiiF | sh
+```
+
+or
+
+```bash
+git clone https://github.com/tapayne88/dotfiles
+```
 
 ## 5. Setup shell
 
@@ -85,4 +93,12 @@ Install the required plugins
 ```bash
 asdf plugin-add nodejs
 asdf plugin-add yarn
+```
+
+## 7. Setup [Homebrew](https://brew.sh/) (MacOS only)
+
+After following the homebrew installation instructions we'll want our blessed homebrew packages installing. These are in our `Brewfile` which can be installed with the following command.
+
+```bash
+brew bundle install --global
 ```
