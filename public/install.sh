@@ -4,13 +4,13 @@ set -e
 COMMANDS="git curl"
 for C in $COMMANDS
 do
-  command -v $C >/dev/null 2>&1 || {
+  command -v "$C" >/dev/null 2>&1 || {
     echo >&2 "I require $C but it's not installed. Aborting.";
     exit 1;
   }
 done
 
-CWD=`pwd`
+CWD=$(pwd)
 INSTALL_LOCATION="$CWD/dotfiles"
 REPO="git@github.com:tapayne88/dotfiles.git"
 
@@ -50,8 +50,8 @@ if [ -d "$INSTALL_LOCATION" ]; then
 fi
 
 echo "Cloning $REPO to $INSTALL_LOCATION"
-git clone $REPO $INSTALL_LOCATION
-chmod 700 $INSTALL_LOCATION
+git clone $REPO "$INSTALL_LOCATION"
+chmod 700 "$INSTALL_LOCATION"
 
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
   echo "Found $CHEZMOI_CONFIG_FILE, halting"
@@ -60,11 +60,11 @@ if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
   exit 1
 fi
 
-mkdir -p $CHEZMOI_CONFIG_DIR
-echo "$CHEZMOI_CONFIG" > $CHEZMOI_CONFIG_FILE
+mkdir -p "$CHEZMOI_CONFIG_DIR"
+echo "$CHEZMOI_CONFIG" > "$CHEZMOI_CONFIG_FILE"
 
-mkdir -p $NIX_HOME_DIR
-echo "$NIX_HOME_BOOTSTRAP" > $NIX_HOME_FILE
+mkdir -p "$NIX_HOME_DIR"
+echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
 
 echo ""
 echo "Next stps:"
