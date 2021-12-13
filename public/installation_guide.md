@@ -86,3 +86,11 @@ Install the required plugins
 asdf plugin-add nodejs
 asdf plugin-add yarn
 ```
+
+## 7. Setup [Homebrew](https://brew.sh/) (MacOS only)
+
+After following the homebrew installation instructions we'll want our blessed homebrew packages installing. These are in our `Brewfile` which can be installed with the following command.
+
+```bash
+brew bundle install ./misc/Brewfile
+```
