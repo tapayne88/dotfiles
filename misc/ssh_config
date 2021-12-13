@@ -2,4 +2,4 @@ AddKeysToAgent yes
 
 Host pi
   user pi
-  hostname raspberrypi
+  hostname 100.70.27.67 # tailscale service IP
