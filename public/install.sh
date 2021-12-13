@@ -13,19 +13,24 @@ done
 CWD=$(pwd)
 DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
 
-echo "Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)"
+NOFORMAT='\033[0m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+
+echo "${BLUE}Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)${NOFORMAT}"
 read -r answer
 INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
 # Ensure location doesn't exist
 if [ -d "$INSTALL_LOCATION" ]; then
-  echo "Install location already exists, halting"
+  echo "${RED}Install location already exists, halting${NOFORMAT}"
   exit 1
 fi
 
 # Ensure location path does exist
 if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
-  echo "Install location path invalid, halting"
+  echo "${RED}Install location path invalid, halting${NOFORMAT}"
   echo "$INSTALL_LOCATION"
   exit 1
 fi
@@ -67,9 +72,9 @@ git clone $REPO "$INSTALL_LOCATION"
 chmod 700 "$INSTALL_LOCATION"
 
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
-  echo "Found $CHEZMOI_CONFIG_FILE, halting"
-  echo "Merge config with current file"
-  echo "$CHEZMOI_CONFIG"
+  echo "${RED}Found $CHEZMOI_CONFIG_FILE, halting${NOFORMAT}"
+  echo "${YELLOW}Merge config with existing file${NOFORMAT}"
+  echo "${YELLOW}$CHEZMOI_CONFIG${NOFORMAT}"
   exit 1
 fi
 
@@ -85,25 +90,22 @@ echo "Next stps:"
 command -v nix-env >/dev/null 2>&1 || { echo >&2 "# Install nix from https://nixos.org/download.html"; }
 command -v home-manager >/dev/null 2>&1 || { echo >&2 "# Install home-manager from https://github.com/nix-community/home-manager"; }
 
-CMD_COLOR="\033[1;34m"
-NO_COLOR="\033[0m"
-
 echo "
 # Install home-manager bootstrap packages
-\$ ${CMD_COLOR}home-manager switch${NO_COLOR}
+${BLUE}home-manager switch${NOFORMAT}
 
 # Apply dotfiles with chezmoi, chechout the required schema with this URL
 # https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
-\$ ${CMD_COLOR}chezmoi apply -v${NO_COLOR}
+${BLUE}chezmoi apply -v${NOFORMAT}
 
 # Remove temporary home-manager file
-\$ ${CMD_COLOR}rm $NIX_HOME_FILE${NO_COLOR}
+${BLUE}rm $NIX_HOME_FILE${NOFORMAT}
 
 # Install the provisioned packages
-\$ ${CMD_COLOR}home-manager switch${NO_COLOR}
+${BLUE}home-manager switch${NOFORMAT}
 
 # Install asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
-\$ ${CMD_COLOR}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1${NO_COLOR}
+${BLUE}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1${NOFORMAT}
 
 # Install asdf plugins
 # https://github.com/tapayne88/dotfiles/blob/2b7d0baaeba11ef0af5b2f67bbe16ff64c828859/README.md?plain=1#L51-L55
