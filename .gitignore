@@ -1,1 +1,5 @@
 .DS_STORE
+
+# Ignore brew's lock file, only likely to have one mac so not bothered about
+# synchronising app version
+misc/Brewfile.lock.json
