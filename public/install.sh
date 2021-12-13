@@ -13,19 +13,20 @@ done
 CWD=$(pwd)
 DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
 
-read -erp "enter dotfiles install path [$DEFAULT_INSTALL_LOCATION]: " answer
-NORMALISE_ANSWER=${answer/#~/$HOME}
-INSTALL_LOCATION=${NORMALISE_ANSWER:-$DEFAULT_INSTALL_LOCATION}
+echo "Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)"
+read -r answer
+INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
 # Ensure location doesn't exist
 if [ -d "$INSTALL_LOCATION" ]; then
-  echo "install location already exists, halting"
+  echo "Install location already exists, halting"
   exit 1
 fi
 
 # Ensure location path does exist
 if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
-  echo "install location path invalid, halting"
+  echo "Install location path invalid, halting"
+  echo "$INSTALL_LOCATION"
   exit 1
 fi
 
