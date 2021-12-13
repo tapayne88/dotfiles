@@ -5,7 +5,7 @@ function brew() {
   if [ "$1" = upgrade ]; then
     set -x
     command brew upgrade
-    command brew bundle install --file {{ .chezmoi.sourceDir }}/misc/Brewfile
+    command brew bundle install --global
   else
     command brew "$@"
   fi
