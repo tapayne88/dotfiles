@@ -11,7 +11,24 @@ do
 done
 
 CWD=$(pwd)
-INSTALL_LOCATION="$CWD/dotfiles"
+DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
+
+read -erp "enter dotfiles install path [$DEFAULT_INSTALL_LOCATION]: " answer
+NORMALISE_ANSWER=${answer/#~/$HOME}
+INSTALL_LOCATION=${NORMALISE_ANSWER:-$DEFAULT_INSTALL_LOCATION}
+
+# Ensure location doesn't exist
+if [ -d "$INSTALL_LOCATION" ]; then
+  echo "install location already exists, halting"
+  exit 1
+fi
+
+# Ensure location path does exist
+if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
+  echo "install location path invalid, halting"
+  exit 1
+fi
+
 REPO="git@github.com:tapayne88/dotfiles.git"
 
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
