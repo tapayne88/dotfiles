@@ -1,5 +1,12 @@
+# Linux only files
 {{- if eq "macOS" .ostype }}
 .local/share
+{{- end }}
+
+# MacOS only files
+{{- if ne "macOS" .ostype }}
+.Brewfile
+.config/zsh/functions/brew.zsh
 {{- end }}
 
 # Crostini / chrome os patches
