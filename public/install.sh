@@ -16,6 +16,7 @@ DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
 NOFORMAT='\033[0m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
+GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 
 echo "${BLUE}Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)${NOFORMAT}"
@@ -86,10 +87,10 @@ mkdir -p "$NIX_HOME_DIR"
 echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
 
 echo ""
-echo "Next stps:"
+echo "${GREEN}Next steps:${NOFORMAT}"
 
-command -v nix-env >/dev/null 2>&1 || { echo >&2 "# Install nix from https://nixos.org/download.html"; }
-command -v home-manager >/dev/null 2>&1 || { echo >&2 "# Install home-manager from https://github.com/nix-community/home-manager"; }
+command -v nix-env >/dev/null 2>&1 || { echo >&2 "${YELLOW}# Install nix from https://nixos.org/download.html${NOFORMAT}"; }
+command -v home-manager >/dev/null 2>&1 || { echo >&2 "${YELLOW}# Install home-manager from https://github.com/nix-community/home-manager${NOFORMAT}"; }
 
 echo "
 # Install home-manager bootstrap packages
