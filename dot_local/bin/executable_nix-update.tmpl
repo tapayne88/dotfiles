@@ -109,7 +109,7 @@ function command_update {
 
   command cp "$FLAKE_LOCKFILE" "$CHEZMOI_FLAKE_LOCKFILE"
   if [[ -n $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
-    msg "\n${YELLOW}   changes made to flake.lock, please commit them${NOFORMAT}\n"
+    msg "\n${YELLOW}   changes made to flake.lock, please commit them with \`nix-update commit\`${NOFORMAT}\n"
   fi
 
   # bug with nix neovim config writes init.vim which conflicts with my init.lua
@@ -118,6 +118,7 @@ function command_update {
 }
 
 while :; do
+  # default to update
   case "${args[0]-update}" in
   show) command_show ;;
   commit) command_commit ;;
