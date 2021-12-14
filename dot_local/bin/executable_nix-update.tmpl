@@ -68,7 +68,7 @@ setup_colors
 
 function eval_command {
   msg "${BLUE}> $1${NOFORMAT}"
-  eval $1
+  eval "$1"
 }
 
 function main {
@@ -80,15 +80,15 @@ function main {
   eval_command "home-manager switch"
 
   FLAKE_LOCKFILE=$HOME_MANAGER_HOME/flake.lock
-  CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path $FLAKE_LOCKFILE)
-  command cp $FLAKE_LOCKFILE $CHEZMOI_FLAKE_LOCKFILE
-  if [[ -n $(command git -C {{ .chezmoi.sourceDir }} status --short $CHEZMOI_FLAKE_LOCKFILE) ]]; then
+  CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path "$FLAKE_LOCKFILE")
+  command cp "$FLAKE_LOCKFILE" "$CHEZMOI_FLAKE_LOCKFILE"
+  if [[ -n $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
     msg "\n${YELLOW}   changes made to flake.lock, please commit them${NOFORMAT}\n"
   fi
 
   # bug with nix neovim config writes init.vim which conflicts with my init.lua
   # https://github.com/nix-community/home-manager/issues/1907
-  rm -rf $XDG_CONFIG_HOME/nvim/init.vim
+  rm -rf "$XDG_CONFIG_HOME/nvim/init.vim"
 }
 
 main
