@@ -89,7 +89,7 @@ CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path "$FLAKE_LOCKFILE")
 function command_show {
   # Find last flake.lock commit - no idea why I need to redirect git-log to a
   # file but head kept exiting non-zero!
-  COMMIT=$(head -n 1 <(command git -C "{{ .chezmoi.sourceDir }}" log --all --oneline "$CHEZMOI_FLAKE_LOCKFILE") | awk '{ print $1 }')
+  COMMIT=$(head -n 1 <(command git -C "{{ .chezmoi.sourceDir }}" log --branches origin/master --oneline "$CHEZMOI_FLAKE_LOCKFILE") | awk '{ print $1 }')
   command git -C "{{ .chezmoi.sourceDir }}" show "$COMMIT"
 }
 
