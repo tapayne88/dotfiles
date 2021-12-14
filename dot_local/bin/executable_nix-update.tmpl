@@ -99,6 +99,8 @@ function command_commit {
   fi
   command git -C "{{ .chezmoi.sourceDir }}" add "$CHEZMOI_FLAKE_LOCKFILE"
   command git -C "{{ .chezmoi.sourceDir }}" commit --message "Updated flake.lock file"
+
+  msg "\n${YELLOW}   Please push the changes from the repo${NOFORMAT}\n"
 }
 
 function command_update {
