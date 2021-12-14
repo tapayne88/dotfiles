@@ -39,6 +39,7 @@ local diagnosticls_languages = {
     json = {formatters = {"prettier"}},
     markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
     sh = {linters = {"shellcheck"}},
+    ['sh.chezmoitmpl'] = {linters = {"shellcheck"}},
     typescript = {linters = {}, formatters = {"prettier"}},
     typescriptreact = {linters = {}, formatters = {"prettier"}}
 }
