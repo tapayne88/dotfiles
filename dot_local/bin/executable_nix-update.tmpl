@@ -107,6 +107,12 @@ function command_commit {
   fi
 
   command git -C "{{ .chezmoi.sourceDir }}" add "$CHEZMOI_FLAKE_LOCKFILE"
+
+  # No changes to commit
+  if [[ -z $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
+    die "\n${YELLOW}   no changes made to flake.lock, perhaps you need to run \`nix-update\`${NOFORMAT}\n"
+  fi
+
   command git -C "{{ .chezmoi.sourceDir }}" commit --message "Updated flake.lock file"
 
   msg "\n${YELLOW}   Please push the changes from the repo${NOFORMAT}\n"
