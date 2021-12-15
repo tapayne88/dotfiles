@@ -94,10 +94,25 @@ function command_show {
 }
 
 function command_commit {
+  # Are we on the master branch, if not abort
+  BRANCH_NAME="$(git -C "{{ .chezmoi.sourceDir }}" symbolic-ref HEAD 2>/dev/null)" || BRANCH_NAME="(unnamed branch)" # detached HEAD
+  BRANCH_NAME=${BRANCH_NAME##refs/heads/}
+  if [[ "$BRANCH_NAME" != "master" ]]; then
+    die "\n${YELLOW}   dotfiles isn't on master, please commit changes manually${NOFORMAT}\n"
+  fi
+
+  # Do we have some staged changes, if so abort
   if [[ $(command git -C "{{ .chezmoi.sourceDir }}" diff --cached) != $(command git -C "{{ .chezmoi.sourceDir }}" diff --cached "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
     die "\n${YELLOW}   changes staged in the git repo, please unstage them before continuing${NOFORMAT}\n"
   fi
+
   command git -C "{{ .chezmoi.sourceDir }}" add "$CHEZMOI_FLAKE_LOCKFILE"
+
+  # No changes to commit
+  if [[ -z $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
+    die "\n${YELLOW}   no changes made to flake.lock, perhaps you need to run \`nix-update\`${NOFORMAT}\n"
+  fi
+
   command git -C "{{ .chezmoi.sourceDir }}" commit --message "Updated flake.lock file"
 
   msg "\n${YELLOW}   Please push the changes from the repo${NOFORMAT}\n"
