@@ -180,8 +180,7 @@ return require('packer').startup(function(use)
     }
 
     use {
-        "tapayne88/which-key.nvim",
-        branch = "fix/sporadic-function-loss",
+        "folke/which-key.nvim",
         config = function()
             require("which-key").setup {
                 -- your configuration comes here
