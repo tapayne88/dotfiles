@@ -43,6 +43,7 @@
     watchman # watch files and run command on change
     wget # fetch things from urls
     yarn # JS package manager
+    zinit # zsh plugin manager
     zsh # shell
 
     # Unstable Packages
