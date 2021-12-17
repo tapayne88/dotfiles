@@ -11,7 +11,9 @@ local install_path = package_root .. '/packer/start/packer.nvim'
 local function load_plugins()
     require('packer').startup {
         {
-            'wbthomason/packer.nvim', "folke/which-key.nvim", {
+            'wbthomason/packer.nvim',
+            {"tapayne88/which-key.nvim", branch = "fix/sporadic-function-loss"},
+            {
                 'nvim-telescope/telescope.nvim',
                 requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}
             }
