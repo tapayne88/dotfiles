@@ -5,13 +5,25 @@ right_format = """$cmd_duration"""
 [character]
 success_symbol = "[❯](white)"
 
+[directory]
+style = "yellow"
+read_only = "  "
+
 [git_branch]
 symbol = " "
 style = "green"
 
-[directory]
-style = "yellow"
-read_only = "  "
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+up_to_date = "•"
+conflicted = ""
+stashed = ""
+modified = "⋯"
+deleted = ""
+style = "white"
+
+[git_commit]
+tag_symbol = " "
 
 [cmd_duration]
 min_time = 0
