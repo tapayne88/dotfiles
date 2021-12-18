@@ -25,6 +25,12 @@ style = "white"
 [git_commit]
 tag_symbol = " "
 
+[lua]
+symbol = " "
+
+[nodejs]
+style = "purple"
+
 [cmd_duration]
 min_time = 0
 format = "[$duration]($style)"
