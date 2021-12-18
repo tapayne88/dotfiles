@@ -1,0 +1,6 @@
+add_newline = true
+
+right_format = """$cmd_duration"""
+
+[cmd_duration]
+min_time = 0
