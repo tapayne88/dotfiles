@@ -9,8 +9,8 @@ $singularity\
 $kubernetes\
 $directory\
 $vcsh\
-$git_worktree\
 $git_branch\
+${custom.git_worktree} \
 $git_commit\
 $git_state\
 $git_metrics\
@@ -73,15 +73,17 @@ right_format = """$cmd_duration"""
 success_symbol = "[❯](white)"
 
 [directory]
+format = "[$path]($style)[$read_only]($read_only_style)"
 style = "yellow"
-read_only = "  "
+read_only = " "
 
 [git_branch]
+format = " on [$symbol$branch]($style)"
 symbol = " "
 style = "green"
 
 [git_status]
-format = "([$all_status$ahead_behind]($style) )"
+format = "[$all_status$ahead_behind]($style) "
 up_to_date = "•"
 conflicted = ""
 stashed = ""
@@ -92,7 +94,7 @@ style = "white"
 [custom.git_worktree]
 command = "basename $(git rev-parse --show-toplevel)"
 when = """ test $(git worktree list | wc -l) -gt 1 """
-format = "[$output/]($style)"
+format = "[\\($output\\)]($style)"
 style = "bright-black"
 
 [git_commit]
