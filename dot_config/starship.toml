@@ -112,6 +112,10 @@ symbol = " "
 format = "[$symbol($version )]($style)"
 style = "purple"
 
+[php]
+format = "[$symbol($version )]($style)"
+symbol = " "
+
 [cmd_duration]
 min_time = 0
 format = "[$duration]($style)"
