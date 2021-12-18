@@ -16,6 +16,7 @@ $git_state\
 $git_metrics\
 $git_status\
 $hg_branch\
+$fill\
 $docker_context\
 $package\
 $cmake\
@@ -69,6 +70,9 @@ $character"""
 
 right_format = """$cmd_duration"""
 
+[fill]
+symbol = " "
+
 [character]
 success_symbol = "[❯](white)"
 
@@ -101,9 +105,11 @@ style = "bright-black"
 tag_symbol = " "
 
 [lua]
+format = "[$symbol($version )]($style)"
 symbol = " "
 
 [nodejs]
+format = "[$symbol($version )]($style)"
 style = "purple"
 
 [cmd_duration]
