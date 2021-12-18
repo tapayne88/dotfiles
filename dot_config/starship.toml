@@ -91,9 +91,9 @@ deleted = ""
 style = "white"
 
 [custom.git_worktree]
-command = "basename $(git root)"
-when = """ $(git worktree list | wc -l) -gt 1 """
-format = "[$output]($style)"
+command = "basename $(git rev-parse --show-toplevel)"
+when = """ test $(git worktree list | wc -l) -gt 1 """
+format = "[$output/]($style)"
 style = "bright-black"
 
 [git_commit]
