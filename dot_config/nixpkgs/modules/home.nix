@@ -37,6 +37,7 @@
     rnix-lsp # nix lsp & formatter
     shellcheck # shell script static analysis tool
     starship # zsh prompt
+    taplo-lsp # TOML toolkit
     tmuxp # declaritive tmux session launcher
     tree # print directory structure
     up # utlimate plumber - unix pipes tool

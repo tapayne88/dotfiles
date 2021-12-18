@@ -9,7 +9,7 @@ end
 
 local servers = {
     "bashls", "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua",
-    "tsserver"
+    "taplo", "tsserver"
 }
 
 local function init_servers()
