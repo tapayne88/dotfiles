@@ -59,7 +59,6 @@ $openstack\
 $env_var\
 $crystal\
 $custom\
-$cmd_duration\
 $line_break\
 $jobs\
 $battery\
