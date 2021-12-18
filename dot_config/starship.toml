@@ -2,5 +2,18 @@ add_newline = true
 
 right_format = """$cmd_duration"""
 
+[character]
+success_symbol = "[❯](white)"
+
+[git_branch]
+symbol = " "
+style = "green"
+
+[directory]
+style = "yellow"
+read_only = "  "
+
 [cmd_duration]
 min_time = 0
+format = "[$duration]($style)"
+style = "bold cyan"
