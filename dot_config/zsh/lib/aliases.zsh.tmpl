@@ -1,10 +1,3 @@
-{{- if eq "macOS" .ostype }}
-# Register gls alias to trick oh-my-zsh into thinking we've installed coreutils
-# through homebrew (actually installed with nix). This way we get nice ls color
-# support
-alias gls='ls'
-{{- end }}
-
 {{- if eq "wsl" .ostype }}
 alias open='explorer.exe'
 {{- end }}
