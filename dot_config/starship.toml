@@ -119,4 +119,4 @@ symbol = " "
 [cmd_duration]
 min_time = 0
 format = "[$duration]($style)"
-style = "bold cyan"
+style = "bold italic cyan"
