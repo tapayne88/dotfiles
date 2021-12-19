@@ -86,6 +86,9 @@ export ZSH_TMUX_AUTOCONNECT="false"
 # Setup ls colors
 eval `dircolors $HOME/.dir_colors`
 
+autoload -U promptinit; promptinit
+prompt pure
+
 source ~/.nix-profile/share/antigen/antigen.zsh
 
 # patches required for modules
@@ -104,8 +107,6 @@ antigen bundle robbyrussell/oh-my-zsh plugins/fzf
 antigen bundle robbyrussell/oh-my-zsh plugins/ssh-agent
 antigen bundle robbyrussell/oh-my-zsh plugins/tmux
 antigen bundle robbyrussell/oh-my-zsh plugins/z
-
-antigen theme $ZSH_HOME themes/kipper.zsh-theme
 
 # personal settings, override modules
 antigen bundle $ZSH_HOME/completions
