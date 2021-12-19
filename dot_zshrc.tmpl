@@ -87,6 +87,12 @@ export ZSH_TMUX_AUTOCONNECT="false"
 eval `dircolors $HOME/.dir_colors`
 
 autoload -U promptinit; promptinit
+PURE_CMD_MAX_EXEC_TIME=1
+zstyle :prompt:pure:path color yellow
+zstyle :prompt:pure:prompt:success color white
+zstyle :prompt:pure:git:branch color green
+zstyle :prompt:pure:git:dirty color white
+zstyle :prompt:pure:execution_time color cyan
 prompt pure
 
 source ~/.nix-profile/share/antigen/antigen.zsh
