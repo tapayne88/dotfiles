@@ -28,6 +28,7 @@
     netcat # netcat implementaion
     nodejs # nodejs...
     poppler_utils # pdf utils - pdfunite to combine pdfs
+    pure-prompt # zsh prompt
     python3 # python38
     python38Packages.pip # pip for python38
     ripgrep # rg searching
