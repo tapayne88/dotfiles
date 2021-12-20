@@ -44,9 +44,14 @@
   better-oneline = "format:%C(auto)%h%d %s %Cblue[%cn]"
   summary = "format:%C(yellow)%H%C(red)%d%n%C(blue)%cd %an%n%C(reset)%s%n"
 
+[feature]
+  # Support repos with large number of files, improving git status and git
+  # commit performance. See `man git-config` for details
+  # https://github.com/starship/starship/issues/1617#issuecomment-885959971
+  manyFiles = true
+
 [alias]
-  st = status -uno
-  stu = status
+  st = status
   cm = commit
   cma = commit --amend
   cmae = commit --amend --no-edit
