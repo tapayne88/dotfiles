@@ -369,6 +369,7 @@
     if (( $1 )); then
       # Styling for up-to-date Git status.
       local       meta='%f'   # default foreground
+      local      other='%8F'  # grey foreground
       local      clean='%2F'  # green foreground
       local   modified='%3F'  # yellow foreground
       local  untracked='%4F'  # blue foreground
@@ -417,7 +418,7 @@
     fi
 
     if [[ $(git worktree list 2> /dev/null | wc -l) -gt 1 ]]; then
-      res+="%8F($(basename $(git rev-parse --show-toplevel)))"
+      res+="${other}($(basename $(git rev-parse --show-toplevel)))"
     fi
 
     # Display "wip" if the latest commit's summary contains "wip" or "WIP".
