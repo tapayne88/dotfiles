@@ -436,6 +436,10 @@
     (( VCS_STATUS_PUSH_COMMITS_AHEAD && !VCS_STATUS_PUSH_COMMITS_BEHIND )) && res+=" "
     # ⇢42 if ahead of the push remote; no leading space if also behind: ⇠42⇢42.
     (( VCS_STATUS_PUSH_COMMITS_AHEAD  )) && res+="${meta}⇢${VCS_STATUS_PUSH_COMMITS_AHEAD}"
+
+    # Has remote branch and up-to-date, show dot
+    [[ -n $VCS_STATUS_REMOTE_BRANCH ]] && (( !VCS_STATUS_COMMITS_BEHIND && !VCS_STATUS_COMMITS_AHEAD && !VCS_STATUS_PUSH_COMMITS_BEHIND && !VCS_STATUS_PUSH_COMMITS_AHEAD )) && res+=" ${meta}•"
+
     # # *42 if have stashes.
     # (( VCS_STATUS_STASHES        )) && res+=" ${clean}*${VCS_STATUS_STASHES}"
     # 'merge' if the repo is in an unusual state.
