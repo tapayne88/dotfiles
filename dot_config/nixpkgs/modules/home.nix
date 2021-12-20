@@ -12,6 +12,7 @@
     chezmoi # dotfile manager
     ctop # container top process tool
     curl # curl...
+    exa # ls replacement
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
