@@ -113,7 +113,7 @@ function module.on_attach(client, bufnr)
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>', opts)
     nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    nnoremap('<leader>ac', '<cmd>Telescope lsp_code_actions<CR>', opts)
+    nnoremap('<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     nnoremap("<leader>cc", show_cursor_diagnositcs)
 
