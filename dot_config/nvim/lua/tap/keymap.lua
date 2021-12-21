@@ -10,6 +10,10 @@ nnoremap('k', 'gk')
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
 
+-- Move visual selection up/down
+vnoremap('J', ":m '>+1<CR>gv=gv")
+vnoremap('K', ":m '<-2<CR>gv=gv")
+
 -- search for current visual selection
 vnoremap('//', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>")
 
