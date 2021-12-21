@@ -128,6 +128,8 @@ return require('packer').startup(function(use)
             'nvim-telescope/telescope-live-grep-raw.nvim'
         }
     }
+    -- customise vim.ui appearance
+    use {'stevearc/dressing.nvim', config = [[require("tap.plugins.dressing")]]}
     -- + & - in column for changed lines
     use {
         'lewis6991/gitsigns.nvim',
