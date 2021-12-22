@@ -1,13 +1,13 @@
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
 export ZSH_HOME=~/.config/zsh
 
 export SHELL=$HOME/.nix-profile/bin/zsh
 export VISUAL=nvim
 export EDITOR=nvim
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
 
 function prepend_path {
   for p in $@; do
@@ -105,7 +105,7 @@ antigen bundle robbyrussell/oh-my-zsh plugins/ssh-agent
 antigen bundle robbyrussell/oh-my-zsh plugins/tmux
 antigen bundle robbyrussell/oh-my-zsh plugins/z
 
-antigen theme $ZSH_HOME themes/kipper.zsh-theme
+antigen theme romkatv/powerlevel10k
 
 # personal settings, override modules
 antigen bundle $ZSH_HOME/completions
@@ -127,3 +127,6 @@ LOCAL_RC=~/.zshrc.local
 if [ -e $LOCAL_RC ]; then
   source $LOCAL_RC
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
