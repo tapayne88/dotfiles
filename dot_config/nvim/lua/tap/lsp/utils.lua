@@ -78,9 +78,9 @@ local show_line_diagnositcs = function()
 end
 
 -- on_attach function for lsp.setup calls
--- @param client Client
--- @param bufnr number
--- @return nil
+---@param client Client
+---@param bufnr number
+---@return nil
 function module.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -154,9 +154,9 @@ function module.on_attach(client, bufnr)
 end
 
 -- Find npm executable path
--- @param cmd string
--- @param fn function
--- @return nil
+---@param cmd string
+---@param fn fun(result: string|nil)
+---@return nil
 function module.get_bin_path(cmd, fn)
     return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
                                              function(result, code, signal)
@@ -191,8 +191,8 @@ end
 
 -- Merge passed config with default config for consistent lsp.setup calls, preserve
 -- passed config
--- @param config Config
--- @return Config
+---@param config Config
+---@return Config
 function module.merge_with_default_config(config)
     local base_config = {
         autostart = true,
@@ -215,6 +215,8 @@ function module.merge_with_default_config(config)
     return vim.tbl_deep_extend("force", base_config, config or {})
 end
 
+-- Get active LSP clients
+---@return table[]
 function module.get_lsp_clients()
     if next(vim.lsp.buf_get_clients(0)) == nil then return {} end
     local active_clients = vim.lsp.get_active_clients()
@@ -224,9 +226,9 @@ end
 
 -- Patch nvim-lsp-installer for existing lsp server, copying the config and
 -- overriding installer step
--- @param server_name string
--- @param installer function
--- @return nil
+---@param server_name string
+---@param installer fun()
+---@return nil
 function module.patch_lsp_installer(server_name, installer)
     local _, og_server = servers.get_server(server_name)
 
