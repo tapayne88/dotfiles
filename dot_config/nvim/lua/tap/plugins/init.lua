@@ -144,6 +144,7 @@ return require('packer').startup(function(use)
         requires = {
             'williamboman/nvim-lsp-installer', -- install LSP servers
             'b0o/schemastore.nvim', -- jsonls schemas
+            'folke/lua-dev.nvim', -- lua-dev setup
             {
                 'rmagatti/goto-preview',
                 config = function()
