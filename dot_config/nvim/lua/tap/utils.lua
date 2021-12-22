@@ -6,9 +6,12 @@ local tokyo_setup = require("tokyonight.colors").setup {style = "day"}
 
 local utils = {}
 
--- Export underlying theme colors
+---Export underlying theme colors
+---@type table<string, table<string, string>>
 utils.colors = {nord = nord, tokyo = tokyo_setup}
 
+---@param color string|table<'"light"' | '"dark"', string>
+---@return string|nil
 function utils.color(color)
     if type(color) ~= "table" then color = {light = color, dark = color} end
 
@@ -16,6 +19,9 @@ function utils.color(color)
                utils.colors.nord[color.dark]
 end
 
+---@alias lsp_status '"error"' | '"warning"' | '"info"' | '"hint"' | '"ok"'
+
+---@type table<lsp_status | '"hint_alt"', string>
 utils.lsp_symbols = {
     error = " ",
     warning = " ",
@@ -25,6 +31,8 @@ utils.lsp_symbols = {
     ok = " "
 }
 
+---@param type lsp_status
+---@return string|nil
 utils.lsp_colors = function(type)
     local color_map = {
         error = utils.color({dark = "nord11_gui", light = "red"}),
@@ -36,6 +44,11 @@ utils.lsp_colors = function(type)
     return color_map[type]
 end
 
+---Run cmd async and trigger callback on completion
+---@param cmd string[]
+---@param cwd string|nil
+---@param fn fun(result: string[], code: number, signal: number)
+---@return Job
 function utils.get_os_command_output_async(cmd, cwd, fn)
     if type(cmd) ~= "table" then
         print('[get_os_command_output_async]: cmd has to be a table')
@@ -51,6 +64,10 @@ function utils.get_os_command_output_async(cmd, cwd, fn)
     return job
 end
 
+---Run cmd synchronously and return value
+---@param cmd string[]
+---@param cwd string|nil
+---@return string[], number, string[]
 function utils.get_os_command_output(cmd, cwd)
     if type(cmd) ~= "table" then
         print('[get_os_command_output]: cmd has to be a table')
@@ -67,6 +84,15 @@ function utils.get_os_command_output(cmd, cwd)
     return stdout, ret, stderr
 end
 
+---Map deeply nested table to single key
+---```lua
+---  local tbl = {name = {foo = {1, 2}, bar = {3, 4}}}
+---  local new_tbl = map_table_to_key(tbl, "foo")
+---  print(new_tbl) -- {name = {1, 2}}
+---```
+---@param tbl table<string, table<string, any>>
+---@param key string
+---@return table<string, any>
 function utils.map_table_to_key(tbl, key)
     return vim.tbl_map(function(value) return value[key] end, tbl)
 end
@@ -239,6 +265,9 @@ local function has_buffer_target(commands)
     end, commands) > 0
 end
 
+-- Convenience for making autocommands
+---@param name string
+---@param commands table<string, string | string[] | fun()>[]
 function utils.augroup(name, commands)
     vim.cmd("augroup " .. name)
 
@@ -263,7 +292,11 @@ function utils.augroup(name, commands)
     vim.cmd("augroup END")
 end
 
--- Ditto above
+-- Convenience for making commands
+-- ```lua
+--    command({"name", function() {...})
+-- ```
+---@param args table
 function utils.command(args)
     local nargs = args.nargs or 0
     local name = args[1]
@@ -289,13 +322,9 @@ function utils.command(args)
                           name, rhs))
 end
 
-function utils.join(value, str, sep)
-    sep = sep or ","
-    str = str or ""
-    value = type(value) == "table" and table.concat(value, sep) or value
-    return str ~= "" and table.concat({value, str}, sep) or value
-end
-
+-- Properly escape string for terminal
+---@param str string
+---@return string
 function utils.termcodes(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
