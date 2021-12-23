@@ -58,6 +58,8 @@ bind -n C-X resize-pane -Z
 # Swap current pane with last pane
 bind C-o select-pane -l \; swap-pane -s '!'
 
+bind-key -r i run-shell "tmux neww ~/.local/bin/tmux-cht.sh"
+
 # keybindings to make resizing easier
 bind -r H resize-pane -L 2
 bind -r J resize-pane -D 2
