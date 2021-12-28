@@ -81,11 +81,11 @@ set_bat_theme() {
 
 set_kitty_theme() {
   echo "include $1.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
-  kitty @ --to $KITTY_LISTEN_ON set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
+  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
 }
 
 read_theme() {
-  echo $(cat $THEME_FNAME 2> /dev/null)
+  cat "$THEME_FNAME" 2> /dev/null
 }
 
 parse_params "$@"
@@ -118,7 +118,7 @@ command_toggle() {
     set_bat_theme "Nord"
   fi
 
-  echo $THEME > $THEME_FNAME
+  echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
@@ -127,7 +127,7 @@ command_light() {
   THEME="tokyonight_day"
   set_bat_theme "base16"
 
-  echo $THEME > $THEME_FNAME
+  echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
@@ -136,7 +136,7 @@ command_dark() {
   THEME="nord"
   set_bat_theme "Nord"
 
-  echo $THEME > $THEME_FNAME
+  echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   tmux source-file ~/.tmux.conf
 }
