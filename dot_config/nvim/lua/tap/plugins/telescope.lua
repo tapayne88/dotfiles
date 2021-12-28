@@ -7,7 +7,7 @@ local command = require("tap.utils").command
 
 require('telescope').setup {
     defaults = {
-        prompt_prefix = "❯ ", -- this currently causes a neovim bug (see https://github.com/nvim-telescope/telescope.nvim/issues/567)
+        prompt_prefix = "❯ ",
         layout_strategy = "flex", -- let telescope figure out what to do given the space
         layout_config = {height = {padding = 10}},
         mappings = {
