@@ -5,9 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    # TODO: Required for older openssh compatibility with stash
-    nixpkgs-old.url = "github:nixos/nixpkgs/nixos-21.05";
-
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     nixgl = {
@@ -29,12 +26,6 @@
           config.allowUnfree = true;
         };
       };
-      overlay-old = final: prev: {
-        old = import inputs.nixpkgs-old {
-          system = prev.system;
-          config.allowUnfree = true;
-        };
-      };
       overlay-nixgl = final: prev: {
         nixgl = import inputs.nixgl {
           pkgs = inputs.nixpkgs.legacyPackages.${prev.system};
@@ -42,7 +33,6 @@
       };
       overlays = [
         overlay-unstable
-        overlay-old
         overlay-nixgl
         inputs.neovim-nightly-overlay.overlay
       ];
