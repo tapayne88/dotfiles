@@ -137,7 +137,8 @@ local function scrollbar()
     return chars[index]
 end
 
-local section_separators = vim.env.TERM == "xterm-kitty" and
+local supports_slanted_blocks = vim.env.TERM == "xterm-kitty"
+local section_separators = supports_slanted_blocks and
                                {left = "", right = ""} or
                                {left = "", right = ""}
 
@@ -158,7 +159,7 @@ local diagnostic_section = function(cfg)
             end
 
             -- Count is 0 so don't return content
-            return ''
+            return supports_slanted_blocks and '' or ' '
         end,
         -- supress the symbols, default still shows 'E: 1' etc.
         symbols = {error = '', warn = '', hint = '', info = ''},
