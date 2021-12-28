@@ -33,6 +33,7 @@
     ripgrep # rg searching
     silver-searcher # ag searching
     neofetch # pretty print of system info
+    openssh # ssh et al.
     ruby # always useful to have ruby
     rnix-lsp # nix lsp & formatter
     shellcheck # shell script static analysis tool
@@ -48,6 +49,7 @@
 
     # Unstable Packages
     unstable._1password # 1password version is quite old - unstable is much newer
+    unstable.git # newest git!
     unstable.tmux # terminal multiplexer
   ];
 
