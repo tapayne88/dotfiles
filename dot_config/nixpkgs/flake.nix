@@ -74,7 +74,23 @@
               ];
             };
         };
-        # TODO: Setup WSL host
+        # WSL
+        "tpayne@DESKTOP-EACCNGB" = inputs.home-manager.lib.homeManagerConfiguration {
+          system = "x86_64-linux";
+          homeDirectory = "/home/tpayne";
+          username = "tpayne";
+          stateVersion = "21.11";
+          configuration = { pkgs, ... }:
+            {
+              nixpkgs.overlays = overlays;
+              nixpkgs.config.allowUnfree = true;
+
+              imports = [
+                ./modules/home.nix
+                ./modules/linux.nix
+              ];
+            };
+        };
       };
     };
 }
