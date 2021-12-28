@@ -3,7 +3,7 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-env:
+# env:
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for
@@ -66,10 +66,10 @@ window:
   startup_mode: Windowed
 
   # Window title
-  #title: Alacritty
+  title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
-  #dynamic_title: true
+  dynamic_title: false
 
   # Window class (Linux/BSD only):
   #class:
@@ -363,10 +363,13 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
+{{- if eq "wsl" .ostype }}
+shell:
+  program: "C:\\Windows\\System32\\wsl.exe"
+  args:
+    - --distribution Debian 
+    - --cd "~"
+{{- end }}
 
 # Startup directory
 #
