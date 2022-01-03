@@ -3,7 +3,7 @@ function copy-alacritty-config {
 }
 
 function copy-windows-terminal-config {
-  fake_chezmoi "$1" ~/.config/windows_terminal/settings.json /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+  fake_chezmoi "$1" <(cat {{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl | chezmoi execute-template) /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
 }
 
 function fake_chezmoi {
