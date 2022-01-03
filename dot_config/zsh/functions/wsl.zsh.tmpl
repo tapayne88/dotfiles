@@ -1,0 +1,22 @@
+function copy-alacritty-config {
+  fake_chezmoi "$1" ~/.config/alacritty/alacritty.yml /mnt/c/Users/tapay/AppData/Roaming/alacritty
+}
+
+function copy-windows-terminal-config {
+  local tmp_wsl_settings="/tmp/windows_terminal_settings.json"
+  cat {{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl | chezmoi execute-template > $tmp_wsl_settings
+  fake_chezmoi "$1" $tmp_wsl_settings /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+}
+
+function fake_chezmoi {
+  local arg=$1
+  local new_settings=$2
+  local current_settings=$3
+  local diff="/tmp/fake_chezmoi_diff"
+
+  diff -u $current_settings $new_settings | tee $diff | diff-so-fancy
+
+  if [[ -s "$diff" && "$arg" != "-n" ]]; then
+    command cp -i $new_settings $current_settings
+  fi
+}
