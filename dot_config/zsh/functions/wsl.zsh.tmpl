@@ -3,17 +3,20 @@ function copy-alacritty-config {
 }
 
 function copy-windows-terminal-config {
-  fake_chezmoi "$1" <(cat {{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl | chezmoi execute-template) /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+  local tmp_wsl_settings="/tmp/windows_terminal_settings.json"
+  cat {{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl | chezmoi execute-template > $tmp_wsl_settings
+  fake_chezmoi "$1" $tmp_wsl_settings /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
 }
 
 function fake_chezmoi {
   local arg=$1
   local new_settings=$2
   local current_settings=$3
+  local diff="/tmp/fake_chezmoi_diff"
 
-  diff -u $current_settings $new_settings | diff-so-fancy
+  diff -u $current_settings $new_settings | tee $diff | diff-so-fancy
 
-  if [ "$arg" != "-n" ]; then
-    cp $new_settings $current_settings
+  if [[ -s "$diff" && "$arg" != "-n" ]]; then
+    command cp -i $new_settings $current_settings
   fi
 }
