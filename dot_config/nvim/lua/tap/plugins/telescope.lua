@@ -20,6 +20,8 @@ require('telescope').setup {
     }
 }
 
+require("telescope").load_extension "file_browser"
+
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
         sort_lastused = true,
@@ -43,16 +45,19 @@ nnoremap("<leader>ff", function()
     require('telescope.builtin').find_files {hidden = true}
 end, {name = "Find File"})
 nnoremap("<leader>fb", function()
-    require('telescope.builtin').file_browser {
+    require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand('%:p:h'),
         hidden = true
     }
 end, {name = "Relative File Browser"})
 nnoremap("<leader>fB", function()
-    require('telescope.builtin').file_browser {hidden = true}
+    require('telescope').extensions.file_browser.file_browser {hidden = true}
 end, {name = "CWD File Browser"})
 nnoremap("<leader>fh", function()
-    require('telescope.builtin').file_browser {cwd = '~', hidden = true}
+    require('telescope').extensions.file_browser.file_browser {
+        cwd = '~',
+        hidden = true
+    }
 end, {name = "Home Files"})
 nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
          {name = "Help Tags"})
