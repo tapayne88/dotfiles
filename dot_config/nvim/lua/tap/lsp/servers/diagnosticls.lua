@@ -53,7 +53,7 @@ function module.setup(lsp_server)
             init_options = {
                 linters = {
                     markdownlint = {
-                        command = npm.executable(root_dir, "markdownlint"),
+                        command = "markdownlint",
                         isStderr = true,
                         debounce = 100,
                         args = {
@@ -95,8 +95,7 @@ function module.setup(lsp_server)
                                                    "linters"),
                 formatters = {
                     prettier = {
-                        command = prettier_bin or
-                            npm.executable(root_dir, "prettier"),
+                        command = prettier_bin or "prettier",
                         args = {"--stdin-filepath", "%filepath"},
                         rootPatterns = {
                             "package.json", ".prettierrc", ".prettierrc.json",
