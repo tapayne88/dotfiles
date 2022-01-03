@@ -1,3 +1,4 @@
+local lspconfig_tsserver = require "lspconfig.server_configurations.tsserver"
 local lsp_utils = require "tap.lsp.utils"
 
 local key_name = function(client_id) return "client_" .. client_id end
@@ -63,7 +64,7 @@ function module.setup(lsp_server)
             end
         },
         cmd = vim.tbl_flatten({
-            default_options.cmd, {"--log-level", "4"},
+            lspconfig_tsserver.default_config.cmd, {"--log-level", "4"},
             {
                 "--tsserver-log-file",
                 vim.env.XDG_CACHE_HOME .. "/nvim/tsserver.log"
