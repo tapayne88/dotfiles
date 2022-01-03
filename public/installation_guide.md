@@ -91,8 +91,9 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
 Install the required plugins
 
 ```bash
-asdf plugin-add nodejs
-asdf plugin-add yarn
+asdf plugin add nodejs
+asdf plugin add yarn
+asdf plugin add pnpm
 ```
 
 ## 7. Setup [Homebrew](https://brew.sh/) (MacOS only)
