@@ -9,14 +9,13 @@
 .config/zsh/functions/brew.zsh
 {{- end }}
 
-# Crostini / chrome os patches
+# Crostini / Chrome OS only files
 {{- if ne "crostini" .ostype }}
 .config/zsh/functions/crostini.zsh
 {{- end }}
 
-# Ignore windows terminal config on anything not windows
+# WSL only files
 {{- if ne "wsl" .ostype }}
-.config/windows_terminal
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
