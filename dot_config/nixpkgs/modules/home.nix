@@ -13,6 +13,7 @@
     ctop # container top process tool
     curl # curl...
     exa # ls replacement
+    fd # faster more user friendly find (used by telescope-file-browser)
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
