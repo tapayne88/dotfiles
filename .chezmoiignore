@@ -23,7 +23,6 @@ public
 .prettierrc.js
 misc
 README.md
-git_template
 
 # Ignore icons with kitty config
 .config/kitty/icons
