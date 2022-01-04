@@ -42,12 +42,12 @@
           "type": "object",
           "description": "Feature flags that enable / disable functionality",
           "properties": {
-            "neovim-nightly": {
+            "neovim_nightly": {
               "type": "boolean",
               "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)"
             }
           },
-          "required": ["neovim-nightly"]
+          "required": ["neovim_nightly"]
         }
       },
       "additionalProperties": false,
