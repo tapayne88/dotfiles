@@ -58,11 +58,11 @@
               ];
             };
         };
-        # MacBook Pro
-        "thomas.payne@SBGML05573" = inputs.home-manager.lib.homeManagerConfiguration {
+        # MacBook Pro (Work)
+        "tom.payne@C02G41YZMD6R" = inputs.home-manager.lib.homeManagerConfiguration {
           system = "x86_64-darwin";
-          homeDirectory = "/Users/thomas.payne";
-          username = "thomas.payne";
+          homeDirectory = "/Users/tom.payne";
+          username = "tom.payne";
           stateVersion = "21.11";
           configuration = { pkgs, ... }:
             {
