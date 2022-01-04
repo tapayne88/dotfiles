@@ -54,6 +54,7 @@
                 ./modules/home.nix
                 ./modules/crostini.nix
                 ./modules/linux.nix
+                ./modules/neovim.nix
               ];
             };
         };
@@ -71,6 +72,7 @@
               imports = [
                 ./modules/home.nix
                 ./modules/darwin.nix
+                ./modules/neovim.nix
               ];
             };
         };
@@ -88,6 +90,7 @@
               imports = [
                 ./modules/home.nix
                 ./modules/linux.nix
+                ./modules/neovim.nix
               ];
             };
         };
