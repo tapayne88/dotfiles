@@ -12,7 +12,11 @@
     viAlias = true;
     withNodeJs = true;
 
-    # Neovim nightly
+    # <features.neovim_nightly>
+    #{{- if (eq .features.neovim_nightly true) }} Neovim nightly
     package = pkgs.neovim-nightly;
+    #{{- else }} Neovim Stable
+    package = pkgs.unstable.neovim-unwrapped;
+    #{{- end }} </features.neovim_nightly>
   };
 }
