@@ -37,10 +37,27 @@
         "fugitive_bitbucket_domains": {
           "type": "string",
           "description": "Non cloud domains for bitbucket fugitive plugin, allows :GBrowse"
+        },
+        "features": {
+          "type": "object",
+          "description": "Feature flags that enable / disable functionality",
+          "properties": {
+            "neovim-nightly": {
+              "type": "boolean",
+              "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)"
+            }
+          },
+          "required": ["neovim-nightly"]
         }
       },
       "additionalProperties": false,
-      "required": ["ostype", "email", "terminal_font", "terminal_font_size"]
+      "required": [
+        "ostype",
+        "email",
+        "terminal_font",
+        "terminal_font_size",
+        "features"
+      ]
     }
   }
 }
