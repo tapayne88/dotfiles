@@ -90,8 +90,7 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.fugitive")]],
         requires = {
             'tpope/vim-rhubarb', -- :GBrowse github
-            'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
-            'tommcdo/vim-fubitive' -- :GBrowse bitbucket
+            'shumphrey/fugitive-gitlab.vim' -- :GBrowse gitlab
         }
     }
     -- Easier find & replace

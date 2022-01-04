@@ -2,7 +2,6 @@ local nnoremap = require("tap.utils").nnoremap
 local xnoremap = require("tap.utils").xnoremap
 
 vim.g.fugitive_dynamic_colors = 0
-vim.g.fugitive_bitbucket_domains = {{ .fugitive_bitbucket_domains }}
 
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
