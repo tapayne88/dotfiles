@@ -13,7 +13,7 @@
     ctop # container top process tool
     curl # curl...
     exa # ls replacement
-    fd # faster more user friendly find (used by telescope-file-browser)
+    fd # faster more user friendly find
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
@@ -36,8 +36,6 @@
     neofetch # pretty print of system info
     openssh # ssh et al.
     ruby # always useful to have ruby
-    rnix-lsp # nix lsp & formatter
-    shellcheck # shell script static analysis tool
     tmuxp # declaritive tmux session launcher
     tree # print directory structure
     up # utlimate plumber - unix pipes tool
@@ -53,13 +51,4 @@
     unstable.git # newest git!
     unstable.tmux # terminal multiplexer
   ];
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    withNodeJs = true;
-
-    # Neovim nightly
-    package = pkgs.neovim-nightly;
-  };
 }
