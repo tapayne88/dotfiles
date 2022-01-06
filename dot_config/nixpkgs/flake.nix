@@ -73,6 +73,7 @@
                 ./modules/home.nix
                 ./modules/darwin.nix
                 ./modules/neovim.nix
+                ./modules/work.nix
               ];
             };
         };
