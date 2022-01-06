@@ -107,7 +107,7 @@ ${BLUE}rm $NIX_HOME_FILE${NOFORMAT}
 ${BLUE}home-manager switch${NOFORMAT}
 
 # Install asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
-${BLUE}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1${NOFORMAT}
+${BLUE}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0${NOFORMAT}
 
 # Install asdf plugins
 # https://github.com/tapayne88/dotfiles/blob/2b7d0baaeba11ef0af5b2f67bbe16ff64c828859/README.md?plain=1#L51-L55
