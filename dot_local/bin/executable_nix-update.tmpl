@@ -124,12 +124,10 @@ function command_update {
   eval_command "nix flake update $HOME_MANAGER_HOME"
   eval_command "home-manager switch"
 
-  {{- if ne "wsl" .ostype }}
   command cp "$FLAKE_LOCKFILE" "$CHEZMOI_FLAKE_LOCKFILE"
   if [[ -n $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
     msg "\n${YELLOW}   changes made to flake.lock, please commit them with \`nix-update commit\`${NOFORMAT}\n"
   fi
-  {{- end }}
 
   # bug with nix neovim config writes init.vim which conflicts with my init.lua
   # https://github.com/nix-community/home-manager/issues/1907
