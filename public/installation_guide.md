@@ -85,7 +85,7 @@ chsh -s `which zsh`
 Installing should just be cloning the repo into `~/.asdf` and installing the plugins ([docs](https://asdf-vm.com/guide/getting-started.html#_2-download-asdf)).
 
 ```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
 ```
 
 Install the required plugins
