@@ -1,13 +1,21 @@
 #!/bin/sh
 set -e
 
+oops() {
+  echo "$0:" "$@" >&2
+  exit 1
+}
+
+require_util() {
+  command -v "$1" > /dev/null 2>&1 ||
+    oops "you do not have '$1' installed, $2"
+}
+
+
 COMMANDS="git curl"
 for C in $COMMANDS
 do
-  command -v "$C" >/dev/null 2>&1 || {
-    echo >&2 "I require $C but it's not installed. Aborting.";
-    exit 1;
-  }
+  require_util "$C" "please install"
 done
 
 CWD=$(pwd)
@@ -25,16 +33,12 @@ INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
 # Ensure location doesn't exist
 if [ -d "$INSTALL_LOCATION" ]; then
-  echo "${RED}Install location already exists, halting${NOFORMAT}"
-  echo "${YELLOW}$(cd "$INSTALL_LOCATION"; pwd)${NOFORMAT}"
-  exit 1
+  oops "${RED}Install location already exists ($(cd "$INSTALL_LOCATION"; pwd))${NOFORMAT}"
 fi
 
 # Ensure location path does exist
 if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
-  echo "${RED}Install location path invalid, halting${NOFORMAT}"
-  echo "${YELLOW}$INSTALL_LOCATION${NOFORMAT}"
-  exit 1
+  oops "${RED}Install location path invalid ($INSTALL_LOCATION)${NOFORMAT}"
 fi
 
 REPO="git@github.com:tapayne88/dotfiles.git"
@@ -54,7 +58,6 @@ CHEZMOI_CONFIG="{
 NIX_HOME_DIR="$HOME/.config/nixpkgs"
 NIX_HOME_FILE="$NIX_HOME_DIR/home.nix"
 NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
-
 {
   programs.home-manager.enable = true;
 
@@ -70,14 +73,14 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
 }"
 
 echo "Cloning $REPO to $INSTALL_LOCATION"
-git clone $REPO "$INSTALL_LOCATION"
+command git clone $REPO "$INSTALL_LOCATION"
 chmod 700 "$INSTALL_LOCATION"
 
+echo "Applying chezmoi config
+$CHEZMOI_CONFIG"
+
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
-  echo "${RED}Found $CHEZMOI_CONFIG_FILE, halting${NOFORMAT}"
-  echo "${YELLOW}Merge config with existing file${NOFORMAT}"
-  echo "${YELLOW}$CHEZMOI_CONFIG${NOFORMAT}"
-  exit 1
+  oops "${RED}Found $CHEZMOI_CONFIG_FILE, merge config with existing file${NOFORMAT}"
 fi
 
 mkdir -p "$CHEZMOI_CONFIG_DIR"
@@ -86,22 +89,21 @@ echo "$CHEZMOI_CONFIG" > "$CHEZMOI_CONFIG_FILE"
 mkdir -p "$NIX_HOME_DIR"
 echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
 
+require_util nix-env "${YELLOW}# Install nix from https://nixos.org/download.html${NOFORMAT}"
+require_util home-manager "${YELLOW}# Install home-manager from https://github.com/nix-community/home-manager${NOFORMAT}"
+
+echo "apply home-manager bootstrap"
+home-manager switch
+
+# Remove temporary home-manager file
+echo "cleaning up temporary files"
+rm -f "$NIX_HOME_FILE"
+
 echo ""
-echo "${GREEN}Next steps:${NOFORMAT}"
-
-command -v nix-env >/dev/null 2>&1 || { echo >&2 "${YELLOW}# Install nix from https://nixos.org/download.html${NOFORMAT}"; }
-command -v home-manager >/dev/null 2>&1 || { echo >&2 "${YELLOW}# Install home-manager from https://github.com/nix-community/home-manager${NOFORMAT}"; }
-
-echo "
-# Install home-manager bootstrap packages
-${BLUE}home-manager switch${NOFORMAT}
-
+echo "${GREEN}Next steps:${NOFORMAT}
 # Apply dotfiles with chezmoi, chechout the required schema with this URL
 # https://github.com/tapayne88/dotfiles/blob/master/public/chezmoi-schema.json
 ${BLUE}chezmoi apply -v${NOFORMAT}
-
-# Remove temporary home-manager file
-${BLUE}rm $NIX_HOME_FILE${NOFORMAT}
 
 # Install the provisioned packages
 ${BLUE}home-manager switch${NOFORMAT}
