@@ -2,7 +2,7 @@ local nnoremap = require("tap.utils").nnoremap
 local xnoremap = require("tap.utils").xnoremap
 
 vim.g.fugitive_dynamic_colors = 0
-vim.g.github_enterprise_urls = {'https://github.anaplan.com'}
+vim.g.github_enterprise_urls = {'https://{{ .github_enterprise_host }}'}
 
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
