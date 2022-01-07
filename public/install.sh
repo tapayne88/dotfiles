@@ -20,7 +20,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 
 echo "${BLUE}Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)${NOFORMAT}"
-read -r answer
+read -r answer < /dev/tty
 INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
 # Ensure location doesn't exist
