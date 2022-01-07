@@ -96,6 +96,7 @@ msg "installing asdf plugins..."
 asdf plugin add nodejs
 asdf plugin add yarn
 asdf plugin add pnpm
+asdf plugin add java
 
 echo ""
 echo "${GREEN}Next steps:${NOFORMAT}
