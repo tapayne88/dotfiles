@@ -72,7 +72,7 @@ or
 git clone https://github.com/tapayne88/dotfiles
 ```
 
-## 5. Setup shell (Debian only)
+## 5. Setup user (Debian only)
 
 Ensure user has a password set - usually required on a fresh Crostini install.
 

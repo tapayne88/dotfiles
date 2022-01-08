@@ -65,7 +65,7 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
   ];
 }"
 
-msg "Applying chezmoi config
+msg "applying chezmoi config
 $CHEZMOI_CONFIG"
 
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
@@ -78,7 +78,7 @@ echo "$CHEZMOI_CONFIG" > "$CHEZMOI_CONFIG_FILE"
 mkdir -p "$NIX_HOME_DIR"
 echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
 
-msg "apply home-manager bootstrap"
+msg "applying home-manager bootstrap"
 home-manager switch
 
 msg "cleaning up temporary files"
