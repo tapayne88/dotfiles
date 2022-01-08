@@ -60,6 +60,8 @@ ssh-keygen -C `hostname`
 
 ## 4. Install dotfiles
 
+Run one of the following and follow the steps.
+
 ```bash
 curl -sfL https://git.io/JsiiF | sh
 ```
@@ -70,30 +72,21 @@ or
 git clone https://github.com/tapayne88/dotfiles
 ```
 
-## 5. Setup shell
+## 5. Setup shell (Debian only)
 
-Ensure user has a password set and add nix zsh to allowed shells and change shell.
+Ensure user has a password set - usually required on a fresh Crostini install.
 
 ```shell
 sudo passwd `whoami`
+```
+
+## 6. Setup shell
+
+Add nix installed zsh to allowed shells and change shell to it.
+
+```shell
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
-```
-
-## 6. Install [`asdf`](https://asdf-vm.com/#/)
-
-Installing should just be cloning the repo into `~/.asdf` and installing the plugins ([docs](https://asdf-vm.com/guide/getting-started.html#_2-download-asdf)).
-
-```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
-```
-
-Install the required plugins
-
-```bash
-asdf plugin add nodejs
-asdf plugin add yarn
-asdf plugin add pnpm
 ```
 
 ## 7. Setup [Homebrew](https://brew.sh/) (MacOS only)
