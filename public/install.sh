@@ -95,9 +95,16 @@ require_util home-manager "${YELLOW}# Install home-manager from https://github.c
 echo "apply home-manager bootstrap"
 home-manager switch
 
-# Remove temporary home-manager file
 echo "cleaning up temporary files"
 rm -f "$NIX_HOME_FILE"
+
+echo "installing asdf..."
+command git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
+
+echo "installing asdf plugins..."
+asdf plugin add nodejs
+asdf plugin add yarn
+asdf plugin add pnpm
 
 echo ""
 echo "${GREEN}Next steps:${NOFORMAT}
@@ -107,10 +114,4 @@ ${BLUE}chezmoi apply -v${NOFORMAT}
 
 # Install the provisioned packages
 ${BLUE}home-manager switch${NOFORMAT}
-
-# Install asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
-${BLUE}git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0${NOFORMAT}
-
-# Install asdf plugins
-# https://github.com/tapayne88/dotfiles/blob/2b7d0baaeba11ef0af5b2f67bbe16ff64c828859/README.md?plain=1#L51-L55
 "
