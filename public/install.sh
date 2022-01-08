@@ -31,21 +31,14 @@ done
 CWD=$(pwd)
 DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
 
-msg "Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)"
+msg "Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION]"
 read -r answer < /dev/tty
 INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
-# Ensure location doesn't exist
-if [ -d "$INSTALL_LOCATION" ]; then
-  oops "Install location already exists ($(cd "$INSTALL_LOCATION"; pwd))"
-fi
-
-# Ensure location path does exist
-if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
-  oops "Install location path invalid ($INSTALL_LOCATION)"
-fi
-
 REPO="git@github.com:tapayne88/dotfiles.git"
+msg "Cloning $REPO to $INSTALL_LOCATION"
+command git clone $REPO "$INSTALL_LOCATION"
+chmod 700 "$INSTALL_LOCATION"
 
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG_FILE="$CHEZMOI_CONFIG_DIR/chezmoi.json"
@@ -75,10 +68,6 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
     pkgs.openssh
   ];
 }"
-
-msg "Cloning $REPO to $INSTALL_LOCATION"
-command git clone $REPO "$INSTALL_LOCATION"
-chmod 700 "$INSTALL_LOCATION"
 
 msg "Applying chezmoi config
 $CHEZMOI_CONFIG"
