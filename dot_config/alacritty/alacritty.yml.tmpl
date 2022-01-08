@@ -48,11 +48,11 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  {{- if eq "macOS" .ostype }}
+  #{{- if eq "macOS" .ostype }}
   decorations: buttonless
-  {{- else }}
+  #{{- else }}
   decorations: full
-  {{- end }}
+  #{{- end }}
 
   # Startup Mode (changes require restart)
   #
@@ -363,13 +363,13 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-{{- if eq "wsl" .ostype }}
+#{{- if eq "wsl" .ostype }}
 shell:
   program: "C:\\Windows\\System32\\wsl.exe"
   args:
     - --distribution Debian 
     - --cd "~"
-{{- end }}
+#{{- end }}
 
 # Startup directory
 #
