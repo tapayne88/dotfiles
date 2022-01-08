@@ -10,12 +10,6 @@ A place for all my dotfiles and each one in its place.
 curl -sfL https://git.io/JsiiF | sh
 ```
 
-or
-
-```bash
-git clone https://github.com/tapayne88/dotfiles
-```
-
 For the full setup guide, follow [this](./public/installation_guide.md).
 
 ## [Chezmoi](https://www.chezmoi.io/)
@@ -46,13 +40,7 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 
 ## [`asdf`](https://asdf-vm.com/#/)
 
-`asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn.
-
-```bash
-asdf plugin add nodejs
-asdf plugin add yarn
-asdf plugin add pnpm
-```
+`asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn, etc. These work via plugins and it removes the overhead of thinking which version you need and changing to it - it just works.
 
 ## Fonts
 

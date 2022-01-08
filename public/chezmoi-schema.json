@@ -40,7 +40,8 @@
           "properties": {
             "neovim_nightly": {
               "type": "boolean",
-              "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)"
+              "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)",
+              "default": false
             }
           },
           "required": ["neovim_nightly"]

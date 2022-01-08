@@ -1,6 +1,10 @@
 # Installation Guide
 
-## 1. Update and install things (Debian only)
+## 1. Update and install
+
+### Debian
+
+Update installed packages and install packages needed for setup.
 
 ```shell
 sudo apt update
@@ -16,6 +20,14 @@ sudo apt install \
   liburi-encode-perl \
   build-essential \
   pkg-config
+```
+
+### MacOS
+
+Install xcode-select developer tools to enable setup.
+
+```shell
+xcode-select --install
 ```
 
 ## 2. Locale (Debian only)
@@ -60,40 +72,34 @@ ssh-keygen -C `hostname`
 
 ## 4. Install dotfiles
 
+Run the following and follow the steps.
+
 ```bash
 curl -sfL https://git.io/JsiiF | sh
 ```
 
-or
+This will:
 
-```bash
-git clone https://github.com/tapayne88/dotfiles
-```
+- clone this repository
+- apply dotfiles using [chezmoi](../README.md#chezmoi)
+- setup [nix / home-manager](../README.md#nix) packages
+- install [`asdf`](../README.md#asdf) and plugins
 
-## 5. Setup shell
+## 5. Setup user (Debian only)
 
-Ensure user has a password set and add nix zsh to allowed shells and change shell.
+Ensure user has a password set - usually required on a fresh Crostini install.
 
 ```shell
 sudo passwd `whoami`
+```
+
+## 6. Setup shell
+
+Add nix installed zsh to allowed shells and change shell to it.
+
+```shell
 which zsh | sudo tee --append /etc/shells
 chsh -s `which zsh`
-```
-
-## 6. Install [`asdf`](https://asdf-vm.com/#/)
-
-Installing should just be cloning the repo into `~/.asdf` and installing the plugins ([docs](https://asdf-vm.com/guide/getting-started.html#_2-download-asdf)).
-
-```bash
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
-```
-
-Install the required plugins
-
-```bash
-asdf plugin add nodejs
-asdf plugin add yarn
-asdf plugin add pnpm
 ```
 
 ## 7. Setup [Homebrew](https://brew.sh/) (MacOS only)
