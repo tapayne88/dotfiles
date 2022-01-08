@@ -5,7 +5,6 @@ NOFORMAT='\033[0m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
 
 oops() {
   echo "$0:" "${RED}" "$@" "${NOFORMAT}" >&2
@@ -21,12 +20,9 @@ require_util() {
     oops "you do not have '$1' installed, $2"
 }
 
-
-COMMANDS="git curl"
-for C in $COMMANDS
-do
-  require_util "$C" "please install"
-done
+require_util git "please install it"
+require_util nix-env "please install from https://nixos.org/download.html"
+require_util home-manager "please install from https://github.com/nix-community/home-manager"
 
 CWD=$(pwd)
 DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
@@ -81,9 +77,6 @@ echo "$CHEZMOI_CONFIG" > "$CHEZMOI_CONFIG_FILE"
 
 mkdir -p "$NIX_HOME_DIR"
 echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
-
-require_util nix-env "${YELLOW}# Install nix from https://nixos.org/download.html${NOFORMAT}"
-require_util home-manager "${YELLOW}# Install home-manager from https://github.com/nix-community/home-manager${NOFORMAT}"
 
 msg "apply home-manager bootstrap"
 home-manager switch
