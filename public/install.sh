@@ -5,6 +5,7 @@ NOFORMAT='\033[0m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
 
 oops() {
   echo "$0:" "${RED}" "$@" "${NOFORMAT}" >&2
@@ -19,6 +20,10 @@ require_util() {
   command -v "$1" > /dev/null 2>&1 ||
     oops "you do not have '$1' installed, $2"
 }
+
+msg "${YELLOW}This script is intended to be used as part of the setup of tapayne88/dotfiles, please ensure you've followed the initial steps in the installation guide or know what you're doing
+https://github.com/tapayne88/dotfiles/blob/master/public/installation_guide.md
+"
 
 require_util git "please install it"
 require_util nix-env "please install from https://nixos.org/download.html"
