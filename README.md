@@ -10,12 +10,6 @@ A place for all my dotfiles and each one in its place.
 curl -sfL https://git.io/JsiiF | sh
 ```
 
-or
-
-```bash
-git clone https://github.com/tapayne88/dotfiles
-```
-
 For the full setup guide, follow [this](./public/installation_guide.md).
 
 ## [Chezmoi](https://www.chezmoi.io/)

@@ -60,17 +60,18 @@ ssh-keygen -C `hostname`
 
 ## 4. Install dotfiles
 
-Run one of the following and follow the steps.
+Run the following and follow the steps.
 
 ```bash
 curl -sfL https://git.io/JsiiF | sh
 ```
 
-or
+This will:
 
-```bash
-git clone https://github.com/tapayne88/dotfiles
-```
+- clone this repository
+- apply dotfiles using [chezmoi](../README.md#chezmoi)
+- setup [nix / home-manager](../README.md#nix) packages
+- install [`asdf`](../README.md#asdf) and plugins
 
 ## 5. Setup user (Debian only)
 
