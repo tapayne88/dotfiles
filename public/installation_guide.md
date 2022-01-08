@@ -1,6 +1,10 @@
 # Installation Guide
 
-## 1. Update and install things (Debian only)
+## 1. Update and install
+
+### Debian
+
+Update installed packages and install packages needed for setup.
 
 ```shell
 sudo apt update
@@ -16,6 +20,14 @@ sudo apt install \
   liburi-encode-perl \
   build-essential \
   pkg-config
+```
+
+### MacOS
+
+Install xcode-select developer tools to enable setup.
+
+```shell
+xcode-select --install
 ```
 
 ## 2. Locale (Debian only)
