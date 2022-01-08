@@ -1,9 +1,19 @@
 #!/bin/sh
 set -e
 
+NOFORMAT='\033[0m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+
 oops() {
-  echo "$0:" "$@" >&2
+  echo "$0:" "${RED}" "$@" "${NOFORMAT}" >&2
   exit 1
+}
+
+msg() {
+  echo "$0:" "${BLUE}" "$@" "${NOFORMAT}" >&2
 }
 
 require_util() {
@@ -21,24 +31,18 @@ done
 CWD=$(pwd)
 DEFAULT_INSTALL_LOCATION="$CWD/dotfiles"
 
-NOFORMAT='\033[0m'
-RED='\033[0;31m'
-BLUE='\033[0;34m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-
-echo "${BLUE}Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)${NOFORMAT}"
+msg "Enter dotfiles install path [$DEFAULT_INSTALL_LOCATION] (relative or absolute)"
 read -r answer < /dev/tty
 INSTALL_LOCATION=${answer:-$DEFAULT_INSTALL_LOCATION}
 
 # Ensure location doesn't exist
 if [ -d "$INSTALL_LOCATION" ]; then
-  oops "${RED}Install location already exists ($(cd "$INSTALL_LOCATION"; pwd))${NOFORMAT}"
+  oops "Install location already exists ($(cd "$INSTALL_LOCATION"; pwd))"
 fi
 
 # Ensure location path does exist
 if [ ! -d "$(dirname "$INSTALL_LOCATION")" ]; then
-  oops "${RED}Install location path invalid ($INSTALL_LOCATION)${NOFORMAT}"
+  oops "Install location path invalid ($INSTALL_LOCATION)"
 fi
 
 REPO="git@github.com:tapayne88/dotfiles.git"
@@ -72,15 +76,15 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
   ];
 }"
 
-echo "Cloning $REPO to $INSTALL_LOCATION"
+msg "Cloning $REPO to $INSTALL_LOCATION"
 command git clone $REPO "$INSTALL_LOCATION"
 chmod 700 "$INSTALL_LOCATION"
 
-echo "Applying chezmoi config
+msg "Applying chezmoi config
 $CHEZMOI_CONFIG"
 
 if [ -f "$CHEZMOI_CONFIG_FILE" ]; then
-  oops "${RED}Found $CHEZMOI_CONFIG_FILE, merge config with existing file${NOFORMAT}"
+  oops "Found $CHEZMOI_CONFIG_FILE, merge config with existing file"
 fi
 
 mkdir -p "$CHEZMOI_CONFIG_DIR"
@@ -92,16 +96,16 @@ echo "$NIX_HOME_BOOTSTRAP" > "$NIX_HOME_FILE"
 require_util nix-env "${YELLOW}# Install nix from https://nixos.org/download.html${NOFORMAT}"
 require_util home-manager "${YELLOW}# Install home-manager from https://github.com/nix-community/home-manager${NOFORMAT}"
 
-echo "apply home-manager bootstrap"
+msg "apply home-manager bootstrap"
 home-manager switch
 
-echo "cleaning up temporary files"
+msg "cleaning up temporary files"
 rm -f "$NIX_HOME_FILE"
 
-echo "installing asdf..."
+msg "installing asdf..."
 command git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
 
-echo "installing asdf plugins..."
+msg "installing asdf plugins..."
 asdf plugin add nodejs
 asdf plugin add yarn
 asdf plugin add pnpm
