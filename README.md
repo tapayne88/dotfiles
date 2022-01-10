@@ -40,7 +40,7 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 
 ## [`asdf`](https://asdf-vm.com/#/)
 
-`asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn, etc. These work via plugins and it removes the overhead of thinking which version you need and changing to it - it just works.
+`asdf` is a great tool for managing multiple versions of the same software, e.g. node, yarn, etc. These work via plugins and it removes the overhead of thinking which version you need and changing to it - it just works. See the [installation script](https://github.com/tapayne88/dotfiles/blob/35538ef7051b81fe103049c3ce665aee3db572a8/public/install.sh#L96-L99) for a list of used plugins.
 
 ## Fonts
 
