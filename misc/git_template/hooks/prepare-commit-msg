@@ -21,7 +21,7 @@ BRANCH_NAME=$(git symbolic-ref --short HEAD 2> /dev/null)
 BRANCH_NAME=$(expr "${BRANCH_NAME##*/}" : '\([a-zA-Z]\{2,\}-[0-9]\{1,\}\)')
 
 BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$BRANCH_NAME$")
-BRANCH_IN_COMMIT=$(grep -c "$BRANCH_NAME" "$1")
+BRANCH_IN_COMMIT=$(grep -c "^$BRANCH_NAME" "$1")
 
 # Only if
 #  - we have figured out a name
