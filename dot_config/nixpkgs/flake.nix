@@ -68,11 +68,15 @@
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
+              nixpkgs.config.permittedInsecurePackages = [
+                "adoptopenjdk-hotspot-bin-13.0.2"
+              ];
 
               imports = [
                 ./modules/home.nix
                 ./modules/darwin.nix
                 ./modules/neovim.nix
+                ./modules/work.nix
               ];
             };
         };
