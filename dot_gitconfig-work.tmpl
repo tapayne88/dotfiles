@@ -1,4 +1,7 @@
+# vim:ft=gitconfig.chezmoitmpl
 [user]
   email = {{ .email.work }}
+# {{- if ne "" .github_enterprise_host }}
 [hub]
   host = {{ .github_enterprise_host }}
+# {{- end }}
