@@ -31,6 +31,21 @@ function module.patch_install()
     })
 end
 
+-- Check service mappings for chezmoi template filetypes of all supported
+---@param tbl table<string, table<string, any>>
+---@param tbl_key string
+---@return table<string, any>
+local map_language_to_filetype = function(tbl, tbl_key)
+    local serviceTemplateFiletypes = {}
+    local mappedTbl = utils.map_table_to_key(tbl, tbl_key)
+
+    for key, value in pairs(mappedTbl) do
+        serviceTemplateFiletypes[key .. '.chezmoitmpl'] = value
+    end
+
+    return vim.tbl_extend("error", mappedTbl, serviceTemplateFiletypes)
+end
+
 local diagnosticls_languages = {
     html = {formatters = {"prettier"}},
     lua = {formatters = {"lua_format"}},
@@ -39,7 +54,6 @@ local diagnosticls_languages = {
     json = {formatters = {"prettier"}},
     markdown = {linters = {"markdownlint"}, formatters = {"prettier"}},
     sh = {linters = {"shellcheck"}},
-    ['sh.chezmoitmpl'] = {linters = {"shellcheck"}},
     typescript = {linters = {}, formatters = {"prettier"}},
     typescriptreact = {linters = {}, formatters = {"prettier"}}
 }
@@ -91,8 +105,8 @@ function module.setup(lsp_server)
                         }
                     }
                 },
-                filetypes = utils.map_table_to_key(diagnosticls_languages,
-                                                   "linters"),
+                filetypes = map_language_to_filetype(diagnosticls_languages,
+                                                     "linters"),
                 formatters = {
                     prettier = {
                         command = prettier_bin or "prettier",
@@ -108,8 +122,8 @@ function module.setup(lsp_server)
                     },
                     lua_format = {command = root_dir .. "/lua-format"}
                 },
-                formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
-                                                         "formatters")
+                formatFiletypes = map_language_to_filetype(
+                    diagnosticls_languages, "formatters")
             }
         }))
     end)
