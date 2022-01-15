@@ -183,7 +183,8 @@ return require('packer').startup(function(use)
     }
 
     use {
-        "shift-d/mappy.nvim",
+        "tapayne88/mappy.nvim",
+        branch = "feature/buffer-mappings",
         requires = {
             "folke/which-key.nvim",
             config = function()
