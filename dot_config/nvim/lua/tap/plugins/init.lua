@@ -210,4 +210,9 @@ return require('packer').startup(function(use)
         "akinsho/toggleterm.nvim",
         config = [[require("tap.plugins.toggleterm")]]
     }
+
+    use {
+        "petertriho/nvim-scrollbar",
+        config = [[require("tap.plugins.nvim-scrollbar")]]
+    }
 end)
