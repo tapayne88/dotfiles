@@ -174,7 +174,10 @@ return require('packer').startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = [[require("tap.plugins.lualine")]],
-        requires = {'kyazdani42/nvim-web-devicons', opt = true}
+        requires = {
+            {'kyazdani42/nvim-web-devicons', opt = true},
+            'arkav/lualine-lsp-progress'
+        }
     }
 
     use {

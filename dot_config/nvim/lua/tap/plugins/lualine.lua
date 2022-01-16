@@ -44,7 +44,8 @@ local nord_theme = {
 
 local conditions = {
     has_lsp = function() return #get_lsp_clients() > 0 end,
-    hide_in_width = function() return vim.fn.winwidth(0) > 80 end
+    hide_in_width = function() return vim.fn.winwidth(0) > 80 end,
+    negate = function(cond) return function() return cond() end end
 }
 
 local function literal(str)
@@ -120,6 +121,21 @@ local section_separators = supports_slanted_blocks and
                                {left = "", right = ""} or
                                {left = "", right = ""}
 
+local lsp_progress = {
+    'lsp_progress',
+    separators = {progress = ' '},
+    display_components = {
+        'lsp_client_name', 'spinner', {'title', 'percentage', 'message'}
+    },
+    timer = {
+        progress_enddelay = 1000,
+        spinner = 500,
+        lsp_client_name_enddelay = 1000
+    },
+    spinner_symbols = {'⣾', '⣷', '⣯', '⣟', '⡿', '⢿', '⣻', '⣽'},
+    cond = conditions.hide_in_width
+}
+
 local diagnostic_section = function(cfg)
     local default_cfg = {
         diagnostic_empty,
@@ -163,7 +179,8 @@ local sections = {
         }
     },
     lualine_x = {
-        {tscVersion, cond = conditions.hide_in_width}, diagnostic_section {
+        lsp_progress, {tscVersion, cond = conditions.hide_in_width},
+        diagnostic_section {
             sections = {'error'},
             color = 'LualineDiagnosticError',
             symbol = lsp_symbols.error
