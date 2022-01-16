@@ -94,15 +94,19 @@ augroup("TelescopeHighlights", {
 
 command({
     "Fw",
-    function(word, ...)
-        local search_dirs = {...}
-        local args = #search_dirs > 0 and {search_dirs = search_dirs} or {}
+    function(args)
+        local word = table.remove(args, 1)
+        local search_dirs = args
 
-        args.search = word
-        args.prompt_title = string.format("Grep: %s", word)
-        args.use_regex = true
+        local search_args = #search_dirs > 0 and {search_dirs = search_dirs} or
+                                {}
 
-        require('telescope.builtin').grep_string(args)
+        require('telescope.builtin').grep_string(
+            vim.tbl_extend("error", search_args, {
+                search = word,
+                prompt_title = string.format("Grep: %s", word),
+                use_regex = true
+            }))
     end,
     nargs = "+",
     extra = "-complete=dir"
