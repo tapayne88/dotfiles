@@ -13,21 +13,6 @@ vim.g.github_enterprise_urls = {'https://{{ .github_enterprise_host }}'}
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
 
-nnoremap('<leader>ga', ':Git add %:p<CR><CR>')
-nnoremap('<leader>gs', ':Git<CR>')
-nnoremap('<leader>gc', ':Git commit -v -q<CR>')
-nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
-nnoremap('<leader>gd', ':Gvdiff<CR>')
-nnoremap('<leader>ge', ':Gedit<CR>')
-nnoremap('<leader>gr', ':Gread<CR>')
-nnoremap('<leader>gw', ':Gwrite<CR><CR>')
-nnoremap('<leader>gl', ':silent! Glog<CR>:bot copen<CR>')
-nnoremap('<leader>gb', ':Git blame<CR>')
-nnoremap('<leader>go', ':Git checkout<Space>')
-nnoremap('<leader>gps', ':Dispatch! git push<CR>')
-nnoremap('<leader>gpl', ':Dispatch! git pull<CR>')
-nnoremap('<leader>gp', ":GBrowse<CR>")
-xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
 
 local parse_result = function(result, fallback)
     return #result > 0 and result or fallback
@@ -35,7 +20,7 @@ end
 
 local git = function(args)
     return function()
-        local title = 'git' .. table.concat(args, " ")
+        local title = 'git ' .. table.concat(args, " ")
         a.run(function()
             Job:new({
                 command = 'git',
@@ -56,6 +41,22 @@ local git = function(args)
         end)
     end
 end
+
+nnoremap('<leader>ga', ':Git add %:p<CR><CR>')
+nnoremap('<leader>gs', ':Git<CR>')
+nnoremap('<leader>gc', ':Git commit -v -q<CR>')
+nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
+nnoremap('<leader>gd', ':Gvdiff<CR>')
+nnoremap('<leader>ge', ':Gedit<CR>')
+nnoremap('<leader>gr', ':Gread<CR>')
+nnoremap('<leader>gw', ':Gwrite<CR><CR>')
+nnoremap('<leader>gl', ':silent! Glog<CR>:bot copen<CR>')
+nnoremap('<leader>gb', ':Git blame<CR>')
+nnoremap('<leader>go', ':Git checkout<Space>')
+nnoremap('<leader>gps', git {'ps'})
+nnoremap('<leader>gpl', git {'pl'})
+nnoremap('<leader>gp', ":GBrowse<CR>")
+xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
 
 command({"Gitps", git {'ps'}})
 command({"Gitpsu", git {'psu'}})
