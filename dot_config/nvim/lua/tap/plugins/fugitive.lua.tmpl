@@ -1,5 +1,9 @@
+local a = require("plenary.async")
+local notify = require("notify").async
+local Job = require 'plenary.job'
 local nnoremap = require("tap.utils").nnoremap
 local xnoremap = require("tap.utils").xnoremap
+local command = require("tap.utils").command
 
 vim.g.fugitive_dynamic_colors = 0
 -- {{- if ne "" .github_enterprise_host }}
@@ -24,3 +28,36 @@ nnoremap('<leader>gps', ':Dispatch! git push<CR>')
 nnoremap('<leader>gpl', ':Dispatch! git pull<CR>')
 nnoremap('<leader>gp', ":GBrowse<CR>")
 xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
+
+local parse_result = function(result, fallback)
+    return #result > 0 and result or fallback
+end
+
+local git = function(args)
+    return function()
+        local title = 'git' .. table.concat(args, " ")
+        a.run(function()
+            Job:new({
+                command = 'git',
+                args = args,
+                on_exit = function(j, return_val)
+                    a.run(function()
+                        if return_val ~= 0 then
+                            notify(parse_result(j:result(), "unknown error"),
+                                   "error", {title = title})
+                            return
+                        end
+
+                        notify(parse_result(j:result(), "success"), "info",
+                               {title = title})
+                    end)
+                end
+            }):start()
+        end)
+    end
+end
+
+command({"Gitps", git {'ps'}})
+command({"Gitpsu", git {'psu'}})
+command({"Gitpsf", git {'psf'}})
+command({"Gitpl", git {'pl'}})
