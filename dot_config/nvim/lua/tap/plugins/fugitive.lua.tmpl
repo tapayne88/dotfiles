@@ -19,12 +19,12 @@ local parse_result = function(result, fallback)
 end
 
 local git = function(args)
-    return function()
+    return function(runtime_args)
         local title = 'git ' .. table.concat(args, " ")
         a.run(function()
             Job:new({
                 command = 'git',
-                args = args,
+                args = vim.tbl_flatten({args, runtime_args}),
                 on_exit = function(j, return_val)
                     a.run(function()
                         if return_val ~= 0 then
@@ -58,7 +58,7 @@ nnoremap('<leader>gpl', git {'pl'})
 nnoremap('<leader>gp', ":GBrowse<CR>")
 xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
 
-command({"Gitps", git {'ps'}})
-command({"Gitpsu", git {'psu'}})
-command({"Gitpsf", git {'psf'}})
-command({"Gitpl", git {'pl'}})
+command({"Gitps", git {'ps'}, nargs = "*"})
+command({"Gitpsu", git {'psu'}, nargs = "*"})
+command({"Gitpsf", git {'psf'}, nargs = "*"})
+command({"Gitpl", git {'pl'}, nargs = "*"})
