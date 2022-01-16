@@ -8,12 +8,16 @@ if vim.env.LSP_DEBUG then
 end
 
 local servers = {
-    "bashls", "diagnosticls", "eslint", "jsonls", "rnix", "sumneko_lua",
-    "tsserver"
+    -- servers installed with williamboman/nvim-lsp-installer
+    ["nvim-lsp-installer"] = {
+        "bashls", "diagnosticls", "eslint", "jsonls", "sumneko_lua", "tsserver"
+    },
+    -- globally installed servers likely through nix
+    ["global-servers"] = {"rnix"}
 }
 
 local function init_servers()
-    for _, name in pairs(servers) do
+    for _, name in pairs(servers["nvim-lsp-installer"]) do
         pcall(function()
             require("tap.lsp.servers." .. name).patch_install()
         end)
@@ -21,7 +25,7 @@ local function init_servers()
 end
 
 local function setup_servers(initialise)
-    for _, name in pairs(servers) do
+    for _, name in pairs(servers["nvim-lsp-installer"]) do
         local ok, server = lsp_installer.get_server(name)
         -- Check that the server is supported in nvim-lsp-installer
         if ok then
@@ -32,10 +36,12 @@ local function setup_servers(initialise)
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
             end)
-        else
-            -- non-nvim-lsp-installer servers like rnix
-            require("tap.lsp.servers." .. name).setup(server)
         end
+    end
+
+    -- non-nvim-lsp-installer servers like rnix
+    for _, name in pairs(servers["global-servers"]) do
+        require("tap.lsp.servers." .. name).setup()
     end
 
     initialise()
