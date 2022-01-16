@@ -1,6 +1,4 @@
-local api = vim.api
 local Job = require('plenary.job')
-local wk = require("which-key")
 local nord = require("nord.colors")
 local tokyo_setup = require("tokyonight.colors").setup {style = "day"}
 
@@ -97,40 +95,6 @@ function utils.map_table_to_key(tbl, key)
     return vim.tbl_map(function(value) return value[key] end, tbl)
 end
 
----check if a mapping already exists
----@param lhs string
----@param mode string
----@return boolean
-local function has_map(lhs, mode)
-    mode = mode or "n"
-    return vim.fn.maparg(lhs, mode) ~= ""
-end
-
-local function validate_opts(opts)
-    if not opts then return true end
-
-    if type(opts) ~= "table" then return false, "opts should be a table" end
-
-    if opts.buffer and type(opts.buffer) ~= "number" then
-        return false, "The buffer key should be a number"
-    end
-
-    return true
-end
-
-local function validate_mappings(lhs, rhs, opts)
-    vim.validate {
-        lhs = {lhs, "string"},
-        rhs = {
-            rhs, function(a)
-                local arg_type = type(a)
-                return arg_type == "string" or arg_type == "function"
-            end, "right hand side"
-        },
-        opts = {opts, validate_opts, "mapping options are incorrect"}
-    }
-end
-
 local rhs_to_string = function(rhs)
     -- add functions to a global table keyed by their index
     if type(rhs) == "function" then
@@ -140,55 +104,51 @@ local rhs_to_string = function(rhs)
     return rhs
 end
 
--- Shamelessly stolen from akinsho/dotfiles
--- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/utils.lua
 ---create a mapping function factory
 ---@param mode string
 ---@param o table
 ---@return function
 local function make_mapper(mode, o)
-    -- copy the opts table as extends will mutate the opts table passed in otherwise
     local parent_opts = vim.deepcopy(o)
+
     ---Create a mapping
     ---@param lhs string
     ---@param rhs string|function
     ---@param opts table
     return function(lhs, rhs, opts)
-        assert(lhs ~= mode, string.format(
-                   "The lhs should not be the same as mode for %s", lhs))
         local _opts = opts and vim.deepcopy(opts) or {}
-
-        validate_mappings(lhs, rhs, _opts)
-
-        if _opts.check_existing and has_map(lhs) then
-            return
-        else
-            -- don't pass this invalid key to set keymap
-            _opts.check_existing = nil
-        end
-
         local options = vim.tbl_extend("keep", _opts, parent_opts)
-        if options.name ~= nil then
-            local wk_opts = {
-                rhs,
-                options.name,
-                mode = mode,
-                noremap = options.noremap,
-                silent = options.silent,
-                buffer = options.bufnr
-            }
-            return wk.register({[lhs] = wk_opts})
-        end
 
-        rhs = rhs_to_string(rhs)
+        local name = options.name
+        options.name = nil
 
-        if options.bufnr then
-            -- Remove the buffer from the args sent to the key map function
-            local bufnr = options.bufnr
-            options.bufnr = nil
-            api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
-        else
-            api.nvim_set_keymap(mode, lhs, rhs, options)
+        options.buffer = options.bufnr
+        options.bufnr = nil
+
+        local mappy = require("mappy")
+
+        local mapping = mappy:new()
+        mapping:set_opts({mode = mode, map = options})
+        -- {{- if (eq .features.neovim_nightly true) }} Neovim nightly
+        mapping:set_maps({[lhs] = rhs})
+        mapping:nightly()
+        -- {{- else }}
+        mapping:set_maps({[lhs] = rhs_to_string(rhs)})
+        mapping:stable()
+        -- {{- end }}
+
+        if name ~= nil then
+            local present, wk = pcall(require, "which-key")
+            if not present then return end
+            wk.register({
+                [lhs] = {
+                    name,
+                    mode = mode,
+                    noremap = options.noremap,
+                    silent = options.silent,
+                    buffer = options.buffer
+                }
+            })
         end
     end
 end

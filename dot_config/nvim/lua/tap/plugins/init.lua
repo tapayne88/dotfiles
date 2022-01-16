@@ -182,15 +182,13 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.dashboard-nvim")]]
     }
 
+    -- keymap plugins
     use {
-        "folke/which-key.nvim",
-        config = function()
-            require("which-key").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            }
-        end
+        {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
+        {
+            "folke/which-key.nvim",
+            config = function() require("which-key").setup {} end
+        }
     }
 
     use {
