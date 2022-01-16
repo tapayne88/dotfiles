@@ -115,28 +115,6 @@ local function tscVersion()
     return tsc_version and string.format("v%s", tsc_version) or ""
 end
 
-local function scrollbar()
-    local current_line = vim.fn.line('.')
-    local total_lines = vim.fn.line('$')
-    local chars = {
-        '██', '▇▇', '▆▆', '▅▅', '▄▄', '▃▃', '▂▂',
-        '▁▁', '__'
-    }
-    local index = 1
-
-    if current_line == 1 then
-        index = 1
-    elseif current_line == total_lines then
-        index = #chars
-    else
-        local line_no_fraction = vim.fn.floor(current_line) /
-                                     vim.fn.floor(total_lines)
-        index = vim.fn.float2nr(line_no_fraction * #chars)
-        if index == 0 then index = 1 end
-    end
-    return chars[index]
-end
-
 local supports_slanted_blocks = vim.env.TERM == "xterm-kitty"
 local section_separators = supports_slanted_blocks and
                                {left = "", right = ""} or
@@ -225,10 +203,7 @@ local sections = {
         }, literal(vim.env.TERM == "xterm-kitty" and '\\' or '|'),
         {'%l:%c', icon = ""}
     },
-    lualine_z = {
-        {'%p%%', cond = conditions.hide_in_width},
-        {scrollbar, padding = 0, color = {gui = "inverse"}}
-    }
+    lualine_z = {{'%p%%', cond = conditions.hide_in_width}}
 }
 
 local function apply_user_highlights()
