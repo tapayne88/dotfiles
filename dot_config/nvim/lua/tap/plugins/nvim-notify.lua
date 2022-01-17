@@ -1,6 +1,7 @@
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
 local color = require("tap.utils").color
+local nnoremap = require("tap.utils").nnoremap
 local augroup = require("tap.utils").augroup
 
 vim.notify = require("notify")
@@ -16,6 +17,8 @@ require("notify").setup {
 }
 
 require("telescope").load_extension("notify")
+
+nnoremap("<leader>nc", ":lua require('notify').dismiss()")
 
 local function apply_user_highlights()
     -- LuaFormatter off
