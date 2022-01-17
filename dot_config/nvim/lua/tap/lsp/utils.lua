@@ -1,16 +1,17 @@
 local server = require "nvim-lsp-installer.server"
 local servers = require "nvim-lsp-installer.servers"
 local lsp_settings = require "nvim-lsp-installer.settings"
+local notify = require "notify"
 local utils = require "tap.utils"
 local nnoremap = require"tap.utils".nnoremap
 
 local function toggle_format()
     if (vim.b.disable_format == nil) then
         vim.b.disable_format = 1
-        print("disabled formatting for buffer")
+        notify("disabled formatting for buffer", "info", {title = "LSP Utils"})
     else
         vim.b.disable_format = nil
-        print("enabled formatting for buffer")
+        notify("enabled formatting for buffer", "info", {title = "LSP Utils"})
     end
 end
 
@@ -161,7 +162,7 @@ function module.get_bin_path(cmd, fn)
     return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
                                              function(result, code, signal)
         if code ~= 0 then
-            print("`yarn bin " .. cmd .. "` failed")
+            notify("`yarn bin " .. cmd .. "` failed", "error")
             return fn(nil)
         end
         fn(result[1])

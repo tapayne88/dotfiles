@@ -275,7 +275,7 @@ function utils.command(args)
         local fn_id = tap._create(rhs)
         local has_args = fn_has_args(nargs)
         rhs = string.format("lua tap._execute(%d%s)", fn_id,
-                            has_args and ", <f-args>" or "")
+                            has_args and ", {<f-args>}" or "")
     end
 
     vim.cmd(string.format("command! -nargs=%s %s %s %s %s", nargs, types, extra,

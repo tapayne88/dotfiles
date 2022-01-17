@@ -1,5 +1,9 @@
+local a = require("plenary.async")
+local notify = require("notify").async
+local Job = require 'plenary.job'
 local nnoremap = require("tap.utils").nnoremap
 local xnoremap = require("tap.utils").xnoremap
+local command = require("tap.utils").command
 
 vim.g.fugitive_dynamic_colors = 0
 -- {{- if ne "" .github_enterprise_host }}
@@ -8,6 +12,35 @@ vim.g.github_enterprise_urls = {'https://{{ .github_enterprise_host }}'}
 
 -- Stops fugitive files being left in buffer by removing all but currently visible
 vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
+
+
+local parse_result = function(result, fallback)
+    return #result > 0 and result or fallback
+end
+
+local git = function(args)
+    return function(runtime_args)
+        local title = 'git ' .. table.concat(args, " ")
+        a.run(function()
+            Job:new({
+                command = 'git',
+                args = vim.tbl_flatten({args, runtime_args}),
+                on_exit = function(j, return_val)
+                    a.run(function()
+                        if return_val ~= 0 then
+                            notify(parse_result(j:result(), "unknown error"),
+                                   "error", {title = title})
+                            return
+                        end
+
+                        notify(parse_result(j:result(), "success"), "info",
+                               {title = title})
+                    end)
+                end
+            }):start()
+        end)
+    end
+end
 
 nnoremap('<leader>ga', ':Git add %:p<CR><CR>')
 nnoremap('<leader>gs', ':Git<CR>')
@@ -20,7 +53,12 @@ nnoremap('<leader>gw', ':Gwrite<CR><CR>')
 nnoremap('<leader>gl', ':silent! Glog<CR>:bot copen<CR>')
 nnoremap('<leader>gb', ':Git blame<CR>')
 nnoremap('<leader>go', ':Git checkout<Space>')
-nnoremap('<leader>gps', ':Dispatch! git push<CR>')
-nnoremap('<leader>gpl', ':Dispatch! git pull<CR>')
+nnoremap('<leader>gps', git {'ps'})
+nnoremap('<leader>gpl', git {'pl'})
 nnoremap('<leader>gp', ":GBrowse<CR>")
 xnoremap('<leader>gp', ":'<,'>GBrowse<CR>")
+
+command({"Gitps", git {'ps'}, nargs = "*"})
+command({"Gitpsu", git {'psu'}, nargs = "*"})
+command({"Gitpsf", git {'psf'}, nargs = "*"})
+command({"Gitpl", git {'pl'}, nargs = "*"})

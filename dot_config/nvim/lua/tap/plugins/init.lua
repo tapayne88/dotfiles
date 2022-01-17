@@ -216,4 +216,9 @@ return require('packer').startup(function(use)
         "petertriho/nvim-scrollbar",
         config = [[require("tap.plugins.nvim-scrollbar")]]
     }
+
+    use {
+        "rcarriga/nvim-notify",
+        config = [[require("tap.plugins.nvim-notify")]]
+    }
 end)
