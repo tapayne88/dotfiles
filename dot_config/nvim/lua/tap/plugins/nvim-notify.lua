@@ -18,7 +18,7 @@ require("notify").setup {
 
 require("telescope").load_extension("notify")
 
-nnoremap("<leader>nc", ":lua require('notify').dismiss()")
+nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>")
 
 local function apply_user_highlights()
     -- LuaFormatter off
