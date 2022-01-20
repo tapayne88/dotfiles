@@ -22,6 +22,7 @@ require('telescope').setup {
 
 require("telescope").load_extension "file_browser"
 
+nnoremap("<leader>ts", ":Telescope<CR>", {name = "Give me Telescope!"})
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
         sort_lastused = true,
