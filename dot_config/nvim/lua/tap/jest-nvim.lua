@@ -3,11 +3,20 @@ local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
 local log = require("plenary.log")
 
-local escape_terminal_keys = function(keys)
-    -- Escape characters with special meaning in shells
-    return vim.fn.escape(keys, "*")
-end
+---@class Node
+---@field iter_children fun()
+---@field parent fun()
+---@field child fun(id: number)
 
+--- Escape characters with special meaning in shells
+---@param keys string
+---@return string
+local escape_terminal_keys = function(keys) return vim.fn.escape(keys, "*") end
+
+--- Get the test command for a given filename and test pattern
+---@param file_name string
+---@param pattern? string
+---@return string[]
 local get_test_command = function(file_name, pattern)
     local cmd = {"npx", "jest", file_name, "--watch"}
     if pattern then
@@ -23,12 +32,22 @@ local get_test_command = function(file_name, pattern)
     return cmd
 end
 
+--- Convert command table to string
+---@param cmd string[]
+---@return string
 local get_command_string = function(cmd) return table.concat(cmd, " ") end
 
+--- Get test buffer name for file - one buffer per file
+---@param file_name string
+---@return string
 local get_buffer_name = function(file_name)
     return string.format("jest-nvim:%s:terminal", file_name)
 end
 
+--- Sleep to allow time for other processes to respond
+---@param delay number
+---@param done fun()
+---@return nil
 local sleep = a.wrap(function(delay, done)
     local timer = new_timer()
     timer:start(delay, 0, function()
@@ -37,7 +56,10 @@ local sleep = a.wrap(function(delay, done)
     end)
 end, 2)
 
--- TODO: add doc comments!
+--- Use vim.schedule to register a function and await it before continuing
+---@param func fun()
+---@param done fun()
+---@return nil
 local schedule = a.wrap(function(func, done)
     vim.schedule(function()
         -- run our scheduled function
@@ -47,6 +69,9 @@ local schedule = a.wrap(function(func, done)
     end)
 end, 2)
 
+--- Send keystrokes to the terminal running jest and wait before continuing
+---@params keys string
+---@return nil
 local send_keys = function(keys)
     if keys == nil then return end
 
@@ -59,7 +84,13 @@ local send_keys = function(keys)
     sleep(200)
 end
 
-local run_in_term = function(buf_name, cmd, cwd, pattern)
+--- Run command with jest --watch in neovim's terminal, send updates to the same terminal
+---@param buf_name string
+---@param cmd string[]
+---@param cwd string
+---@param pattern string
+---@return nil
+local jest_test = function(buf_name, cmd, cwd, pattern)
     if vim.fn.bufexists(buf_name) ~= 0 then
         local term_bufnr = vim.fn.bufnr(buf_name)
         local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
@@ -70,9 +101,9 @@ local run_in_term = function(buf_name, cmd, cwd, pattern)
 
         vim.cmd("vsplit " .. buf_name)
 
-        send_keys("t")
-        send_keys(pattern)
-        send_keys("\r")
+        send_keys("t") -- select test pattern in jest
+        send_keys(pattern) -- send pattern
+        send_keys("\r") -- send enter key
     else
         -- open new split on right
         vim.cmd("vertical new")
@@ -86,7 +117,12 @@ local run_in_term = function(buf_name, cmd, cwd, pattern)
     end)
 end
 
-local function find_in_children(node, buf, predicate, max_depth)
+--- Find child that passes predicate, limiting depth
+---@param node Node
+---@param predicate fun(node: Node)
+---@param max_depth? number
+---@return Node|nil
+local function find_in_children(node, predicate, max_depth)
     max_depth = max_depth or 5
 
     if max_depth == 0 then return nil end
@@ -94,19 +130,23 @@ local function find_in_children(node, buf, predicate, max_depth)
     for child_node in node:iter_children() do
         if predicate(child_node) then return child_node end
 
-        local ret = find_in_children(child_node, buf, predicate, max_depth - 1)
+        local ret = find_in_children(child_node, predicate, max_depth - 1)
         if ret ~= nil then return ret end
     end
 
     return nil
 end
 
+--- Get nodes if node has child test node
+---@param node Node
+---@param buf number
+---@return string[]
 local get_test_expression = function(node, buf)
     local target_text = {"test", "it", "describe"}
 
     if node:type() ~= "call_expression" then return nil end
 
-    local child_test_node = find_in_children(node, buf, function(child_node)
+    local child_test_node = find_in_children(node, function(child_node)
         return child_node:type() == "identifier" and
                    vim.tbl_contains(target_text, vim.treesitter
                                         .get_node_text(child_node, buf))
@@ -115,6 +155,13 @@ local get_test_expression = function(node, buf)
     return child_test_node ~= nil and node or nil
 end
 
+--- Collect selector data from all parent nodes
+---@param node Node
+---@param buf number
+---@param root Node
+---@param selector fun(node: Node, buf: number): Node
+---@param acc Node[]
+---@return Node[]
 local function find_in_ancestors(node, buf, root, selector, acc)
     if root == node then return acc end
 
@@ -124,6 +171,10 @@ local function find_in_ancestors(node, buf, root, selector, acc)
     return find_in_ancestors(node:parent(), buf, root, selector, acc)
 end
 
+--- Get all parent test nodes from cursor position
+---@param buf number
+---@param cursor number[]
+---@return Node[]
 local get_test_nodes_from_cursor = function(buf, cursor)
     local line = cursor[1] - 1
     local col = cursor[2]
@@ -141,17 +192,27 @@ local get_test_nodes_from_cursor = function(buf, cursor)
     return ret
 end
 
+--- Reverse table
+---@param tbl table
+---@return table
 local tbl_reverse = function(tbl)
     local rev_tbl = {}
     for i = #tbl, 1, -1 do table.insert(rev_tbl, tbl[i]) end
     return rev_tbl
 end
 
+--- Escape jest regex characters
+---@param str string
+---@return string
 local jest_regex_escape = function(str) return vim.fn.escape(str, "()|") end
 
+--- Get test strings as a string of test nodes
+---@param nodes Node[]
+---@param buf number
+---@return string
 local get_pattern_from_test_nodes = function(nodes, buf)
     local test_strings = vim.tbl_map(function(node)
-        local str_node = find_in_children(node, buf, function(child_node)
+        local str_node = find_in_children(node, function(child_node)
             -- TODO: handle variables as test strings
             return child_node:type() == "string"
         end, 3)
@@ -168,6 +229,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
                vim.tbl_map(jest_regex_escape, tbl_reverse(test_strings)), " ")
 end
 
+--- Get test string for cursor position
+---@return string
 local get_nearest_pattern = function()
     local bufnr = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.fn.win_getid())
@@ -178,6 +241,9 @@ local get_nearest_pattern = function()
     return get_pattern_from_test_nodes(test_nodes, bufnr)
 end
 
+--- Escape vim regex characters
+---@param regex string
+---@return string
 local vim_regex_escape = function(regex)
     -- Vim regex needs to escape (, ) and |
     -- Because this is lua, we need to escape the escaping, hence \\ not \
@@ -187,6 +253,9 @@ end
 local file_pattern = vim_regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
+--- HOC to pass filename to function if file is a test file
+---@param fn fun(file_path: string)
+---@return fun()
 local with_validate_file_path = function(fn)
     return function()
         local file_path = vim.fn.expand("%")
@@ -200,16 +269,19 @@ local with_validate_file_path = function(fn)
     end
 end
 
+--- Run jest tests for the current file
 local test_file = with_validate_file_path(function(file_path)
     local cwd = vim.fn.expand("%:p:h")
     local file_name = vim.fn.expand("%:p")
 
+    -- TODO: reduce duplication between this and test_nearest
     local cmd = get_test_command(file_name)
 
     local buf_name = get_buffer_name(file_path)
-    a.run(function() run_in_term(buf_name, cmd, cwd) end)
+    a.run(function() jest_test(buf_name, cmd, cwd) end)
 end)
 
+--- Run jest tests for the nearest test node
 local test_nearest = with_validate_file_path(function(file_path)
     local cwd = vim.fn.expand("%:p:h")
     local file_name = vim.fn.expand("%:p")
@@ -223,7 +295,7 @@ local test_nearest = with_validate_file_path(function(file_path)
     end
 
     local buf_name = get_buffer_name(file_path)
-    a.run(function() run_in_term(buf_name, cmd, cwd, pattern) end)
+    a.run(function() jest_test(buf_name, cmd, cwd, pattern) end)
 end)
 
 nnoremap('t<C-f>', test_file)
