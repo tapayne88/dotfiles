@@ -19,21 +19,25 @@ local regex_escape = escape("()|") --- Escape regex characters
 
 --- Get the test command for a given filename and test pattern
 ---@param file_name string
----@param pattern? string
 ---@return string[]
-local get_test_command = function(file_name, pattern)
+local get_test_command = function(file_name)
     local cmd = {"npx", "jest", file_name, "--watch"}
-    if pattern then
-        return vim.tbl_flatten({
-            cmd,
-            {
-                "--testNamePattern",
-                string.format('"%s"', escape_terminal_keys(pattern))
-            }
-        })
-    end
 
     return cmd
+end
+
+--- Add pattern to command table
+---@param cmd string[]
+---@param pattern string
+---@return string[]
+local command_with_pattern = function(cmd, pattern)
+    return pattern == nil and cmd or vim.tbl_flatten({
+        cmd,
+        {
+            "--testNamePattern",
+            string.format('"%s"', escape_terminal_keys(pattern))
+        }
+    })
 end
 
 --- Convert command table to string
@@ -92,7 +96,7 @@ end
 ---@param buf_name string
 ---@param cmd string[]
 ---@param cwd string
----@param pattern string
+---@param pattern? string|nil
 ---@return nil
 local jest_test = function(buf_name, cmd, cwd, pattern)
     if vim.fn.bufexists(buf_name) ~= 0 then
@@ -111,7 +115,8 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
     else
         -- open new split on right
         vim.cmd("vertical new")
-        vim.fn.termopen(get_command_string(cmd), {cwd = cwd})
+        vim.fn.termopen(get_command_string(command_with_pattern(cmd, pattern)),
+                        {cwd = cwd})
         vim.api.nvim_buf_set_name(0, buf_name)
     end
 
@@ -124,7 +129,7 @@ end
 --- Find child that passes predicate, limiting depth
 ---@param node Node
 ---@param predicate fun(node: Node)
----@param max_depth? number
+---@param max_depth? number|nil
 ---@return Node|nil
 local function find_in_children(node, predicate, max_depth)
     max_depth = max_depth or 5
@@ -245,12 +250,11 @@ local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
 --- HOC to pass parameters to test function if file is a test file
----@param fn fun(file_name: string, run: fun(cmd: string[], pattern: string))
+---@param fn fun(run: fun(pattern?: string|nil))
 ---@return fun()
 local as_test_command = function(fn)
     return function()
         local file_name = vim.fn.expand("%:p")
-        local cwd = vim.fn.expand("%:p:h")
         local file_path = vim.fn.expand("%")
 
         if not vim.regex(file_pattern):match_str(file_path) then
@@ -260,26 +264,23 @@ local as_test_command = function(fn)
         end
 
         local buf_name = get_buffer_name(file_path)
+        local cmd = get_test_command(file_name)
+        local cwd = vim.fn.expand("%:p:h")
 
-        local run = function(cmd, pattern)
+        local run = function(pattern)
             a.run(function() jest_test(buf_name, cmd, cwd, pattern) end)
         end
 
-        return fn(file_name, run)
+        return fn(run)
     end
 end
 
 --- Run jest tests for the current file
-local test_file = as_test_command(function(file_name, run)
-    local cmd = get_test_command(file_name)
-
-    run(cmd)
-end)
+local test_file = as_test_command(function(run) run() end)
 
 --- Run jest tests for the nearest test node
-local test_nearest = as_test_command(function(file_name, run)
+local test_nearest = as_test_command(function(run)
     local pattern = get_nearest_pattern()
-    local cmd = get_test_command(file_name, pattern)
 
     if pattern == nil then
         vim.notify("couldn't find pattern", vim.log.levels.WARN,
@@ -287,7 +288,7 @@ local test_nearest = as_test_command(function(file_name, run)
         return
     end
 
-    run(cmd, pattern)
+    run(pattern)
 end)
 
 nnoremap('t<C-f>', test_file)
