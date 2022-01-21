@@ -2,15 +2,20 @@ local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
 
+--- Wrapper for vim.fn.escape
+---@param chars string
+---@return fun(str: string)
+local escape = function(chars)
+    return function(str) return vim.fn.escape(str, chars) end
+end
+
+local escape_terminal_keys = escape("*") --- Escape characters with special meaning in shells
+local regex_escape = escape("()|") --- Escape regex characters
+
 ---@class Node
 ---@field iter_children fun()
 ---@field parent fun()
 ---@field child fun(id: number)
-
---- Escape characters with special meaning in shells
----@param keys string
----@return string
-local escape_terminal_keys = function(keys) return vim.fn.escape(keys, "*") end
 
 --- Get the test command for a given filename and test pattern
 ---@param file_name string
@@ -200,11 +205,6 @@ local tbl_reverse = function(tbl)
     return rev_tbl
 end
 
---- Escape jest regex characters
----@param str string
----@return string
-local jest_regex_escape = function(str) return vim.fn.escape(str, "()|") end
-
 --- Get test strings as a string of test nodes
 ---@param nodes Node[]
 ---@param buf number
@@ -225,8 +225,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         return vim.treesitter.get_node_text(str_node:child(1), buf)
     end, nodes)
 
-    return table.concat(
-               vim.tbl_map(jest_regex_escape, tbl_reverse(test_strings)), " ")
+    return table.concat(vim.tbl_map(regex_escape, tbl_reverse(test_strings)),
+                        " ")
 end
 
 --- Get test string for cursor position
@@ -241,15 +241,7 @@ local get_nearest_pattern = function()
     return get_pattern_from_test_nodes(test_nodes, bufnr)
 end
 
---- Escape vim regex characters
----@param regex string
----@return string
-local vim_regex_escape = function(regex)
-    -- Vim regex needs to escape (, ) and |
-    return vim.fn.escape(regex, "()|")
-end
-
-local file_pattern = vim_regex_escape(
+local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
 --- HOC to pass filename to function if file is a test file
