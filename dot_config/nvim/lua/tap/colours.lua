@@ -4,21 +4,20 @@ local color = require("tap.utils").color
 local command = require("tap.utils").command
 local get_os_command_output_async =
     require("tap.utils").get_os_command_output_async
-local a = require("plenary.async_lib.async")
+local a = require("plenary.async")
 local log = require("plenary.log")
 local lualine = require("tap.plugins.lualine")
 
-local a_spawn = a.wrap(get_os_command_output_async, 3)
+local spawn = a.wrap(get_os_command_output_async, 3)
 
-local get_term_theme = a.async(function()
-    return a.await(a_spawn({"term-theme", "echo"}, nil))[1]
-end)
+local get_term_theme =
+    function() return spawn({"term-theme", "echo"}, nil)[1] end
 
 local set_colorscheme = function(theme_future)
     -- set nord colorscheme upfront to avoid flickering from "default" scheme
     vim.cmd [[colorscheme nord]]
-    return a.run(a.future(function()
-        local theme = a.await(theme_future)
+    return a.run(function()
+        local theme = theme_future()
 
         if (theme == "light") then
             vim.g.use_light_theme = true
@@ -38,10 +37,10 @@ local set_colorscheme = function(theme_future)
         else
             log.error("unknown colorscheme " .. theme)
         end
-    end))
+    end)
 end
 
-set_colorscheme(a.future(function() return a.await(get_term_theme()) end))
+set_colorscheme(get_term_theme)
 
 local function apply_user_highlights()
     highlight('Search', {
@@ -100,19 +99,13 @@ apply_user_highlights()
 
 command({
     "ToggleColor", function()
-        set_colorscheme(a.future(function()
-            if a.await(get_term_theme()) == "dark" then
+        set_colorscheme(function()
+            if get_term_theme() == "dark" then
                 return "light"
             else
                 return "dark"
             end
-        end))
+        end)
     end
 })
-command({
-    "RefreshColor", function()
-        set_colorscheme(a.future(function()
-            return a.await(get_term_theme())
-        end))
-    end
-})
+command({"RefreshColor", function() set_colorscheme(get_term_theme) end})
