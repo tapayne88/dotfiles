@@ -1,7 +1,6 @@
 local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
-local log = require("plenary.log")
 
 ---@class Node
 ---@field iter_children fun()
@@ -218,7 +217,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         end, 3)
 
         if str_node == nil then
-            log.warn("couldn't find child string of test node")
+            vim.notify("couldn't find child string of test node",
+                       vim.log.levels.WARN, {title = "jest-nvim"})
             return ""
         end
 
@@ -246,8 +246,7 @@ end
 ---@return string
 local vim_regex_escape = function(regex)
     -- Vim regex needs to escape (, ) and |
-    -- Because this is lua, we need to escape the escaping, hence \\ not \
-    return vim.fn.escape(vim.fn.escape(regex, "()|"), "\\")
+    return vim.fn.escape(regex, "()|")
 end
 
 local file_pattern = vim_regex_escape(
@@ -260,8 +259,9 @@ local with_validate_file_path = function(fn)
     return function()
         local file_path = vim.fn.expand("%")
 
-        if vim.regex(file_pattern):match_str(file_path) ~= nil then
-            log.info("not a test file")
+        if not vim.regex(file_pattern):match_str(file_path) then
+            vim.notify("not a test file", vim.log.levels.INFO,
+                       {title = "jest-nvim"})
             return
         end
 
@@ -290,7 +290,8 @@ local test_nearest = with_validate_file_path(function(file_path)
     local cmd = get_test_command(file_name, pattern)
 
     if pattern == nil then
-        log.info("couldn't find pattern")
+        vim.notify("couldn't find pattern", vim.log.levels.WARN,
+                   {title = "jest-nvim"})
         return
     end
 
