@@ -1,6 +1,6 @@
 local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
-local a = require("plenary.async_lib.async")
+local a = require("plenary.async")
 local log = require("plenary.log")
 
 local escape_terminal_keys = function(keys)
@@ -35,26 +35,31 @@ local sleep = a.wrap(function(delay, done)
         timer:close()
         done()
     end)
-end, "vararg")
+end, 2)
 
-local schedule = a.async(function(func)
-    vim.schedule(func)
-    a.await(a.scheduler)
-end)
+-- TODO: add doc comments!
+local schedule = a.wrap(function(func, done)
+    vim.schedule(function()
+        -- run our scheduled function
+        func()
+        -- complete our async function and allow coroutine to progress
+        done()
+    end)
+end, 2)
 
-local send_keys = a.async(function(keys)
+local send_keys = function(keys)
     if keys == nil then return end
 
-    a.await(schedule(function()
+    schedule(function()
         vim.api
             .nvim_chan_send(vim.b.terminal_job_id, escape_terminal_keys(keys))
-    end))
+    end)
 
     -- Allow jest UI time to respond to keystrokes
-    a.await(sleep(200))
-end)
+    sleep(200)
+end
 
-local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
+local run_in_term = function(buf_name, cmd, cwd, pattern)
     if vim.fn.bufexists(buf_name) ~= 0 then
         local term_bufnr = vim.fn.bufnr(buf_name)
         local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
@@ -65,9 +70,9 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
 
         vim.cmd("vsplit " .. buf_name)
 
-        a.await(send_keys("t"))
-        a.await(send_keys(pattern))
-        a.await(send_keys("\r"))
+        send_keys("t")
+        send_keys(pattern)
+        send_keys("\r")
     else
         -- open new split on right
         vim.cmd("vertical new")
@@ -75,11 +80,11 @@ local run_in_term = a.async(function(buf_name, cmd, cwd, pattern)
         vim.api.nvim_buf_set_name(0, buf_name)
     end
 
-    a.await(schedule(function()
+    schedule(function()
         -- swap back to previous window which is left
         vim.cmd("wincmd h")
-    end))
-end)
+    end)
+end
 
 local function find_in_children(node, buf, predicate, max_depth)
     max_depth = max_depth or 5
@@ -202,7 +207,7 @@ local test_file = with_validate_file_path(function(file_path)
     local cmd = get_test_command(file_name)
 
     local buf_name = get_buffer_name(file_path)
-    a.run(run_in_term(buf_name, cmd, cwd))
+    a.run(function() run_in_term(buf_name, cmd, cwd) end)
 end)
 
 local test_nearest = with_validate_file_path(function(file_path)
@@ -218,10 +223,8 @@ local test_nearest = with_validate_file_path(function(file_path)
     end
 
     local buf_name = get_buffer_name(file_path)
-    a.run(run_in_term(buf_name, cmd, cwd, pattern))
+    a.run(function() run_in_term(buf_name, cmd, cwd, pattern) end)
 end)
 
 nnoremap('t<C-f>', test_file)
 nnoremap('t<C-n>', test_nearest)
-
-
