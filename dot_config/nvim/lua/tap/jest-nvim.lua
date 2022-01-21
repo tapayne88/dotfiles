@@ -244,11 +244,13 @@ end
 local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
---- HOC to pass filename to function if file is a test file
----@param fn fun(file_path: string)
+--- HOC to pass parameters to test function if file is a test file
+---@param fn fun(file_name: string, run: fun(cmd: string[], pattern: string))
 ---@return fun()
-local with_validate_file_path = function(fn)
+local as_test_command = function(fn)
     return function()
+        local file_name = vim.fn.expand("%:p")
+        local cwd = vim.fn.expand("%:p:h")
         local file_path = vim.fn.expand("%")
 
         if not vim.regex(file_pattern):match_str(file_path) then
@@ -257,27 +259,25 @@ local with_validate_file_path = function(fn)
             return
         end
 
-        return fn(file_path)
+        local buf_name = get_buffer_name(file_path)
+
+        local run = function(cmd, pattern)
+            a.run(function() jest_test(buf_name, cmd, cwd, pattern) end)
+        end
+
+        return fn(file_name, run)
     end
 end
 
 --- Run jest tests for the current file
-local test_file = with_validate_file_path(function(file_path)
-    local cwd = vim.fn.expand("%:p:h")
-    local file_name = vim.fn.expand("%:p")
-
-    -- TODO: reduce duplication between this and test_nearest
+local test_file = as_test_command(function(file_name, run)
     local cmd = get_test_command(file_name)
 
-    local buf_name = get_buffer_name(file_path)
-    a.run(function() jest_test(buf_name, cmd, cwd) end)
+    run(cmd)
 end)
 
 --- Run jest tests for the nearest test node
-local test_nearest = with_validate_file_path(function(file_path)
-    local cwd = vim.fn.expand("%:p:h")
-    local file_name = vim.fn.expand("%:p")
-
+local test_nearest = as_test_command(function(file_name, run)
     local pattern = get_nearest_pattern()
     local cmd = get_test_command(file_name, pattern)
 
@@ -287,8 +287,7 @@ local test_nearest = with_validate_file_path(function(file_path)
         return
     end
 
-    local buf_name = get_buffer_name(file_path)
-    a.run(function() jest_test(buf_name, cmd, cwd, pattern) end)
+    run(cmd, pattern)
 end)
 
 nnoremap('t<C-f>', test_file)
