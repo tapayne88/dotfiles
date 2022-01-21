@@ -3,7 +3,7 @@ Name=Alacritty
 Exec=WAYLAND_DISPLAY= {{ .chezmoi.homeDir }}/.nix-profile/bin/alacritty
 Terminal=false
 Type=Application
-Icon=alacritty
+Icon={{ .chezmoi.homeDir }}/.local/share/icons/hicolor/256x256/alacritty.png
 StartupWMClass=WAYLAND_DISPLAY= {{ .chezmoi.homeDir }}/.nix-profile/bin/alacritty
 Comment=A cross-platform, GPU enhanced terminal emulator
 Categories=System;TerminalEmulator;
