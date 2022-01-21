@@ -49,6 +49,8 @@ local get_command_string = function(cmd) return table.concat(cmd, " ") end
 ---@param file_name string
 ---@return string
 local get_buffer_name = function(file_name)
+    -- having :terminal suffix convinces telescope to put a terminal icon for
+    -- the buffer in the buffer list
     return string.format("jest-nvim:%s:terminal", file_name)
 end
 
@@ -146,7 +148,7 @@ local function find_in_children(node, predicate, max_depth)
     return nil
 end
 
---- Get nodes if node has child test node
+--- Return node if it has child test node
 ---@param node Node
 ---@param buf number
 ---@return string[]
@@ -164,7 +166,7 @@ local get_test_expression = function(node, buf)
     return child_test_node ~= nil and node or nil
 end
 
---- Collect selector data from all parent nodes
+--- Collect selected data from all parent nodes
 ---@param node Node
 ---@param buf number
 ---@param root Node
@@ -180,7 +182,7 @@ local function find_in_ancestors(node, buf, root, selector, acc)
     return find_in_ancestors(node:parent(), buf, root, selector, acc)
 end
 
---- Get all parent test nodes from cursor position
+--- Get all parent test nodes for cursor position
 ---@param buf number
 ---@param cursor number[]
 ---@return Node[]
@@ -201,7 +203,7 @@ local get_test_nodes_from_cursor = function(buf, cursor)
     return ret
 end
 
---- Reverse table
+--- Reverse the order of a list
 ---@param tbl table
 ---@return table
 local tbl_reverse = function(tbl)
@@ -210,7 +212,7 @@ local tbl_reverse = function(tbl)
     return rev_tbl
 end
 
---- Get test strings as a string of test nodes
+--- Get test strings of test nodes
 ---@param nodes Node[]
 ---@param buf number
 ---@return string
@@ -249,7 +251,7 @@ end
 local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
---- HOC to pass parameters to test function if file is a test file
+--- HOF to create test runner
 ---@param fn fun(run: fun(pattern?: string|nil))
 ---@return fun()
 local as_test_command = function(fn)
