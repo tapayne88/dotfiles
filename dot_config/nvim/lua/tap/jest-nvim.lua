@@ -83,12 +83,7 @@ end)
 local function find_in_children(node, buf, predicate, max_depth)
     max_depth = max_depth or 5
 
-    -- TODO: Improve depth detection, most children will be dead ends so below
-    -- warning is too crude
-    if max_depth == 0 then
-        log.warn("find_in_children max_depth reached, aborting")
-        return nil
-    end
+    if max_depth == 0 then return nil end
 
     for child_node in node:iter_children() do
         if predicate(child_node) then return child_node end
