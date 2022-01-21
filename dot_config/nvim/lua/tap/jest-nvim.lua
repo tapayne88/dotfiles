@@ -141,6 +141,8 @@ local tbl_reverse = function(tbl)
     return rev_tbl
 end
 
+local jest_regex_escape = function(str) return vim.fn.escape(str, "()|") end
+
 local get_pattern_from_test_nodes = function(nodes, buf)
     local test_strings = vim.tbl_map(function(node)
         local str_node = find_in_children(node, buf, function(child_node)
@@ -156,9 +158,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         return vim.treesitter.get_node_text(str_node:child(1), buf)
     end, nodes)
 
-    print(vim.inspect(test_strings))
-
-    return table.concat(tbl_reverse(test_strings), " ")
+    return table.concat(
+               vim.tbl_map(jest_regex_escape, tbl_reverse(test_strings)), " ")
 end
 
 local get_nearest_pattern = function()
@@ -171,13 +172,13 @@ local get_nearest_pattern = function()
     return get_pattern_from_test_nodes(test_nodes, bufnr)
 end
 
-local regex_escape = function(regex)
+local vim_regex_escape = function(regex)
     -- Vim regex needs to escape (, ) and |
     -- Because this is lua, we need to escape the escaping, hence \\ not \
     return vim.fn.escape(vim.fn.escape(regex, "()|"), "\\")
 end
 
-local file_pattern = regex_escape(
+local file_pattern = vim_regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
 local with_validate_file_path = function(fn)
@@ -221,3 +222,5 @@ end)
 
 nnoremap('t<C-f>', test_file)
 nnoremap('t<C-n>', test_nearest)
+
+
