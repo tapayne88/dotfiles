@@ -50,6 +50,7 @@ local send_keys = a.async(function(keys)
             .nvim_chan_send(vim.b.terminal_job_id, escape_terminal_keys(keys))
     end))
 
+    -- Allow jest UI time to respond to keystrokes
     a.await(sleep(200))
 end)
 
