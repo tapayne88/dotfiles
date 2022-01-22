@@ -30,7 +30,18 @@ cmp.setup {
         {name = 'buffer'}, {name = 'luasnip'}
     },
 
-    formatting = {format = lspkind.cmp_format()},
+    formatting = {
+        format = lspkind.cmp_format({
+            with_text = true,
+            menu = {
+                nvim_lsp = "[LSP]",
+                nvim_lua = "[api]",
+                path = "[path]",
+                buffer = "[buf]",
+                luasnip = "[snip]"
+            }
+        })
+    },
 
     experimental = {ghost_text = true}
 }
