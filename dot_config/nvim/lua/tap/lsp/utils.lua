@@ -154,19 +154,19 @@ function module.on_attach(client, bufnr)
     end
 end
 
--- Find npm executable path
+-- Async function to find npm executable path
 ---@param cmd string
----@param fn fun(result: string|nil)
----@return nil
-function module.get_bin_path(cmd, fn)
-    return utils.get_os_command_output_async({"yarn", "bin", cmd}, nil,
-                                             function(result, code, signal)
-        if code ~= 0 then
-            notify("`yarn bin " .. cmd .. "` failed", "error")
-            return fn(nil)
-        end
-        fn(result[1])
-    end)
+---@return string[]|nil
+function module.get_bin_path(cmd)
+    local result, code = utils.get_os_command_output_async({"yarn", "bin", cmd},
+                                                           nil)
+
+    if code ~= 0 then
+        notify("`yarn bin " .. cmd .. "` failed", "error")
+        return nil
+    end
+
+    return result[1]
 end
 
 local border_window_style = 'rounded'
