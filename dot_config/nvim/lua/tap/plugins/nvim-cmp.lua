@@ -30,5 +30,7 @@ cmp.setup {
         {name = 'buffer'}, {name = 'luasnip'}
     },
 
-    formatting = {format = lspkind.cmp_format()}
+    formatting = {format = lspkind.cmp_format()},
+
+    experimental = {ghost_text = true}
 }
