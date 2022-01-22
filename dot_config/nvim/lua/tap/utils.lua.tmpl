@@ -43,7 +43,7 @@ utils.lsp_colors = function(type)
     return color_map[type]
 end
 
----Run cmd async and trigger callback on completion
+--- Run cmd async and trigger callback on completion - wrapped with plenary.async
 ---@param cmd string[]
 ---@param cwd string|nil
 ---@param fn fun(result: string[], code: number, signal: number)
