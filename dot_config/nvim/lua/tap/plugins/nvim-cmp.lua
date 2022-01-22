@@ -1,5 +1,7 @@
 local cmp = require('cmp')
 local lspkind = require('lspkind')
+local highlight = require('tap.utils').highlight
+local augroup = require('tap.utils').augroup
 
 -- Avoid showing message extra message when using completion
 vim.opt.shortmess:append("c")
@@ -45,3 +47,19 @@ cmp.setup {
 
     experimental = {ghost_text = true}
 }
+
+local function apply_user_highlights()
+    highlight("CmpItemAbbrDeprecated", {link = "Error", force = true})
+    highlight("CmpItemKind", {link = "Special", force = true})
+    highlight("CmpItemMenu", {link = "Comment", force = true})
+end
+
+augroup("NvimCmpHighlights", {
+    {
+        events = {"VimEnter", "ColorScheme"},
+        targets = {"*"},
+        command = apply_user_highlights
+    }
+})
+
+apply_user_highlights()
