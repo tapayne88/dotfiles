@@ -2,6 +2,7 @@ local servers = require "nvim-lsp-installer.servers"
 local installers = require "nvim-lsp-installer.installers"
 local npm = require "nvim-lsp-installer.installers.npm"
 local shell = require "nvim-lsp-installer.installers.shell"
+local a = require "plenary.async"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.lsp.utils"
 
@@ -59,8 +60,9 @@ local diagnosticls_languages = {
 }
 
 function module.setup(lsp_server)
-    local root_dir = servers.get_server_install_path(lsp_server.name)
-    lsp_utils.get_bin_path("prettier", function(prettier_bin)
+    a.run(function()
+        local root_dir = servers.get_server_install_path(lsp_server.name)
+        local prettier_bin = lsp_utils.get_bin_path("prettier")
 
         lsp_server:setup(lsp_utils.merge_with_default_config({
             filetypes = vim.tbl_keys(diagnosticls_languages),

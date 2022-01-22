@@ -8,10 +8,9 @@ local a = require("plenary.async")
 local log = require("plenary.log")
 local lualine = require("tap.plugins.lualine")
 
-local spawn = a.wrap(get_os_command_output_async, 3)
-
-local get_term_theme =
-    function() return spawn({"term-theme", "echo"}, nil)[1] end
+local get_term_theme = function()
+    return get_os_command_output_async({"term-theme", "echo"}, nil)[1]
+end
 
 local set_colorscheme = function(theme_future)
     -- set nord colorscheme upfront to avoid flickering from "default" scheme
