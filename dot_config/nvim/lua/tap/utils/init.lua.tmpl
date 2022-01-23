@@ -290,4 +290,6 @@ function utils.termcodes(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
+function utils.require_plugin(name) return pcall(require, name) end
+
 return utils
