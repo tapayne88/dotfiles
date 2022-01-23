@@ -18,11 +18,13 @@ local servers = {
     ["global-servers"] = {"rnix"}
 }
 
+local function require_server(server_name)
+    return require("tap.plugins.lspconfig.servers." .. server_name)
+end
+
 local function init_servers()
     for _, name in pairs(servers["nvim-lsp-installer"]) do
-        pcall(function()
-            require("tap.lsp.servers." .. name).patch_install()
-        end)
+        pcall(function() require_server(name).patch_install() end)
     end
 end
 
@@ -41,7 +43,7 @@ local function setup_servers(initialise)
                 server:install(version)
             end
             server:on_ready(function()
-                require("tap.lsp.servers." .. name).setup(server)
+                require_server(name).setup(server)
             end)
         else
             vim.notify("Attempted to setup server " .. server_identifier ..
@@ -52,7 +54,7 @@ local function setup_servers(initialise)
 
     -- non-nvim-lsp-installer servers like rnix
     for _, name in pairs(servers["global-servers"]) do
-        require("tap.lsp.servers." .. name).setup()
+        require_server(name).setup()
     end
 
     initialise()

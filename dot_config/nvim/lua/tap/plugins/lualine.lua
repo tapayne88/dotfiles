@@ -112,7 +112,8 @@ local function modified()
 end
 
 local function tscVersion()
-    local ok, tsserver = pcall(require, "tap.lsp.servers.tsserver")
+    local ok, tsserver =
+        pcall(require, "tap.plugins.lspconfig.servers.tsserver")
     local tsc_version = ok and tsserver.get_tsc_version() or false
 
     return tsc_version and string.format("v%s", tsc_version) or ""
