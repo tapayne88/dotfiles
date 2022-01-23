@@ -3,8 +3,6 @@ local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
-local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
-local get_tsc_version = require("tap.lsp.servers.tsserver").get_tsc_version
 
 local nord_theme_b = {bg = color("nord1_gui"), fg = color("nord4_gui")}
 local nord_theme_c = {bg = color("nord3_gui"), fg = color("nord4_gui")}
@@ -43,7 +41,10 @@ local nord_theme = {
 }
 
 local conditions = {
-    has_lsp = function() return #get_lsp_clients() > 0 end,
+    has_lsp = function()
+        local ok, utils = pcall(require, "tap.lsp.utils")
+        return ok and #utils.get_lsp_clients() > 0 or false
+    end,
     hide_in_width = function() return vim.fn.winwidth(0) > 80 end,
     negate = function(cond) return function() return cond() end end
 }
@@ -111,7 +112,8 @@ local function modified()
 end
 
 local function tscVersion()
-    local tsc_version = get_tsc_version()
+    local ok, tsserver = pcall(require, "tap.lsp.servers.tsserver")
+    local tsc_version = ok and tsserver.get_tsc_version() or false
 
     return tsc_version and string.format("v%s", tsc_version) or ""
 end
