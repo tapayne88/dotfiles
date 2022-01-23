@@ -1,6 +1,5 @@
 local lsp_installer = require "nvim-lsp-installer"
 local lsp_installer_servers = require "nvim-lsp-installer.servers"
-local notify = require "notify"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.lsp.utils"
 
@@ -37,17 +36,17 @@ local function setup_servers(initialise)
         -- Check that the server is supported in nvim-lsp-installer
         if ok then
             if not server:is_installed() then
-                notify("Installing " .. server_identifier, "info",
-                       {title = "LSPInstall"})
+                vim.notify("Installing " .. server_identifier, "info",
+                           {title = "LSPInstall"})
                 server:install(version)
             end
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
             end)
         else
-            notify("Attempted to setup server " .. server_identifier ..
-                       " with nvim-lsp-installer but not supported", "warn",
-                   {title = "LSPInstall"})
+            vim.notify("Attempted to setup server " .. server_identifier ..
+                           " with nvim-lsp-installer but not supported", "warn",
+                       {title = "LSPInstall"})
         end
     end
 
