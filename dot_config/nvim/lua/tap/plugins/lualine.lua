@@ -4,6 +4,7 @@ local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local require_plugin = require("tap.utils").require_plugin
+local get_lsp_clients = require("tap.utils.lsp").get_lsp_clients
 
 local nord_theme_b = {bg = color("nord1_gui"), fg = color("nord4_gui")}
 local nord_theme_c = {bg = color("nord3_gui"), fg = color("nord4_gui")}
@@ -42,10 +43,7 @@ local nord_theme = {
 }
 
 local conditions = {
-    has_lsp = function()
-        local ok, utils = pcall(require, "tap.utils.lsp")
-        return ok and #utils.get_lsp_clients() > 0 or false
-    end,
+    has_lsp = function() return #get_lsp_clients() > 0 end,
     hide_in_width = function() return vim.fn.winwidth(0) > 80 end,
     negate = function(cond) return function() return cond() end end
 }
