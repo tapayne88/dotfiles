@@ -140,6 +140,7 @@ return require('packer').startup(function(use)
     -- native neovim LSP support
     use {
         'neovim/nvim-lspconfig', -- LSP server config
+        after = "nvim-notify",
         config = [[require("tap.plugins.lspconfig")]],
         requires = {
             'williamboman/nvim-lsp-installer', -- install LSP servers
@@ -173,6 +174,7 @@ return require('packer').startup(function(use)
     -- statusline in lua
     use {
         'nvim-lualine/lualine.nvim',
+        after = "nvim-lspconfig",
         config = [[require("tap.plugins.lualine")]],
         requires = {
             {'kyazdani42/nvim-web-devicons', opt = true},
