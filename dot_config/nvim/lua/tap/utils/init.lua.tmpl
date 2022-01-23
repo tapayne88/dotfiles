@@ -295,8 +295,8 @@ end
 ---@return table|nil
 function utils.require_plugin(name)
     if not string.match(name, '^tap%.plugins%..+') then
-        vim.notify("Attempted to loading plugin with plugin utility", "error",
-                   {title = "require_plugin"})
+        vim.notify(string.format("Attempted to load non-plugin! [%s]", name),
+                   "error", {title = "require_plugin"})
         return nil
     end
 
