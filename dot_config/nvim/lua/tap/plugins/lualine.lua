@@ -113,9 +113,8 @@ local function modified()
 end
 
 local function tscVersion()
-    local ok, tsserver =
-        require_plugin("tap.plugins.lspconfig.servers.tsserver")
-    local tsc_version = ok and tsserver.get_tsc_version() or false
+    local tsc_version =
+        require_plugin("tap.plugins.lspconfig.servers.tsserver").get_tsc_version()
 
     return tsc_version and string.format("v%s", tsc_version) or ""
 end

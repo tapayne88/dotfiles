@@ -290,6 +290,28 @@ function utils.termcodes(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-function utils.require_plugin(name) return pcall(require, name) end
+--- Attempt to load plugin config, silently fail if there are errors
+---@param name string
+---@return table|nil
+function utils.require_plugin(name)
+    if not string.match(name, '^tap%.plugins%..+') then
+        vim.notify("Attempted to loading plugin with plugin utility", "error",
+                   {title = "require_plugin"})
+        return nil
+    end
+
+    return setmetatable({}, {
+        __index = function(t, k)
+            local ok, plugin = pcall(require, name)
+
+            if not ok then return nil end
+
+            -- cache result, __index is only called for non-existent keys
+            t[k] = plugin[k]
+
+            return plugin[k]
+        end
+    })
+end
 
 return utils

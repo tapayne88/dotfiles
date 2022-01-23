@@ -23,8 +23,7 @@ local set_colorscheme = function(theme_future)
             vim.loop.spawn("term-theme", {args = {"light"}}, nil)
 
             vim.o.background = "light"
-            local ok, lualine = require_plugin("tap.plugins.lualine")
-            if ok then lualine.set_theme('tokyonight') end
+            require_plugin("tap.plugins.lualine").set_theme('tokyonight')
             vim.cmd [[colorscheme tokyonight]]
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
@@ -32,8 +31,7 @@ local set_colorscheme = function(theme_future)
 
             vim.g.nord_italic = true
             vim.o.background = "dark"
-            local ok, lualine = require_plugin("tap.plugins.lualine")
-            if ok then lualine.set_theme('nord_custom') end
+            require_plugin("tap.plugins.lualine").set_theme('nord_custom')
             vim.cmd [[colorscheme nord]]
         else
             log.error("unknown colorscheme " .. theme)
