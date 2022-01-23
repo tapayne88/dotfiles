@@ -42,7 +42,7 @@ local nord_theme = {
 
 local conditions = {
     has_lsp = function()
-        local ok, utils = pcall(require, "tap.lsp.utils")
+        local ok, utils = pcall(require, "tap.utils.lsp")
         return ok and #utils.get_lsp_clients() > 0 or false
     end,
     hide_in_width = function() return vim.fn.winwidth(0) > 80 end,

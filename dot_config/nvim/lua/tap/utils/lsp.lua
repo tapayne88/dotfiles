@@ -143,7 +143,7 @@ function module.on_attach(client, bufnr)
             {
                 events = {"BufWritePre"},
                 targets = {"<buffer>"},
-                command = "lua require'tap.lsp.utils'.format()"
+                command = "lua require'tap.utils.lsp'.format()"
 
             }
         })

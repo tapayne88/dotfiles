@@ -1,5 +1,5 @@
 local lspconfig_tsserver = require "lspconfig.server_configurations.tsserver"
-local lsp_utils = require "tap.lsp.utils"
+local lsp_utils = require "tap.utils.lsp"
 
 local key_name = function(client_id) return "client_" .. client_id end
 
