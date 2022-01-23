@@ -1,6 +1,3 @@
-local server = require "nvim-lsp-installer.server"
-local servers = require "nvim-lsp-installer.servers"
-local lsp_settings = require "nvim-lsp-installer.settings"
 local utils = require "tap.utils"
 local nnoremap = require"tap.utils".nnoremap
 
@@ -196,6 +193,8 @@ end
 ---@param config Config
 ---@return Config
 function module.merge_with_default_config(config)
+    local lsp_settings = require "nvim-lsp-installer.settings"
+
     local base_config = {
         autostart = true,
         on_attach = module.on_attach,
@@ -232,6 +231,9 @@ end
 ---@param installer fun()
 ---@return nil
 function module.patch_lsp_installer(server_name, installer)
+    local servers = require "nvim-lsp-installer.servers"
+    local server = require "nvim-lsp-installer.server"
+
     local _, og_server = servers.get_server(server_name)
 
     local patched_server = server.Server:new(
