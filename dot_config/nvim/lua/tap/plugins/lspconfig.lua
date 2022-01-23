@@ -1,4 +1,5 @@
 local lsp_installer = require "nvim-lsp-installer"
+local lsp_installer_servers = require "nvim-lsp-installer.servers"
 local notify = require "notify"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.lsp.utils"
@@ -11,7 +12,8 @@ end
 local servers = {
     -- servers installed with williamboman/nvim-lsp-installer
     ["nvim-lsp-installer"] = {
-        "bashls", "diagnosticls", "eslint", "jsonls", "sumneko_lua", "tsserver"
+        "bashls", "diagnosticls", "eslint", "jsonls", "sumneko_lua@v2.5.6",
+        "tsserver"
     },
     -- globally installed servers likely through nix
     ["global-servers"] = {"rnix"}
@@ -26,13 +28,18 @@ local function init_servers()
 end
 
 local function setup_servers(initialise)
-    for _, name in pairs(servers["nvim-lsp-installer"]) do
+    for _, server_identifier in pairs(servers["nvim-lsp-installer"]) do
+        -- parse server identifier, could be something like 'sumneko_lua@2.5.6'
+        local name, version = lsp_installer_servers.parse_server_identifier(
+                                  server_identifier)
         local ok, server = lsp_installer.get_server(name)
+
         -- Check that the server is supported in nvim-lsp-installer
         if ok then
             if not server:is_installed() then
-                notify("Installing " .. name, "info")
-                server:install()
+                notify("Installing " .. server_identifier, "info",
+                       {title = "LSPInstall"})
+                server:install(version)
             end
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
