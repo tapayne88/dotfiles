@@ -44,6 +44,10 @@ local function setup_servers(initialise)
             server:on_ready(function()
                 require("tap.lsp.servers." .. name).setup(server)
             end)
+        else
+            notify("Attempted to setup server " .. server_identifier ..
+                       " with nvim-lsp-installer but not supported", "warn",
+                   {title = "LSPInstall"})
         end
     end
 
