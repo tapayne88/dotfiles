@@ -292,26 +292,20 @@ end
 
 --- Attempt to load plugin config, silently fail if there are errors
 ---@param name string
----@return table|nil
-function utils.require_plugin(name)
+---@param callback fun(plugin: any): any
+---@return any|nil
+function utils.require_plugin(name, callback)
     if not string.match(name, '^tap%.plugins%..+') then
         vim.notify(string.format("Attempted to load non-plugin! [%s]", name),
                    "error", {title = "require_plugin"})
         return nil
     end
 
-    return setmetatable({}, {
-        __index = function(t, k)
-            local ok, plugin = pcall(require, name)
+    local ok, plugin = pcall(require, name)
 
-            if not ok then return nil end
+    if not ok then return nil end
 
-            -- cache result, __index is only called for non-existent keys
-            t[k] = plugin[k]
-
-            return plugin[k]
-        end
-    })
+    return type(callback) == "function" and callback(plugin) or nil
 end
 
 return utils
