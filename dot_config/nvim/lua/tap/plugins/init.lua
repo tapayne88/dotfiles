@@ -140,6 +140,7 @@ return require('packer').startup(function(use)
     -- native neovim LSP support
     use {
         'neovim/nvim-lspconfig', -- LSP server config
+        after = "nvim-notify",
         config = [[require("tap.plugins.lspconfig")]],
         requires = {
             'williamboman/nvim-lsp-installer', -- install LSP servers

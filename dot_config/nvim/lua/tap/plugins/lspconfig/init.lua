@@ -1,8 +1,7 @@
 local lsp_installer = require "nvim-lsp-installer"
 local lsp_installer_servers = require "nvim-lsp-installer.servers"
-local notify = require "notify"
 local utils = require "tap.utils"
-local lsp_utils = require "tap.lsp.utils"
+local lsp_utils = require "tap.utils.lsp"
 
 if vim.env.LSP_DEBUG then
     vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
@@ -19,11 +18,13 @@ local servers = {
     ["global-servers"] = {"rnix"}
 }
 
+local function require_server(server_name)
+    return require("tap.plugins.lspconfig.servers." .. server_name)
+end
+
 local function init_servers()
     for _, name in pairs(servers["nvim-lsp-installer"]) do
-        pcall(function()
-            require("tap.lsp.servers." .. name).patch_install()
-        end)
+        pcall(function() require_server(name).patch_install() end)
     end
 end
 
@@ -37,23 +38,23 @@ local function setup_servers(initialise)
         -- Check that the server is supported in nvim-lsp-installer
         if ok then
             if not server:is_installed() then
-                notify("Installing " .. server_identifier, "info",
-                       {title = "LSPInstall"})
+                vim.notify("Installing " .. server_identifier, "info",
+                           {title = "LSPInstall"})
                 server:install(version)
             end
             server:on_ready(function()
-                require("tap.lsp.servers." .. name).setup(server)
+                require_server(name).setup(server)
             end)
         else
-            notify("Attempted to setup server " .. server_identifier ..
-                       " with nvim-lsp-installer but not supported", "warn",
-                   {title = "LSPInstall"})
+            vim.notify("Attempted to setup server " .. server_identifier ..
+                           " with nvim-lsp-installer but not supported", "warn",
+                       {title = "LSPInstall"})
         end
     end
 
     -- non-nvim-lsp-installer servers like rnix
     for _, name in pairs(servers["global-servers"]) do
-        require("tap.lsp.servers." .. name).setup()
+        require_server(name).setup()
     end
 
     initialise()

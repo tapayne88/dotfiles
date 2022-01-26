@@ -3,8 +3,8 @@ local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
-local get_lsp_clients = require("tap.lsp.utils").get_lsp_clients
-local get_tsc_version = require("tap.lsp.servers.tsserver").get_tsc_version
+local require_plugin = require("tap.utils").require_plugin
+local get_lsp_clients = require("tap.utils.lsp").get_lsp_clients
 
 local nord_theme_b = {bg = color("nord1_gui"), fg = color("nord4_gui")}
 local nord_theme_c = {bg = color("nord3_gui"), fg = color("nord4_gui")}
@@ -111,7 +111,10 @@ local function modified()
 end
 
 local function tscVersion()
-    local tsc_version = get_tsc_version()
+    local tsc_version = require_plugin("tap.plugins.lspconfig.servers.tsserver",
+                                       function(tsserver)
+        return tsserver.get_tsc_version()
+    end)
 
     return tsc_version and string.format("v%s", tsc_version) or ""
 end

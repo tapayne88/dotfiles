@@ -1,4 +1,4 @@
-local lsp_utils = require "tap.lsp.utils"
+local lsp_utils = require "tap.utils.lsp"
 
 local module = {}
 

@@ -2,11 +2,11 @@ local highlight = require("tap.utils").highlight
 local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
 local command = require("tap.utils").command
+local require_plugin = require("tap.utils").require_plugin
 local get_os_command_output_async =
     require("tap.utils").get_os_command_output_async
 local a = require("plenary.async")
 local log = require("plenary.log")
-local lualine = require("tap.plugins.lualine")
 
 local get_term_theme = function()
     return get_os_command_output_async({"term-theme", "echo"}, nil)[1]
@@ -23,7 +23,9 @@ local set_colorscheme = function(theme_future)
             vim.loop.spawn("term-theme", {args = {"light"}}, nil)
 
             vim.o.background = "light"
-            lualine.set_theme('tokyonight')
+            require_plugin("tap.plugins.lualine", function(lualine)
+                lualine.set_theme('tokyonight')
+            end)
             vim.cmd [[colorscheme tokyonight]]
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
@@ -31,7 +33,9 @@ local set_colorscheme = function(theme_future)
 
             vim.g.nord_italic = true
             vim.o.background = "dark"
-            lualine.set_theme('nord_custom')
+            require_plugin("tap.plugins.lualine", function(lualine)
+                lualine.set_theme('nord_custom')
+            end)
             vim.cmd [[colorscheme nord]]
         else
             log.error("unknown colorscheme " .. theme)

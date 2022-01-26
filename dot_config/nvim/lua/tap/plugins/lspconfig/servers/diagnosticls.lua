@@ -4,7 +4,7 @@ local npm = require "nvim-lsp-installer.installers.npm"
 local shell = require "nvim-lsp-installer.installers.shell"
 local a = require "plenary.async"
 local utils = require "tap.utils"
-local lsp_utils = require "tap.lsp.utils"
+local lsp_utils = require "tap.utils.lsp"
 
 local lua_format = [[
   os=$(uname -s | tr "[:upper:]" "[:lower:]")
