@@ -1,6 +1,3 @@
-local highlight = require("tap.utils").highlight
-local augroup = require("tap.utils").augroup
-local color = require("tap.utils").color
 local command = require("tap.utils").command
 local require_plugin = require("tap.utils").require_plugin
 local get_os_command_output_async =
@@ -44,39 +41,6 @@ local set_colorscheme = function(theme_future)
 end
 
 set_colorscheme(get_term_theme)
-
-local function apply_user_highlights()
-    highlight('Search', {
-        guibg = color({dark = "nord9_gui", light = "blue2"}),
-        guifg = color({dark = "nord0_gui", light = "bg"}),
-        gui = "NONE"
-    })
-    highlight('IncSearch', {
-        guibg = color({dark = "nord9_gui", light = "blue2"}),
-        guifg = color({dark = "nord0_gui", light = "bg"}),
-        gui = "NONE"
-    })
-
-    -- Treesitter overrides
-    highlight('TSInclude', {gui = 'italic', cterm = 'italic'})
-    highlight('TSOperator', {gui = 'italic', cterm = 'italic'})
-    highlight('TSKeyword', {gui = 'italic', cterm = 'italic'})
-
-    highlight('gitmessengerHeader', {link = 'Identifier'})
-    highlight('gitmessengerHash', {link = 'Comment'})
-    highlight('gitmessengerHistory', {link = 'Constant'})
-    highlight('gitmessengerPopupNormal', {link = 'CursorLine'})
-end
-
-augroup("ExplorerHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
-
-apply_user_highlights()
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways

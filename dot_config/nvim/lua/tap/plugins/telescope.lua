@@ -16,7 +16,13 @@ require('telescope').setup {
                 ["<C-k>"] = actions.move_selection_previous,
                 ["<C-j>"] = actions.move_selection_next
             }
-        }
+        },
+        borderchars = {
+            prompt = {'█', '▌', '▀', '▐', '▐', '▌', '▘', '▝'},
+            results = {"─", "│", "─", "│", '┌', '┐', "┘", "└"},
+            preview = {'─', '│', '─', '│', '┌', '┐', '┘', '└'}
+        },
+        path_display = {"truncate"}
     }
 }
 
@@ -77,10 +83,38 @@ nnoremap("<leader>ch",
          {name = "Command History"})
 
 local function apply_user_highlights()
-    highlight("TelescopeBorder",
-              {guifg = color({dark = "nord3_gui", light = "dark3"})})
-    highlight("TelescopePromptBorder",
-              {guifg = color({dark = "nord10_gui", light = "blue3"})})
+    local border_colors = {dark = "nord2_gui", light = "blue0"}
+
+    highlight("TelescopeBorder", {guifg = color(border_colors)})
+    highlight("TelescopePromptBorder", {
+        guifg = color(border_colors),
+        guibg = color({dark = "nord0_gui", light = "none"})
+    })
+    highlight("TelescopePreviewBorder", {guifg = color(border_colors)})
+    highlight("TelescopeResultsBorder", {guifg = color(border_colors)})
+
+    highlight("TelescopePromptTitle", {
+        guifg = color({dark = "nord2_gui", light = "bg"}),
+        guibg = color({dark = "nord11_gui", light = "red"})
+    })
+    highlight("TelescopePromptNormal", {
+        guifg = color({dark = "nord4_gui", light = "fg"}),
+        guibg = color(border_colors)
+    })
+    highlight("TelescopePromptCounter", {
+        guifg = color({dark = "nord5_gui", light = "fg"}),
+        guibg = color(border_colors)
+    })
+
+    highlight("TelescopePreviewTitle", {
+        guifg = color({dark = "nord2_gui", light = "bg"}),
+        guibg = color({dark = "nord14_gui", light = "green"})
+    })
+    highlight("TelescopeResultsTitle", {
+        guifg = color({dark = "nord4_gui", light = "fg"}),
+        guibg = color({dark = "nord3_gui", light = "blue0"})
+    })
+
     highlight("TelescopeMatching",
               {guifg = color({dark = "nord13_gui", light = "yellow"})})
 end

@@ -19,7 +19,7 @@ require('dressing').setup({
         min_width = 20,
 
         -- Window transparency (0-100)
-        winblend = 10,
+        winblend = 0,
         -- Change default highlight groups (see :help winhl)
         winhighlight = "",
 
@@ -56,7 +56,7 @@ require('dressing').setup({
             border = "rounded",
 
             -- Window transparency (0-100)
-            winblend = 10,
+            winblend = 0,
             -- Change default highlight groups (see :help winhl)
             winhighlight = "",
 
