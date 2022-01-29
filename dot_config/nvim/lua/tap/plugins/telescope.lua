@@ -17,6 +17,11 @@ require('telescope').setup {
                 ["<C-j>"] = actions.move_selection_next
             }
         },
+        borderchars = {
+            prompt = {"─", "│", "─", "│", "├", "┤", "┘", "└"},
+            results = {"─", "│", " ", "│", '┌', '┐', "│", "│"},
+            preview = {'─', '│', '─', '│', '┌', '┐', '┘', '└'}
+        },
         path_display = {"truncate"}
     }
 }
@@ -81,7 +86,11 @@ local function apply_user_highlights()
     highlight("TelescopeBorder",
               {guifg = color({dark = "nord3_gui", light = "dark3"})})
     highlight("TelescopePromptBorder",
-              {guifg = color({dark = "nord10_gui", light = "blue3"})})
+              {guifg = color({dark = "nord3_gui", light = "blue3"})})
+    highlight("TelescopePreviewBorder",
+              {guifg = color({dark = "nord3_gui", light = "blue3"})})
+    highlight("TelescopeResultsBorder",
+              {guifg = color({dark = "nord3_gui", light = "blue3"})})
     highlight("TelescopeMatching",
               {guifg = color({dark = "nord13_gui", light = "yellow"})})
 end
