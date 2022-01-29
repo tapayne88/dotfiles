@@ -25,8 +25,10 @@ return require('packer').startup(function(use)
     -- packer doesn't load it,  needs to be loaded earlier than packer can
     use {'alker0/chezmoi.vim', opt = true}
 
+    -- treesitter colorscheme
+    use {'shaunsingh/nord.nvim', config = [[require("tap.plugins.nord")]]}
+
     -- LuaFormatter off
-    use 'shaunsingh/nord.nvim'                          -- treesitter colorscheme
     use 'folke/tokyonight.nvim'                         -- light colorscheme
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
