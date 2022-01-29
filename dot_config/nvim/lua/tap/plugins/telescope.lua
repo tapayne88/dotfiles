@@ -18,8 +18,8 @@ require('telescope').setup {
             }
         },
         borderchars = {
-            prompt = {"─", "│", "─", "│", "├", "┤", "┘", "└"},
-            results = {"─", "│", " ", "│", '┌', '┐', "│", "│"},
+            prompt = {'█', '▌', '▀', '▐', '▐', '▌', '▘', '▝'},
+            results = {"─", "│", "─", "│", '┌', '┐', "┘", "└"},
             preview = {'─', '│', '─', '│', '┌', '┐', '┘', '└'}
         },
         path_display = {"truncate"}
@@ -85,12 +85,23 @@ nnoremap("<leader>ch",
 local function apply_user_highlights()
     highlight("TelescopeBorder",
               {guifg = color({dark = "nord3_gui", light = "dark3"})})
-    highlight("TelescopePromptBorder",
-              {guifg = color({dark = "nord3_gui", light = "blue3"})})
+    highlight("TelescopePromptBorder", {
+        guifg = color({dark = "nord3_gui", light = "blue3"}),
+        guibg = color({dark = "nord0_gui", light = "blue3"})
+    })
     highlight("TelescopePreviewBorder",
               {guifg = color({dark = "nord3_gui", light = "blue3"})})
     highlight("TelescopeResultsBorder",
               {guifg = color({dark = "nord3_gui", light = "blue3"})})
+
+    highlight("TelescopePromptNormal", {
+        guifg = color({dark = "nord4_gui", light = ""}),
+        guibg = color({dark = "nord3_gui", light = ""})
+    })
+    highlight("TelescopePromptCounter", {
+        guifg = color({dark = "nord5_gui", light = ""}),
+        guibg = color({dark = "nord3_gui", light = ""})
+    })
     highlight("TelescopeMatching",
               {guifg = color({dark = "nord13_gui", light = "yellow"})})
 end
