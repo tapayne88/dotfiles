@@ -94,8 +94,8 @@ local function apply_user_highlights()
     highlight("TelescopeResultsBorder", {guifg = color(border_colors)})
 
     highlight("TelescopePromptTitle", {
-        guifg = color({dark = "nord4_gui", light = ""}),
-        guibg = color({dark = "nord3_gui", light = ""})
+        guifg = color({dark = "nord2_gui", light = ""}),
+        guibg = color({dark = "nord11_gui", light = ""})
     })
     highlight("TelescopePromptNormal", {
         guifg = color({dark = "nord4_gui", light = ""}),
@@ -107,8 +107,8 @@ local function apply_user_highlights()
     })
 
     highlight("TelescopePreviewTitle", {
-        guifg = color({dark = "nord4_gui", light = ""}),
-        guibg = color({dark = "nord3_gui", light = ""})
+        guifg = color({dark = "nord2_gui", light = ""}),
+        guibg = color({dark = "nord14_gui", light = ""})
     })
     highlight("TelescopeResultsTitle", {
         guifg = color({dark = "nord4_gui", light = ""}),
