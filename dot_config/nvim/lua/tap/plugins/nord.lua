@@ -13,6 +13,10 @@ local function apply_user_highlights()
         guifg = color({dark = "nord0_gui", light = "bg"}),
         gui = "NONE"
     })
+    highlight('FloatBorder', {
+        guifg = color({dark = "nord2_gui", light = "blue0"}),
+        guibg = color({dark = "nord0_gui", light = "none"})
+    })
 
     -- Treesitter overrides
     highlight('TSInclude', {gui = 'italic', cterm = 'italic'})

@@ -26,10 +26,15 @@ return require('packer').startup(function(use)
     use {'alker0/chezmoi.vim', opt = true}
 
     -- treesitter colorscheme
-    use {'shaunsingh/nord.nvim', config = [[require("tap.plugins.nord")]]}
+    use {
+        'shaunsingh/nord.nvim',
+        requires = {
+            'folke/tokyonight.nvim' -- light colorscheme
+        },
+        config = [[require("tap.plugins.nord")]]
+    }
 
     -- LuaFormatter off
-    use 'folke/tokyonight.nvim'                         -- light colorscheme
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
     use 'tpope/vim-commentary'                          -- Adds 'gc' & 'gcc' commands for commenting lines
