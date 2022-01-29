@@ -83,25 +83,38 @@ nnoremap("<leader>ch",
          {name = "Command History"})
 
 local function apply_user_highlights()
-    highlight("TelescopeBorder",
-              {guifg = color({dark = "nord3_gui", light = "dark3"})})
+    local border_colors = {dark = "nord2_gui", light = ""}
+
+    highlight("TelescopeBorder", {guifg = color(border_colors)})
     highlight("TelescopePromptBorder", {
-        guifg = color({dark = "nord3_gui", light = "blue3"}),
+        guifg = color(border_colors),
         guibg = color({dark = "nord0_gui", light = "blue3"})
     })
-    highlight("TelescopePreviewBorder",
-              {guifg = color({dark = "nord3_gui", light = "blue3"})})
-    highlight("TelescopeResultsBorder",
-              {guifg = color({dark = "nord3_gui", light = "blue3"})})
+    highlight("TelescopePreviewBorder", {guifg = color(border_colors)})
+    highlight("TelescopeResultsBorder", {guifg = color(border_colors)})
 
-    highlight("TelescopePromptNormal", {
+    highlight("TelescopePromptTitle", {
         guifg = color({dark = "nord4_gui", light = ""}),
         guibg = color({dark = "nord3_gui", light = ""})
     })
+    highlight("TelescopePromptNormal", {
+        guifg = color({dark = "nord4_gui", light = ""}),
+        guibg = color(border_colors)
+    })
     highlight("TelescopePromptCounter", {
         guifg = color({dark = "nord5_gui", light = ""}),
+        guibg = color(border_colors)
+    })
+
+    highlight("TelescopePreviewTitle", {
+        guifg = color({dark = "nord4_gui", light = ""}),
         guibg = color({dark = "nord3_gui", light = ""})
     })
+    highlight("TelescopeResultsTitle", {
+        guifg = color({dark = "nord4_gui", light = ""}),
+        guibg = color({dark = "nord3_gui", light = ""})
+    })
+
     highlight("TelescopeMatching",
               {guifg = color({dark = "nord13_gui", light = "yellow"})})
 end
