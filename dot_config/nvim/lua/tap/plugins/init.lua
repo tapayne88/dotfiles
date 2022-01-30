@@ -52,9 +52,6 @@ return require('packer').startup(function(use)
     -- Interactive neovim scratchpad for lua
     use {'rafcamlet/nvim-luapad', cmd = {"Luapad", "LuaRun"}}
 
-    -- support yarn PnP file using zipfile: URI scheme
-    use {'lbrayner/vim-rzip', config = [[require("tap.plugins.vim-rzip")]]}
-
     -- Seemless vim <-> tmux navigation
     use {'aserowy/tmux.nvim', config = [[require("tap.plugins.tmux-nvim")]]}
 
