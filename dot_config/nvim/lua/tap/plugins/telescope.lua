@@ -95,7 +95,7 @@ apply_user_highlights("Telescope", function()
 
     highlight("TelescopePromptTitle", {
         guifg = color({dark = "nord2_gui", light = "bg"}),
-        guibg = color({dark = "nord11_gui", light = "red"})
+        guibg = color({dark = "nord7_gui", light = "none"})
     })
     highlight("TelescopePromptNormal", {
         guifg = color({dark = "nord4_gui", light = "fg"}),
