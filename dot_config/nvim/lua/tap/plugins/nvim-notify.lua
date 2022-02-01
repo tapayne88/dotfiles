@@ -48,7 +48,7 @@ local function apply_user_highlights()
     highlight("NotifyTRACEBody", {link = "Normal"})
 end
 
-augroup("ExplorerHighlights", {
+augroup("NotifyHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},

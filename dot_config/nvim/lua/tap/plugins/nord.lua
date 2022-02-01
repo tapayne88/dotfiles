@@ -29,7 +29,7 @@ local function apply_user_highlights()
     highlight('gitmessengerPopupNormal', {link = 'CursorLine'})
 end
 
-augroup("ExplorerHighlights", {
+augroup("NordCustomHighlights", {
     {
         events = {"VimEnter", "ColorScheme"},
         targets = {"*"},
