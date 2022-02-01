@@ -308,4 +308,22 @@ function utils.require_plugin(name, callback)
     return type(callback) == "function" and callback(plugin) or nil
 end
 
+--- Load custom highlights at the appropriate time
+---@param name string
+---@param callback fun(): nil
+---@return nil
+function utils.apply_user_highlights(name, callback)
+    utils.augroup(name .. "TapUserHighlights", {
+        {
+            events = {"VimEnter", "ColorScheme"},
+            targets = {"*"},
+            command = callback
+        }
+    })
+
+    callback()
+end
+
 return utils
+
+
