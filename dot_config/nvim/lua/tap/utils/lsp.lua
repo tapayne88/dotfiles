@@ -85,7 +85,7 @@ function module.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    apply_user_highlights("UtilsLsp", user_highlights)
+    apply_user_highlights("UtilsLsp", user_highlights, {force = true})
 
     utils.augroup("LspDiagnosticsCursor", {
         {
