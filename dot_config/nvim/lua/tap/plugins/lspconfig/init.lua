@@ -60,20 +60,9 @@ local function setup_servers(initialise)
     initialise()
 end
 
-local apply_user_highlights = function()
+utils.apply_user_highlights("LspConfig", function()
     utils.highlight('FloatBorder', {link = 'LspFloatWinBorder'})
-end
-
-utils.augroup("LspUserHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
+end)
 
 init_servers()
-setup_servers(function()
-    apply_user_highlights()
-    lsp_utils.init_diagnositcs()
-end)
+setup_servers(function() lsp_utils.init_diagnositcs() end)

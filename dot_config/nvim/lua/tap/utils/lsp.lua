@@ -1,5 +1,6 @@
 local utils = require "tap.utils"
 local nnoremap = require"tap.utils".nnoremap
+local apply_user_highlights = require"tap.utils".apply_user_highlights
 
 local function toggle_format()
     if (vim.b.disable_format == nil) then
@@ -20,7 +21,7 @@ function module.format()
     return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
 end
 
-local apply_user_highlights = function()
+local user_highlights = function()
     utils.highlight("DiagnosticUnderlineError", {
         guifg = "none",
         gui = "undercurl",
@@ -84,15 +85,7 @@ function module.on_attach(client, bufnr)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    apply_user_highlights()
-
-    utils.augroup("LspHighlights", {
-        {
-            events = {"VimEnter", "ColorScheme"},
-            targets = {"*"},
-            command = apply_user_highlights
-        }
-    })
+    apply_user_highlights("UtilsLsp", user_highlights)
 
     utils.augroup("LspDiagnosticsCursor", {
         {

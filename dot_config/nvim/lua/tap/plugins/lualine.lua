@@ -2,7 +2,7 @@ local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
 local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
-local augroup = require("tap.utils").augroup
+local apply_user_highlights = require("tap.utils").apply_user_highlights
 local require_plugin = require("tap.utils").require_plugin
 local get_lsp_clients = require("tap.utils.lsp").get_lsp_clients
 
@@ -226,7 +226,7 @@ local sections = {
     lualine_z = {{'%p%%', cond = conditions.hide_in_width}}
 }
 
-local function apply_user_highlights()
+apply_user_highlights("Lualine", function()
     highlight('LualineDiagnosticError', {
         guibg = lsp_colors("error"),
         guifg = color({dark = "nord3_gui", light = "fg"})
@@ -247,17 +247,7 @@ local function apply_user_highlights()
         guibg = lsp_colors("ok"),
         guifg = color({dark = "nord3_gui", light = "fg"})
     })
-end
-
-augroup("LualineHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
-
-apply_user_highlights()
+end)
 
 require('lualine').setup {
     options = {

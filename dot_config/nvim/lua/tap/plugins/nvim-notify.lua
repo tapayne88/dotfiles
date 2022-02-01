@@ -2,7 +2,7 @@ local lsp_symbols = require("tap.utils").lsp_symbols
 local highlight = require("tap.utils").highlight
 local color = require("tap.utils").color
 local nnoremap = require("tap.utils").nnoremap
-local augroup = require("tap.utils").augroup
+local apply_user_highlights = require("tap.utils").apply_user_highlights
 
 vim.notify = require("notify")
 
@@ -20,7 +20,7 @@ require("telescope").load_extension("notify")
 
 nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>")
 
-local function apply_user_highlights()
+apply_user_highlights("NvimNotify", function()
     -- LuaFormatter off
     highlight("NotifyERRORBorder", {guifg = color({dark = "nord11_gui", light = "red"})})
     highlight("NotifyWARNBorder", {guifg = color({dark = "nord13_gui", light = "yellow"})})
@@ -46,14 +46,6 @@ local function apply_user_highlights()
     highlight("NotifyINFOBody", {link = "Normal"})
     highlight("NotifyDEBUGBody", {link = "Normal"})
     highlight("NotifyTRACEBody", {link = "Normal"})
-end
+end)
 
-augroup("NotifyHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
 
-apply_user_highlights()
