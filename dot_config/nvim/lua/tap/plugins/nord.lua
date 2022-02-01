@@ -14,7 +14,7 @@ apply_user_highlights("Nord", function()
         gui = "NONE"
     })
     highlight('FloatBorder', {
-        guifg = color({dark = "nord2_gui", light = "blue0"}),
+        guifg = color({dark = "nord9_gui", light = "blue0"}),
         guibg = color({dark = "nord0_gui", light = "none"})
     })
 

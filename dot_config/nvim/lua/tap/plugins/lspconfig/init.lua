@@ -1,6 +1,5 @@
 local lsp_installer = require "nvim-lsp-installer"
 local lsp_installer_servers = require "nvim-lsp-installer.servers"
-local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
 if vim.env.LSP_DEBUG then
@@ -59,10 +58,6 @@ local function setup_servers(initialise)
 
     initialise()
 end
-
-utils.apply_user_highlights("LspConfig", function()
-    utils.highlight('FloatBorder', {link = 'LspFloatWinBorder'})
-end)
 
 init_servers()
 setup_servers(function() lsp_utils.init_diagnositcs() end)
