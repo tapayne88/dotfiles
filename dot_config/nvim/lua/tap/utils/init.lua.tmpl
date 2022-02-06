@@ -308,4 +308,37 @@ function utils.require_plugin(name, callback)
     return type(callback) == "function" and callback(plugin) or nil
 end
 
+local has_augroup = function(name)
+    local augroups = " " .. vim.api.nvim_exec("augroup", true) .. " "
+
+    return augroups:match("%s" .. name .. "%s") ~= nil
+end
+
+--- Load custom highlights at the appropriate time
+---@param name string
+---@param callback fun(): nil
+---@param _opts {force: boolean}|nil
+---@return nil
+function utils.apply_user_highlights(name, callback, _opts)
+    local opts = _opts or {}
+    local augroup_name = name .. "TapUserHighlights"
+    local force = opts.force or false
+
+    if not force and has_augroup(augroup_name) then
+        vim.notify("augroup already exists with name " .. augroup_name, "error",
+                   {title = "apply_user_highlights"})
+        return
+    end
+
+    utils.augroup(augroup_name, {
+        {
+            events = {"VimEnter", "ColorScheme"},
+            targets = {"*"},
+            command = callback
+        }
+    })
+
+    callback()
+end
+
 return utils

@@ -1,8 +1,8 @@
 local color = require("tap.utils").color
 local lsp_colors = require("tap.utils").lsp_colors
-local augroup = require("tap.utils").augroup
+local apply_user_highlights = require"tap.utils".apply_user_highlights
 
-local function apply_user_highlights()
+apply_user_highlights("NvimScrollbar", function()
     require("scrollbar").setup({
         handle = {color = color({dark = "nord1_gui", light = "bg_highlight"})},
         marks = {
@@ -14,14 +14,6 @@ local function apply_user_highlights()
             Misc = {color = color({dark = "nord15_gui", light = "purple"})}
         }
     })
-end
+end)
 
-augroup("NvimScrollbarHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
 
-apply_user_highlights()

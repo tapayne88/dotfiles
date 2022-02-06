@@ -1,8 +1,8 @@
 local highlight = require("tap.utils").highlight
-local augroup = require("tap.utils").augroup
 local color = require("tap.utils").color
+local apply_user_highlights = require("tap.utils").apply_user_highlights
 
-local function apply_user_highlights()
+apply_user_highlights("Nord", function()
     highlight('Search', {
         guibg = color({dark = "nord9_gui", light = "blue2"}),
         guifg = color({dark = "nord0_gui", light = "bg"}),
@@ -14,7 +14,7 @@ local function apply_user_highlights()
         gui = "NONE"
     })
     highlight('FloatBorder', {
-        guifg = color({dark = "nord2_gui", light = "blue0"}),
+        guifg = color({dark = "nord9_gui", light = "blue0"}),
         guibg = color({dark = "nord0_gui", light = "none"})
     })
 
@@ -27,14 +27,4 @@ local function apply_user_highlights()
     highlight('gitmessengerHash', {link = 'Comment'})
     highlight('gitmessengerHistory', {link = 'Constant'})
     highlight('gitmessengerPopupNormal', {link = 'CursorLine'})
-end
-
-augroup("ExplorerHighlights", {
-    {
-        events = {"VimEnter", "ColorScheme"},
-        targets = {"*"},
-        command = apply_user_highlights
-    }
-})
-
-apply_user_highlights()
+end)
