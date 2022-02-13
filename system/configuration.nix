@@ -86,6 +86,7 @@
     home.packages = with pkgs; [
       # Neovim dependencies
       fd # telescope-file-browser
+      gnumake # neovim treesitter
       ripgrep # telescope searching
       rnix-lsp # nix lsp & formatter
       shellcheck # shell script static analysis tool
