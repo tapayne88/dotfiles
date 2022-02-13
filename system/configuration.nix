@@ -90,15 +90,9 @@
       rnix-lsp # nix lsp & formatter
       shellcheck # shell script static analysis tool
 
+      unstable.kitty
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
-
-    programs.kitty = {
-      enable = true;
-      extraConfig = ''
-        font_family JetBrainsMono
-      '';
-    };
 
     programs.neovim = {
       enable = true;
