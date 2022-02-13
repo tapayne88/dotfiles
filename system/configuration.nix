@@ -78,12 +78,9 @@
 
   home-manager.users.tpayne = { pkgs, ... }:
   {
-    programs.home-manager.enable = true;
+    import = [ ../dot_config/nixpkgs/modules/home.nix ];
 
     home.packages = with pkgs; [
-      bat
-      unstable.neovim
-      unstable.tmux
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
 
@@ -92,6 +89,13 @@
       extraConfig = ''
         font_family JetBrainsMono
       '';
+    };
+
+    programs.neovim = {
+      enable = true;
+      viAlias = true;
+      withNodeJs = true;
+      package = pkgs.unstable.neovim-unwrapped;
     };
   };
 
