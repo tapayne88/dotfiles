@@ -78,9 +78,18 @@
 
   home-manager.users.tpayne = { pkgs, ... }:
   {
-    import = [ ../dot_config/nixpkgs/modules/home.nix ];
+    imports = [
+      ../dot_config/nixpkgs/modules/home.nix
+      ../dot_config/nixpkgs/modules/linux.nix
+    ];
 
     home.packages = with pkgs; [
+      # Neovim dependencies
+      fd # telescope-file-browser
+      ripgrep # telescope searching
+      rnix-lsp # nix lsp & formatter
+      shellcheck # shell script static analysis tool
+
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
 
