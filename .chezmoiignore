@@ -21,3 +21,6 @@ misc
 public
 README.md
 stylua.toml
+
+# Ignore NixOS systems
+system
