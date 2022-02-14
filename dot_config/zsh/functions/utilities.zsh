@@ -15,3 +15,7 @@ function ctop() {
   # local LOCAL_TERM=$(echo -n "$TERM" | sed -e s/tmux/screen/)
   TERM=xterm-256color command ctop "$@"
 }
+
+function up() {
+  command up --no-colors "$@"
+}
