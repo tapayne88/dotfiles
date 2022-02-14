@@ -79,55 +79,16 @@ function eval_command {
 }
 
 HOME_MANAGER_HOME=$XDG_CONFIG_HOME/nixpkgs
-FLAKE_LOCKFILE=$HOME_MANAGER_HOME/flake.lock
-CHEZMOI_FLAKE_LOCKFILE=$(chezmoi source-path "$FLAKE_LOCKFILE")
 
 ############
 # commands #
 ############
-
-function command_show {
-  # Find last flake.lock commit - no idea why I need to redirect git-log to a
-  # file but head kept exiting non-zero!
-  COMMIT=$(head -n 1 <(command git -C "{{ .chezmoi.sourceDir }}" log --branches origin/master --oneline "$CHEZMOI_FLAKE_LOCKFILE") | awk '{ print $1 }')
-  command git -C "{{ .chezmoi.sourceDir }}" show "$COMMIT"
-}
-
-function command_commit {
-  # Are we on the master branch, if not abort
-  BRANCH_NAME="$(git -C "{{ .chezmoi.sourceDir }}" symbolic-ref HEAD 2>/dev/null)" || BRANCH_NAME="(unnamed branch)" # detached HEAD
-  BRANCH_NAME=${BRANCH_NAME##refs/heads/}
-  if [[ "$BRANCH_NAME" != "master" ]]; then
-    die "\n${YELLOW}   dotfiles isn't on master, please commit changes manually${NOFORMAT}\n"
-  fi
-
-  # Do we have some staged changes, if so abort
-  if [[ $(command git -C "{{ .chezmoi.sourceDir }}" diff --cached) != $(command git -C "{{ .chezmoi.sourceDir }}" diff --cached "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
-    die "\n${YELLOW}   changes staged in the git repo, please unstage them before continuing${NOFORMAT}\n"
-  fi
-
-  command git -C "{{ .chezmoi.sourceDir }}" add "$CHEZMOI_FLAKE_LOCKFILE"
-
-  # No changes to commit
-  if [[ -z $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
-    die "\n${YELLOW}   no changes made to flake.lock, perhaps you need to run \`nix-update\`${NOFORMAT}\n"
-  fi
-
-  command git -C "{{ .chezmoi.sourceDir }}" commit --message "Updated flake.lock file"
-
-  msg "\n${YELLOW}   Please push the changes from the repo${NOFORMAT}\n"
-}
 
 function command_update {
   eval_command "nix-channel --update"
   eval_command "nix-env -u"
   eval_command "nix flake update $HOME_MANAGER_HOME"
   eval_command "home-manager switch"
-
-  command cp "$FLAKE_LOCKFILE" "$CHEZMOI_FLAKE_LOCKFILE"
-  if [[ -n $(command git -C "{{ .chezmoi.sourceDir }}" status --short "$CHEZMOI_FLAKE_LOCKFILE") ]]; then
-    msg "\n${YELLOW}   changes made to flake.lock, please commit them with \`nix-update commit\`${NOFORMAT}\n"
-  fi
 
   # bug with nix neovim config writes init.vim which conflicts with my init.lua
   # https://github.com/nix-community/home-manager/issues/1907
@@ -137,8 +98,6 @@ function command_update {
 while :; do
   # default to update
   case "${args[0]-update}" in
-  show) command_show ;;
-  commit) command_commit ;;
   update) command_update ;;
   esac
   break
