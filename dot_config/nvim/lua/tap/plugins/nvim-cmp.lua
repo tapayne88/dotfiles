@@ -14,13 +14,7 @@ cmp.setup {
         ['<C-f>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.close(),
-        ['<C-j>'] = cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Insert
-        }),
-        ['<C-k>'] = cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Insert
-        })
+        ['<C-e>'] = cmp.mapping.close()
     },
 
     snippet = {
@@ -53,5 +47,3 @@ apply_user_highlights("NvimCmp", function()
     highlight("CmpItemKind", {link = "Special", force = true})
     highlight("CmpItemMenu", {link = "Comment", force = true})
 end)
-
-
