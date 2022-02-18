@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -52,7 +53,6 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  
 
   # Configure keymap in X11
   services.xserver.layout = "gb";
@@ -77,31 +77,31 @@
   };
 
   home-manager.users.tpayne = { pkgs, ... }:
-  {
-    imports = [
-      ../dot_config/nixpkgs/modules/home.nix
-      ../dot_config/nixpkgs/modules/linux.nix
-    ];
+    {
+      imports = [
+        ../dot_config/nixpkgs/modules/home.nix
+        ../dot_config/nixpkgs/modules/linux.nix
+      ];
 
-    home.packages = with pkgs; [
-      # Neovim dependencies
-      fd # telescope-file-browser
-      gnumake # neovim treesitter
-      ripgrep # telescope searching
-      rnix-lsp # nix lsp & formatter
-      shellcheck # shell script static analysis tool
+      home.packages = with pkgs; [
+        # Neovim dependencies
+        fd # telescope-file-browser
+        gnumake # neovim treesitter
+        ripgrep # telescope searching
+        rnix-lsp # nix lsp & formatter
+        shellcheck # shell script static analysis tool
 
-      unstable.kitty
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    ];
+        unstable.kitty
+        (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      ];
 
-    programs.neovim = {
-      enable = true;
-      viAlias = true;
-      withNodeJs = true;
-      package = pkgs.unstable.neovim-unwrapped;
+      programs.neovim = {
+        enable = true;
+        viAlias = true;
+        withNodeJs = true;
+        package = pkgs.unstable.neovim-unwrapped;
+      };
     };
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -148,4 +148,3 @@
   system.stateVersion = "21.11"; # Did you read the comment?
 
 }
-
