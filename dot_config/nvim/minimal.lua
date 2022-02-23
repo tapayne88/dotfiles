@@ -11,8 +11,29 @@ local install_path = package_root .. '/packer/start/packer.nvim'
 local function load_plugins()
     require('packer').startup {
         {
-            'wbthomason/packer.nvim'
+            'wbthomason/packer.nvim',
             -- ADD PLUGINS THAT ARE _NECESSARY_ FOR REPRODUCING THE ISSUE
+            'tpope/vim-sleuth', {
+                'nvim-treesitter/nvim-treesitter',
+                config = function()
+                    require"nvim-treesitter.configs".setup {
+                        ensure_installed = {"nix"},
+                        highlight = {enable = true}
+                    }
+                end
+            }, {
+                'neovim/nvim-lspconfig', -- LSP server config
+                config = function()
+                    require'lspconfig'.rnix.setup({
+                        autostart = true,
+                        on_attach = function(client)
+                            if client.resolved_capabilities.document_formatting then
+                                vim.cmd [[nnoremap <space>f <cmd>lua vim.lsp.buf.formatting()<CR>]]
+                            end
+                        end
+                    })
+                end
+            }
         },
         config = {
             package_root = package_root,
