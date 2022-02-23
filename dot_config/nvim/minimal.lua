@@ -17,21 +17,43 @@ local function load_plugins()
                 'nvim-treesitter/nvim-treesitter',
                 config = function()
                     require"nvim-treesitter.configs".setup {
-                        ensure_installed = {"nix"},
+                        ensure_installed = {"lua"},
                         highlight = {enable = true}
                     }
                 end
             }, {
                 'neovim/nvim-lspconfig', -- LSP server config
+                requires = {"williamboman/nvim-lsp-installer"},
                 config = function()
-                    require'lspconfig'.rnix.setup({
-                        autostart = true,
-                        on_attach = function(client)
-                            if client.resolved_capabilities.document_formatting then
-                                vim.cmd [[nnoremap <space>f <cmd>lua vim.lsp.buf.formatting()<CR>]]
-                            end
-                        end
+                    vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
+
+                    local lsp_installer = require "nvim-lsp-installer"
+
+                    lsp_installer.settings({
+                        install_root_dir = "/tmp/nvim/lsp_servers"
                     })
+
+                    local name, version =
+                        require"nvim-lsp-installer.servers".parse_server_identifier(
+                            'sumneko_lua@v2.6.6')
+                    local ok, server = lsp_installer.get_server(name)
+                    if ok then
+                        if not server:is_installed() then
+                            server:install(version)
+                        end
+                        server:on_ready(function()
+                            server:setup({
+                                cmd = {"lua-language-server", "--preview"},
+                                autostart = true,
+                                on_attach = function(client)
+                                    if client.resolved_capabilities
+                                        .document_formatting then
+                                        vim.cmd [[nnoremap <space>f <cmd>lua vim.lsp.buf.formatting()<CR>]]
+                                    end
+                                end
+                            })
+                        end)
+                    end
                 end
             }
         },
