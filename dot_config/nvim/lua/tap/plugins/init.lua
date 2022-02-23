@@ -41,7 +41,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-eunuch'                              -- Adds unix commands like ':Move' etc.
     use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
     use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
-    use 'tpope/vim-sleuth'                              -- Detect indentation
+    use {'tpope/vim-sleuth', disable = true}            -- Detect indentation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
     use 'RRethy/vim-illuminate'                         -- Highlight same words
