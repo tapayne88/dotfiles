@@ -41,13 +41,23 @@ return require('packer').startup(function(use)
     use 'tpope/vim-eunuch'                              -- Adds unix commands like ':Move' etc.
     use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
     use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
-    use {'tpope/vim-sleuth', disable = true}            -- Detect indentation
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'tpope/vim-unimpaired'                          -- Complementary pairs of mappings for common actions
     use 'tpope/vim-vinegar'                             -- Nicer netrw defaults
     -- LuaFormatter on
+
+    -- Detect indentation
+    use {
+        'tpope/vim-sleuth',
+        config = function()
+            -- enable fixing of EOL in each buffer to override global value
+            -- caused by intentional change to vim-sleuth behaviour
+            -- https://github.com/tpope/vim-sleuth/commit/861707c50fba56ec9b8de02533b9b239ff589757
+            vim.cmd [[au BufEnter * setlocal fixendofline]]
+        end
+    }
 
     -- Interactive neovim scratchpad for lua
     use {'rafcamlet/nvim-luapad', cmd = {"Luapad", "LuaRun"}}
