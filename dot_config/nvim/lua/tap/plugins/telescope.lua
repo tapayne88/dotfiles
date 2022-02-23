@@ -10,13 +10,7 @@ require('telescope').setup {
         prompt_prefix = "❯ ",
         layout_strategy = "flex", -- let telescope figure out what to do given the space
         layout_config = {height = {padding = 10}},
-        mappings = {
-            i = {
-                ["<c-s>"] = actions.select_horizontal,
-                ["<C-k>"] = actions.move_selection_previous,
-                ["<C-j>"] = actions.move_selection_next
-            }
-        },
+        mappings = {i = {["<c-s>"] = actions.select_horizontal}},
         borderchars = {
             prompt = {'█', '▌', '▀', '▐', '▐', '▌', '▘', '▝'},
             results = {"─", "│", "─", "│", '┌', '┐', "┘", "└"},
