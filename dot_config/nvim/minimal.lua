@@ -43,14 +43,7 @@ local function load_plugins()
                         end
                         server:on_ready(function()
                             server:setup({
-                                cmd = {"lua-language-server", "--preview"},
-                                autostart = true,
-                                on_attach = function(client)
-                                    if client.resolved_capabilities
-                                        .document_formatting then
-                                        vim.cmd [[nnoremap <space>f <cmd>lua vim.lsp.buf.formatting()<CR>]]
-                                    end
-                                end
+                                cmd = {"lua-language-server", "--preview"}
                             })
                         end)
                     end
