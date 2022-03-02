@@ -150,6 +150,7 @@ return require('packer').startup(function(use)
             'williamboman/nvim-lsp-installer', -- install LSP servers
             'b0o/schemastore.nvim', -- jsonls schemas
             'folke/lua-dev.nvim', -- lua-dev setup
+            'lukas-reineke/lsp-format.nvim', -- async formatting
             {
                 'rmagatti/goto-preview',
                 config = function()

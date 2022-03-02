@@ -3,23 +3,19 @@ local nnoremap = require"tap.utils".nnoremap
 local apply_user_highlights = require"tap.utils".apply_user_highlights
 
 local function toggle_format()
-    if (vim.b.disable_format == nil) then
-        vim.b.disable_format = 1
-        vim.notify("disabled formatting for buffer", "info",
+    local disabled = require"lsp-format".disabled_filetypes[vim.bo.filetype]
+    if (disabled) then
+        require"lsp-format".enable(vim.bo.filetype)
+        vim.notify("enabled formatting for buffer", "info",
                    {title = "LSP Utils"})
     else
-        vim.b.disable_format = nil
-        vim.notify("enabled formatting for buffer", "info",
+        require"lsp-format".disable(vim.bo.filetype)
+        vim.notify("disabled formatting for buffer", "info",
                    {title = "LSP Utils"})
     end
 end
 
 local module = {}
-
--- LSP format wrapper which detects if formatting has been disabled for the buffer
-function module.format()
-    return vim.b.disable_format == nil and vim.lsp.buf.formatting_sync({}, 2000)
-end
 
 local user_highlights = function()
     utils.highlight("DiagnosticUnderlineError", {
@@ -82,6 +78,7 @@ end
 ---@param bufnr number
 ---@return nil
 function module.on_attach(client, bufnr)
+    require"lsp-format".on_attach(client)
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -127,22 +124,9 @@ function module.on_attach(client, bufnr)
     nnoremap(']d', function() vim.diagnostic.goto_next({float = false}) end,
              opts)
 
-    -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        utils.augroup("LspFormatting", {
-            {
-                events = {"BufWritePre"},
-                targets = {"<buffer>"},
-                command = "lua require'tap.utils.lsp'.format()"
-
-            }
-        })
-
-        nnoremap("<leader>tf", toggle_format, opts)
-        nnoremap("<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    elseif client.resolved_capabilities.document_range_formatting then
-        nnoremap("<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-    end
+    -- Formatting
+    nnoremap("<leader>tf", toggle_format, opts)
+    nnoremap("<space>f", "<cmd>Format<CR>", opts)
 end
 
 -- Async function to find npm executable path
