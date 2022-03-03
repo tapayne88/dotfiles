@@ -3,14 +3,16 @@ local nnoremap = require"tap.utils".nnoremap
 local apply_user_highlights = require"tap.utils".apply_user_highlights
 
 local function toggle_format()
-    local disabled = require"lsp-format".disabled_filetypes[vim.bo.filetype]
+    local filetype = vim.bo.filetype
+    local disabled = require"lsp-format".disabled_filetypes[filetype]
+
     if (disabled) then
-        require"lsp-format".enable(vim.bo.filetype)
-        vim.notify("enabled formatting for buffer", "info",
+        require"lsp-format".enable(filetype)
+        vim.notify("enabled formatting for " .. filetype, "info",
                    {title = "LSP Utils"})
     else
-        require"lsp-format".disable(vim.bo.filetype)
-        vim.notify("disabled formatting for buffer", "info",
+        require"lsp-format".disable(filetype)
+        vim.notify("disabled formatting for " .. filetype, "info",
                    {title = "LSP Utils"})
     end
 end
