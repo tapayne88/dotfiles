@@ -17,6 +17,8 @@ local servers = {
     ["global-servers"] = {"rnix"}
 }
 
+local function before() require("lsp-format").setup {} end
+
 local function require_server(server_name)
     return require("tap.plugins.lspconfig.servers." .. server_name)
 end
@@ -59,5 +61,6 @@ local function setup_servers(initialise)
     initialise()
 end
 
+before()
 init_servers()
 setup_servers(function() lsp_utils.init_diagnositcs() end)
