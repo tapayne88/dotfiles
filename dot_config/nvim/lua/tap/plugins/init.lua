@@ -52,9 +52,8 @@ return require('packer').startup(function(use)
     use {
         'tpope/vim-sleuth',
         config = function()
-            -- enable fixing of EOL in each buffer to override global value
-            -- caused by intentional change to vim-sleuth behaviour
-            -- https://github.com/tpope/vim-sleuth/commit/861707c50fba56ec9b8de02533b9b239ff589757
+            -- The below can be removed when Neovim 0.7 is released
+            -- https://github.com/tpope/vim-sleuth/issues/80
             vim.cmd [[au BufEnter * setlocal fixendofline]]
         end
     }
