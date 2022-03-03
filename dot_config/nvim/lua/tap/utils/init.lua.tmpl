@@ -5,6 +5,12 @@ local tokyo_setup = require("tokyonight.colors").setup {style = "day"}
 
 local utils = {}
 
+function utils.is_nightly()
+    local nightly = '0.7'
+    local version = vim.version()
+    return string.format('%i.%i', version.major, version.minor) == nightly
+end
+
 ---Export underlying theme colors
 ---@type table<string, table<string, string>>
 utils.colors = {nord = nord, tokyo = tokyo_setup}
@@ -130,13 +136,14 @@ local function make_mapper(mode, o)
 
         local mapping = mappy:new()
         mapping:set_opts({mode = mode, map = options})
-        -- {{- if (eq .features.neovim_nightly true) }} Neovim nightly
-        mapping:set_maps({[lhs] = rhs})
-        mapping:nightly()
-        -- {{- else }}
-        mapping:set_maps({[lhs] = rhs_to_string(rhs)})
-        mapping:stable()
-        -- {{- end }}
+
+        if utils.is_nightly() then
+            mapping:set_maps({[lhs] = rhs})
+            mapping:nightly()
+        else
+            mapping:set_maps({[lhs] = rhs_to_string(rhs)})
+            mapping:stable()
+        end
 
         if name ~= nil then
             local present, wk = pcall(require, "which-key")
