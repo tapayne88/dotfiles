@@ -5,12 +5,6 @@ local tokyo_setup = require("tokyonight.colors").setup {style = "day"}
 
 local utils = {}
 
-function utils.is_nightly()
-    local nightly = '0.7'
-    local version = vim.version()
-    return string.format('%i.%i', version.major, version.minor) == nightly
-end
-
 ---Export underlying theme colors
 ---@type table<string, table<string, string>>
 utils.colors = {nord = nord, tokyo = tokyo_setup}
@@ -137,7 +131,7 @@ local function make_mapper(mode, o)
         local mapping = mappy:new()
         mapping:set_opts({mode = mode, map = options})
 
-        if utils.is_nightly() then
+        if tap.is_nightly() then
             mapping:set_maps({[lhs] = rhs})
             mapping:nightly()
         else
