@@ -10,3 +10,9 @@ function tap._create(f)
 end
 
 function tap._execute(id, ...) tap._store[id](...) end
+
+function tap.neovim_nightly()
+    local nightly = '0.7'
+    local version = vim.version()
+    return string.format('%i.%i', version.major, version.minor) == nightly
+end
