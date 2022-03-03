@@ -8,11 +8,11 @@ local function toggle_format()
 
     if (disabled) then
         require"lsp-format".enable(filetype)
-        vim.notify("enabled formatting for " .. filetype, "info",
+        vim.notify("enabled formatting for " .. filetype, vim.log.levels.INFO,
                    {title = "LSP Utils"})
     else
         require"lsp-format".disable(filetype)
-        vim.notify("disabled formatting for " .. filetype, "info",
+        vim.notify("disabled formatting for " .. filetype, vim.log.levels.WARN,
                    {title = "LSP Utils"})
     end
 end
