@@ -52,9 +52,11 @@ return require('packer').startup(function(use)
     use {
         'tpope/vim-sleuth',
         config = function()
-            -- The below can be removed when Neovim 0.7 is released
-            -- https://github.com/tpope/vim-sleuth/issues/80
-            vim.cmd [[au BufEnter * setlocal fixendofline]]
+            if not tap.is_nightly() then
+                -- The below can be removed when Neovim 0.7 is released
+                -- https://github.com/tpope/vim-sleuth/issues/80
+                vim.cmd [[au BufEnter * setlocal fixendofline]]
+            end
         end
     }
 
