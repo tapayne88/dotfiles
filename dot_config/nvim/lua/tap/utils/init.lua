@@ -131,7 +131,7 @@ local function make_mapper(mode, o)
         local mapping = mappy:new()
         mapping:set_opts({mode = mode, map = options})
 
-        if tap.is_nightly() then
+        if tap.neovim_nightly() then
             mapping:set_maps({[lhs] = rhs})
             mapping:nightly()
         else
