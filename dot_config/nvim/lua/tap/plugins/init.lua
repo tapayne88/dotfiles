@@ -140,7 +140,7 @@ return require('packer').startup(function(use)
         requires = {
             'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope-file-browser.nvim',
-            'nvim-telescope/telescope-live-grep-raw.nvim'
+            'nvim-telescope/telescope-rg.nvim'
         }
     }
     -- customise vim.ui appearance
