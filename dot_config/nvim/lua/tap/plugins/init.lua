@@ -46,19 +46,8 @@ return require('packer').startup(function(use)
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'tpope/vim-unimpaired'                          -- Complementary pairs of mappings for common actions
     use 'tpope/vim-vinegar'                             -- Nicer netrw defaults
+    use 'tpope/vim-sleuth'                              -- Detect indentation
     -- LuaFormatter on
-
-    -- Detect indentation
-    use {
-        'tpope/vim-sleuth',
-        config = function()
-            if not tap.neovim_nightly() then
-                -- The below can be removed when Neovim 0.7 is released
-                -- https://github.com/tpope/vim-sleuth/issues/80
-                vim.cmd [[au BufEnter * setlocal fixendofline]]
-            end
-        end
-    }
 
     -- Interactive neovim scratchpad for lua
     use {'rafcamlet/nvim-luapad', cmd = {"Luapad", "LuaRun"}}
