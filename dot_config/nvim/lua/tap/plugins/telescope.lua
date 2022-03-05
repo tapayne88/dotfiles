@@ -21,6 +21,7 @@ require('telescope').setup {
 }
 
 require("telescope").load_extension "file_browser"
+require('telescope').load_extension "live_grep_raw"
 
 nnoremap("<leader>ts", ":Telescope<CR>", {name = "Give me Telescope!"})
 nnoremap("<leader>l", function()
