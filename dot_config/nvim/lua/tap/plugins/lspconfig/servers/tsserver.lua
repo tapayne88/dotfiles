@@ -61,6 +61,17 @@ function module.setup(lsp_server)
                 if body.payload.version == nil then return end
 
                 set_tsc_version(header.client_id, body.payload.version)
+            end,
+            ["textDocument/formatting"] = function()
+                -- [lsp-format](https://github.com/lukas-reineke/lsp-format.nvim)
+                -- replaces the default textDocument/formatting handler as part
+                -- of async formatting support.
+                --
+                -- Unfortuantetly despite disabling tsserver formatting it still
+                -- emits these events which messes with the document formatting.
+                --
+                -- Therefore, override tsservers' textDocument/formatting handler
+                -- to not use lsp-format's handler.
             end
         },
         cmd = vim.tbl_flatten({
@@ -72,6 +83,7 @@ function module.setup(lsp_server)
             vim.env.LSP_DEBUG and {"--tsserver-log-verbosity", "verbose"} or {}
         }),
         on_attach = function(client, bufnr)
+            -- force tsserver to not format documents
             client.resolved_capabilities.document_formatting = false
             lsp_utils.on_attach(client, bufnr)
         end
