@@ -66,11 +66,9 @@ nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
 nnoremap("<leader>fg", function()
     require("telescope").extensions.live_grep_raw.live_grep_raw()
 end, {name = "Live Grep"})
-nnoremap("<leader>fG", function() require('telescope.builtin').live_grep() end,
-         {name = "Live Grep"})
 nnoremap("<leader>fw", function()
-    require('telescope.builtin').grep_string {
-        prompt_title = "Grep: " .. vim.fn.expand("<cword>")
+    require("telescope").extensions.live_grep_raw.live_grep_raw {
+        default_text = vim.fn.expand("<cword>")
     }
 end, {name = "Find Word"})
 nnoremap("<leader>ch",
