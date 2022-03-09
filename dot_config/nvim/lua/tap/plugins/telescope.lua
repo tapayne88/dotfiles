@@ -23,6 +23,9 @@ require('telescope').setup {
 require("telescope").load_extension "file_browser"
 require('telescope').load_extension "live_grep_raw"
 
+--------------
+-- Internal --
+--------------
 nnoremap("<leader>ts", ":Telescope<CR>", {name = "Give me Telescope!"})
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
@@ -32,9 +35,18 @@ nnoremap("<leader>l", function()
         selection_strategy = "closest"
     }
 end, {name = "List buffers"})
+nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
+         {name = "Help tags"})
+nnoremap("<leader>ch",
+         function() require('telescope.builtin').command_history() end,
+         {name = "Command history"})
+
+---------
+-- Git --
+---------
 nnoremap("<leader>gf", function()
     require('telescope.builtin').git_files {use_git_root = false}
-end, {name = "Relative git file"})
+end, {name = "Git files relative to pwd"})
 nnoremap("<leader>gF", function() require('telescope.builtin').git_files() end,
          {name = "All git files"})
 nnoremap("<leader>rf", function()
@@ -43,37 +55,43 @@ nnoremap("<leader>rf", function()
         cwd = vim.fn.expand('%:p:h')
     }
 end, {name = "Git files relative to current file"})
+
+-----------
+-- Files --
+-----------
 nnoremap("<leader>ff", function()
     require('telescope.builtin').find_files {hidden = true}
-end, {name = "Find File"})
+end, {name = "Fuzzy file finder"})
 nnoremap("<leader>fb", function()
     require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand('%:p:h'),
         hidden = true
     }
-end, {name = "Relative File Browser"})
+end, {name = "File browser at current file"})
 nnoremap("<leader>fB", function()
     require('telescope').extensions.file_browser.file_browser {hidden = true}
-end, {name = "CWD File Browser"})
+end, {name = "File browser at pwd"})
 nnoremap("<leader>fh", function()
     require('telescope').extensions.file_browser.file_browser {
         cwd = '~',
         hidden = true
     }
-end, {name = "Home Files"})
-nnoremap("<leader>gh", function() require('telescope.builtin').help_tags() end,
-         {name = "Help Tags"})
+end, {name = "File browser at $HOME"})
+
+------------
+-- Search --
+------------
 nnoremap("<leader>fg", function()
-    require("telescope").extensions.live_grep_raw.live_grep_raw()
-end, {name = "Live Grep"})
+    require("telescope").extensions.live_grep_raw.live_grep_raw {
+        prompt_title = "Ripgrep"
+    }
+end, {name = "Search with ripgrep"})
 nnoremap("<leader>fw", function()
     require("telescope").extensions.live_grep_raw.live_grep_raw {
+        prompt_title = "Ripgrep",
         default_text = vim.fn.expand("<cword>")
     }
-end, {name = "Find Word"})
-nnoremap("<leader>ch",
-         function() require('telescope.builtin').command_history() end,
-         {name = "Command History"})
+end, {name = "Search current work with ripgrep"})
 
 apply_user_highlights("Telescope", function()
     local border_colors = {dark = "nord2_gui", light = "blue0"}
