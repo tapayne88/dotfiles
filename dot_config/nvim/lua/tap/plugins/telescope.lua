@@ -16,6 +16,7 @@ require('telescope').setup {
             results = {"─", "│", "─", "│", '┌', '┐', "┘", "└"},
             preview = {'─', '│', '─', '│', '┌', '┐', '┘', '└'}
         },
+        preview = {timeout = 100, treesitter = false},
         path_display = {"truncate"}
     }
 }
