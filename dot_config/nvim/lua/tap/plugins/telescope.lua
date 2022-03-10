@@ -82,16 +82,21 @@ end, {name = "File browser at $HOME"})
 ------------
 -- Search --
 ------------
+local search_opts = {
+    prompt_title = "Ripgrep",
+    layout_strategy = "vertical",
+    path_display = {"shorten", shorten = 2}
+}
 nnoremap("<leader>fg", function()
-    require("telescope").extensions.live_grep_raw.live_grep_raw {
-        prompt_title = "Ripgrep"
-    }
+    require("telescope").extensions.live_grep_raw.live_grep_raw(search_opts)
 end, {name = "Search with ripgrep"})
 nnoremap("<leader>fw", function()
-    require("telescope").extensions.live_grep_raw.live_grep_raw {
-        prompt_title = "Ripgrep",
-        default_text = vim.fn.expand("<cword>")
-    }
+    require("telescope").extensions.live_grep_raw.live_grep_raw(vim.tbl_extend(
+                                                                    "error",
+                                                                    search_opts,
+                                                                    {
+            default_text = vim.fn.expand("<cword>")
+        }))
 end, {name = "Search current work with ripgrep"})
 
 apply_user_highlights("Telescope", function()
