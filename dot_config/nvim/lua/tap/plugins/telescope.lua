@@ -56,6 +56,9 @@ nnoremap("<leader>rf", function()
         cwd = vim.fn.expand('%:p:h')
     }
 end, {name = "Git files relative to current file"})
+nnoremap("<leader>gb",
+         function() require('telescope.builtin').git_branches() end,
+         {name = "Git branches"})
 
 -----------
 -- Files --
