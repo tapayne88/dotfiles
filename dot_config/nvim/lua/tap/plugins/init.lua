@@ -71,7 +71,7 @@ return require('packer').startup(function(use)
     use {'plasticboy/vim-markdown'}
 
     -- easier vim startup time profiling
-    use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
+    use {'dstein64/vim-startuptime', cmd = 'StartupTime'}
     -- Markdown previewing commands
     use {
         'iamcco/markdown-preview.nvim',
