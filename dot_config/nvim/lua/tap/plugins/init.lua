@@ -44,7 +44,6 @@ return require('packer').startup(function(use)
     use 'tpope/vim-sleuth'                              -- Detect indentation
     use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
-    use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     -- LuaFormatter on
@@ -70,8 +69,6 @@ return require('packer').startup(function(use)
     -- Syntax not supported by treesitter
     use {'plasticboy/vim-markdown'}
 
-    -- Async vim compiler plugins (used to run mocha test below)
-    use {'tpope/vim-dispatch', cmd = 'Dispatch'}
     -- easier vim startup time profiling
     use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
     -- Markdown previewing commands
