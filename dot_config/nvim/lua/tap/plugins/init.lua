@@ -47,6 +47,7 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'nathom/filetype.nvim'                          -- A faster version of filetype.vim
+    use 'lewis6991/impatient.nvim'                      -- Chunk cache for neovim modules
     -- LuaFormatter on
 
     -- Interactive neovim scratchpad for lua

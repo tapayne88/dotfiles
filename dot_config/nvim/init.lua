@@ -1,3 +1,7 @@
+require('impatient')
+
+if vim.env.PROFILING == 'true' then require'impatient'.enable_profile() end
+
 require('tap.globals')
 require('tap.settings')
 require('tap.plugins')
