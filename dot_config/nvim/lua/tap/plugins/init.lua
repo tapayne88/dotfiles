@@ -46,6 +46,7 @@ return require('packer').startup(function(use)
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
+    use 'nathom/filetype.nvim'                          -- A faster version of filetype.vim
     -- LuaFormatter on
 
     -- Interactive neovim scratchpad for lua
