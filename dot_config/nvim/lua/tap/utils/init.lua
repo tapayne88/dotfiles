@@ -227,10 +227,29 @@ local function has_buffer_target(commands)
     end, commands) > 0
 end
 
--- Convenience for making autocommands
----@param name string
----@param commands table<string, string | string[] | fun()>[]
-function utils.augroup(name, commands)
+local function augroup_nightly(name, commands)
+    local group = vim.api.nvim_create_augroup(name, {clear = true})
+
+    for _, c in ipairs(commands) do
+        local opts = {group = group}
+
+        if c.targets[1] == "<buffer>" then
+            opts.buffer = 0
+        else
+            opts.pattern = c.targets
+        end
+
+        if type(c.command) == "string" then
+            opts.command = c.command
+        else
+            opts.callback = c.command
+        end
+
+        vim.api.nvim_create_autocmd(c.events, opts)
+    end
+end
+
+local function augroup_stable(name, commands)
     vim.cmd("augroup " .. name)
 
     -- Clear autogroup appropraitely for <buffer> targets
@@ -252,6 +271,17 @@ function utils.augroup(name, commands)
                               table.concat(c.modifiers or {}, " "), command))
     end
     vim.cmd("augroup END")
+end
+
+-- Convenience for making autocommands
+---@param name string
+---@param commands table<string, string | string[] | fun()>[]
+function utils.augroup(name, commands)
+    if tap.neovim_nightly() then
+        augroup_nightly(name, commands)
+    else
+        augroup_stable(name, commands)
+    end
 end
 
 -- Convenience for making commands
