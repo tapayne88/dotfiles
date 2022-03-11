@@ -47,5 +47,3 @@ apply_user_highlights("NvimNotify", function()
     highlight("NotifyDEBUGBody", {link = "Normal"})
     highlight("NotifyTRACEBody", {link = "Normal"})
 end)
-
-
