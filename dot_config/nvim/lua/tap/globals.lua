@@ -11,8 +11,16 @@ end
 
 function tap._execute(id, ...) tap._store[id](...) end
 
+--- Check if neovim version is nightly
 function tap.neovim_nightly()
     local nightly = '0.7'
     local version = vim.version()
     return string.format('%i.%i', version.major, version.minor) == nightly
 end
+
+--- Allow calling of unsafe functions like require in the critical loading path
+function tap.safe_call(fn)
+    local success, value = pcall(fn)
+    return success and value or nil
+end
+
