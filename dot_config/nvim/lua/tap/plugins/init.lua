@@ -3,18 +3,20 @@ local fn = vim.fn
 local packer_scope = fn.stdpath('data') .. '/site/pack/packer'
 local packer_install_path = packer_scope .. '/start/packer.nvim'
 
+local packer_bootstrap
 if fn.empty(fn.glob(packer_install_path)) > 0 then
-    fn.system({
-        'git', 'clone', 'https://github.com/wbthomason/packer.nvim',
-        packer_install_path
+    vim.notify('installing packer.nvim')
+    packer_bootstrap = fn.system({
+        'git', 'clone', '--depth', '1',
+        'https://github.com/wbthomason/packer.nvim', packer_install_path
     })
-    vim.api.nvim_command 'packadd packer.nvim'
+    vim.cmd [[packadd packer.nvim]]
 end
 
 -- If chezmoi.vim is available, load immediately
 if fn.empty(fn.glob(packer_scope .. '/opt/chezmoi.vim')) == 0 then
     vim.g['chezmoi#source_dir_path'] = vim.g.chezmoi_source_dir
-    vim.api.nvim_command 'packadd chezmoi.vim'
+    vim.cmd [[packadd chezmoi.vim]]
 end
 
 return require('packer').startup(function(use)
@@ -44,9 +46,10 @@ return require('packer').startup(function(use)
     use 'tpope/vim-sleuth'                              -- Detect indentation
     use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
-    use 'jaawerth/nrun.vim'                             -- Put locally installed npm module .bin at front of path
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
+    use 'nathom/filetype.nvim'                          -- A faster version of filetype.vim
+    use 'lewis6991/impatient.nvim'                      -- Chunk cache for neovim modules
     -- LuaFormatter on
 
     -- Interactive neovim scratchpad for lua
@@ -70,10 +73,8 @@ return require('packer').startup(function(use)
     -- Syntax not supported by treesitter
     use {'plasticboy/vim-markdown'}
 
-    -- Async vim compiler plugins (used to run mocha test below)
-    use {'tpope/vim-dispatch', cmd = 'Dispatch'}
     -- easier vim startup time profiling
-    use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
+    use {'dstein64/vim-startuptime', cmd = 'StartupTime'}
     -- Markdown previewing commands
     use {
         'iamcco/markdown-preview.nvim',
@@ -227,4 +228,8 @@ return require('packer').startup(function(use)
         "rcarriga/nvim-notify",
         config = [[require("tap.plugins.nvim-notify")]]
     }
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then require('packer').sync() end
 end)
