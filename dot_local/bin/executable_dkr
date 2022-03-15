@@ -22,6 +22,7 @@ Commands:
   shell           Start shell in a running container
   exec            Exec into a running container
   run             Run a container image
+  logs            Tail running container logs
 
 EOF
   exit
@@ -206,6 +207,20 @@ command_run() {
   eval "$docker_cmd run --interactive --tty $container $cmd"
 }
 
+command_logs() {
+  docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
+  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  if [ -z "$container" ]; then
+    exit 0
+  fi
+
+  eval "$docker_cmd logs $container ${args[*]:1}"
+}
+
 while :; do
   case "${args[0]}" in
   ps) command_ps ;;
@@ -214,6 +229,7 @@ while :; do
   shell) command_shell ;;
   exec) command_exec ;;
   run) command_run ;;
+  logs) command_logs ;;
   *) die "Unknown command: $1" ;;
   esac
   break
