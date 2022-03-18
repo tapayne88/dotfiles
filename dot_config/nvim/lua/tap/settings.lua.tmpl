@@ -77,6 +77,18 @@ vim.opt.grepprg = table.concat(tap.safe_call(function()
     return require("telescope.config").values.vimgrep_arguments
 end) or {}, " ")
 
+if tap.neovim_nightly() then
+    vim.opt.fillchars = {
+      horiz = '━',
+      horizup = '┻',
+      horizdown = '┳',
+      vert = '┃',
+      vertleft  = '┫',
+      vertright = '┣',
+      verthoriz = '╋',
+    }
+end
+
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
 

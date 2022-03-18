@@ -29,6 +29,7 @@ local set_colorscheme = function(theme_future)
             vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
 
             vim.g.nord_italic = true
+            vim.g.nord_borders = tap.neovim_nightly()
             vim.o.background = "dark"
             require_plugin("tap.plugins.lualine", function(lualine)
                 lualine.set_theme('nord_custom')

@@ -253,7 +253,8 @@ require('lualine').setup {
     options = {
         theme = nord_theme,
         component_separators = {left = "", right = ""},
-        section_separators = section_separators
+        section_separators = section_separators,
+        globalstatus = tap.neovim_nightly()
     },
     sections = sections,
     inactive_sections = vim.tbl_deep_extend("force", sections,
