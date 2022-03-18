@@ -210,7 +210,10 @@ return require('packer').startup(function(use)
 
     -- keymap plugins
     use {
-        {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
+        {
+            "mrjones2014/legendary.nvim",
+            config = function() require('legendary').setup() end
+        }, {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
         {
             "folke/which-key.nvim",
             config = function() require("which-key").setup {} end
