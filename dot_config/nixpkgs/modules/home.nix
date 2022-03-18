@@ -18,7 +18,6 @@
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
-    gitAndTools.diff-so-fancy # fancy git diffs
     gnupg # gnu pretty good privacy
     gti # alias for git, with a gti
     htop # pretty top

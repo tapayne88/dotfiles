@@ -14,7 +14,7 @@ function fake_chezmoi {
   local current_settings=$3
   local diff="/tmp/fake_chezmoi_diff"
 
-  diff -u $current_settings $new_settings | tee $diff | diff-so-fancy
+  diff -u $current_settings $new_settings | tee $diff | delta --features default
 
   if [[ -s "$diff" && "$arg" != "-n" ]]; then
     command cp -i $new_settings $current_settings
