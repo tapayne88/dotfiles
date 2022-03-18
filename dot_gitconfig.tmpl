@@ -60,7 +60,7 @@
   ft = fetch
   mg = merge
   mb = merge --no-ff --no-commit
-  ch = cherry-pick
+  cp = cherry-pick
   rb = rebase
   ru = reset --hard @{u}
   inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit --fixup=$HASH $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
