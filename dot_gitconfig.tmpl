@@ -51,6 +51,7 @@
   manyFiles = true
 
 [alias]
+  add-fzf = "!f() { FILES=$(git status -s | grep -E \"^.[^ ]\" | fzf --multi --height 15 --preview \"[ {1} = '??' ] && bat {2} || (git diff {2} | diff-so-fancy)\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git add $FILES; }; f"
   st = status
   cm = commit
   cma = commit --amend
