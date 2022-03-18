@@ -158,18 +158,19 @@ local function make_mapper_nightly(mode, o)
         local opts = vim.tbl_extend("keep", _opts and vim.deepcopy(_opts) or {},
                                     parent_opts)
 
-        local options = {}
-
-        options.mode = {mode}
-
-        options.description = opts.name and opts.name or "Missing description"
+        local description = opts.name and opts.name or "Missing description"
         opts.name = nil
 
         opts.buffer = opts.bufnr
         opts.bufnr = nil
 
-        require('legendary').bind_keymap(
-            vim.tbl_extend("error", {lhs, rhs, opts = opts}, options))
+        require('legendary').bind_keymap({
+            lhs,
+            rhs,
+            description = description,
+            mode = {mode},
+            opts = opts
+        })
     end
 end
 
