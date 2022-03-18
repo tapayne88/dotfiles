@@ -59,6 +59,8 @@
   cp = cherry-pick
   rb = rebase
   ru = reset --hard @{u}
+  rs = "!f() { if [ -n \"$*\" ]; then git reset $*; else git reset-fzf; fi }; f"
+  reset-fzf = "!f() { FILES=$(git status --short | grep -E \"^[^ \\?]\" | fzf --multi --height 15 --preview \"git diff HEAD {2} | delta --features fzf\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git reset HEAD $FILES; }; f"
   inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit --fixup=$HASH $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
   ps = push
   psf = push --force-with-lease
