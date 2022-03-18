@@ -11,7 +11,7 @@
   templateDir = {{ .chezmoi.sourceDir }}/misc/git_template
 
 [core]
-  pager = less -x4
+  pager = delta --features default
 
 [color]
   diff = auto
@@ -24,14 +24,6 @@
   oldHighlight = reverse bold red
   newNormal = green bold
   newHighlight = reverse bold green
-
-[color "diff"]
-  meta = white
-  frag = magenta
-  commit = yellow
-  old = red
-  new = green
-  whitespace = red reverse
 
 [pull]
   ff = only
@@ -51,18 +43,24 @@
   manyFiles = true
 
 [alias]
+  a = "!f() { if [ -n \"$*\" ]; then git add $*; else git add-fzf; fi }; f"
+  add-fzf = "!f() { FILES=$(git status --short | grep -E \"^.[^ ]\" | fzf --multi --height 15 --preview \"[ {1} = '??' ] && bat {2} || (git diff {2} | delta --features fzf)\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git add $FILES; }; f"
   st = status
   cm = commit
   cma = commit --amend
   cmae = commit --amend --no-edit
-  co = checkout --ignore-other-worktrees
+  co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git checkout-fzf; fi }; f"
+  checkout-fzf = "!f() { BRANCH=$(git branch --sort=-committerdate | grep -v "^*"  | tr -d '[:blank:]' | fzf --height 15 --preview \"git show {1} | delta --features fzf\"); [ -n \"$BRANCH\" ] && git checkout-command $BRANCH; }; f"
+  checkout-command = checkout --ignore-other-worktrees
   pl = pull
   ft = fetch
   mg = merge
   mb = merge --no-ff --no-commit
-  ch = cherry-pick
+  cp = cherry-pick
   rb = rebase
   ru = reset --hard @{u}
+  rs = "!f() { if [ -n \"$*\" ]; then git reset $*; else git reset-fzf; fi }; f"
+  reset-fzf = "!f() { FILES=$(git status --short | grep -E \"^[^ \\?]\" | fzf --multi --height 15 --preview \"git diff HEAD {2} | delta --features fzf\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git reset HEAD $FILES; }; f"
   inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit --fixup=$HASH $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
   ps = push
   psf = push --force-with-lease
@@ -74,7 +72,7 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = log --pretty=better-oneline --date='format:%Y-%m-%d %H:%M'
+  l = "!f() { git log --pretty=better-oneline --color=always | fzf --ansi --preview \"git show $(echo {1} | tr -d '[:space:]') | delta --features fzf\"; }; f"
   lb = l origin/master..
   lu = l @{u}
   lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
@@ -90,6 +88,7 @@
   renameLimit = 5000
   tool = fugitive
   compactionHeuristic = 1
+  colorMoved = default
 
 [difftool "fugitive"]
   cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
@@ -100,7 +99,24 @@
 [bash]
   showDirtyState = true
 
-[pager]
-  show = diff-so-fancy | less
-  log = diff-so-fancy | less
-  diff = diff-so-fancy | less
+[interactive]
+  diffFilter = delta --features default --color-only
+
+[delta "default"]
+  navigate = true
+  side-by-side = true
+  features = nord-theme
+
+[delta "nord-theme"]
+  line-numbers-zero-style = blue
+  line-numbers-minus-style = white red
+  line-numbers-plus-style = black green
+  minus-style = syntax
+  minus-emph-style = white red
+  plus-style = syntax
+  plus-emph-style = black green
+  syntax-theme = Nord
+
+[delta "fzf"]
+  line-numbers = true
+  features = nord-theme

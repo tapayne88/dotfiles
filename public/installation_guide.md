@@ -12,12 +12,10 @@ sudo apt upgrade
 
 # curl for installation script et al.
 # xz for nix install
-# perl encode module for diff-so-fancy
 # build-essentials & pkg-config for rust related things
 sudo apt install \
   curl \
   xz-utils \
-  liburi-encode-perl \
   build-essential \
   pkg-config
 ```

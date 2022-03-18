@@ -12,12 +12,12 @@
     chezmoi # dotfile manager
     ctop # container top process tool
     curl # curl...
+    delta # better git diffs
     exa # ls replacement
     fd # faster more user friendly find
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
-    gitAndTools.diff-so-fancy # fancy git diffs
     gnupg # gnu pretty good privacy
     gti # alias for git, with a gti
     htop # pretty top

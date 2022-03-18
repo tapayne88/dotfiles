@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+echo -e "\033[0mNC (No color)"
+echo -e "\033[1;37mWHITE\t\033[0;30mBLACK"
+echo -e "\033[0;34mBLUE\t\033[1;34mLIGHT_BLUE"
+echo -e "\033[0;32mGREEN\t\033[1;32mLIGHT_GREEN"
+echo -e "\033[0;36mCYAN\t\033[1;36mLIGHT_CYAN"
+echo -e "\033[0;31mRED\t\033[1;31mLIGHT_RED"
+echo -e "\033[0;35mPURPLE\t\033[1;35mLIGHT_PURPLE"
+echo -e "\033[0;33mYELLOW\t\033[1;33mLIGHT_YELLOW"
+echo -e "\033[1;30mGRAY\t\033[0;37mLIGHT_GRAY"
+
+echo ""
+
+for x in {0..8}; do 
+    for i in {30..37}; do 
+        for a in {40..47}; do 
+            echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m \u001b[0m"
+        done
+        echo
+    done
+done
+
+echo ""
+
+for i in {0..255} ; do
+    printf "\x1b[48;5;%sm%3d\e[0m " "$i" "$i"
+    if (( (i + 1) % 6 == 0 )); then
+        printf "\n";
+    fi
+done
