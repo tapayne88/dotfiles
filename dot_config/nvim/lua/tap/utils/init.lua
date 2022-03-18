@@ -105,11 +105,7 @@ local rhs_to_string = function(rhs)
     return rhs
 end
 
----create a mapping function factory
----@param mode string
----@param o table
----@return function
-local function make_mapper(mode, o)
+local function make_mapper_stable(mode, o)
     local parent_opts = vim.deepcopy(o)
 
     ---Create a mapping
@@ -152,6 +148,40 @@ local function make_mapper(mode, o)
                 }
             })
         end
+    end
+end
+
+local function make_mapper_nightly(mode, o)
+    local parent_opts = vim.deepcopy(o)
+
+    return function(lhs, rhs, _opts)
+        local opts = vim.tbl_extend("keep", _opts and vim.deepcopy(_opts) or {},
+                                    parent_opts)
+
+        local options = {}
+
+        options.mode = {mode}
+
+        options.description = opts.name and opts.name or "Missing description"
+        opts.name = nil
+
+        opts.buffer = opts.bufnr
+        opts.bufnr = nil
+
+        require('legendary').bind_keymap(
+            vim.tbl_extend("error", {lhs, rhs, opts = opts}, options))
+    end
+end
+
+---create a mapping function factory
+---@param mode string
+---@param o table
+---@return function
+local function make_mapper(mode, o)
+    if tap.neovim_nightly() then
+        return make_mapper_nightly(mode, o)
+    else
+        return make_mapper_stable(mode, o)
     end
 end
 
