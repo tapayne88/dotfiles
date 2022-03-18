@@ -52,7 +52,7 @@
 
 [alias]
   a = "!f() { if [ -n \"$*\" ]; then git add $*; else git add-fzf; fi }; f"
-  add-fzf = "!f() { FILES=$(git status -s | grep -E \"^.[^ ]\" | fzf --multi --height 15 --preview \"[ {1} = '??' ] && bat {2} || (git diff {2} | diff-so-fancy)\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git add $FILES; }; f"
+  add-fzf = "!f() { FILES=$(git status --short | grep -E \"^.[^ ]\" | fzf --multi --height 15 --preview \"[ {1} = '??' ] && bat {2} || (git diff {2} | diff-so-fancy)\" | awk '{ print $2 }'); [ -n \"$FILES\" ] && git add $FILES; }; f"
   st = status
   cm = commit
   cma = commit --amend
@@ -78,7 +78,7 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = log --pretty=better-oneline --date='format:%Y-%m-%d %H:%M'
+  l = "!f() { git log --pretty=better-oneline --color=always | fzf --ansi --height 15 --preview \"git show $(echo {1} | tr -d '[:space:]') | diff-so-fancy\"; }; f"
   lb = l origin/master..
   lu = l @{u}
   lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
