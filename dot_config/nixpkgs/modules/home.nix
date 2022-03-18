@@ -12,6 +12,7 @@
     chezmoi # dotfile manager
     ctop # container top process tool
     curl # curl...
+    delta # better git diffs
     exa # ls replacement
     fd # faster more user friendly find
     fpp # facebook picker
