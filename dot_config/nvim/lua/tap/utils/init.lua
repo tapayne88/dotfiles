@@ -133,9 +133,6 @@ local function make_mapper_stable(mode, o)
         local description = options.description
         options.description = nil
 
-        options.buffer = options.bufnr
-        options.bufnr = nil
-
         local mappy = require("mappy")
 
         local mapping = mappy:new()
@@ -165,9 +162,6 @@ local function make_mapper_nightly(mode, o)
         local description = opts.description and opts.description or
                                 "Missing description"
         opts.description = nil
-
-        opts.buffer = opts.bufnr
-        opts.bufnr = nil
 
         register_with_which_key(lhs, description, mode, opts)
 

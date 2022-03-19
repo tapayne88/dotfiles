@@ -96,7 +96,7 @@ function module.on_attach(client, bufnr)
     })
 
     -- Mappings.
-    local opts = {bufnr = bufnr}
+    local opts = {buffer = bufnr}
     nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>', opts)
     nnoremap('gd',
              '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
