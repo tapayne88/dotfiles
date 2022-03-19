@@ -216,7 +216,14 @@ return require('packer').startup(function(use)
     use {
         {
             "mrjones2014/legendary.nvim",
-            config = function() require('legendary').setup {} end
+            config = function()
+                require('legendary').setup {}
+                require("tap.utils").nnoremap('<leader>p',
+                                              ':lua require("legendary").find("keymaps")<CR>',
+                                              {
+                    description = "Legendary keymaps"
+                })
+            end
         }, {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
         {
             "folke/which-key.nvim",
