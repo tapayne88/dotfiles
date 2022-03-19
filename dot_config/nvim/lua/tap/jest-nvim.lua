@@ -293,5 +293,5 @@ local test_nearest = as_test_command(function(run)
     run(pattern)
 end)
 
-nnoremap('t<C-f>', test_file)
-nnoremap('t<C-n>', test_nearest)
+nnoremap('t<C-f>', test_file, {description = "[Jest.nvim] Test file"})
+nnoremap('t<C-n>', test_nearest, {description = "[Jest.nvm] Test nearest"})

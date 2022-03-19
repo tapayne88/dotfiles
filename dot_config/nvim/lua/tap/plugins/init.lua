@@ -102,7 +102,11 @@ return require('packer').startup(function(use)
     use {
         'rhysd/git-messenger.vim',
         cmd = 'GitMessenger',
-        setup = [[require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>')]]
+        setup = function()
+            require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>', {
+                description = "Show git blame for line"
+            })
+        end
     }
 
     -- Git integration ':Gstatus' etc.

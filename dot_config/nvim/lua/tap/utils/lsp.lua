@@ -96,39 +96,52 @@ function module.on_attach(client, bufnr)
     })
 
     -- Mappings.
-    local opts = {buffer = bufnr}
-    nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>', opts)
+    local with_opts = function(description)
+        return vim.tbl_extend("error", {buffer = bufnr},
+                              {description = "[LSP] " .. description})
+    end
+    nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>',
+             with_opts("Go to definition"))
     nnoremap('gd',
              '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
-             opts)
-    nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    nnoremap('gr', '<cmd>Telescope lsp_references<CR>', opts)
-    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    nnoremap('<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    nnoremap("<leader>cc", show_cursor_diagnositcs)
+             with_opts("Go to definition preview"))
+    nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',
+             with_opts("Go to implementation"))
+    nnoremap('gr', '<cmd>Telescope lsp_references<CR>',
+             with_opts("Get references"))
+    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>',
+             with_opts("Show hover information"))
+    nnoremap('<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>',
+             with_opts("Show code actions"))
+    nnoremap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>',
+             with_opts("Rename"))
+    nnoremap("<leader>cc", show_cursor_diagnositcs,
+             with_opts("Show cursor diagnostics"))
 
     -- other mappings, not sure about these
     nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>',
-             opts)
+             with_opts("Add workspace folder"))
     nnoremap('<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>',
-             opts)
+             with_opts("Remove workspace folder"))
     nnoremap('<space>wl',
              '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
-             opts)
-    nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    nnoremap('<space>e', show_line_diagnositcs, opts)
-    nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+             with_opts("List workspace folders"))
+    nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>',
+             with_opts("Go to type definition"))
+    nnoremap('<space>e', show_line_diagnositcs,
+             with_opts("Show line diagnostics"))
+    nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>',
+             with_opts("Open buffer diagnostics in local list"))
 
     -- float = false, CursorHold will show diagnostic
     nnoremap('[d', function() vim.diagnostic.goto_prev({float = false}) end,
-             opts)
+             with_opts("Jump to previous diagnostic"))
     nnoremap(']d', function() vim.diagnostic.goto_next({float = false}) end,
-             opts)
+             with_opts("Jump to next diagnostic"))
 
     -- Formatting
-    nnoremap("<leader>tf", toggle_format, opts)
-    nnoremap("<space>f", "<cmd>Format<CR>", opts)
+    nnoremap("<leader>tf", toggle_format, with_opts("Toggle formatting on save"))
+    nnoremap("<space>f", "<cmd>Format<CR>", with_opts("Run formatting"))
 end
 
 -- Async function to find npm executable path
