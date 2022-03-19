@@ -105,6 +105,20 @@ local rhs_to_string = function(rhs)
     return rhs
 end
 
+local function register_with_which_key(lhs, name, mode, options)
+    local present, wk = pcall(require, "which-key")
+    if not present then return end
+    wk.register({
+        [lhs] = {
+            name,
+            mode = mode,
+            noremap = options.noremap,
+            silent = options.silent,
+            buffer = options.buffer
+        }
+    })
+end
+
 local function make_mapper_stable(mode, o)
     local parent_opts = vim.deepcopy(o)
 
@@ -136,17 +150,7 @@ local function make_mapper_stable(mode, o)
         end
 
         if name ~= nil then
-            local present, wk = pcall(require, "which-key")
-            if not present then return end
-            wk.register({
-                [lhs] = {
-                    name,
-                    mode = mode,
-                    noremap = options.noremap,
-                    silent = options.silent,
-                    buffer = options.buffer
-                }
-            })
+            register_with_which_key(lhs, name, mode, options)
         end
     end
 end
@@ -163,6 +167,8 @@ local function make_mapper_nightly(mode, o)
 
         opts.buffer = opts.bufnr
         opts.bufnr = nil
+
+        register_with_which_key(lhs, description, mode, opts)
 
         require('legendary').bind_keymap({
             lhs,

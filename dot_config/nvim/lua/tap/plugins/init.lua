@@ -212,7 +212,7 @@ return require('packer').startup(function(use)
     use {
         {
             "mrjones2014/legendary.nvim",
-            config = function() require('legendary').setup() end
+            config = function() require('legendary').setup {} end
         }, {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
         {
             "folke/which-key.nvim",
