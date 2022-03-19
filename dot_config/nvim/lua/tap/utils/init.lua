@@ -130,8 +130,8 @@ local function make_mapper_stable(mode, o)
         local _opts = opts and vim.deepcopy(opts) or {}
         local options = vim.tbl_extend("keep", _opts, parent_opts)
 
-        local name = options.name
-        options.name = nil
+        local description = options.description
+        options.description = nil
 
         options.buffer = options.bufnr
         options.bufnr = nil
@@ -149,8 +149,8 @@ local function make_mapper_stable(mode, o)
             mapping:stable()
         end
 
-        if name ~= nil then
-            register_with_which_key(lhs, name, mode, options)
+        if description ~= nil then
+            register_with_which_key(lhs, description, mode, options)
         end
     end
 end
@@ -162,8 +162,9 @@ local function make_mapper_nightly(mode, o)
         local opts = vim.tbl_extend("keep", _opts and vim.deepcopy(_opts) or {},
                                     parent_opts)
 
-        local description = opts.name and opts.name or "Missing description"
-        opts.name = nil
+        local description = opts.description and opts.description or
+                                "Missing description"
+        opts.description = nil
 
         opts.buffer = opts.bufnr
         opts.bufnr = nil
