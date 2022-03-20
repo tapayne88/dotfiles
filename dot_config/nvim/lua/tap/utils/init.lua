@@ -133,17 +133,15 @@ local function make_mapper_stable(mode, o)
         local description = options.description
         options.description = nil
 
-        local mappy = require("mappy")
+        rhs = rhs_to_string(rhs)
 
-        local mapping = mappy:new()
-        mapping:set_opts({mode = mode, map = options})
-
-        if tap.neovim_nightly() then
-            mapping:set_maps({[lhs] = rhs})
-            mapping:nightly()
+        if options.buffer then
+            -- Remove the buffer from the args sent to the key map function
+            local buffer = options.buffer
+            options.buffer = nil
+            vim.api.nvim_buf_set_keymap(buffer, mode, lhs, rhs, options)
         else
-            mapping:set_maps({[lhs] = rhs_to_string(rhs)})
-            mapping:stable()
+            vim.api.nvim_set_keymap(mode, lhs, rhs, options)
         end
 
         if description ~= nil then

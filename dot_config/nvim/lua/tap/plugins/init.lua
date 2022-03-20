@@ -225,8 +225,7 @@ return require('packer').startup(function(use)
                     description = "Legendary keymaps"
                 })
             end
-        }, {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
-        {
+        }, {
             "folke/which-key.nvim",
             config = function() require("which-key").setup {} end
         }
