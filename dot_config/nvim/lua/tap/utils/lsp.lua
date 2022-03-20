@@ -97,8 +97,7 @@ function module.on_attach(client, bufnr)
 
     -- Mappings.
     local with_opts = function(description)
-        return vim.tbl_extend("error", {buffer = bufnr},
-                              {description = "[LSP] " .. description})
+        return {buffer = bufnr, description = "[LSP] " .. description}
     end
     nnoremap('gD', '<cmd>Telescope lsp_definitions<CR>',
              with_opts("Go to definition"))
