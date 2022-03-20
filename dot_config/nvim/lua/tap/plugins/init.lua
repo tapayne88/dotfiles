@@ -216,6 +216,7 @@ return require('packer').startup(function(use)
     use {
         {
             "mrjones2014/legendary.nvim",
+            disable = not tap.neovim_nightly(),
             config = function()
                 require('legendary').setup {}
                 require("tap.utils").nnoremap('<leader>p',
