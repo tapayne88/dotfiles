@@ -246,7 +246,7 @@ function utils.augroup(name, commands)
             local fn_id = tap._create(command)
             command = string.format("lua tap._execute(%s)", fn_id)
         end
-        vim.cmd(string.format("autocmd %s %s %s %s",
+        vim.cmd(string.format("autocmd %s%s %s %s %s", c.user and "User " or "",
                               table.concat(c.events, ","),
                               table.concat(c.targets or {}, ","),
                               table.concat(c.modifiers or {}, " "), command))
