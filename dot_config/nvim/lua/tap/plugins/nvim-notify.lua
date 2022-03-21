@@ -18,7 +18,8 @@ require("notify").setup {
 
 require("telescope").load_extension("notify")
 
-nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>")
+nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>",
+         {description = "Clear notifications"})
 
 apply_user_highlights("NvimNotify", function()
     -- LuaFormatter off

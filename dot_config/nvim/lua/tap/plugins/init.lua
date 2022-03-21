@@ -102,7 +102,11 @@ return require('packer').startup(function(use)
     use {
         'rhysd/git-messenger.vim',
         cmd = 'GitMessenger',
-        setup = [[require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>')]]
+        setup = function()
+            require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>', {
+                description = "Show git blame for line"
+            })
+        end
     }
 
     -- Git integration ':Gstatus' etc.
@@ -210,8 +214,18 @@ return require('packer').startup(function(use)
 
     -- keymap plugins
     use {
-        {"tapayne88/mappy.nvim", branch = "feature/buffer-mappings"},
         {
+            "mrjones2014/legendary.nvim",
+            disable = not tap.neovim_nightly(),
+            config = function()
+                require('legendary').setup {}
+                require("tap.utils").nnoremap('<leader>p',
+                                              ':lua require("legendary").find("keymaps")<CR>',
+                                              {
+                    description = "Legendary keymaps"
+                })
+            end
+        }, {
             "folke/which-key.nvim",
             config = function() require("which-key").setup {} end
         }

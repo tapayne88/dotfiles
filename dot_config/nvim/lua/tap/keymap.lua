@@ -2,36 +2,36 @@ local nnoremap = require("tap.utils").nnoremap
 local vnoremap = require("tap.utils").vnoremap
 local tnoremap = require("tap.utils").tnoremap
 
--- Makes up/down on line wrapped lines work better (more intuitive)
-nnoremap('j', 'gj')
-nnoremap('k', 'gk')
+nnoremap('j', 'gj', {description = "Jump down one wrapped line"})
+nnoremap('k', 'gk', {description = "Jump up one wrapped line"})
 
--- Keep text selected after indentation
-vnoremap('<', '<gv')
-vnoremap('>', '>gv')
+vnoremap('<', '<gv', {description = "Shift selected text left"})
+vnoremap('>', '>gv', {description = "Shift selected text right"})
 
--- Move visual selection up/down
-vnoremap('J', ":m '>+1<CR>gv=gv")
-vnoremap('K', ":m '<-2<CR>gv=gv")
+vnoremap('J', ":m '>+1<CR>gv=gv", {description = "Move selected text down"})
+vnoremap('K', ":m '<-2<CR>gv=gv", {description = "Move selected text up"})
 
--- search for current visual selection
-vnoremap('//', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>")
+vnoremap('//', "y/\\V<C-R>=escape(@\",'/\')<CR><CR>",
+         {description = "Search for current visual selection"})
 
--- quickfix mappings
-nnoremap('<c-q>', ":copen<CR>")
-nnoremap('<LocalLeader>q', ":lopen<CR>")
+nnoremap('<c-q>', ":copen<CR>", {description = "Open quickfix list"})
+nnoremap('<LocalLeader>q', ":lopen<CR>", {description = "Open local list"})
 
-nnoremap('<leader>fp', ":echo @%<CR>")
-nnoremap('<leader>cm', ":!chezmoi apply -v<CR>")
-nnoremap('<leader>ex', ":Ex<CR>")
+nnoremap('<leader>fp', ":echo @%<CR>", {description = "Print filepath"})
+nnoremap('<leader>cm', ":!chezmoi apply -v<CR>",
+         {description = "Apply chezmoi changes"})
+nnoremap('<leader>ex', ":Ex<CR>", {description = "Open netrw"})
 
--- vimrc sourcing
 nnoremap('<leader>evv', ":vsplit " .. vim.g.chezmoi_source_dir ..
-             "/dot_config/nvim/init.lua<CR>")
+             "/dot_config/nvim/init.lua<CR>",
+         {description = "Open nvim/init.lua in vertical split"})
 nnoremap('<leader>ev', ":split " .. vim.g.chezmoi_source_dir ..
-             "/dot_config/nvim/init.lua<CR>")
-nnoremap('<leader>sv', ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>")
+             "/dot_config/nvim/init.lua<CR>",
+         {description = "Open nvim/init.lua in split"})
+nnoremap('<leader>sv', ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>",
+         {description = "Source nvim/init.lua"})
 
--- Esc (C-[) to escape terminal insert mode
-tnoremap('<Esc>', [[<C-\><C-n>]])
-tnoremap('<A-[>', '<Esc>')
+tnoremap('<Esc>', [[<C-\><C-n>]],
+         {description = "Escape terminal insert mode with <Esc>"})
+tnoremap('<A-[>', '<Esc>',
+         {description = "Alternate mapping to send esc to terminal"})
