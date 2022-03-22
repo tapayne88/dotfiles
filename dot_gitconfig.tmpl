@@ -72,7 +72,7 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = "!f() { git log --pretty=better-oneline --color=always | fzf --ansi --preview \"git show $(echo {1} | tr -d '[:space:]') | delta --features fzf\"; }; f"
+  l = "!f() { git log --pretty=better-oneline --color=always "$*" | fzf --ansi --preview \"git show $(echo {1} | tr -d '[:space:]') | delta --features fzf\"; }; f"
   lb = l origin/master..
   lu = l @{u}
   lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
