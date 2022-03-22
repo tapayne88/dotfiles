@@ -81,6 +81,8 @@ setup_colors
 
 # helpers
 
+ps_cmd="ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Command}}'"
+
 get_docker_cmd() {
   docker_msg=$(docker ps 2>&1)
   if [ $? -eq 1 ]; then
@@ -116,7 +118,7 @@ command_ps() {
     exit 1
   fi
 
-  eval "$docker_cmd ps --all"
+  eval "$docker_cmd $ps_cmd --all"
 }
 
 command_rm() {
@@ -126,7 +128,7 @@ command_rm() {
   fi
 
   xargs_cmd=$(get_xargs_cmd)
-  eval "$docker_cmd ps --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd $docker_cmd rm --force"
+  eval "$docker_cmd $ps_cmd --all" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $1 }' | eval "$xargs_cmd $docker_cmd rm --force"
 }
 
 command_rmi() {
@@ -147,7 +149,7 @@ command_shell() {
     exit 1
   fi
 
-  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  container=$(eval "$docker_cmd $ps_cmd" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
   if [ -z "$container" ]; then
     exit 0
   fi
@@ -172,7 +174,7 @@ command_exec() {
   fi
 
   xargs_cmd=$(get_xargs_cmd)
-  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  container=$(eval "$docker_cmd $ps_cmd" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
 
   if [ -z "$container" ]; then
     exit 0
@@ -213,7 +215,7 @@ command_logs() {
     exit 1
   fi
 
-  container=$(eval "$docker_cmd ps" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
+  container=$(eval "$docker_cmd $ps_cmd" | $(get_fzf_cmd) --header-lines=1 | awk '{ print $1 }')
   if [ -z "$container" ]; then
     exit 0
   fi
