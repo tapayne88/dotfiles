@@ -65,7 +65,7 @@
   ps = push
   psf = push --force-with-lease
   psu = push -u
-  br = branch
+  br = branch --sort=-committerdate
   df = diff
   dfc = diff --cached
   dfu = !sh -c 'git diff $0..@{u} $@' 2> /dev/null
