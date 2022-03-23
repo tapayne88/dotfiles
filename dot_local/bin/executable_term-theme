@@ -87,6 +87,10 @@ set_kitty_theme() {
   kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
 }
 
+set_system_theme() {
+  [ "$1" = "nord" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 
+}
+
 read_theme() {
   cat "$THEME_FNAME" 2> /dev/null
 }
@@ -94,7 +98,9 @@ read_theme() {
 parse_params "$@"
 setup_colors
 
-# script logic
+################
+# script logic #
+################
 
 command_echo() {
   THEME=$(read_theme)
@@ -123,6 +129,7 @@ command_toggle() {
 
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
+  set_system_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -132,6 +139,7 @@ command_light() {
 
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
+  set_system_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -141,6 +149,7 @@ command_dark() {
 
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
+  set_system_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
