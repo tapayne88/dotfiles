@@ -9,7 +9,7 @@ local get_term_theme = function()
     return get_os_command_output_async({"term-theme", "echo"}, nil)[1]
 end
 
-local set_colorscheme = function(theme_future)
+local set_colorscheme = function(theme_future, announce)
     -- set nord colorscheme upfront to avoid flickering from "default" scheme
     vim.cmd [[colorscheme nord]]
     return a.run(function()
@@ -24,6 +24,10 @@ local set_colorscheme = function(theme_future)
                 lualine.set_theme('tokyonight')
             end)
             vim.cmd [[colorscheme tokyonight]]
+
+            if announce == true then
+                vim.notify("setting theme to light", "info")
+            end
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
             vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
@@ -35,13 +39,17 @@ local set_colorscheme = function(theme_future)
                 lualine.set_theme('nord_custom')
             end)
             vim.cmd [[colorscheme nord]]
+
+            if announce == true then
+                vim.notify("setting theme to dark", "info")
+            end
         else
             log.error("unknown colorscheme " .. theme)
         end
     end)
 end
 
-set_colorscheme(get_term_theme)
+set_colorscheme(get_term_theme, false)
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways
@@ -66,14 +74,16 @@ set_colorscheme(get_term_theme)
 -- })
 
 command({
-    "ToggleColor", function()
+    "TermThemeToggle", function()
         set_colorscheme(function()
             if get_term_theme() == "dark" then
                 return "light"
             else
                 return "dark"
             end
-        end)
+        end, true)
     end
 })
-command({"RefreshColor", function() set_colorscheme(get_term_theme) end})
+command({
+    "TermThemeRefresh", function() set_colorscheme(get_term_theme, true) end
+})
