@@ -26,7 +26,7 @@ local set_colorscheme = function(theme_future, opts)
             vim.cmd [[colorscheme tokyonight]]
 
             if opts.announce == true then
-                vim.notify("setting theme to light", "info")
+                vim.notify("set theme to light", "info")
             end
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
@@ -40,7 +40,7 @@ local set_colorscheme = function(theme_future, opts)
             vim.cmd [[colorscheme nord]]
 
             if opts.announce == true then
-                vim.notify("setting theme to dark", "info")
+                vim.notify("set theme to dark", "info")
             end
         else
             log.error("unknown colorscheme " .. theme)
