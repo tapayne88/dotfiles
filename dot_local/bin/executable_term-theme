@@ -88,7 +88,8 @@ set_kitty_theme() {
 }
 
 set_system_theme() {
-  [ "$1" = "nord" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 
+  # return true even if system theme fails so we exit 0
+  [ "$1" = "nord" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 || true
 }
 
 read_theme() {
