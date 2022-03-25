@@ -23,6 +23,8 @@ Commands:
   exec            Exec into a running container
   run             Run a container image
   logs            Tail running container logs
+  containers      Get container IDs of running containers
+  images          Get image IDs of container images
 
 EOF
   exit
@@ -79,7 +81,9 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-# helpers
+###########
+# helpers #
+###########
 
 ps_cmd="ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Command}}'"
 
@@ -110,7 +114,9 @@ get_fzf_cmd() {
   echo "fzf --height 15"
 }
 
-# commands
+############
+# commands #
+############
 
 command_ps() {
   docker_cmd=$(get_docker_cmd)
@@ -223,6 +229,28 @@ command_logs() {
   eval "$docker_cmd logs $container ${args[*]:1}"
 }
 
+command_containers() {
+  docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
+  eval "$docker_cmd $ps_cmd" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $1 }'
+}
+
+command_images() {
+  docker_cmd=$(get_docker_cmd)
+  if [ -z "$docker_cmd" ]; then
+    exit 1
+  fi
+
+  eval "$docker_cmd images" | $(get_fzf_cmd) --multi --header-lines=1 | awk '{ print $3 }'
+}
+
+########
+# Main #
+########
+
 while :; do
   case "${args[0]}" in
   ps) command_ps ;;
@@ -232,6 +260,8 @@ while :; do
   exec) command_exec ;;
   run) command_run ;;
   logs) command_logs ;;
+  containers) command_containers ;;
+  images) command_images ;;
   *) die "Unknown command: $1" ;;
   esac
   break
