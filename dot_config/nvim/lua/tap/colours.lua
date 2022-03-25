@@ -11,7 +11,6 @@ local get_term_theme = function()
 end
 
 local set_colorscheme = function(theme_future, opts)
-    local spawn = opts.spawn == nil and true or false
     -- set nord colorscheme upfront to avoid flickering from "default" scheme
     vim.cmd [[colorscheme nord]]
     return a.run(function()
@@ -19,9 +18,6 @@ local set_colorscheme = function(theme_future, opts)
 
         if (theme == "light") then
             vim.g.use_light_theme = true
-            if spawn == true then
-                vim.loop.spawn("term-theme", {args = {"light"}}, nil)
-            end
 
             vim.o.background = "light"
             require_plugin("tap.plugins.lualine", function(lualine)
@@ -34,9 +30,6 @@ local set_colorscheme = function(theme_future, opts)
             end
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
-            if spawn == true then
-                vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
-            end
 
             vim.g.nord_italic = true
             vim.g.nord_borders = tap.neovim_nightly()
@@ -81,20 +74,18 @@ set_colorscheme(get_term_theme, {announce = false})
 
 command({
     "TermThemeToggle", function()
-        set_colorscheme(function()
+        a.run(function()
             if get_term_theme() == "dark" then
-                return "light"
+                vim.loop.spawn("term-theme", {args = {"light"}}, nil)
             else
-                return "dark"
+                vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
             end
-        end, {announce = true})
+        end)
     end
 })
 command({
     "TermThemeRefresh",
-    function()
-        set_colorscheme(get_term_theme, {announce = true, spawn = false})
-    end
+    function() set_colorscheme(get_term_theme, {announce = true}) end
 })
 
 local change_count = 0
@@ -108,7 +99,7 @@ fwatch.watch(vim.fn.expand("$XDG_CONFIG_HOME") .. "/term_theme", {
         end
 
         vim.schedule(function()
-            set_colorscheme(get_term_theme, {announce = true, spawn = false})
+            set_colorscheme(get_term_theme, {announce = true})
         end)
     end
 })
