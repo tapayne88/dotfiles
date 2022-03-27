@@ -92,7 +92,6 @@ local change_count = 0
 fwatch.watch(vim.fn.expand("$XDG_CONFIG_HOME") .. "/term_theme", {
     on_event = function()
         change_count = change_count + 1
-        print('file changed', change_count)
         if change_count <= 1 then
             -- Event is triggered on neovim load so discard it
             return
