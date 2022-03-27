@@ -80,7 +80,7 @@ THEME_LIGHT="tokyonight_day"
 
 set_theme() {
   local THEME
-  [ "$1" = "nord" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
   echo "$THEME" > "$THEME_FNAME"
 }
 
@@ -89,7 +89,7 @@ set_kitty_theme() {
     die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
   fi
   local THEME
-  [ "$1" = "nord" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
   echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
   kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
 }
@@ -99,19 +99,19 @@ BAT_THEME_LIGHT="base16"
 
 set_bat_theme() {
   local THEME
-  [ "$1" = "nord" ] && THEME="$BAT_THEME_DARK" || THEME="$BAT_THEME_LIGHT"
+  [ "$1" = "dark" ] && THEME="$BAT_THEME_DARK" || THEME="$BAT_THEME_LIGHT"
   echo "--theme=\"$THEME\"" > "$XDG_CONFIG_HOME/bat/config"
 }
 
 set_delta_theme() {
   local CMD
-  [ "$1" = "nord" ] && CMD="s/$BAT_THEME_LIGHT/$BAT_THEME_DARK/" || CMD="s/$BAT_THEME_DARK/$BAT_THEME_LIGHT/"
+  [ "$1" = "dark" ] && CMD="s/$BAT_THEME_LIGHT/$BAT_THEME_DARK/" || CMD="s/$BAT_THEME_DARK/$BAT_THEME_LIGHT/"
   sed -i $CMD "$HOME/.gitconfig-theme"
 }
 
 set_system_theme() {
   # return true even if system theme fails so we exit 0
-  [ "$1" = "nord" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 || true
+  [ "$1" = "dark" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 || true
 }
 
 reload_tmux() {
@@ -144,13 +144,9 @@ command_echo() {
 
 command_toggle() {
   local THEME
-  THEME=$(read_theme)
+  THEME=$(command_echo)
 
-  if [ "$THEME" = "nord" ]; then
-    THEME="tokyonight_day"
-  else
-    THEME="nord"
-  fi
+  [ "$THEME" = "light" ] && THEME="dark" || THEME="light"
 
   set_theme $THEME
   set_kitty_theme $THEME
@@ -161,7 +157,7 @@ command_toggle() {
 }
 
 command_light() {
-  local THEME="tokyonight_day"
+  local THEME="light"
 
   set_theme $THEME
   set_kitty_theme $THEME
@@ -172,7 +168,7 @@ command_light() {
 }
 
 command_dark() {
-  local THEME="nord"
+  local THEME="dark"
 
   set_theme $THEME
   set_kitty_theme $THEME
