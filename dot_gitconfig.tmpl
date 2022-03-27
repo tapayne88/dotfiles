@@ -102,12 +102,15 @@
 [interactive]
   diffFilter = delta --features default --color-only
 
+[include]
+  path = ~/.gitconfig-theme
+
 [delta "default"]
   navigate = true
   side-by-side = true
-  features = nord-theme
+  features = my-theme syntax
 
-[delta "nord-theme"]
+[delta "my-theme"]
   line-numbers-zero-style = blue
   line-numbers-minus-style = white red
   line-numbers-plus-style = black green
@@ -115,8 +118,7 @@
   minus-emph-style = red white 
   plus-style = black green
   plus-emph-style = black white
-  syntax-theme = Nord
 
 [delta "fzf"]
   line-numbers = true
-  features = nord-theme
+  features = my-theme syntax
