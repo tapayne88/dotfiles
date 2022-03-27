@@ -115,7 +115,7 @@ set_system_theme() {
 }
 
 reload_tmux() {
-  tmux source-file ~/.tmux.conf
+  tmux source-file ~/.tmux.conf &
 }
 
 read_theme() {
