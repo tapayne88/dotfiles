@@ -79,6 +79,10 @@ set_bat_theme() {
   echo "--theme=\"$1\"" > "$XDG_CONFIG_HOME/bat/config"
 }
 
+set_delta_theme() {
+  [ "$1" = "nord" ] && sed -i 's/base16/Nord/' "$HOME/.gitconfig-theme" || sed -i 's/Nord/base16/' "$HOME/.gitconfig-theme"
+}
+
 set_kitty_theme() {
   if [ "$TERM" != "xterm-kitty" ]; then
     die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
@@ -131,6 +135,7 @@ command_toggle() {
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -141,6 +146,7 @@ command_light() {
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
@@ -151,6 +157,7 @@ command_dark() {
   echo $THEME > "$THEME_FNAME"
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
