@@ -144,37 +144,36 @@ command_toggle() {
 
   if [ "$THEME" = "nord" ]; then
     THEME="tokyonight_day"
-    set_bat_theme "base16"
   else
     THEME="nord"
-    set_bat_theme "nord"
   fi
 
   set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_bat_theme $THEME
   set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
 command_light() {
   local THEME="tokyonight_day"
-  set_bat_theme "base16"
 
   set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_bat_theme $THEME
   set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
 
 command_dark() {
   local THEME="nord"
-  set_bat_theme "nord"
 
   set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
+  set_bat_theme $THEME
   set_delta_theme $THEME
   tmux source-file ~/.tmux.conf
 }
