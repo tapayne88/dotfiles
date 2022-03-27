@@ -75,6 +75,10 @@ parse_params() {
   return 0
 }
 
+set_theme() {
+  echo "$1" > "$THEME_FNAME"
+}
+
 set_bat_theme() {
   echo "--theme=\"$1\"" > "$XDG_CONFIG_HOME/bat/config"
 }
@@ -132,7 +136,7 @@ command_toggle() {
     set_bat_theme "Nord"
   fi
 
-  echo $THEME > "$THEME_FNAME"
+  set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
   set_delta_theme $THEME
@@ -143,7 +147,7 @@ command_light() {
   THEME="tokyonight_day"
   set_bat_theme "base16"
 
-  echo $THEME > "$THEME_FNAME"
+  set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
   set_delta_theme $THEME
@@ -154,7 +158,7 @@ command_dark() {
   THEME="nord"
   set_bat_theme "Nord"
 
-  echo $THEME > "$THEME_FNAME"
+  set_theme $THEME
   set_kitty_theme $THEME
   set_system_theme $THEME
   set_delta_theme $THEME
