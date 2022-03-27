@@ -75,8 +75,23 @@ parse_params() {
   return 0
 }
 
+THEME_DARK="nord"
+THEME_LIGHT="tokyonight_day"
+
 set_theme() {
-  echo "$1" > "$THEME_FNAME"
+  local THEME
+  [ "$1" = "nord" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  echo "$THEME" > "$THEME_FNAME"
+}
+
+set_kitty_theme() {
+  if [ "$TERM" != "xterm-kitty" ]; then
+    die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
+  fi
+  local THEME
+  [ "$1" = "nord" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
 }
 
 BAT_THEME_DARK="Nord"
@@ -92,16 +107,6 @@ set_delta_theme() {
   local CMD
   [ "$1" = "nord" ] && CMD="s/$BAT_THEME_LIGHT/$BAT_THEME_DARK/" || CMD="s/$BAT_THEME_DARK/$BAT_THEME_LIGHT/"
   sed -i $CMD "$HOME/.gitconfig-theme"
-}
-
-set_kitty_theme() {
-  if [ "$TERM" != "xterm-kitty" ]; then
-    die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
-  fi
-  local THEME
-  [ "$1" = "nord" ] && THEME="nord" || THEME="tokyonight_day"
-  echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
-  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
 }
 
 set_system_theme() {
