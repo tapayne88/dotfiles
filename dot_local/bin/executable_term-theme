@@ -122,6 +122,15 @@ read_theme() {
   cat "$THEME_FNAME" 2> /dev/null
 }
 
+update_theme() {
+  set_theme "$1"
+  set_kitty_theme "$1"
+  set_system_theme "$1"
+  set_bat_theme "$1"
+  set_delta_theme "$1"
+  reload_tmux
+}
+
 parse_params "$@"
 setup_colors
 
@@ -148,34 +157,15 @@ command_toggle() {
 
   [ "$THEME" = "light" ] && THEME="dark" || THEME="light"
 
-  set_theme $THEME
-  set_kitty_theme $THEME
-  set_system_theme $THEME
-  set_bat_theme $THEME
-  set_delta_theme $THEME
-  reload_tmux
+  update_theme $THEME
 }
 
 command_light() {
-  local THEME="light"
-
-  set_theme $THEME
-  set_kitty_theme $THEME
-  set_system_theme $THEME
-  set_bat_theme $THEME
-  set_delta_theme $THEME
-  reload_tmux
+  update_theme "light"
 }
 
 command_dark() {
-  local THEME="dark"
-
-  set_theme $THEME
-  set_kitty_theme $THEME
-  set_system_theme $THEME
-  set_bat_theme $THEME
-  set_delta_theme $THEME
-  reload_tmux
+  update_theme "dark"
 }
 
 while :; do
