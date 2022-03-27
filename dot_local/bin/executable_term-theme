@@ -114,6 +114,10 @@ set_system_theme() {
   [ "$1" = "nord" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 || true
 }
 
+reload_tmux() {
+  tmux source-file ~/.tmux.conf
+}
+
 read_theme() {
   cat "$THEME_FNAME" 2> /dev/null
 }
@@ -153,7 +157,7 @@ command_toggle() {
   set_system_theme $THEME
   set_bat_theme $THEME
   set_delta_theme $THEME
-  tmux source-file ~/.tmux.conf
+  reload_tmux
 }
 
 command_light() {
@@ -164,7 +168,7 @@ command_light() {
   set_system_theme $THEME
   set_bat_theme $THEME
   set_delta_theme $THEME
-  tmux source-file ~/.tmux.conf
+  reload_tmux
 }
 
 command_dark() {
@@ -175,7 +179,7 @@ command_dark() {
   set_system_theme $THEME
   set_bat_theme $THEME
   set_delta_theme $THEME
-  tmux source-file ~/.tmux.conf
+  reload_tmux
 }
 
 while :; do
