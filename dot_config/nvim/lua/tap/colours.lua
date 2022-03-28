@@ -4,12 +4,13 @@ local get_os_command_output_async =
     require("tap.utils").get_os_command_output_async
 local a = require("plenary.async")
 local log = require("plenary.log")
+local fwatch = require('fwatch')
 
 local get_term_theme = function()
     return get_os_command_output_async({"term-theme", "echo"}, nil)[1]
 end
 
-local set_colorscheme = function(theme_future)
+local set_colorscheme = function(theme_future, opts)
     -- set nord colorscheme upfront to avoid flickering from "default" scheme
     vim.cmd [[colorscheme nord]]
     return a.run(function()
@@ -17,16 +18,18 @@ local set_colorscheme = function(theme_future)
 
         if (theme == "light") then
             vim.g.use_light_theme = true
-            vim.loop.spawn("term-theme", {args = {"light"}}, nil)
 
             vim.o.background = "light"
             require_plugin("tap.plugins.lualine", function(lualine)
                 lualine.set_theme('tokyonight')
             end)
             vim.cmd [[colorscheme tokyonight]]
+
+            if opts.announce == true then
+                vim.notify("set theme to light", "info")
+            end
         elseif (theme == "dark") then
             vim.g.use_light_theme = false
-            vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
 
             vim.g.nord_italic = true
             vim.g.nord_borders = tap.neovim_nightly()
@@ -35,13 +38,17 @@ local set_colorscheme = function(theme_future)
                 lualine.set_theme('nord_custom')
             end)
             vim.cmd [[colorscheme nord]]
+
+            if opts.announce == true then
+                vim.notify("set theme to dark", "info")
+            end
         else
             log.error("unknown colorscheme " .. theme)
         end
     end)
 end
 
-set_colorscheme(get_term_theme)
+set_colorscheme(get_term_theme, {announce = false})
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways
@@ -66,14 +73,32 @@ set_colorscheme(get_term_theme)
 -- })
 
 command({
-    "ToggleColor", function()
-        set_colorscheme(function()
+    "TermThemeToggle", function()
+        a.run(function()
             if get_term_theme() == "dark" then
-                return "light"
+                vim.loop.spawn("term-theme", {args = {"light"}}, nil)
             else
-                return "dark"
+                vim.loop.spawn("term-theme", {args = {"dark"}}, nil)
             end
         end)
     end
 })
-command({"RefreshColor", function() set_colorscheme(get_term_theme) end})
+command({
+    "TermThemeRefresh",
+    function() set_colorscheme(get_term_theme, {announce = true}) end
+})
+
+local change_count = 0
+fwatch.watch(vim.fn.expand("$XDG_CONFIG_HOME") .. "/term_theme", {
+    on_event = function()
+        change_count = change_count + 1
+        if change_count <= 1 then
+            -- Event is triggered on neovim load so discard it
+            return
+        end
+
+        vim.schedule(function()
+            set_colorscheme(get_term_theme, {announce = true})
+        end)
+    end
+})

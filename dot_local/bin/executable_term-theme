@@ -75,28 +75,79 @@ parse_params() {
   return 0
 }
 
-set_bat_theme() {
-  echo "--theme=\"$1\"" > "$XDG_CONFIG_HOME/bat/config"
+parse_params "$@"
+setup_colors
+
+#############
+# Constants #
+#############
+
+THEME_DARK="nord"
+THEME_LIGHT="tokyonight_day"
+
+BAT_THEME_DARK="Nord"
+BAT_THEME_LIGHT="base16"
+
+###########
+# Helpers #
+###########
+
+set_theme() {
+  local THEME
+  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  echo "$THEME" > "$THEME_FNAME"
 }
 
 set_kitty_theme() {
   if [ "$TERM" != "xterm-kitty" ]; then
     die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
   fi
-  echo "include $1.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
-  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/$THEME.conf"
+  local THEME
+  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+}
+
+set_bat_theme() {
+  local THEME
+  [ "$1" = "dark" ] && THEME="$BAT_THEME_DARK" || THEME="$BAT_THEME_LIGHT"
+  echo "--theme=\"$THEME\"" > "$XDG_CONFIG_HOME/bat/config"
+}
+
+set_delta_theme() {
+  local CMD
+  [ "$1" = "dark" ] && CMD="s/$BAT_THEME_LIGHT/$BAT_THEME_DARK/" || CMD="s/$BAT_THEME_DARK/$BAT_THEME_LIGHT/"
+  sed -i $CMD "$HOME/.gitconfig-theme"
+}
+
+set_system_theme() {
+  # return true even if system theme fails so we exit 0
+  [ "$1" = "dark" ] && dark-mode on > /dev/null 2>&1 || dark-mode off > /dev/null 2>&1 || true
+}
+
+reload_tmux() {
+  tmux source-file ~/.tmux.conf &
 }
 
 read_theme() {
   cat "$THEME_FNAME" 2> /dev/null
 }
 
-parse_params "$@"
-setup_colors
+update_theme() {
+  set_theme "$1"
+  set_kitty_theme "$1"
+  set_system_theme "$1"
+  set_bat_theme "$1"
+  set_delta_theme "$1"
+  reload_tmux
+}
 
-# script logic
+################
+# script logic #
+################
 
 command_echo() {
+  local THEME
   THEME=$(read_theme)
 
   if [ "$THEME" = "" ]; then
@@ -109,39 +160,20 @@ command_echo() {
 }
 
 command_toggle() {
-  THEME=$(read_theme)
+  local THEME
+  THEME=$(command_echo)
 
-  if [ "$THEME" = "" ]; then
-    die "no theme set, try running \`term-theme dark\` or \`term-theme light\`"
-  elif [ "$THEME" = "nord" ]; then
-    THEME="tokyonight_day"
-    set_bat_theme "base16"
-  else
-    THEME="nord"
-    set_bat_theme "Nord"
-  fi
+  [ "$THEME" = "light" ] && THEME="dark" || THEME="light"
 
-  echo $THEME > "$THEME_FNAME"
-  set_kitty_theme $THEME
-  tmux source-file ~/.tmux.conf
+  update_theme $THEME
 }
 
 command_light() {
-  THEME="tokyonight_day"
-  set_bat_theme "base16"
-
-  echo $THEME > "$THEME_FNAME"
-  set_kitty_theme $THEME
-  tmux source-file ~/.tmux.conf
+  update_theme "light"
 }
 
 command_dark() {
-  THEME="nord"
-  set_bat_theme "Nord"
-
-  echo $THEME > "$THEME_FNAME"
-  set_kitty_theme $THEME
-  tmux source-file ~/.tmux.conf
+  update_theme "dark"
 }
 
 while :; do
