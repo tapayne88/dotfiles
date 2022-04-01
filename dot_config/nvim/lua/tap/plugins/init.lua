@@ -48,9 +48,28 @@ return require('packer').startup(function(use)
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
-    use 'nathom/filetype.nvim'                          -- A faster version of filetype.vim
     use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
     -- LuaFormatter on
+
+    -- A faster version of filetype.vim
+    use {
+        'nathom/filetype.nvim',
+        config = function()
+            require("filetype").setup({
+                overrides = {
+                    function_extensions = {
+                        ['tmpl'] = function()
+                            local filename = vim.fn.expand("%:t")
+                            local match = filename:match('.*%.(%w+)%.tmpl$')
+                            if match then
+                                vim.bo.filetype = match
+                            end
+                        end
+                    }
+                }
+            })
+        end
+    }
 
     -- Chunk cache for neovim modules
     use {
