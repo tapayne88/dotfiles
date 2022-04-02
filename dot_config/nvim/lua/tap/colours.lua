@@ -7,7 +7,14 @@ local log = require("plenary.log")
 local fwatch = require('fwatch')
 
 local get_term_theme = function()
-    return get_os_command_output_async({"term-theme", "echo"}, nil)[1]
+    local res, code = get_os_command_output_async({"term-theme", "echo"}, nil)
+    if code ~= 0 then
+        vim.notify(
+            "Failed running `term-theme echo`, ensure `term-theme` has been set",
+            "error")
+        return "dark"
+    end
+    return res[1]
 end
 
 local set_colorscheme = function(theme_future, opts)

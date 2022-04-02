@@ -100,12 +100,13 @@ set_theme() {
 
 set_kitty_theme() {
   if [ "$TERM" != "xterm-kitty" ]; then
-    die "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
+    msg "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
+  else
+    local THEME
+    [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+    echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+    kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
   fi
-  local THEME
-  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
-  echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
-  kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
 }
 
 set_bat_theme() {
