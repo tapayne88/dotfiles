@@ -41,13 +41,13 @@ for profile in ''${(z)NIX_PROFILES}; do
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
 done
 
-{{- if ne "macOS" .ostype }}
+#{{- if ne "macOS" .ostype }}
 # Fix nix locale errors
 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 export LANGUAGE=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
-{{- end }}
+#{{- end }}
 
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
