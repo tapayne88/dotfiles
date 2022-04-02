@@ -52,8 +52,10 @@ return require('packer').startup(function(use)
                         ['tmpl'] = function()
                             local filename = vim.fn.expand("%:t")
                             local match = filename:match('.*%.(%w+)%.tmpl$')
-                            if match then
+                            if match ~= nil then
                                 vim.bo.filetype = match
+                            else
+                                vim.bo.filetype = 'template'
                             end
                         end
                     }
