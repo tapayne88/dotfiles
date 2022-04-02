@@ -50,10 +50,15 @@ return require('packer').startup(function(use)
                     function_extensions = {
                         -- Special handling for chezmoi files (templates, etc.)
                         ['tmpl'] = function()
-                            local filename = vim.fn.expand("%:t")
-                            local match = filename:match('.*%.(%w+)%.tmpl$')
-                            if match ~= nil then
-                                vim.bo.filetype = match
+                            local absolute_path = vim.api.nvim_buf_get_name(0)
+                            local is_chezmoi_source_dir =
+                                absolute_path:match('^' ..
+                                                        vim.g.chezmoi_source_dir) ~=
+                                    nil
+                            local ext = absolute_path:match('.*%.(%w+)%.tmpl$')
+
+                            if is_chezmoi_source_dir and ext ~= nil then
+                                vim.bo.filetype = ext
                             else
                                 vim.bo.filetype = 'template'
                             end
