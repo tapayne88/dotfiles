@@ -13,19 +13,9 @@ if fn.empty(fn.glob(packer_install_path)) > 0 then
     vim.cmd [[packadd packer.nvim]]
 end
 
--- If chezmoi.vim is available, load immediately
-if fn.empty(fn.glob(packer_scope .. '/opt/chezmoi.vim')) == 0 then
-    vim.g['chezmoi#source_dir_path'] = vim.g.chezmoi_source_dir
-    vim.cmd [[packadd chezmoi.vim]]
-end
-
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
-    -- Special handling for chezmoi files (templates, etc.), set as optional so
-    -- packer doesn't load it,  needs to be loaded earlier than packer can
-    use {'alker0/chezmoi.vim', opt = true}
 
     -- treesitter colorscheme
     use {
@@ -58,6 +48,7 @@ return require('packer').startup(function(use)
             require("filetype").setup({
                 overrides = {
                     function_extensions = {
+                        -- Special handling for chezmoi files (templates, etc.)
                         ['tmpl'] = function()
                             local filename = vim.fn.expand("%:t")
                             local match = filename:match('.*%.(%w+)%.tmpl$')
