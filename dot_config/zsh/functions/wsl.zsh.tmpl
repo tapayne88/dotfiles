@@ -4,7 +4,7 @@ function copy-alacritty-config {
 
 function copy-windows-terminal-config {
   local tmp_wsl_settings="/tmp/windows_terminal_settings.json"
-  cat {{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl | chezmoi execute-template > $tmp_wsl_settings
+  cat "{{ .chezmoi.sourceDir }}/misc/windows-terminal-settings.json.tmpl" | chezmoi execute-template > $tmp_wsl_settings
   fake_chezmoi "$1" $tmp_wsl_settings /mnt/c/Users/tapay/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
 }
 

@@ -13,19 +13,9 @@ if fn.empty(fn.glob(packer_install_path)) > 0 then
     vim.cmd [[packadd packer.nvim]]
 end
 
--- If chezmoi.vim is available, load immediately
-if fn.empty(fn.glob(packer_scope .. '/opt/chezmoi.vim')) == 0 then
-    vim.g['chezmoi#source_dir_path'] = vim.g.chezmoi_source_dir
-    vim.cmd [[packadd chezmoi.vim]]
-end
-
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
-    -- Special handling for chezmoi files (templates, etc.), set as optional so
-    -- packer doesn't load it,  needs to be loaded earlier than packer can
-    use {'alker0/chezmoi.vim', opt = true}
 
     -- treesitter colorscheme
     use {
@@ -48,9 +38,36 @@ return require('packer').startup(function(use)
     use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
-    use 'nathom/filetype.nvim'                          -- A faster version of filetype.vim
     use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
     -- LuaFormatter on
+
+    -- A faster version of filetype.vim
+    use {
+        'nathom/filetype.nvim',
+        config = function()
+            require("filetype").setup({
+                overrides = {
+                    function_extensions = {
+                        -- Special handling for chezmoi files (templates, etc.)
+                        ['tmpl'] = function()
+                            local absolute_path = vim.api.nvim_buf_get_name(0)
+                            local is_chezmoi_source_dir =
+                                absolute_path:match('^' ..
+                                                        vim.g.chezmoi_source_dir) ~=
+                                    nil
+                            local ext = absolute_path:match('.*%.(%w+)%.tmpl$')
+
+                            if is_chezmoi_source_dir and ext ~= nil then
+                                vim.bo.filetype = ext
+                            else
+                                vim.bo.filetype = 'template'
+                            end
+                        end
+                    }
+                }
+            })
+        end
+    }
 
     -- Chunk cache for neovim modules
     use {

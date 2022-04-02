@@ -13,6 +13,7 @@ require('tap.colours')
 require('tap.auto')
 require('tap.keymap')
 require('tap.jest-nvim')
+require('tap.redir')
 
 vim.cmd [[
 if filereadable(expand('~/.vimrc.local'))
