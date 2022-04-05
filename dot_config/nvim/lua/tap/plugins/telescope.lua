@@ -27,7 +27,9 @@ require('telescope').load_extension "live_grep_raw"
 --------------
 -- Internal --
 --------------
-nnoremap("<leader>ts", ":Telescope<CR>", {description = "Give me Telescope!"})
+nnoremap("<leader>ts", function()
+    require'telescope.builtin'.builtin {include_extensions = true}
+end, {description = "Give me Telescope!"})
 nnoremap("<leader>l", function()
     require('telescope.builtin').buffers {
         sort_lastused = true,
