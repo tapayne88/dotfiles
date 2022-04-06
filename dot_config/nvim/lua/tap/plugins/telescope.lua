@@ -17,7 +17,8 @@ require('telescope').setup {
             preview = {'─', '│', '─', '│', '┌', '┐', '┘', '└'}
         },
         preview = {timeout = 100, treesitter = false},
-        path_display = {"truncate"}
+        path_display = {"truncate"},
+        dynamic_preview_title = true
     }
 }
 
