@@ -1,6 +1,9 @@
 #######
 # env #
 #######
+# Autostart tmux in kitty
+env ZSH_TMUX_AUTOSTART=true
+
 #{{- if eq "crostini" .ostype }}
 # Force crostini to use x11 as 'auto' uses 'wayland' which seemingly isn't supported
 # by crostini's compositor (sommelier). Using wayland we get the following error
@@ -24,6 +27,7 @@ font_size   {{ .terminal_font_size }}
 #############
 allow_remote_control                yes
 listen_on 			    unix:/tmp/mykitty
+cursor_shape			    block
 cursor_text_color                   background
 cursor_blink_interval               0
 disable_ligatures                   cursor
