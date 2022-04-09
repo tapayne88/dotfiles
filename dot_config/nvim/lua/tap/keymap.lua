@@ -77,3 +77,11 @@ function tap.mappings.setup_mc()
                    [[:nnoremap <lt>Enter> n@z<CR>q:<C-u>let @z=strpart(@z,0,strlen(@z)-1)<CR>n@z]],
                    {remap = true, silent = true})
 end
+
+-- Movement
+-- Automatically save movements larger than 5 lines to the jumplist
+-- Use Ctrl-o/Ctrl-i to navigate backwards and forwards through the jumplist
+nnoremap("j", "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'",
+         {expr = true})
+nnoremap("k", "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'",
+         {expr = true})
