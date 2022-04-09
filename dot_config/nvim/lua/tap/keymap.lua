@@ -1,7 +1,9 @@
 local nnoremap = require("tap.utils").nnoremap
+local nmap = require("tap.utils").nmap
 local vnoremap = require("tap.utils").vnoremap
 local tnoremap = require("tap.utils").tnoremap
 local xnoremap = require("tap.utils").xnoremap
+local termcodes = require("tap.utils").termcodes
 
 nnoremap('j', 'gj', {description = "Jump down one wrapped line"})
 nnoremap('k', 'gk', {description = "Jump up one wrapped line"})
@@ -69,13 +71,11 @@ xnoremap("cQ",
          {expr = true, description = "Multiple cursors: Macros (backwards)"})
 
 -- Functions for multiple cursors
-vim.g.mc = vim.api.nvim_replace_termcodes([[y/\V<C-r>=escape(@", '/')<CR><CR>]],
-                                          true, true, true)
+vim.g.mc = termcodes [[y/\V<C-r>=escape(@", '/')<CR><CR>]]
 
 function tap.mappings.setup_mc()
-    vim.keymap.set("n", "<Enter>",
-                   [[:nnoremap <lt>Enter> n@z<CR>q:<C-u>let @z=strpart(@z,0,strlen(@z)-1)<CR>n@z]],
-                   {remap = true, silent = true})
+    nmap("<Enter>",
+         [[:nnoremap <lt>Enter> n@z<CR>q:<C-u>let @z=strpart(@z,0,strlen(@z)-1)<CR>n@z]])
 end
 
 -- Movement
