@@ -1,5 +1,6 @@
 brew "dark-mode"
 brew "mas"
+brew "node"
 cask "keepingyouawake"
 cask "kitty"
 cask "moom"
