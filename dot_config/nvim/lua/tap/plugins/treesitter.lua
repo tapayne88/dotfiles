@@ -15,7 +15,12 @@ augroup("TreesitterFolding", {
 
 require"nvim-treesitter.configs".setup {
     context_commentstring = {enable = true},
-    ensure_installed = "maintained",
+    ensure_installed = {
+        "bash", "c", "dockerfile", "go", "graphql", "html", "java",
+        "javascript", "jsdoc", "json", "json5", "kotlin", "lua", "make", "nix",
+        "php", "phpdoc", "python", "rust", "scala", "scss", "tsx", "typescript",
+        "vim", "yaml"
+    },
     highlight = {enable = true},
     matchup = {enable = true},
     playground = {
