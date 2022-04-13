@@ -3,6 +3,10 @@ local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
 local Path = require("plenary.path")
 
+--- Wrapper for vim.notify
+---@param msg string
+---@param level string
+---@return nil
 local notify =
     function(msg, level) vim.notify(msg, level, {title = "jest-nvim"}) end
 
@@ -255,20 +259,27 @@ end
 local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
-local function resolve_package_json_parent(_path)
-    local function _resolve_package_json_parent(path)
-        if path.filename == Path.path.root() then return nil end
+--- Get directory path of parent containing package.json file
+---@param path string
+---@return string
+local function resolve_package_json_parent(path)
+    local function _resolve_package_json_parent(_path)
+        if _path.filename == Path.path.root() then return nil end
 
-        local parent = path:parent()
+        local parent = _path:parent()
         if parent:joinpath('package.json'):exists() then
             return parent.filename
         end
 
         return _resolve_package_json_parent(parent)
     end
-    return _resolve_package_json_parent(Path:new(_path))
+    return _resolve_package_json_parent(Path:new(path))
 end
 
+--- Get the test file path relative to the package.json
+---@param file_path string
+---@param test_root string
+---@return string
 local get_relative_test_filename = function(file_path, test_root)
     return Path:new(file_path):make_relative(test_root)
 end
