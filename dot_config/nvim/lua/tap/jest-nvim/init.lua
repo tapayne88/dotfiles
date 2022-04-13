@@ -255,24 +255,22 @@ end
 local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
-local get_relative_test_filename = function(file_path)
-    local function resolve_package_json_parent(path)
+local function resolve_package_json_parent(_path)
+    local function _resolve_package_json_parent(path)
         if path.filename == Path.path.root() then return nil end
 
         local parent = path:parent()
-        if parent:joinpath('package.json'):exists() then return parent end
+        if parent:joinpath('package.json'):exists() then
+            return parent.filename
+        end
 
-        return resolve_package_json_parent(parent)
+        return _resolve_package_json_parent(parent)
     end
-    local path = Path:new(file_path)
-    local pkg_json_path = resolve_package_json_parent(path)
+    return _resolve_package_json_parent(Path:new(_path))
+end
 
-    if pkg_json_path == nil then
-        notify("couldn't find relative file path", vim.log.levels.WARN)
-        return file_path
-    end
-
-    return path:make_relative(pkg_json_path.filename)
+local get_relative_test_filename = function(file_path, test_root)
+    return Path:new(file_path):make_relative(test_root)
 end
 
 --- HOF to create test runner
@@ -280,22 +278,29 @@ end
 ---@return fun()
 local as_test_command = function(fn)
     return function()
-        local test_file_path = get_relative_test_filename(vim.api
-                                                              .nvim_buf_get_name(
-                                                              0))
-        local file_name = vim.fn.expand("%")
+        local file_path = vim.api.nvim_buf_get_name(0)
+        local test_root = resolve_package_json_parent(file_path)
+
+        if test_root == nil then
+            notify("couldn't find test root for " .. file_path,
+                   vim.log.levels.WARN)
+            return
+        end
+
+        local test_file_path = get_relative_test_filename(file_path, test_root)
 
         if not vim.regex(file_pattern):match_str(test_file_path) then
             notify("not a test file", vim.log.levels.INFO)
             return
         end
 
-        local buf_name = get_buffer_name(file_name)
+        local buf_name = get_buffer_name(vim.fn.expand("%"))
         local cmd = get_test_command(test_file_path)
-        local cwd = vim.fn.expand("%:p:h")
 
         local run = function(pattern)
-            a.run(function() jest_test(buf_name, cmd, cwd, pattern) end)
+            a.run(function()
+                jest_test(buf_name, cmd, test_root, pattern)
+            end)
         end
 
         return fn(run)
