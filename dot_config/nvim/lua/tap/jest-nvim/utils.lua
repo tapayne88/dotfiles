@@ -1,18 +1,6 @@
-local new_timer = vim.loop.new_timer
 local a = require("plenary.async")
+local sleep = require("plenary.async.util").sleep
 local Path = require("plenary.path")
-
---- Sleep to allow time for other processes to respond
----@param delay number
----@param done fun()
----@return nil
-local sleep = a.wrap(function(delay, done)
-    local timer = new_timer()
-    timer:start(delay, 0, function()
-        timer:close()
-        done()
-    end)
-end, 2)
 
 local M = {}
 
