@@ -2,6 +2,9 @@ local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
 
+local notify =
+    function(msg, level) vim.notify(msg, level, {title = "jest-nvim"}) end
+
 --- Wrapper for vim.fn.escape
 ---@param chars string
 ---@return fun(str: string)
@@ -224,8 +227,8 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         end, 3)
 
         if str_node == nil then
-            vim.notify("couldn't find child string of test node",
-                       vim.log.levels.WARN, {title = "jest-nvim"})
+            notify("couldn't find child string of test node",
+                   vim.log.levels.WARN)
             return ""
         end
 
@@ -260,8 +263,7 @@ local as_test_command = function(fn)
         local file_path = vim.fn.expand("%")
 
         if not vim.regex(file_pattern):match_str(file_path) then
-            vim.notify("not a test file", vim.log.levels.INFO,
-                       {title = "jest-nvim"})
+            notify("not a test file", vim.log.levels.INFO)
             return
         end
 
@@ -285,8 +287,7 @@ local test_nearest = as_test_command(function(run)
     local pattern = get_nearest_pattern()
 
     if pattern == nil then
-        vim.notify("couldn't find pattern", vim.log.levels.WARN,
-                   {title = "jest-nvim"})
+        notify("couldn't find pattern", vim.log.levels.WARN)
         return
     end
 
