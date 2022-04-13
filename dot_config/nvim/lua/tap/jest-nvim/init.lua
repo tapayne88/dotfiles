@@ -1,6 +1,7 @@
 local new_timer = vim.loop.new_timer
 local nnoremap = require("tap.utils").nnoremap
 local a = require("plenary.async")
+local Path = require("plenary.path")
 
 local notify =
     function(msg, level) vim.notify(msg, level, {title = "jest-nvim"}) end
@@ -254,21 +255,43 @@ end
 local file_pattern = regex_escape(
                          "((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$")
 
+local get_relative_test_filename = function(file_path)
+    local function resolve_package_json_parent(path)
+        if path.filename == Path.path.root() then return nil end
+
+        local parent = path:parent()
+        if parent:joinpath('package.json'):exists() then return parent end
+
+        return resolve_package_json_parent(parent)
+    end
+    local path = Path:new(file_path)
+    local pkg_json_path = resolve_package_json_parent(path)
+
+    if pkg_json_path == nil then
+        notify("couldn't find relative file path", vim.log.levels.WARN)
+        return file_path
+    end
+
+    return path:make_relative(pkg_json_path.filename)
+end
+
 --- HOF to create test runner
 ---@param fn fun(run: fun(pattern?: string|nil))
 ---@return fun()
 local as_test_command = function(fn)
     return function()
-        local file_name = vim.fn.expand("%:p")
-        local file_path = vim.fn.expand("%")
+        local test_file_path = get_relative_test_filename(vim.api
+                                                              .nvim_buf_get_name(
+                                                              0))
+        local file_name = vim.fn.expand("%")
 
-        if not vim.regex(file_pattern):match_str(file_path) then
+        if not vim.regex(file_pattern):match_str(test_file_path) then
             notify("not a test file", vim.log.levels.INFO)
             return
         end
 
-        local buf_name = get_buffer_name(file_path)
-        local cmd = get_test_command(file_name)
+        local buf_name = get_buffer_name(file_name)
+        local cmd = get_test_command(test_file_path)
         local cwd = vim.fn.expand("%:p:h")
 
         local run = function(pattern)
