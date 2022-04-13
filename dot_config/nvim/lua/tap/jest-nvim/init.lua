@@ -17,6 +17,8 @@ local regex_escape = utils.escape("()|") --- Escape regex characters
 ---@return nil
 local jest_test = function(buf_name, cmd, cwd, pattern)
     if vim.fn.bufexists(buf_name) ~= 0 then
+        utils.logger.debug("buffer found")
+
         local term_bufnr = vim.fn.bufnr(buf_name)
         local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
 
@@ -32,9 +34,11 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
     else
         -- open new split on right
         vim.cmd("vertical new")
-        vim.fn.termopen(utils.get_command_string(
-                            utils.command_with_pattern(cmd, pattern)),
-                        {cwd = cwd})
+        local command = utils.get_command_string(
+                            utils.command_with_pattern(cmd, pattern))
+        utils.logger.debug("creating term buffer with command " .. command)
+
+        vim.fn.termopen(command, {cwd = cwd})
         vim.api.nvim_buf_set_name(0, buf_name)
     end
 
@@ -166,6 +170,9 @@ local as_test_command = function(fn)
         local file_path = vim.api.nvim_buf_get_name(0)
         local test_root = utils.resolve_package_json_parent(file_path)
 
+        utils.logger.debug("file_path", file_path)
+        utils.logger.debug("test_root", test_root)
+
         if test_root == nil then
             utils.notify("couldn't find test root for " .. file_path,
                          vim.log.levels.WARN)
@@ -174,6 +181,7 @@ local as_test_command = function(fn)
 
         local test_file_path = utils.get_relative_test_filename(file_path,
                                                                 test_root)
+        utils.logger.debug("test_file_path", test_file_path)
 
         if not vim.regex(file_pattern):match_str(test_file_path) then
             utils.notify("not a test file", vim.log.levels.INFO)
@@ -183,7 +191,11 @@ local as_test_command = function(fn)
         local buf_name = utils.get_buffer_name(vim.fn.expand("%"))
         local cmd = utils.get_test_command(test_file_path)
 
+        utils.logger.debug("buf_name", buf_name)
+        utils.logger.debug("cmd", cmd)
+
         local run = function(pattern)
+            utils.logger.debug("pattern", pattern)
             a.run(function()
                 jest_test(buf_name, cmd, test_root, pattern)
             end)
@@ -194,10 +206,14 @@ local as_test_command = function(fn)
 end
 
 --- Run jest tests for the current file
-local test_file = as_test_command(function(run) run() end)
+local test_file = as_test_command(function(run)
+    utils.logger.debug("test_file")
+    run()
+end)
 
 --- Run jest tests for the nearest test node
 local test_nearest = as_test_command(function(run)
+    utils.logger.debug("test_nearest")
     local pattern = get_nearest_pattern()
 
     if pattern == nil then

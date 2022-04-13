@@ -1,8 +1,11 @@
 local a = require("plenary.async")
 local sleep = require("plenary.async.util").sleep
 local Path = require("plenary.path")
+local log = require("plenary.log")
 
 local M = {}
+
+M.logger = log.new({plugin = "Jest.nvim"})
 
 --- Wrapper for vim.notify
 ---@param msg string
