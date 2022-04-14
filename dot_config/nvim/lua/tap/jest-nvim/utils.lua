@@ -50,13 +50,23 @@ end
 ---@return string
 function M.get_command_string(cmd) return table.concat(cmd, " ") end
 
+-- having :terminal suffix convinces telescope to put a terminal icon for
+-- the buffer in the buffer list
+local test_buffer_name_format = "jest-nvim:%s:terminal"
+local test_buffer_name_pattern = "jest%-nvim:.+:terminal"
+
 --- Get test buffer name for file - one buffer per file
 ---@param file_name string
 ---@return string
 function M.get_buffer_name(file_name)
-    -- having :terminal suffix convinces telescope to put a terminal icon for
-    -- the buffer in the buffer list
-    return string.format("jest-nvim:%s:terminal", file_name)
+    return string.format(test_buffer_name_format, file_name)
+end
+
+--- Check if buffer name is test runner
+---@param buffer_name string
+---@return boolean
+function M.test_buffer_name(buffer_name)
+    return string.find(buffer_name, test_buffer_name_pattern) ~= nil
 end
 
 --- Use vim.schedule to register a function and await it before continuing
@@ -77,6 +87,8 @@ end, 2)
 ---@return nil
 function M.send_keys(keys)
     if keys == nil then return end
+
+    M.logger.debug("sending keys", keys)
 
     M.schedule(function()
         vim.api
@@ -119,6 +131,31 @@ end
 ---@return string
 function M.get_relative_test_filename(file_path, test_root)
     return Path:new(file_path):make_relative(test_root)
+end
+
+--- Close all open test runner windows
+---@return nil
+function M.close_all_test_windows()
+    local open_buffers = vim.tbl_map(function(bufnr)
+        return {bufnr = bufnr, name = vim.api.nvim_buf_get_name(bufnr)}
+    end, vim.api.nvim_list_bufs())
+
+    M.logger.debug("open buffers", open_buffers)
+
+    local test_buffers = vim.tbl_filter(function(buffer)
+        return M.test_buffer_name(buffer.name)
+    end, open_buffers)
+
+    M.logger.debug("test buffers", test_buffers)
+
+    local wins_with_bufs = vim.tbl_flatten(
+                               vim.tbl_map(function(buffer)
+            return vim.fn.win_findbuf(buffer.bufnr)
+        end, test_buffers))
+
+    -- close all open splits
+    vim.tbl_map(function(win) vim.api.nvim_win_close(win, true) end,
+                wins_with_bufs)
 end
 
 return M

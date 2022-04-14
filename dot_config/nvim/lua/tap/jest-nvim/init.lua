@@ -21,15 +21,13 @@ local regex_escape = utils.escape("()|") --- Escape regex characters
 ---@param pattern? string|nil
 ---@return nil
 local jest_test = function(buf_name, cmd, cwd, pattern)
+    -- close open test splits
+    utils.close_all_test_windows()
+
+    -- We can only reuse the test runner based on buf_name as we can't tell if
+    -- any running jest processes support this file
     if vim.fn.bufexists(buf_name) ~= 0 then
         utils.logger.debug("buffer found")
-
-        local term_bufnr = vim.fn.bufnr(buf_name)
-        local wins_with_buf = vim.fn.win_findbuf(term_bufnr)
-
-        -- close all open splits
-        vim.tbl_map(function(win) vim.api.nvim_win_close(win, true) end,
-                    wins_with_buf)
 
         vim.cmd("vsplit " .. buf_name)
 
@@ -41,6 +39,7 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
         vim.cmd("vertical new")
         local command = utils.get_command_string(
                             utils.command_with_pattern(cmd, pattern))
+
         utils.logger.debug("creating term buffer with command " .. command)
 
         vim.fn.termopen(command, {cwd = cwd})
