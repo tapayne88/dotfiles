@@ -3,11 +3,6 @@ local ts = require("tap.jest-nvim.treesitter")
 local utils = require("tap.jest-nvim.utils")
 local a = require("plenary.async")
 
--- TODO:
---  - send shift-g before running next test (if buf exists)
---  - fix tab closing when other test file run
---  - expand logging
-
 ---@class Node
 ---@field iter_children fun()
 ---@field parent fun()
