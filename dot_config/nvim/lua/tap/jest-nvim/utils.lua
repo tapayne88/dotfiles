@@ -136,21 +136,16 @@ end
 --- Close all open test runner windows
 ---@return nil
 function M.close_all_test_windows()
-    local open_buffers = vim.tbl_map(function(bufnr)
-        return {bufnr = bufnr, name = vim.api.nvim_buf_get_name(bufnr)}
+    local test_buffers = vim.tbl_filter(function(bufnr)
+        local name = vim.api.nvim_buf_get_name(bufnr)
+        return M.test_buffer_name(name)
     end, vim.api.nvim_list_bufs())
-
-    M.logger.debug("open buffers", open_buffers)
-
-    local test_buffers = vim.tbl_filter(function(buffer)
-        return M.test_buffer_name(buffer.name)
-    end, open_buffers)
 
     M.logger.debug("test buffers", test_buffers)
 
     local wins_with_bufs = vim.tbl_flatten(
-                               vim.tbl_map(function(buffer)
-            return vim.fn.win_findbuf(buffer.bufnr)
+                               vim.tbl_map(function(bufnr)
+            return vim.fn.win_findbuf(bufnr)
         end, test_buffers))
 
     -- close all open splits
