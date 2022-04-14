@@ -31,6 +31,8 @@ end
 
 local escape_terminal_keys = M.escape("*") --- Escape characters with special meaning in shells
 
+M.regex_escape = M.escape("()|") --- Escape regex characters
+
 --- Add pattern to command table
 ---@param cmd string[]
 ---@param pattern string
