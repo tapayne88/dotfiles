@@ -129,13 +129,7 @@ set -g @prefix_highlight_copy_prompt 'copy'
 # yardnsm/tmux-1password #
 ##########################
 # Filter for cli tags - without below, default filtering excludes anything without a url
-set -g @1password-items-jq-filter '\
-  .[] \
-  | [select(.overview.tags | map(select(. == "cli")) | length == 1)?] \
-  | map([ .overview.title, .uuid ] \
-  | join(",")) \
-  | .[] \
-'
+set -g @1password-filter-tags 'cli'
 
 #########################
 # fcsonline/tmux-thumbs #
