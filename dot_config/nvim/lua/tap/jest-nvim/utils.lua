@@ -3,9 +3,12 @@ local sleep = require("plenary.async.util").sleep
 local Path = require("plenary.path")
 local log = require("plenary.log")
 
+local debug = vim.fn.getenv "DEBUG_JEST_NVIM"
+if debug == vim.NIL then debug = false end
+
 local M = {}
 
-M.logger = log.new({plugin = "Jest.nvim"})
+M.logger = log.new({plugin = "Jest.nvim", level = debug and "debug" or "info"})
 
 --- Wrapper for vim.notify
 ---@param msg string

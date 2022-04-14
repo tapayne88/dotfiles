@@ -39,7 +39,8 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
         local command = utils.get_command_string(
                             utils.command_with_pattern(cmd, pattern))
 
-        utils.logger.debug("creating term buffer with command " .. command)
+        utils.logger.debug("creating term buffer with command `" .. command ..
+                               "`")
 
         vim.fn.termopen(command, {cwd = cwd})
         vim.api.nvim_buf_set_name(0, buf_name)
