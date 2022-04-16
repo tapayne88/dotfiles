@@ -119,38 +119,11 @@ local function register_with_which_key(lhs, name, mode, options)
     })
 end
 
-local function make_mapper_stable(mode, o)
-    local parent_opts = vim.deepcopy(o)
-
-    ---Create a mapping
-    ---@param lhs string
-    ---@param rhs string|function
-    ---@param opts table
-    return function(lhs, rhs, opts)
-        local _opts = opts and vim.deepcopy(opts) or {}
-        local options = vim.tbl_extend("keep", _opts, parent_opts)
-
-        local description = options.description
-        options.description = nil
-
-        rhs = rhs_to_string(rhs)
-
-        if options.buffer then
-            -- Remove the buffer from the args sent to the key map function
-            local buffer = options.buffer
-            options.buffer = nil
-            vim.api.nvim_buf_set_keymap(buffer, mode, lhs, rhs, options)
-        else
-            vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-        end
-
-        if description ~= nil then
-            register_with_which_key(lhs, description, mode, options)
-        end
-    end
-end
-
-local function make_mapper_nightly(mode, o)
+---create a mapping function factory
+---@param mode string
+---@param o table
+---@return function
+local function make_mapper(mode, o)
     local parent_opts = vim.deepcopy(o)
 
     return function(lhs, rhs, _opts)
@@ -170,18 +143,6 @@ local function make_mapper_nightly(mode, o)
             mode = {mode},
             opts = opts
         })
-    end
-end
-
----create a mapping function factory
----@param mode string
----@param o table
----@return function
-local function make_mapper(mode, o)
-    if tap.neovim_nightly() then
-        return make_mapper_nightly(mode, o)
-    else
-        return make_mapper_stable(mode, o)
     end
 end
 
