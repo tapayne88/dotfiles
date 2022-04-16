@@ -41,35 +41,6 @@ return require('packer').startup(function(use)
     use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
     -- LuaFormatter on
 
-    -- A faster version of filetype.vim
-    use {
-        'nathom/filetype.nvim',
-        disable = tap.neovim_nightly(),
-        config = function()
-            require("filetype").setup({
-                overrides = {
-                    function_extensions = {
-                        -- Special handling for chezmoi files (templates, etc.)
-                        ['tmpl'] = function()
-                            local absolute_path = vim.api.nvim_buf_get_name(0)
-                            local is_chezmoi_source_dir =
-                                absolute_path:match('^' ..
-                                                        vim.g.chezmoi_source_dir) ~=
-                                    nil
-                            local ext = absolute_path:match('.*%.(%w+)%.tmpl$')
-
-                            if is_chezmoi_source_dir and ext ~= nil then
-                                vim.bo.filetype = ext
-                            else
-                                vim.bo.filetype = 'template'
-                            end
-                        end
-                    }
-                }
-            })
-        end
-    }
-
     -- Chunk cache for neovim modules
     use {
         'lewis6991/impatient.nvim',
@@ -235,7 +206,6 @@ return require('packer').startup(function(use)
     use {
         {
             "mrjones2014/legendary.nvim",
-            disable = not tap.neovim_nightly(),
             config = function()
                 require('legendary').setup {}
                 require("tap.utils").nnoremap('<leader>p',
