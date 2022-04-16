@@ -4,13 +4,20 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-# env:
+env:
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
+  ZSH_TMUX_AUTOSTART: "true"
+  #{{- if eq "wsl" .ostype }}
+  # Need to whitelist env var for them to work in WSL as setting normally
+  # doesn't work, see link which sort of explains it
+  # https://devblogs.microsoft.com/commandline/share-environment-vars-between-wsl-and-windows/
+  WSLENV: ZSH_TMUX_AUTOSTART
+  #{{- end }}
 
 window:
   # Window dimensions (changes require restart)
