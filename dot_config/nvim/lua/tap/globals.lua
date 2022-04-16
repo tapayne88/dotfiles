@@ -2,7 +2,7 @@
 --- store all callbacks in one global table so they are able to survive re-requiring this file
 _TapGlobalCallbacks = _TapGlobalCallbacks or {}
 
-_G.tap = {_store = _TapGlobalCallbacks}
+_G.tap = {_store = _TapGlobalCallbacks, mappings = {}}
 
 function tap._create(f)
     table.insert(tap._store, f)
