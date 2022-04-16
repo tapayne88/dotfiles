@@ -44,6 +44,7 @@ return require('packer').startup(function(use)
     -- A faster version of filetype.vim
     use {
         'nathom/filetype.nvim',
+        disable = tap.neovim_nightly(),
         config = function()
             require("filetype").setup({
                 overrides = {
