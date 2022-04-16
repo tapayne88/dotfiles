@@ -95,6 +95,10 @@ if tap.neovim_nightly() then
         verthoriz = '╋'
     }
 
+    -- enable filetype.lua
+    vim.g.do_filetype_lua = 1
+    -- enable filetype.vim as fallback
+    vim.g.did_load_filetypes = 0
     vim.filetype.add({
         extension = {
             -- Special handling for chezmoi files (templates, etc.)
