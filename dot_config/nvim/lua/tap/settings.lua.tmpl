@@ -77,24 +77,45 @@ vim.opt.grepprg = table.concat(tap.safe_call(function()
     return require("telescope.config").values.vimgrep_arguments
 end) or {}, " ")
 
-if tap.neovim_nightly() then
-    vim.opt.fillchars = {
-        horiz = '━',
-        horizup = '┻',
-        horizdown = '┳',
-        vert = '┃',
-        vertleft = '┫',
-        vertright = '┣',
-        verthoriz = '╋'
-    }
-end
-
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
 
 vim.g.netrw_liststyle = 3
 
 vim.g.chezmoi_source_dir = "{{ .chezmoi.sourceDir }}"
+
+vim.opt.fillchars = {
+    horiz = '━',
+    horizup = '┻',
+    horizdown = '┳',
+    vert = '┃',
+    vertleft = '┫',
+    vertright = '┣',
+    verthoriz = '╋'
+}
+
+-- enable filetype.lua
+vim.g.do_filetype_lua = 1
+-- enable filetype.vim as fallback
+vim.g.did_load_filetypes = 0
+vim.filetype.add({
+    extension = {
+        -- Special handling for chezmoi files (templates, etc.)
+        ['tmpl'] = function(path)
+            local is_chezmoi_source_dir = path:match('^' ..
+                                                         vim.g
+                                                             .chezmoi_source_dir) ~=
+                                              nil
+            local ext = path:match('.*%.(%w+)%.tmpl$')
+
+            if is_chezmoi_source_dir and ext ~= nil then
+                vim.bo.filetype = ext
+            else
+                vim.bo.filetype = 'template'
+            end
+        end
+    }
+})
 
 -- {{- if eq "crostini" .ostype }}
 -- Configure vim's other clipboard registers to use xsel (system clipboard)
