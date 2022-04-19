@@ -42,10 +42,9 @@ M.regex_escape = M.escape("()|") --- Escape regex characters
 ---@return string[]
 function M.command_with_pattern(cmd, pattern)
     return pattern == nil and cmd or vim.tbl_flatten({
-        cmd,
-        {
+        cmd, {
             "--testNamePattern",
-            string.format('"%s"', escape_terminal_keys(pattern))
+            string.format('"%s"', M.regex_escape(escape_terminal_keys(pattern)))
         }
     })
 end
@@ -95,10 +94,8 @@ function M.send_keys(keys)
 
     M.logger.debug("sending keys", keys)
 
-    M.schedule(function()
-        vim.api
-            .nvim_chan_send(vim.b.terminal_job_id, escape_terminal_keys(keys))
-    end)
+    M.schedule(
+        function() vim.api.nvim_chan_send(vim.b.terminal_job_id, keys) end)
 
     -- Allow jest UI time to respond to keystrokes
     sleep(200)

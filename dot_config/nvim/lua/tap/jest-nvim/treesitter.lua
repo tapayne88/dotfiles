@@ -95,8 +95,7 @@ local get_pattern_from_test_nodes = function(nodes, buf)
         return vim.treesitter.get_node_text(str_node:child(1), buf)
     end, nodes)
 
-    return table.concat(vim.tbl_map(utils.regex_escape,
-                                    utils.tbl_reverse(test_strings)), " ")
+    return table.concat(utils.tbl_reverse(test_strings), " ")
 end
 
 local M = {}
