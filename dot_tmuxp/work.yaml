@@ -27,7 +27,9 @@ windows:
       - nvm use system
       focus: true
     - nvm use
-    - nvm use
+    - shell_command:
+      - nvm use
+      - echo "press enter to run" && read && yarn --cwd modern start
 - window_name: dotfiles
   window_index: 9
   layout: main-vertical
