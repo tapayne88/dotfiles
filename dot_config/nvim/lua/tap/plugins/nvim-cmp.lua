@@ -10,12 +10,12 @@ vim.opt.shortmess:append("c")
 vim.opt.completeopt = {"menuone", "noselect"}
 
 cmp.setup {
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         ['<C-f>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.close()
-    },
+    }),
 
     snippet = {
         expand = function(args) require('luasnip').lsp_expand(args.body) end
