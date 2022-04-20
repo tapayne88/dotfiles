@@ -1,0 +1,46 @@
+session_name: work
+windows:
+- window_name: dash-vis
+  window_index: 1
+  layout: main-vertical
+  focus: true
+  options:
+    main-pane-width: 50%
+  shell_command_before:
+    - z dash
+    - clear
+  panes:
+    - shell_command:
+      - nvm use system
+      focus: true
+    - nvm use
+- window_name: core-client
+  window_index: 2
+  layout: main-vertical
+  options:
+    main-pane-width: 50%
+  shell_command_before:
+    - z core-client
+    - clear
+  panes:
+    - shell_command:
+      - nvm use system
+      focus: true
+    - nvm use
+    - shell_command:
+      - nvm use
+      - echo "press enter to run" && read && yarn --cwd modern install && yarn --cwd modern start
+- window_name: dotfiles
+  window_index: 9
+  layout: main-vertical
+  options:
+    main-pane-width: 50%
+  shell_command_before:
+    - z dotfiles
+    - nvm use system
+    - clear
+  panes:
+    - shell_command:
+      - null
+      focus: true
+    - null
