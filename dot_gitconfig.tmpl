@@ -95,7 +95,10 @@
   cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 
 [merge]
-  tool = splice
+  conflictStyle = diff3
+
+[mergetool]
+  hideResolved = true
 
 [bash]
   showDirtyState = true
