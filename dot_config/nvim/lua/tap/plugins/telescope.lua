@@ -13,8 +13,8 @@ require('telescope').setup {
         mappings = {
             i = {["<c-s>"] = actions.select_horizontal},
             n = {
-                ["<c-n>"] = actions.move_selection_previous,
-                ["<c-p>"] = actions.move_selection_next
+                ["<c-p>"] = actions.move_selection_previous,
+                ["<c-n>"] = actions.move_selection_next
             }
         },
         borderchars = {
