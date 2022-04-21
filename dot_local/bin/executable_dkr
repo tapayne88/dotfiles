@@ -90,7 +90,7 @@ ps_cmd="ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Port
 get_docker_cmd() {
   docker_msg=$(docker ps 2>&1)
   if [ $? -eq 1 ]; then
-    if [[ $(echo $docker_msg | grep "^Cannot connect to Docker daemon") ]]; then
+    if echo "$docker_msg" | grep --quiet "^Cannot connect to Docker daemon"; then
       msg "$docker_msg"
       echo ""
     else
@@ -187,7 +187,7 @@ command_exec() {
   fi
 
   if [ -z "$cmd" ]; then
-    read -p "Enter cmd: " cmd
+    read -r -p "Enter cmd: " cmd
   fi
 
   eval "$docker_cmd exec --interactive --tty $container $cmd" 2> /dev/null
@@ -209,7 +209,7 @@ command_run() {
   fi
 
   if [ -z "$cmd" ]; then
-    read -p "Enter cmd: " cmd
+    read -r -p "Enter cmd: " cmd
   fi
 
   eval "$docker_cmd run --interactive --tty $container $cmd"
