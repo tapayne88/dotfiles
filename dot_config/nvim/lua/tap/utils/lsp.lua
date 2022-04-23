@@ -230,6 +230,7 @@ function module.patch_lsp_installer(server_name, installer)
     local patched_server = server.Server:new(
                                vim.tbl_extend("force", og_server, {
             installer = installer,
+            async=true,
             default_options = og_server:get_default_options()
         }))
 
