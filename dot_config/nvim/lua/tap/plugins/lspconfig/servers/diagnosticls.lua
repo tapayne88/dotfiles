@@ -1,25 +1,9 @@
 local servers = require "nvim-lsp-installer.servers"
 local npm = require "nvim-lsp-installer.core.managers.npm"
-local std = require "nvim-lsp-installer.core.managers.std"
 local spawn = require "nvim-lsp-installer.core.spawn"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
--- local lua_format = [[
---   os=$(uname -s | tr "[:upper:]" "[:lower:]")
-
---   case $os in
---   linux)
---   platform="linux"
---   ;;
---   darwin)
---   platform="darwin"
---   ;;
---   esac
-
---   curl -L -o lua-format "https://github.com/Koihik/vscode-lua-format/raw/master/bin/$platform/lua-format"
---   chmod +x lua-format
--- ]]
 local platform_map = {linux = "linux", darwin = "darwin"}
 local install_lua_format = function(ctx)
     local res = spawn.sh({
