@@ -1,5 +1,6 @@
 local servers = require "nvim-lsp-installer.servers"
 local npm = require "nvim-lsp-installer.core.managers.npm"
+local cargo = require "nvim-lsp-installer.core.managers.cargo"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
@@ -23,6 +24,7 @@ function module.patch_install()
             "diagnostic-languageserver", "@fsouza/prettierd", "markdownlint-cli"
         })()
         install_lua_format(ctx)
+        cargo.install("stylua")
     end)
 end
 
@@ -114,7 +116,14 @@ function module.setup(lsp_server)
                         "prettier.config.cjs"
                     }
                 },
-                lua_format = {command = root_dir .. "/lua-format"}
+                lua_format = {command = root_dir .. "/lua-format"},
+                stylua = {
+                    sourceName = "stylua",
+                    command = "stylua",
+                    args = {"--color", "Never", "-"}
+                    -- requiredFiles = { "stylua.toml", ".stylua.toml" },
+                    -- rootPatterns = { "stylua.toml", ".stylua.toml" },
+                }
             },
             formatFiletypes = map_language_to_filetype(diagnosticls_languages,
                                                        "formatters")
