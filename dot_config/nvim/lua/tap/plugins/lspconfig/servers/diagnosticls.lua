@@ -76,6 +76,7 @@ function module.setup(lsp_server)
             filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
             formatters = {
                 prettier = {
+                    sourceName = "prettier",
                     command = "prettierd",
                     args = {"%filepath"},
                     rootPatterns = {
