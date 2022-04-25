@@ -99,10 +99,16 @@ command {
   end,
 }
 
-fwatch.watch(vim.fn.expand '$XDG_CONFIG_HOME' .. '/term_theme', {
-  on_event = function()
-    vim.schedule(function()
-      set_colorscheme(get_term_theme, { announce = true })
-    end)
-  end,
-})
+--- Attempt to debouce watches by only setting up the listen after handling the
+--- colour change
+local function setup_theme_watch()
+  fwatch.once(vim.fn.expand '$XDG_CONFIG_HOME' .. '/term_theme', {
+    on_event = function()
+      vim.schedule(function()
+        set_colorscheme(get_term_theme, { announce = true })
+        setup_theme_watch()
+      end)
+    end,
+  })
+end
+setup_theme_watch()
