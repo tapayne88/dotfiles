@@ -4,26 +4,13 @@ local cargo = require "nvim-lsp-installer.core.managers.cargo"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
-local install_lua_format = function(ctx)
-    local platform = vim.loop.os_uname().sysname == "Darwin" and "darwin" or
-                         "linux"
-
-    ctx.spawn.curl({
-        "-L", "-o", "lua-format",
-        "https://github.com/Koihik/vscode-lua-format/raw/master/bin/" ..
-            platform .. "/lua-format"
-    })
-    ctx.spawn.chmod({"+x", "lua-format"})
-end
-
 local module = {}
 
 function module.patch_install()
-    lsp_utils.patch_lsp_installer("diagnosticls", function(ctx)
+    lsp_utils.patch_lsp_installer("diagnosticls", function()
         npm.packages({
             "diagnostic-languageserver", "@fsouza/prettierd", "markdownlint-cli"
         })()
-        install_lua_format(ctx)
         cargo.install("stylua")
     end)
 end
@@ -100,7 +87,6 @@ function module.setup(lsp_server)
                         "prettier.config.cjs"
                     }
                 },
-                lua_format = {command = root_dir .. "/lua-format"},
                 stylua = {
                     sourceName = "stylua",
                     command = root_dir .. "/bin/stylua",
