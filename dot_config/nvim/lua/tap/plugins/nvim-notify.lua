@@ -22,7 +22,7 @@ nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>",
          {description = "Clear notifications"})
 
 apply_user_highlights("NvimNotify", function()
-    -- LuaFormatter off
+    -- stylua: ignore start
     highlight("NotifyERRORBorder", {guifg = color({dark = "nord11_gui", light = "red"})})
     highlight("NotifyWARNBorder", {guifg = color({dark = "nord13_gui", light = "yellow"})})
     highlight("NotifyINFOBorder", {guifg = color({dark = "nord10_gui", light = "blue2"})})
@@ -40,7 +40,7 @@ apply_user_highlights("NvimNotify", function()
     highlight("NotifyINFOTitle", {guifg = color({dark = "nord10_gui", light = "blue2"})})
     highlight("NotifyDEBUGTitle", {guifg = color({dark = "nord7_gui", light = "cyan"})})
     highlight("NotifyTRACETitle", {guifg = color({dark="nord15_gui", light="purple"})})
-    -- LuaFormatter on
+    -- stylua: ignore end
 
     highlight("NotifyERRORBody", {link = "Normal"})
     highlight("NotifyWARNBody", {link = "Normal"})

@@ -26,7 +26,7 @@ return require('packer').startup(function(use)
         config = [[require("tap.plugins.nord")]]
     }
 
-    -- LuaFormatter off
+    -- stylua: ignore start
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
     use 'tpope/vim-commentary'                          -- Adds 'gc' & 'gcc' commands for commenting lines
     use 'tpope/vim-eunuch'                              -- Adds unix commands like ':Move' etc.
@@ -39,7 +39,7 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
-    -- LuaFormatter on
+    -- stylua: ignore end
 
     -- Chunk cache for neovim modules
     use {
