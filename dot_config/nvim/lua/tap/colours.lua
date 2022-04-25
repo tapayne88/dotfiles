@@ -99,17 +99,16 @@ command {
   end,
 }
 
-local change_count = 0
-fwatch.watch(vim.fn.expand '$XDG_CONFIG_HOME' .. '/term_theme', {
-  on_event = function()
-    change_count = change_count + 1
-    if change_count <= 1 then
-      -- Event is triggered on neovim load so discard it
-      return
-    end
-
-    vim.schedule(function()
-      set_colorscheme(get_term_theme, { announce = true })
-    end)
-  end,
-})
+--- Attempt to debouce watches by only setting up the listen after handling the
+--- colour change
+local function setup_theme_watch()
+  fwatch.once(vim.fn.expand '$XDG_CONFIG_HOME' .. '/term_theme', {
+    on_event = function()
+      vim.schedule(function()
+        set_colorscheme(get_term_theme, { announce = true })
+        setup_theme_watch()
+      end)
+    end,
+  })
+end
+setup_theme_watch()
