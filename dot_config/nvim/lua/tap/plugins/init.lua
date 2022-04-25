@@ -268,6 +268,14 @@ return require('packer').startup(function(use)
     config = [[require("tap.plugins.nvim-notify")]],
   }
 
+  use {
+    'psliwka/vim-dirtytalk',
+    run = ':DirtytalkUpdate',
+    config = function()
+      vim.opt.spelllang = { 'en', 'programming' }
+    end,
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
