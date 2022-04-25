@@ -30,7 +30,7 @@ end
 
 local diagnosticls_languages = {
     html = {formatters = {"prettier"}},
-    lua = {formatters = {"lua_format"}},
+    lua = {formatters = {"stylua"}},
     javascript = {linters = {}, formatters = {"prettier"}},
     javascriptreact = {linters = {}, formatters = {"prettier"}},
     json = {formatters = {"prettier"}},
@@ -103,10 +103,8 @@ function module.setup(lsp_server)
                 lua_format = {command = root_dir .. "/lua-format"},
                 stylua = {
                     sourceName = "stylua",
-                    command = "stylua",
+                    command = root_dir .. "/bin/stylua",
                     args = {"--color", "Never", "-"}
-                    -- requiredFiles = { "stylua.toml", ".stylua.toml" },
-                    -- rootPatterns = { "stylua.toml", ".stylua.toml" },
                 }
             },
             formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
