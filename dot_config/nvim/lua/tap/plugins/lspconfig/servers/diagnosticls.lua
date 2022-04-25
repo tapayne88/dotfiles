@@ -1,15 +1,10 @@
 local servers = require "nvim-lsp-installer.servers"
 local npm = require "nvim-lsp-installer.core.managers.npm"
-local spawn = require "nvim-lsp-installer.core.spawn"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
-local platform_map = {linux = "linux", darwin = "darwin"}
 local install_lua_format = function(ctx)
-    local res = spawn.sh({
-        '-c', 'uname -s | tr "[:upper:]" "[:lower:]" | tr -d "[:space:]"'
-    })
-    local platform = platform_map[res:get_or_throw().stdout]
+    local platform = vim.fn.has('macunix') == 1 and "darwin" or "linux"
 
     ctx.spawn.curl({
         "-L", "-o", "lua-format",
