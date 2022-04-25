@@ -8,7 +8,7 @@ vim.opt.scrolloff = 4
 vim.opt.termguicolors = true
 
 -- Better command options
-vim.opt.wildmode = {'longest:full', 'full'}
+vim.opt.wildmode = { 'longest:full', 'full' }
 vim.opt.wildignorecase = true
 
 -- Better split opening defaults
@@ -27,43 +27,50 @@ vim.opt.showmode = false
 vim.opt.spelllang = 'en'
 
 local function bufwidth()
-    local width = vim.fn.winwidth(0)
-    local numwidth = 0
-    local wo = vim.wo
-    if wo.number or wo.relativenumber then numwidth = wo.numberwidth end
-    local foldwidth = wo.foldcolumn
-    local sc = wo.signcolumn
-    local signwidth = 0
-    if sc == 'yes' then
-        signwidth = 2
-    elseif sc == 'auto' then
-        local signs = vim.fn.execute(string.format("sign place buffer=%d",
-                                                   vim.fn.bufnr("")))
-        signs = vim.fn.split(signs, "\n")
-        if #signs > 2 then
-            signwidth = 2
-        else
-            signwidth = 0
-        end
+  local width = vim.fn.winwidth(0)
+  local numwidth = 0
+  local wo = vim.wo
+  if wo.number or wo.relativenumber then
+    numwidth = wo.numberwidth
+  end
+  local foldwidth = wo.foldcolumn
+  local sc = wo.signcolumn
+  local signwidth = 0
+  if sc == 'yes' then
+    signwidth = 2
+  elseif sc == 'auto' then
+    local signs = vim.fn.execute(
+      string.format('sign place buffer=%d', vim.fn.bufnr '')
+    )
+    signs = vim.fn.split(signs, '\n')
+    if #signs > 2 then
+      signwidth = 2
+    else
+      signwidth = 0
     end
-    return width - numwidth - foldwidth - signwidth
+  end
+  return width - numwidth - foldwidth - signwidth
 end
 
 function FoldText()
-    local fs = vim.api.nvim_get_vvar("foldstart")
-    local fe = vim.api.nvim_get_vvar("foldend")
-    local line = vim.fn.substitute(vim.fn.getline(fs), "\t",
-                                   string.rep(' ', vim.bo.tabstop), 'g')
-    local winSize = bufwidth()
-    local fillcharcount = winSize - #line - 2
-    return line .. ' ' .. string.rep(" ", fillcharcount)
+  local fs = vim.api.nvim_get_vvar 'foldstart'
+  local fe = vim.api.nvim_get_vvar 'foldend'
+  local line = vim.fn.substitute(
+    vim.fn.getline(fs),
+    '\t',
+    string.rep(' ', vim.bo.tabstop),
+    'g'
+  )
+  local winSize = bufwidth()
+  local fillcharcount = winSize - #line - 2
+  return line .. ' ' .. string.rep(' ', fillcharcount)
 end
 
 -- Better folding
 vim.opt.foldmethod = 'syntax'
 vim.opt.foldcolumn = '2'
 vim.opt.foldlevelstart = 99
-vim.opt.foldtext = "v:lua.FoldText()"
+vim.opt.foldtext = 'v:lua.FoldText()'
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -74,55 +81,53 @@ vim.opt.colorcolumn = '80'
 vim.opt.signcolumn = 'yes'
 
 vim.opt.grepprg = table.concat(tap.safe_call(function()
-    return require("telescope.config").values.vimgrep_arguments
-end) or {}, " ")
+  return require('telescope.config').values.vimgrep_arguments
+end) or {}, ' ')
 
-vim.g.mapleader = ","
-vim.g.maplocalleader = "\\"
+vim.g.mapleader = ','
+vim.g.maplocalleader = '\\'
 
 vim.g.netrw_liststyle = 3
 
-vim.g.chezmoi_source_dir = "{{ .chezmoi.sourceDir }}"
+vim.g.chezmoi_source_dir = '{{ .chezmoi.sourceDir }}'
 
 vim.opt.fillchars = {
-    horiz = '━',
-    horizup = '┻',
-    horizdown = '┳',
-    vert = '┃',
-    vertleft = '┫',
-    vertright = '┣',
-    verthoriz = '╋'
+  horiz = '━',
+  horizup = '┻',
+  horizdown = '┳',
+  vert = '┃',
+  vertleft = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
 }
 
 -- enable filetype.lua
 vim.g.do_filetype_lua = 1
 -- enable filetype.vim as fallback
 vim.g.did_load_filetypes = 0
-vim.filetype.add({
-    extension = {
-        -- Special handling for chezmoi files (templates, etc.)
-        ['tmpl'] = function(path)
-            local is_chezmoi_source_dir = path:match('^' ..
-                                                         vim.g
-                                                             .chezmoi_source_dir) ~=
-                                              nil
-            local ext = path:match('.*%.(%w+)%.tmpl$')
+vim.filetype.add {
+  extension = {
+    -- Special handling for chezmoi files (templates, etc.)
+    ['tmpl'] = function(path)
+      local is_chezmoi_source_dir = path:match('^' .. vim.g.chezmoi_source_dir)
+        ~= nil
+      local ext = path:match '.*%.(%w+)%.tmpl$'
 
-            if is_chezmoi_source_dir and ext ~= nil then
-                vim.bo.filetype = ext
-            else
-                vim.bo.filetype = 'template'
-            end
-        end
-    }
-})
+      if is_chezmoi_source_dir and ext ~= nil then
+        vim.bo.filetype = ext
+      else
+        vim.bo.filetype = 'template'
+      end
+    end,
+  },
+}
 
 -- {{- if eq "crostini" .ostype }}
 -- Configure vim's other clipboard registers to use xsel (system clipboard)
 vim.g.clipboard = {
-    name = 'crostiniClipboard',
-    copy = {["+"] = 'xsel --clipboard', ["*"] = 'xsel --clipboard'},
-    paste = {["+"] = 'xsel --clipboard', ["*"] = 'xsel --clipboard'},
-    cache_enabled = 1
+  name = 'crostiniClipboard',
+  copy = { ['+'] = 'xsel --clipboard', ['*'] = 'xsel --clipboard' },
+  paste = { ['+'] = 'xsel --clipboard', ['*'] = 'xsel --clipboard' },
+  cache_enabled = 1,
 }
 -- {{- end }}

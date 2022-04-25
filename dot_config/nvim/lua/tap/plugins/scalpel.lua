@@ -1,4 +1,4 @@
-local nmap = require("tap.utils").nmap
+local nmap = require('tap.utils').nmap
 
 vim.g.ScalpelCommand = 'S'
 

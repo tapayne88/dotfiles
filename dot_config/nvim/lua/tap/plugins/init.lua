@@ -1,30 +1,34 @@
 local fn = vim.fn
 
-local packer_scope = fn.stdpath('data') .. '/site/pack/packer'
+local packer_scope = fn.stdpath 'data' .. '/site/pack/packer'
 local packer_install_path = packer_scope .. '/start/packer.nvim'
 
 local packer_bootstrap
 if fn.empty(fn.glob(packer_install_path)) > 0 then
-    vim.notify('installing packer.nvim')
-    packer_bootstrap = fn.system({
-        'git', 'clone', '--depth', '1',
-        'https://github.com/wbthomason/packer.nvim', packer_install_path
-    })
-    vim.cmd [[packadd packer.nvim]]
+  vim.notify 'installing packer.nvim'
+  packer_bootstrap = fn.system {
+    'git',
+    'clone',
+    '--depth',
+    '1',
+    'https://github.com/wbthomason/packer.nvim',
+    packer_install_path,
+  }
+  vim.cmd [[packadd packer.nvim]]
 end
 
 return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
 
-    -- treesitter colorscheme
-    use {
-        'shaunsingh/nord.nvim',
-        requires = {
-            'folke/tokyonight.nvim' -- light colorscheme
-        },
-        config = [[require("tap.plugins.nord")]]
-    }
+  -- treesitter colorscheme
+  use {
+    'shaunsingh/nord.nvim',
+    requires = {
+      'folke/tokyonight.nvim', -- light colorscheme
+    },
+    config = [[require("tap.plugins.nord")]],
+  }
 
     -- stylua: ignore start
     use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
@@ -39,216 +43,234 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
     use 'RRethy/vim-illuminate'                         -- Highlight same words
     use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
-    -- stylua: ignore end
+  -- stylua: ignore end
 
-    -- Chunk cache for neovim modules
-    use {
-        'lewis6991/impatient.nvim',
-        config = function()
-            require('tap.utils').augroup('Impatient', {
-                {
-                    events = {'PackerComplete', 'PackerCompileDone'},
-                    user = true,
-                    command = function()
-                        require('impatient').clear_cache()
-                        vim.notify('Cleared impatient.nvim cache')
-                    end
-                }
-            })
-        end
-    }
-
-    -- Interactive neovim scratchpad for lua
-    use {'rafcamlet/nvim-luapad', cmd = {"Luapad", "LuaRun"}}
-
-    -- Seemless vim <-> tmux navigation
-    use {'aserowy/tmux.nvim', config = [[require("tap.plugins.tmux-nvim")]]}
-
-    -- even better % navigation
-    use {
-        'andymass/vim-matchup',
-        config = function()
-            vim.g.matchup_surround_enabled = 1
-            vim.g.matchup_matchparen_offscreen = {method = 'popup'}
-        end
-    }
-
-    -- Filetype icon support with lua support
-    use {'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons'}
-
-    -- Syntax not supported by treesitter
-    use {'plasticboy/vim-markdown'}
-
-    -- easier vim startup time profiling
-    use {'dstein64/vim-startuptime', cmd = 'StartupTime'}
-    -- Markdown previewing commands
-    use {
-        'iamcco/markdown-preview.nvim',
-        run = ':call mkdp#util#install()',
-        ft = 'markdown',
-        cmd = 'MarkdownPreview'
-    }
-    -- Git blame for line with commit message
-    use {
-        'rhysd/git-messenger.vim',
-        cmd = 'GitMessenger',
-        setup = function()
-            require("tap.utils").nnoremap('<leader>gm', ':GitMessenger<CR>', {
-                description = "Show git blame for line"
-            })
-        end
-    }
-
-    -- Git integration ':Gstatus' etc.
-    use {
-        'tpope/vim-fugitive',
-        config = [[require("tap.plugins.fugitive")]],
-        requires = {
-            'tpope/vim-rhubarb', -- :GBrowse github
-            'shumphrey/fugitive-gitlab.vim' -- :GBrowse gitlab
-        }
-    }
-    -- Easier find & replace
-    use {'wincent/scalpel', config = [[require("tap.plugins.scalpel")]]}
-    -- Simple plugin to easily resize windows
-    use {
-        'simeji/winresizer',
-        config = [[vim.g.winresizer_start_key = '<leader>w']]
-    }
-    -- Fix performance issue with CursorHold events
-    use {
-        'antoinemadec/FixCursorHold.nvim',
-        config = [[vim.g.cursorhold_updatetime = 500]]
-    }
-    -- better syntax highlighting
-    use {
+  -- Chunk cache for neovim modules
+  use {
+    'lewis6991/impatient.nvim',
+    config = function()
+      require('tap.utils').augroup('Impatient', {
         {
-            'nvim-treesitter/nvim-treesitter',
-            config = [[require("tap.plugins.treesitter")]],
-            run = ':TSUpdate',
-            requires = {'JoosepAlviste/nvim-ts-context-commentstring'}
+          events = { 'PackerComplete', 'PackerCompileDone' },
+          user = true,
+          command = function()
+            require('impatient').clear_cache()
+            vim.notify 'Cleared impatient.nvim cache'
+          end,
         },
-        {
-            'nvim-treesitter/playground',
-            cmd = {"TSPlayground", "TSPlaygroundToggle"}
-        } -- playground for illustrating the AST treesitter builds
-    }
-    -- whizzy command-p launcher
-    use {
-        'nvim-telescope/telescope.nvim',
-        config = [[require("tap.plugins.telescope")]],
-        requires = {
-            'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope-file-browser.nvim',
-            'nvim-telescope/telescope-rg.nvim'
-        }
-    }
-    -- customise vim.ui appearance
-    use {'stevearc/dressing.nvim', config = [[require("tap.plugins.dressing")]]}
-    -- + & - in column for changed lines
-    use {
-        'lewis6991/gitsigns.nvim',
-        config = [[require("tap.plugins.gitsigns")]],
-        requires = {'nvim-lua/plenary.nvim'}
-    }
+      })
+    end,
+  }
 
-    -- native neovim LSP support
-    use {
-        'neovim/nvim-lspconfig', -- LSP server config
-        after = "nvim-notify",
-        config = [[require("tap.plugins.lspconfig")]],
-        requires = {
-            'williamboman/nvim-lsp-installer', -- install LSP servers
-            'b0o/schemastore.nvim', -- jsonls schemas
-            'folke/lua-dev.nvim', -- lua-dev setup
-            'lukas-reineke/lsp-format.nvim', -- async formatting
-            {
-                'rmagatti/goto-preview',
-                config = function()
-                    require('goto-preview').setup {
-                        border = {
-                            "↖", "─", "╮", "│", "╯", "─", "╰",
-                            "│"
-                        }
-                    }
-                end
-            }
-        }
-    }
+  -- Interactive neovim scratchpad for lua
+  use { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } }
 
-    -- Auto completion plugin for nvim
-    use {
-        'hrsh7th/nvim-cmp',
-        config = [[require("tap.plugins.nvim-cmp")]],
-        requires = {
-            'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-nvim-lua', 'hrsh7th/cmp-path',
-            'hrsh7th/cmp-buffer', 'onsails/lspkind-nvim', 'L3MON4D3/LuaSnip',
-            'saadparwaiz1/cmp_luasnip'
-        }
-    }
+  -- Seemless vim <-> tmux navigation
+  use { 'aserowy/tmux.nvim', config = [[require("tap.plugins.tmux-nvim")]] }
 
-    -- statusline in lua
-    use {
-        'nvim-lualine/lualine.nvim',
-        config = [[require("tap.plugins.lualine")]],
-        requires = {
-            {'kyazdani42/nvim-web-devicons', opt = true},
-            'arkav/lualine-lsp-progress'
-        }
-    }
+  -- even better % navigation
+  use {
+    'andymass/vim-matchup',
+    config = function()
+      vim.g.matchup_surround_enabled = 1
+      vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+    end,
+  }
 
-    use {
-        'glepnir/dashboard-nvim',
-        config = [[require("tap.plugins.dashboard-nvim")]]
-    }
+  -- Filetype icon support with lua support
+  use { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' }
 
-    -- keymap plugins
-    use {
-        {
-            "mrjones2014/legendary.nvim",
-            config = function()
-                require('legendary').setup {}
-                require("tap.utils").nnoremap('<leader>p',
-                                              ':lua require("legendary").find("keymaps")<CR>',
-                                              {
-                    description = "Legendary keymaps"
-                })
-            end
-        }, {
-            "folke/which-key.nvim",
-            config = function() require("which-key").setup {} end
-        }
-    }
+  -- Syntax not supported by treesitter
+  use { 'plasticboy/vim-markdown' }
 
-    use {
-        "lukas-reineke/indent-blankline.nvim",
+  -- easier vim startup time profiling
+  use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
+  -- Markdown previewing commands
+  use {
+    'iamcco/markdown-preview.nvim',
+    run = ':call mkdp#util#install()',
+    ft = 'markdown',
+    cmd = 'MarkdownPreview',
+  }
+  -- Git blame for line with commit message
+  use {
+    'rhysd/git-messenger.vim',
+    cmd = 'GitMessenger',
+    setup = function()
+      require('tap.utils').nnoremap('<leader>gm', ':GitMessenger<CR>', {
+        description = 'Show git blame for line',
+      })
+    end,
+  }
+
+  -- Git integration ':Gstatus' etc.
+  use {
+    'tpope/vim-fugitive',
+    config = [[require("tap.plugins.fugitive")]],
+    requires = {
+      'tpope/vim-rhubarb', -- :GBrowse github
+      'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
+    },
+  }
+  -- Easier find & replace
+  use { 'wincent/scalpel', config = [[require("tap.plugins.scalpel")]] }
+  -- Simple plugin to easily resize windows
+  use {
+    'simeji/winresizer',
+    config = [[vim.g.winresizer_start_key = '<leader>w']],
+  }
+  -- Fix performance issue with CursorHold events
+  use {
+    'antoinemadec/FixCursorHold.nvim',
+    config = [[vim.g.cursorhold_updatetime = 500]],
+  }
+  -- better syntax highlighting
+  use {
+    {
+      'nvim-treesitter/nvim-treesitter',
+      config = [[require("tap.plugins.treesitter")]],
+      run = ':TSUpdate',
+      requires = { 'JoosepAlviste/nvim-ts-context-commentstring' },
+    },
+    {
+      'nvim-treesitter/playground',
+      cmd = { 'TSPlayground', 'TSPlaygroundToggle' },
+    }, -- playground for illustrating the AST treesitter builds
+  }
+  -- whizzy command-p launcher
+  use {
+    'nvim-telescope/telescope.nvim',
+    config = [[require("tap.plugins.telescope")]],
+    requires = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-file-browser.nvim',
+      'nvim-telescope/telescope-rg.nvim',
+    },
+  }
+  -- customise vim.ui appearance
+  use { 'stevearc/dressing.nvim', config = [[require("tap.plugins.dressing")]] }
+  -- + & - in column for changed lines
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = [[require("tap.plugins.gitsigns")]],
+    requires = { 'nvim-lua/plenary.nvim' },
+  }
+
+  -- native neovim LSP support
+  use {
+    'neovim/nvim-lspconfig', -- LSP server config
+    after = 'nvim-notify',
+    config = [[require("tap.plugins.lspconfig")]],
+    requires = {
+      'williamboman/nvim-lsp-installer', -- install LSP servers
+      'b0o/schemastore.nvim', -- jsonls schemas
+      'folke/lua-dev.nvim', -- lua-dev setup
+      'lukas-reineke/lsp-format.nvim', -- async formatting
+      {
+        'rmagatti/goto-preview',
         config = function()
-            require("indent_blankline").setup {
-                char = " ",
-                context_char = "│",
-                space_char_blankline = " ",
-                show_current_context = true
-            }
-        end
-    }
+          require('goto-preview').setup {
+            border = {
+              '↖',
+              '─',
+              '╮',
+              '│',
+              '╯',
+              '─',
+              '╰',
+              '│',
+            },
+          }
+        end,
+      },
+    },
+  }
 
-    -- persistent terminals
-    use {
-        "akinsho/toggleterm.nvim",
-        config = [[require("tap.plugins.toggleterm")]]
-    }
+  -- Auto completion plugin for nvim
+  use {
+    'hrsh7th/nvim-cmp',
+    config = [[require("tap.plugins.nvim-cmp")]],
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'onsails/lspkind-nvim',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+    },
+  }
 
-    use {
-        "petertriho/nvim-scrollbar",
-        config = [[require("tap.plugins.nvim-scrollbar")]]
-    }
+  -- statusline in lua
+  use {
+    'nvim-lualine/lualine.nvim',
+    config = [[require("tap.plugins.lualine")]],
+    requires = {
+      { 'kyazdani42/nvim-web-devicons', opt = true },
+      'arkav/lualine-lsp-progress',
+    },
+  }
 
-    use {
-        "rcarriga/nvim-notify",
-        config = [[require("tap.plugins.nvim-notify")]]
-    }
+  use {
+    'glepnir/dashboard-nvim',
+    config = [[require("tap.plugins.dashboard-nvim")]],
+  }
 
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then require('packer').sync() end
+  -- keymap plugins
+  use {
+    {
+      'mrjones2014/legendary.nvim',
+      config = function()
+        require('legendary').setup {}
+        require('tap.utils').nnoremap(
+          '<leader>p',
+          ':lua require("legendary").find("keymaps")<CR>',
+          {
+            description = 'Legendary keymaps',
+          }
+        )
+      end,
+    },
+    {
+      'folke/which-key.nvim',
+      config = function()
+        require('which-key').setup {}
+      end,
+    },
+  }
+
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = function()
+      require('indent_blankline').setup {
+        char = ' ',
+        context_char = '│',
+        space_char_blankline = ' ',
+        show_current_context = true,
+      }
+    end,
+  }
+
+  -- persistent terminals
+  use {
+    'akinsho/toggleterm.nvim',
+    config = [[require("tap.plugins.toggleterm")]],
+  }
+
+  use {
+    'petertriho/nvim-scrollbar',
+    config = [[require("tap.plugins.nvim-scrollbar")]],
+  }
+
+  use {
+    'rcarriga/nvim-notify',
+    config = [[require("tap.plugins.nvim-notify")]],
+  }
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
