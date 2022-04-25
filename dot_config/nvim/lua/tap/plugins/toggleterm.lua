@@ -1,9 +1,9 @@
-local tmap = require("tap.utils").tmap
+local tmap = require('tap.utils').tmap
 
-require("toggleterm").setup {
-    open_mapping = [[<leader>tt]],
-    insert_mappings = false,
-    shade_terminals = false
+require('toggleterm').setup {
+  open_mapping = [[<leader>tt]],
+  insert_mappings = false,
+  shade_terminals = false,
 }
 
 -- Utilise tmux.nvim's bindings for changing windows

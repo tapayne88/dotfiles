@@ -1,27 +1,30 @@
-local lsp_symbols = require("tap.utils").lsp_symbols
-local highlight = require("tap.utils").highlight
-local color = require("tap.utils").color
-local nnoremap = require("tap.utils").nnoremap
-local apply_user_highlights = require("tap.utils").apply_user_highlights
+local lsp_symbols = require('tap.utils').lsp_symbols
+local highlight = require('tap.utils').highlight
+local color = require('tap.utils').color
+local nnoremap = require('tap.utils').nnoremap
+local apply_user_highlights = require('tap.utils').apply_user_highlights
 
-vim.notify = require("notify")
+vim.notify = require 'notify'
 
-require("notify").setup {
-    icons = {
-        ERROR = lsp_symbols.error,
-        WARN = lsp_symbols.warning,
-        INFO = lsp_symbols.info,
-        DEBUG = "",
-        TRACE = "✎"
-    }
+require('notify').setup {
+  icons = {
+    ERROR = lsp_symbols.error,
+    WARN = lsp_symbols.warning,
+    INFO = lsp_symbols.info,
+    DEBUG = '',
+    TRACE = '✎',
+  },
 }
 
-require("telescope").load_extension("notify")
+require('telescope').load_extension 'notify'
 
-nnoremap("<leader>nc", ":lua require('notify').dismiss()<CR>",
-         {description = "Clear notifications"})
+nnoremap(
+  '<leader>nc',
+  ":lua require('notify').dismiss()<CR>",
+  { description = 'Clear notifications' }
+)
 
-apply_user_highlights("NvimNotify", function()
+apply_user_highlights('NvimNotify', function()
     -- stylua: ignore start
     highlight("NotifyERRORBorder", {guifg = color({dark = "nord11_gui", light = "red"})})
     highlight("NotifyWARNBorder", {guifg = color({dark = "nord13_gui", light = "yellow"})})
@@ -40,11 +43,11 @@ apply_user_highlights("NvimNotify", function()
     highlight("NotifyINFOTitle", {guifg = color({dark = "nord10_gui", light = "blue2"})})
     highlight("NotifyDEBUGTitle", {guifg = color({dark = "nord7_gui", light = "cyan"})})
     highlight("NotifyTRACETitle", {guifg = color({dark="nord15_gui", light="purple"})})
-    -- stylua: ignore end
+  -- stylua: ignore end
 
-    highlight("NotifyERRORBody", {link = "Normal"})
-    highlight("NotifyWARNBody", {link = "Normal"})
-    highlight("NotifyINFOBody", {link = "Normal"})
-    highlight("NotifyDEBUGBody", {link = "Normal"})
-    highlight("NotifyTRACEBody", {link = "Normal"})
+  highlight('NotifyERRORBody', { link = 'Normal' })
+  highlight('NotifyWARNBody', { link = 'Normal' })
+  highlight('NotifyINFOBody', { link = 'Normal' })
+  highlight('NotifyDEBUGBody', { link = 'Normal' })
+  highlight('NotifyTRACEBody', { link = 'Normal' })
 end)

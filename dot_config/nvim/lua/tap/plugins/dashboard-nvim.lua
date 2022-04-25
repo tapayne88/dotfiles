@@ -1,56 +1,57 @@
 vim.g.dashboard_default_executive = 'telescope'
 vim.g.dashboard_custom_header = {
-    '', '',
-    '███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗',
-    '████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║',
-    '██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║',
-    '██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║',
-    '██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║',
-    '╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝',
-    ''
+  '',
+  '',
+  '███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗',
+  '████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║',
+  '██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║',
+  '██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║',
+  '██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║',
+  '╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝',
+  '',
 }
-vim.g.dashboard_custom_footer = {''}
+vim.g.dashboard_custom_footer = { '' }
 vim.g.dashboard_custom_section = {
-    row1 = {
-        description = {
-            '  Recent files                                      '
-        },
-        command = 'Telescope oldfiles'
+  row1 = {
+    description = {
+      '  Recent files                                      ',
     },
-    row2 = {
-        description = {
-            '  Git file                                <leader>gf'
-        },
-        command = 'norm ,gf'
+    command = 'Telescope oldfiles',
+  },
+  row2 = {
+    description = {
+      '  Git file                                <leader>gf',
     },
-    row3 = {
-        description = {
-            '  Find file                               <leader>ff'
-        },
-        command = 'norm ,ff'
+    command = 'norm ,gf',
+  },
+  row3 = {
+    description = {
+      '  Find file                               <leader>ff',
     },
-    row4 = {
-        description = {
-            '  New file                                          '
-        },
-        command = 'enew'
+    command = 'norm ,ff',
+  },
+  row4 = {
+    description = {
+      '  New file                                          ',
     },
-    row5 = {
-        description = {
-            '  File browser                            <leader>fb'
-        },
-        command = 'norm ,fb'
+    command = 'enew',
+  },
+  row5 = {
+    description = {
+      '  File browser                            <leader>fb',
     },
-    row6 = {
-        description = {
-            '  Find word                               <leader>fg'
-        },
-        command = 'norm ,fg'
+    command = 'norm ,fb',
+  },
+  row6 = {
+    description = {
+      '  Find word                               <leader>fg',
     },
-    row7 = {
-        description = {
-            '  Jump to bookmarks                                 '
-        },
-        command = 'Telescope marks'
-    }
+    command = 'norm ,fg',
+  },
+  row7 = {
+    description = {
+      '  Jump to bookmarks                                 ',
+    },
+    command = 'Telescope marks',
+  },
 }
