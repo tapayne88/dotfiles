@@ -8,9 +8,9 @@ local module = {}
 
 function module.patch_install()
     lsp_utils.patch_lsp_installer("diagnosticls", function()
-        npm.install {
+        npm.install({
             "diagnostic-languageserver", "@fsouza/prettierd", "markdownlint-cli"
-        }
+        }).with_receipt()
         cargo.install("stylua")
     end)
 end
