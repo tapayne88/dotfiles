@@ -1,34 +1,28 @@
 local servers = require "nvim-lsp-installer.servers"
-local installers = require "nvim-lsp-installer.installers"
-local npm = require "nvim-lsp-installer.installers.npm"
-local shell = require "nvim-lsp-installer.installers.shell"
+local npm = require "nvim-lsp-installer.core.managers.npm"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
-local lua_format = [[
-  os=$(uname -s | tr "[:upper:]" "[:lower:]")
+local install_lua_format = function(ctx)
+    local platform = vim.loop.os_uname().sysname == "Darwin" and "darwin" or "linux"
 
-  case $os in
-  linux)
-  platform="linux"
-  ;;
-  darwin)
-  platform="darwin"
-  ;;
-  esac
-
-  curl -L -o lua-format "https://github.com/Koihik/vscode-lua-format/raw/master/bin/$platform/lua-format"
-  chmod +x lua-format
-]]
+    ctx.spawn.curl({
+        "-L", "-o", "lua-format",
+        "https://github.com/Koihik/vscode-lua-format/raw/master/bin/" ..
+            platform .. "/lua-format"
+    })
+    ctx.spawn.chmod({"+x", "lua-format"})
+end
 
 local module = {}
 
 function module.patch_install()
-    lsp_utils.patch_lsp_installer("diagnosticls", installers.pipe {
-        npm.packages {
+    lsp_utils.patch_lsp_installer("diagnosticls", function(ctx)
+        npm.packages({
             "diagnostic-languageserver", "@fsouza/prettierd", "markdownlint-cli"
-        }, shell.bash(lua_format)
-    })
+        })()
+        install_lua_format(ctx)
+    end)
 end
 
 -- Check service mappings for chezmoi template filetypes of all supported
