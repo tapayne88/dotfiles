@@ -104,7 +104,9 @@ function module.setup(lsp_server)
                 stylua = {
                     sourceName = "stylua",
                     command = root_dir .. "/bin/stylua",
-                    args = {"--color", "Never", "-"}
+                    args = {"--color", "Never", "-"},
+                    requiredFiles = { "stylua.toml", ".stylua.toml" },
+                    rootPatterns = { "stylua.toml", ".stylua.toml" },
                 }
             },
             formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
