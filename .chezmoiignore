@@ -19,6 +19,7 @@
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
+stylua.toml
 public
 .prettierrc.js
 misc
