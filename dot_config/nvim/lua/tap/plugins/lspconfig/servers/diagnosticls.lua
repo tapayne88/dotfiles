@@ -1,49 +1,23 @@
 local servers = require "nvim-lsp-installer.servers"
 local npm = require "nvim-lsp-installer.core.managers.npm"
+local cargo = require "nvim-lsp-installer.core.managers.cargo"
 local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
-
-local install_lua_format = function(ctx)
-    local platform = vim.loop.os_uname().sysname == "Darwin" and "darwin" or
-                         "linux"
-
-    ctx.spawn.curl({
-        "-L", "-o", "lua-format",
-        "https://github.com/Koihik/vscode-lua-format/raw/master/bin/" ..
-            platform .. "/lua-format"
-    })
-    ctx.spawn.chmod({"+x", "lua-format"})
-end
 
 local module = {}
 
 function module.patch_install()
-    lsp_utils.patch_lsp_installer("diagnosticls", function(ctx)
-        npm.packages({
+    lsp_utils.patch_lsp_installer("diagnosticls", function()
+        npm.install({
             "diagnostic-languageserver", "@fsouza/prettierd", "markdownlint-cli"
-        })()
-        install_lua_format(ctx)
+        }).with_receipt()
+        cargo.install("stylua")
     end)
-end
-
--- Check service mappings for chezmoi template filetypes of all supported
----@param tbl table<string, table<string, any>>
----@param tbl_key string
----@return table<string, any>
-local map_language_to_filetype = function(tbl, tbl_key)
-    local serviceTemplateFiletypes = {}
-    local mappedTbl = utils.map_table_to_key(tbl, tbl_key)
-
-    for key, value in pairs(mappedTbl) do
-        serviceTemplateFiletypes[key .. '.chezmoitmpl'] = value
-    end
-
-    return vim.tbl_extend("error", mappedTbl, serviceTemplateFiletypes)
 end
 
 local diagnosticls_languages = {
     html = {formatters = {"prettier"}},
-    lua = {formatters = {"lua_format"}},
+    lua = {formatters = {"stylua"}},
     javascript = {linters = {}, formatters = {"prettier"}},
     javascriptreact = {linters = {}, formatters = {"prettier"}},
     json = {formatters = {"prettier"}},
@@ -99,10 +73,10 @@ function module.setup(lsp_server)
                     }
                 }
             },
-            filetypes = map_language_to_filetype(diagnosticls_languages,
-                                                 "linters"),
+            filetypes = utils.map_table_to_key(diagnosticls_languages, "linters"),
             formatters = {
                 prettier = {
+                    sourceName = "prettier",
                     command = "prettierd",
                     args = {"%filepath"},
                     rootPatterns = {
@@ -114,10 +88,16 @@ function module.setup(lsp_server)
                         "prettier.config.cjs"
                     }
                 },
-                lua_format = {command = root_dir .. "/lua-format"}
+                stylua = {
+                    sourceName = "stylua",
+                    command = root_dir .. "/bin/stylua",
+                    args = {"--color", "Never", "-"},
+                    requiredFiles = { "stylua.toml", ".stylua.toml" },
+                    rootPatterns = { "stylua.toml", ".stylua.toml" },
+                }
             },
-            formatFiletypes = map_language_to_filetype(diagnosticls_languages,
-                                                       "formatters")
+            formatFiletypes = utils.map_table_to_key(diagnosticls_languages,
+                                                     "formatters")
         }
     }))
 end
