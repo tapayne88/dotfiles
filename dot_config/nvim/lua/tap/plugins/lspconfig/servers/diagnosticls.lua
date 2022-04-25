@@ -4,7 +4,7 @@ local utils = require "tap.utils"
 local lsp_utils = require "tap.utils.lsp"
 
 local install_lua_format = function(ctx)
-    local platform = vim.fn.has('macunix') == 1 and "darwin" or "linux"
+    local platform = vim.loop.os_uname().sysname == "Darwin" and "darwin" or "linux"
 
     ctx.spawn.curl({
         "-L", "-o", "lua-format",
