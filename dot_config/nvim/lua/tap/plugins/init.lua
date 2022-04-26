@@ -199,6 +199,7 @@ return require('packer').startup(function(use)
       'onsails/lspkind-nvim',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
+      'f3fora/cmp-spell',
     },
   }
 

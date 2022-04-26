@@ -29,6 +29,7 @@ cmp.setup {
     { name = 'path' },
     { name = 'buffer' },
     { name = 'luasnip' },
+    { name = 'spell' },
   },
 
   formatting = {
@@ -40,6 +41,7 @@ cmp.setup {
         path = '[path]',
         buffer = '[buf]',
         luasnip = '[snip]',
+        spell = '[spell]',
       },
     },
   },
