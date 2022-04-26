@@ -199,6 +199,7 @@ return require('packer').startup(function(use)
       'onsails/lspkind-nvim',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
+      'f3fora/cmp-spell',
     },
   }
 
@@ -266,6 +267,14 @@ return require('packer').startup(function(use)
   use {
     'rcarriga/nvim-notify',
     config = [[require("tap.plugins.nvim-notify")]],
+  }
+
+  use {
+    'psliwka/vim-dirtytalk',
+    run = ':DirtytalkUpdate',
+    config = function()
+      vim.opt.spelllang = { 'en', 'programming' }
+    end,
   }
 
   -- Automatically set up your configuration after cloning packer.nvim
