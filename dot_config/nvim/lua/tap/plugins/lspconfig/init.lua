@@ -14,6 +14,7 @@ local servers = {
     'diagnosticls',
     'eslint',
     'jsonls',
+    'null-ls',
     'sumneko_lua@v2.5.6',
     'tsserver',
   },
