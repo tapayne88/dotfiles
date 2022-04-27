@@ -32,7 +32,14 @@ function M.setup()
   local root_dir = server.get_server_root_path(server_name)
   null_ls.setup(lsp_utils.merge_with_default_config {
     sources = {
+      ------------------
+      -- Code Actions --
+      ------------------
       null_ls.builtins.code_actions.shellcheck,
+
+      -----------------
+      -- Diagnostics --
+      -----------------
       null_ls.builtins.diagnostics.markdownlint.with {
         command = root_dir .. '/node_modules/.bin/markdownlint',
         extra_args = {
@@ -41,6 +48,10 @@ function M.setup()
         },
       },
       null_ls.builtins.diagnostics.shellcheck,
+
+      ----------------
+      -- Formatting --
+      ----------------
       null_ls.builtins.formatting.stylua.with {
         command = root_dir .. '/bin/stylua',
         condition = function(utils)
@@ -66,6 +77,10 @@ function M.setup()
           }
         end,
       },
+
+      -----------
+      -- Hover --
+      -----------
       null_ls.builtins.hover.dictionary,
     },
   })
