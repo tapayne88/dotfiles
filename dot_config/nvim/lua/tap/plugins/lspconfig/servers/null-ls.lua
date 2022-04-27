@@ -66,6 +66,7 @@ function M.setup()
           }
         end,
       },
+      null_ls.builtins.hover.dictionary,
     },
   })
 end
