@@ -35,9 +35,11 @@ local function init_servers()
     local name, version = lsp_installer_servers.parse_server_identifier(
       server_identifier
     )
-    pcall(function()
-      require_server(name).patch_install(version)
-    end)
+
+    local server_config = require_server(name)
+    if server_config.patch_install then
+      server_config.patch_install(version)
+    end
   end
 end
 
