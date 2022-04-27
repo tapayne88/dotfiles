@@ -32,6 +32,7 @@ function M.setup()
   local root_dir = server.get_server_root_path(server_name)
   null_ls.setup(lsp_utils.merge_with_default_config {
     sources = {
+      null_ls.builtins.code_actions.shellcheck,
       null_ls.builtins.diagnostics.markdownlint.with {
         command = root_dir .. '/node_modules/.bin/markdownlint',
         extra_args = {
