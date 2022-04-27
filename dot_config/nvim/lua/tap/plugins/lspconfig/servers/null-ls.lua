@@ -39,6 +39,7 @@ function M.setup()
           vim.fn.stdpath 'config' .. '/markdownlint.json',
         },
       },
+      null_ls.builtins.diagnostics.shellcheck,
       null_ls.builtins.formatting.stylua.with {
         command = root_dir .. '/bin/stylua',
         condition = function(utils)
