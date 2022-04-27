@@ -11,7 +11,6 @@ local servers = {
   -- servers installed with williamboman/nvim-lsp-installer
   ['nvim-lsp-installer'] = {
     'bashls',
-    'diagnosticls',
     'eslint',
     'jsonls',
     'null-ls',
