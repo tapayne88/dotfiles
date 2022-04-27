@@ -30,9 +30,12 @@ local function require_server(server_name)
 end
 
 local function init_servers()
-  for _, name in pairs(servers['nvim-lsp-installer']) do
+  for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
+    local name, version = lsp_installer_servers.parse_server_identifier(
+      server_identifier
+    )
     pcall(function()
-      require_server(name).patch_install()
+      require_server(name).patch_install(version)
     end)
   end
 end
