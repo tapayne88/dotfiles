@@ -38,6 +38,25 @@ function M.setup()
           return utils.root_has_file { 'stylua.toml', '.stylua.toml' }
         end,
       },
+      null_ls.builtins.formatting.prettierd.with {
+        command = root_dir .. '/node_modules/.bin/prettierd',
+        condition = function(utils)
+          return utils.root_has_file {
+            'package.json',
+            '.prettierrc',
+            '.prettierrc.json',
+            '.prettierrc.toml',
+            '.prettierrc.json',
+            '.prettierrc.yml',
+            '.prettierrc.yaml',
+            '.prettierrc.json5',
+            '.prettierrc.js',
+            '.prettierrc.cjs',
+            'prettier.config.js',
+            'prettier.config.cjs',
+          }
+        end,
+      },
     },
   })
 end
