@@ -3,11 +3,12 @@ local server = require 'nvim-lsp-installer.server'
 local npm = require 'nvim-lsp-installer.core.managers.npm'
 local cargo = require 'nvim-lsp-installer.core.managers.cargo'
 local null_ls = require 'null-ls'
+local lsp_utils = require 'tap.utils.lsp'
 
 local M = {}
+local server_name = 'null-ls'
 
 function M.patch_install()
-  local server_name = 'null-ls'
   local root_dir = server.get_server_root_path(server_name)
   local installer = function()
     npm.install {
@@ -27,6 +28,15 @@ function M.patch_install()
   servers.register(null_ls_server)
 end
 
-function M.setup() end
+function M.setup()
+  local root_dir = server.get_server_root_path(server_name)
+  null_ls.setup(lsp_utils.merge_with_default_config {
+    sources = {
+      null_ls.builtins.formatting.stylua.with {
+        command = root_dir .. '/bin/stylua',
+      },
+    },
+  })
+end
 
 return M
