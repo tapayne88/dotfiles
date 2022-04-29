@@ -1,6 +1,5 @@
 local lsp_installer_servers = require 'nvim-lsp-installer.servers'
 local utils = require 'tap.utils'
-local lsp_utils = require 'tap.utils.lsp'
 
 if vim.env.LSP_DEBUG then
   vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
@@ -58,6 +57,7 @@ utils.run {
     require('nvim-lsp-installer').setup {
       ensure_installed = servers['nvim-lsp-installer'],
     }
+    require('tap.utils.lsp').setup {}
   end,
 
   ----------------------
@@ -68,12 +68,5 @@ utils.run {
     for _, server_identifier in pairs(get_server_list(servers)) do
       require_server(server_identifier).setup()
     end
-  end,
-
-  -----------
-  -- After --
-  -----------
-  function()
-    lsp_utils.init_diagnositcs()
   end,
 }
