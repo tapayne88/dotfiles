@@ -1,4 +1,5 @@
 local lsp_installer_servers = require 'nvim-lsp-installer.servers'
+local utils = require 'tap.utils'
 local lsp_utils = require 'tap.utils.lsp'
 
 if vim.env.LSP_DEBUG then
@@ -24,10 +25,6 @@ local get_server_list = function(nested_servers)
   return vim.tbl_flatten(vim.tbl_values(nested_servers))
 end
 
-local function before()
-  require('lsp-format').setup {}
-end
-
 local function require_server(server_identifier)
   local server_name = lsp_installer_servers.parse_server_identifier(
     server_identifier
@@ -35,36 +32,48 @@ local function require_server(server_identifier)
   return require('tap.plugins.lspconfig.servers.' .. server_name)
 end
 
-local function init_servers()
-  for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
-    local _, version = lsp_installer_servers.parse_server_identifier(
-      server_identifier
-    )
+utils.run {
+  ----------------------
+  -- Setup Installers --
+  ----------------------
+  function()
+    for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
+      local _, version = lsp_installer_servers.parse_server_identifier(
+        server_identifier
+      )
 
-    local server_config = require_server(server_identifier)
-    if server_config.patch_install then
-      server_config.patch_install(version)
+      local server_config = require_server(server_identifier)
+      if server_config.patch_install then
+        server_config.patch_install(version)
+      end
     end
-  end
-end
+  end,
 
-local function setup_servers(initialise)
-  -- Ensure desired servers are installed
-  require('nvim-lsp-installer').setup {
-    ensure_installed = servers['nvim-lsp-installer'],
-  }
+  -----------
+  -- Setup --
+  -----------
+  function()
+    require('lsp-format').setup {}
+    -- Ensure desired servers are installed
+    require('nvim-lsp-installer').setup {
+      ensure_installed = servers['nvim-lsp-installer'],
+    }
+  end,
 
-  -- Setup servers
-  for _, server_identifier in pairs(get_server_list(servers)) do
-    require_server(server_identifier).setup()
-  end
+  ----------------------
+  -- Register Servers --
+  ----------------------
+  function()
+    -- Setup servers
+    for _, server_identifier in pairs(get_server_list(servers)) do
+      require_server(server_identifier).setup()
+    end
+  end,
 
-  -- Run any post setup actions
-  initialise()
-end
-
-before()
-init_servers()
-setup_servers(function()
-  lsp_utils.init_diagnositcs()
-end)
+  -----------
+  -- After --
+  -----------
+  function()
+    lsp_utils.init_diagnositcs()
+  end,
+}
