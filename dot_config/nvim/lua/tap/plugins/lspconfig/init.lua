@@ -11,9 +11,9 @@ local servers = {
   -- servers installed with williamboman/nvim-lsp-installer
   ['nvim-lsp-installer'] = {
     'bashls',
-    'diagnosticls',
     'eslint',
     'jsonls',
+    'null-ls',
     'sumneko_lua@v2.5.6',
     'tsserver',
   },
@@ -30,10 +30,15 @@ local function require_server(server_name)
 end
 
 local function init_servers()
-  for _, name in pairs(servers['nvim-lsp-installer']) do
-    pcall(function()
-      require_server(name).patch_install()
-    end)
+  for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
+    local name, version = lsp_installer_servers.parse_server_identifier(
+      server_identifier
+    )
+
+    local server_config = require_server(name)
+    if server_config.patch_install then
+      server_config.patch_install(version)
+    end
   end
 end
 
