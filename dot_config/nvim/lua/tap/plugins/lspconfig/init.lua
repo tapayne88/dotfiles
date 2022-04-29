@@ -32,9 +32,9 @@ local function require_server(server_identifier)
 end
 
 utils.run {
-  ----------------------
-  -- Setup Installers --
-  ----------------------
+  --------------
+  -- Register --
+  --------------
   function()
     for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
       local _, version = lsp_installer_servers.parse_server_identifier(
@@ -42,8 +42,8 @@ utils.run {
       )
 
       local server_config = require_server(server_identifier)
-      if server_config.patch_install then
-        server_config.patch_install(version)
+      if server_config.register then
+        server_config.register(version)
       end
     end
   end,
@@ -60,9 +60,9 @@ utils.run {
     require('tap.utils.lsp').setup {}
   end,
 
-  ----------------------
-  -- Register Servers --
-  ----------------------
+  -------------
+  -- Require --
+  -------------
   function()
     -- Setup servers
     for _, server_identifier in pairs(get_server_list(servers)) do

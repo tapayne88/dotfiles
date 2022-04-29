@@ -8,7 +8,7 @@ local lsp_utils = require 'tap.utils.lsp'
 local M = {}
 local server_name = 'null-ls'
 
-function M.patch_install()
+function M.register()
   local root_dir = server.get_server_root_path(server_name)
   local installer = function()
     npm.install {
