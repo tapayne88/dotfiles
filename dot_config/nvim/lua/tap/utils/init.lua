@@ -383,4 +383,10 @@ function utils.apply_user_highlights(name, callback, _opts)
   callback()
 end
 
+function utils.run(fns)
+  for _, fn in pairs(fns) do
+    fn()
+  end
+end
+
 return utils

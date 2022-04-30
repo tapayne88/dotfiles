@@ -264,4 +264,8 @@ function module.get_lsp_clients()
   return active_clients
 end
 
+function module.setup(_)
+  module.init_diagnositcs()
+end
+
 return module
