@@ -23,7 +23,18 @@ vnoremap(
 nnoremap('<c-q>', ':copen<CR>', { description = 'Open quickfix list' })
 nnoremap('<LocalLeader>q', ':lopen<CR>', { description = 'Open local list' })
 
-nnoremap('<leader>fp', ':echo @%<CR>', { description = 'Print filepath' })
+nnoremap(
+  '<leader>fp',
+  ':echo @% | let @*=expand("%")<CR>',
+  { description = 'Print and copy to system clipboard the filepath' }
+)
+vnoremap(
+  '<leader>fp',
+  ':<C-U>echo fnamemodify(expand("%"), ":~:.") . ":" . line(".") | let @*=fnamemodify(expand("%"), ":~:.") . ":" . line(".")<CR>',
+  {
+    description = 'Print and copy to system clipboard filepath with line number',
+  }
+)
 nnoremap(
   '<leader>cm',
   ':!chezmoi apply -v<CR>',
