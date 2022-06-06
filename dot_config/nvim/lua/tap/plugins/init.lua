@@ -30,19 +30,19 @@ return require('packer').startup(function(use)
     config = [[require("tap.plugins.nord")]],
   }
 
-    -- stylua: ignore start
-    use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
-    use 'tpope/vim-commentary'                          -- Adds 'gc' & 'gcc' commands for commenting lines
-    use 'tpope/vim-eunuch'                              -- Adds unix commands like ':Move' etc.
-    use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
-    use 'tpope/vim-unimpaired'                          -- Complementary pairs of mappings for common actions
-    use 'tpope/vim-vinegar'                             -- Nicer netrw defaults
-    use 'tpope/vim-sleuth'                              -- Detect indentation
-    use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
-    use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
-    use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
-    use 'RRethy/vim-illuminate'                         -- Highlight same words
-    use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
+  -- stylua: ignore start
+  use 'tpope/vim-characterize'                        -- Adds 'ga' command to show character code
+  use 'tpope/vim-commentary'                          -- Adds 'gc' & 'gcc' commands for commenting lines
+  use 'tpope/vim-eunuch'                              -- Adds unix commands like ':Move' etc.
+  use 'tpope/vim-scriptease'                          -- Vim plugin for making Vim plugins
+  use 'tpope/vim-unimpaired'                          -- Complementary pairs of mappings for common actions
+  use 'tpope/vim-vinegar'                             -- Nicer netrw defaults
+  use 'tpope/vim-sleuth'                              -- Detect indentation
+  use 'tpope/vim-surround'                            -- Adds 'cs' command to change surround e.g. cs'<p> - would change 'this' => <p>this</p>
+  use 'lervag/file-line'                              -- Handle filenames with line numbers i.e. :20
+  use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
+  use 'RRethy/vim-illuminate'                         -- Highlight same words
+  use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
   -- stylua: ignore end
 
   -- Chunk cache for neovim modules
