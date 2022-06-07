@@ -29,7 +29,7 @@ require('telescope').setup {
 }
 
 require('telescope').load_extension 'file_browser'
-require('telescope').load_extension 'live_grep_raw'
+require('telescope').load_extension 'live_grep_args'
 
 --------------
 -- Internal --
@@ -102,10 +102,10 @@ local search_opts = {
   path_display = { 'shorten', shorten = 2 },
 }
 nnoremap('<leader>fg', function()
-  require('telescope').extensions.live_grep_raw.live_grep_raw(search_opts)
+  require('telescope').extensions.live_grep_args.live_grep_args(search_opts)
 end, { description = 'Search with ripgrep' })
 nnoremap('<leader>fw', function()
-  require('telescope').extensions.live_grep_raw.live_grep_raw(
+  require('telescope').extensions.live_grep_args.live_grep_args(
     vim.tbl_extend('error', search_opts, {
       default_text = vim.fn.expand '<cword>',
     })
