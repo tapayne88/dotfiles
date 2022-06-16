@@ -1,5 +1,6 @@
-vim.g.dashboard_default_executive = 'telescope'
-vim.g.dashboard_custom_header = {
+local db = require 'dashboard'
+
+db.custom_header = {
   '',
   '',
   '███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗',
@@ -10,48 +11,40 @@ vim.g.dashboard_custom_header = {
   '╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝',
   '',
 }
-vim.g.dashboard_custom_footer = { '' }
-vim.g.dashboard_custom_section = {
-  row1 = {
-    description = {
-      '  Recent files                                      ',
-    },
-    command = 'Telescope oldfiles',
+db.custom_center = {
+  {
+    icon = '  ',
+    desc = 'Recent files                                      ',
+    action = 'Telescope oldfiles',
   },
-  row2 = {
-    description = {
-      '  Git file                                <leader>gf',
-    },
-    command = 'norm ,gf',
+  {
+    icon = '  ',
+    desc = 'Git file                                <leader>gf',
+    action = 'norm ,gf',
   },
-  row3 = {
-    description = {
-      '  Find file                               <leader>ff',
-    },
-    command = 'norm ,ff',
+  {
+    icon = '  ',
+    desc = 'Find file                               <leader>ff',
+    action = 'norm ,ff',
   },
-  row4 = {
-    description = {
-      '  New file                                          ',
-    },
-    command = 'enew',
+  {
+    icon = '  ',
+    desc = 'New file                                          ',
+    action = 'enew',
   },
-  row5 = {
-    description = {
-      '  File browser                            <leader>fb',
-    },
-    command = 'norm ,fb',
+  {
+    icon = '  ',
+    desc = 'File browser                            <leader>fb',
+    action = 'norm ,fb',
   },
-  row6 = {
-    description = {
-      '  Find word                               <leader>fg',
-    },
-    command = 'norm ,fg',
+  {
+    icon = '  ',
+    desc = 'Find word                               <leader>fg',
+    action = 'norm ,fg',
   },
-  row7 = {
-    description = {
-      '  Jump to bookmarks                                 ',
-    },
-    command = 'Telescope marks',
+  {
+    icon = '  ',
+    desc = 'Jump to bookmarks                                 ',
+    action = 'Telescope marks',
   },
 }
