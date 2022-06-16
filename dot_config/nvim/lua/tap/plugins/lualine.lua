@@ -193,7 +193,16 @@ local sections = {
   lualine_a = { 'mode' },
   lualine_b = { { 'branch', icon = '' } },
   lualine_c = {
-    { 'filename', file_status = false },
+    {
+      'filename',
+      file_status = false,
+      fmt = function(filename)
+        local is_zoomed = vim.api.nvim_exec(':echo zoom#statusline()', true)
+          == 'zoomed'
+        local zoom_text = is_zoomed and ' ﯫ' or ''
+        return filename .. zoom_text
+      end,
+    },
     modified,
     {
       '%r',

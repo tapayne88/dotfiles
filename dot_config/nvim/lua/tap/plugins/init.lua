@@ -43,6 +43,7 @@ return require('packer').startup(function(use)
   use 'nvim-lua/plenary.nvim'                         -- Utility function used by plugins and my config
   use 'RRethy/vim-illuminate'                         -- Highlight same words
   use 'rktjmp/fwatch.nvim'                            -- Utility for watching files
+  use 'dhruvasagar/vim-zoom'                          -- Toggle zoom in / out individual windows
   -- stylua: ignore end
 
   -- Chunk cache for neovim modules
