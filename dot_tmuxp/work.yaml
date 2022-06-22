@@ -11,9 +11,9 @@ windows:
     - clear
   panes:
     - shell_command:
-      - nvm use system
+      - null
       focus: true
-    - nvm use
+    - null
 - window_name: core-client
   window_index: 2
   layout: main-vertical
@@ -37,7 +37,6 @@ windows:
     main-pane-width: 50%
   shell_command_before:
     - z dotfiles
-    - nvm use system
     - clear
   panes:
     - shell_command:
