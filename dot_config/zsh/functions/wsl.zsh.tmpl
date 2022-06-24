@@ -20,3 +20,7 @@ function fake_chezmoi {
     command cp -i $new_settings $current_settings
   fi
 }
+
+function sync_lr {
+  aws s3 sync --profile lightroom-sync --exclude "*.JPG" "$@" /mnt/i/Lightroom s3://tp.lr-catalog 
+}
