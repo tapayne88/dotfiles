@@ -247,7 +247,7 @@ return require('packer').startup(function(use)
     'lukas-reineke/indent-blankline.nvim',
     config = function()
       require('indent_blankline').setup {
-        char = ' ',
+        char = '',
         context_char = '│',
         space_char_blankline = ' ',
         show_current_context = true,
