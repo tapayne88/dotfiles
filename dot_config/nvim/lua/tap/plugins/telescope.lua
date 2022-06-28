@@ -25,6 +25,9 @@ require('telescope').setup {
     preview = { timeout = 100, treesitter = false },
     path_display = { 'truncate' },
     dynamic_preview_title = true,
+    cache_picker = {
+      num_pickers = -1,
+    },
   },
 }
 
@@ -51,6 +54,9 @@ end, { description = 'Help tags' })
 nnoremap('<leader>ch', function()
   require('telescope.builtin').command_history()
 end, { description = 'Command history' })
+nnoremap('<leader>tp', function()
+  require('telescope.builtin').pickers()
+end, { description = 'Past telescope pickers with state' })
 
 ---------
 -- Git --
