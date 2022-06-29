@@ -49,15 +49,15 @@ Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
 ### MacOS
 
 ```console
-nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz home-manager; \
-nix-channel --add https://nixos.org/channels/nixpkgs-21.11-darwin nixpkgs;
+nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager; \
+nix-channel --add https://nixos.org/channels/nixpkgs-22.05-darwin nixpkgs;
 ```
 
 ### \*nix
 
 ```console
-nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz home-manager; \
-nix-channel --add https://nixos.org/channels/nixos-21.11 nixpkgs;
+nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager; \
+nix-channel --add https://nixos.org/channels/nixos-22.05 nixpkgs;
 ```
 
 ## 4. Generate ssh key

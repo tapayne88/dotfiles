@@ -2,7 +2,7 @@
   description = "Home-manager configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -13,7 +13,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-21.11";
+      url = "github:nix-community/home-manager/release-22.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -44,7 +44,7 @@
           system = "x86_64-linux";
           homeDirectory = "/home/tapayne88";
           username = "tapayne88";
-          stateVersion = "21.11";
+          stateVersion = "22.05";
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
@@ -63,7 +63,7 @@
           system = "x86_64-darwin";
           homeDirectory = "/Users/tom.payne";
           username = "tom.payne";
-          stateVersion = "21.11";
+          stateVersion = "22.05";
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
@@ -85,7 +85,7 @@
           system = "x86_64-linux";
           homeDirectory = "/home/tpayne";
           username = "tpayne";
-          stateVersion = "21.11";
+          stateVersion = "22.05";
           configuration = { pkgs, ... }:
             {
               nixpkgs.overlays = overlays;
