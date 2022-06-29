@@ -12,10 +12,16 @@ require('telescope').setup {
     layout_strategy = 'flex', -- let telescope figure out what to do given the space
     layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
     mappings = {
-      i = { ['<c-s>'] = actions.select_horizontal },
+      i = {
+        ['<c-s>'] = actions.select_horizontal,
+        ['<Down>'] = actions.cycle_history_next,
+        ['<Up>'] = actions.cycle_history_prev,
+      },
       n = {
         ['<c-p>'] = actions.move_selection_previous,
         ['<c-n>'] = actions.move_selection_next,
+        ['<Down>'] = actions.cycle_history_next,
+        ['<Up>'] = actions.cycle_history_prev,
       },
     },
     borderchars = {
