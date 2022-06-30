@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     fd # telescope-file-browser
@@ -11,6 +11,9 @@
     enable = true;
     viAlias = true;
     withNodeJs = true;
+    extraConfig = ''
+      luafile ${config.xdg.configHome}/nvim/init-lua.lua
+    '';
 
     # <features.neovim_nightly>
     #{{- if (eq .features.neovim_nightly true) }} Neovim nightly
