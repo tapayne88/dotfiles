@@ -13,6 +13,7 @@
     ctop # container top process tool
     curl # curl...
     delta # better git diffs
+    duf # pretty alternative to df
     exa # ls replacement
     fd # faster more user friendly find
     fpp # facebook picker
