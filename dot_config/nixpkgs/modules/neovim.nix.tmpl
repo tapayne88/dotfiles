@@ -12,6 +12,8 @@
     viAlias = true;
     withNodeJs = true;
     extraConfig = ''
+      let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
+
       luafile ${config.xdg.configHome}/nvim/init-lua.lua
     '';
 
