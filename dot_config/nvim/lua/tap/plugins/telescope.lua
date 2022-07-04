@@ -14,14 +14,14 @@ require('telescope').setup {
     mappings = {
       i = {
         ['<c-s>'] = actions.select_horizontal,
-        ['<Down>'] = actions.cycle_history_next,
         ['<Up>'] = actions.cycle_history_prev,
+        ['<Down>'] = actions.cycle_history_next,
       },
       n = {
         ['<c-p>'] = actions.move_selection_previous,
         ['<c-n>'] = actions.move_selection_next,
-        ['<Down>'] = actions.cycle_history_next,
         ['<Up>'] = actions.cycle_history_prev,
+        ['<Down>'] = actions.cycle_history_next,
       },
     },
     borderchars = {
@@ -35,11 +35,16 @@ require('telescope').setup {
     cache_picker = {
       num_pickers = -1,
     },
+    history = {
+      path = vim.fn.stdpath 'data' .. '/telescope_history.sqlite3',
+      limit = 100,
+    },
   },
 }
 
 require('telescope').load_extension 'file_browser'
 require('telescope').load_extension 'live_grep_args'
+require('telescope').load_extension 'smart_history'
 
 --------------
 -- Internal --
