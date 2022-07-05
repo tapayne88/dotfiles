@@ -18,6 +18,8 @@ require('telescope').setup {
         -- Cycle through history
         ['<Up>'] = actions.cycle_history_prev,
         ['<Down>'] = actions.cycle_history_next,
+        -- Allow refining of telescope results
+        ['<c-f>'] = actions.to_fuzzy_refine,
       },
       n = {
         -- Allow selection splitting
