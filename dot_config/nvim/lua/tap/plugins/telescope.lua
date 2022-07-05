@@ -13,13 +13,19 @@ require('telescope').setup {
     layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
     mappings = {
       i = {
+        -- Allow selection splitting
         ['<c-s>'] = actions.select_horizontal,
+        -- Cycle through history
         ['<Up>'] = actions.cycle_history_prev,
         ['<Down>'] = actions.cycle_history_next,
       },
       n = {
+        -- Allow selection splitting
+        ['<c-s>'] = actions.select_horizontal,
+        -- Reestablish insert mode mappings
         ['<c-p>'] = actions.move_selection_previous,
         ['<c-n>'] = actions.move_selection_next,
+        -- Cycle through history
         ['<Up>'] = actions.cycle_history_prev,
         ['<Down>'] = actions.cycle_history_next,
       },
