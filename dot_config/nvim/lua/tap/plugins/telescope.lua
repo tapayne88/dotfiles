@@ -1,5 +1,6 @@
 local actions = require 'telescope.actions'
 local nnoremap = require('tap.utils').nnoremap
+local vnoremap = require('tap.utils').vnoremap
 local highlight = require('tap.utils').highlight
 local color = require('tap.utils').color
 local apply_user_highlights = require('tap.utils').apply_user_highlights
@@ -102,6 +103,22 @@ end, { description = 'File browser at $HOME' })
 ------------
 -- Search --
 ------------
+
+-- All praise to this
+-- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
+local function getVisualSelection()
+  vim.cmd 'noau normal! "vy"'
+  local text = vim.fn.getreg 'v'
+  vim.fn.setreg('v', {})
+
+  text = string.gsub(text, '\n', '')
+  if #text > 0 then
+    return text
+  else
+    return ''
+  end
+end
+
 local search_opts = {
   prompt_title = 'Ripgrep',
   layout_strategy = 'vertical',
@@ -116,7 +133,14 @@ nnoremap('<leader>fw', function()
       default_text = vim.fn.expand '<cword>',
     })
   )
-end, { description = 'Search current work with ripgrep' })
+end, { description = 'Search current word with ripgrep' })
+vnoremap('<leader>fw', function()
+  require('telescope').extensions.live_grep_args.live_grep_args(
+    vim.tbl_extend('error', search_opts, {
+      default_text = getVisualSelection(),
+    })
+  )
+end, { description = 'Search current visual selection with ripgrep' })
 
 apply_user_highlights('Telescope', function()
   local border_colors = { dark = 'nord2_gui', light = 'blue0' }
