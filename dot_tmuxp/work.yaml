@@ -24,11 +24,11 @@ windows:
     - clear
   panes:
     - shell_command:
-      - nvm use system
+      - asdf shell nodejs system  # uses node v8 which is too old for neovim
       focus: true
-    - nvm use
+    - null
     - shell_command:
-      - nvm use
+      - null
       - echo "press enter to run" && read && yarn --cwd modern install && yarn --cwd modern start
 - window_name: dotfiles
   window_index: 9
