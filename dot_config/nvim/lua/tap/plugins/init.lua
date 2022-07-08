@@ -55,7 +55,7 @@ return require('packer').startup(function(use)
           events = { 'PackerComplete', 'PackerCompileDone' },
           user = true,
           command = function()
-            require('impatient').clear_cache()
+            vim.cmd [[LuaCacheClear]]
             vim.notify 'Cleared impatient.nvim cache'
           end,
         },
