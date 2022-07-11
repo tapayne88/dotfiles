@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     fd # telescope-file-browser
@@ -11,6 +11,15 @@
     enable = true;
     viAlias = true;
     withNodeJs = true;
+    extraConfig = ''
+      "{{- if eq "macOS" .ostype }}
+      let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.dylib'
+      "{{- else }}
+      let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
+      "{{- end }}
+
+      luafile ${config.xdg.configHome}/nvim/init-lua.lua
+    '';
 
     # <features.neovim_nightly>
     #{{- if (eq .features.neovim_nightly true) }} Neovim nightly

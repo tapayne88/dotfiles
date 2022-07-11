@@ -12,10 +12,24 @@ require('telescope').setup {
     layout_strategy = 'flex', -- let telescope figure out what to do given the space
     layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
     mappings = {
-      i = { ['<c-s>'] = actions.select_horizontal },
+      i = {
+        -- Allow selection splitting
+        ['<c-s>'] = actions.select_horizontal,
+        -- Cycle through history
+        ['<Up>'] = actions.cycle_history_prev,
+        ['<Down>'] = actions.cycle_history_next,
+        -- Allow refining of telescope results
+        ['<c-f>'] = actions.to_fuzzy_refine,
+      },
       n = {
+        -- Allow selection splitting
+        ['<c-s>'] = actions.select_horizontal,
+        -- Reestablish insert mode mappings
         ['<c-p>'] = actions.move_selection_previous,
         ['<c-n>'] = actions.move_selection_next,
+        -- Cycle through history
+        ['<Up>'] = actions.cycle_history_prev,
+        ['<Down>'] = actions.cycle_history_next,
       },
     },
     borderchars = {
@@ -29,11 +43,16 @@ require('telescope').setup {
     cache_picker = {
       num_pickers = -1,
     },
+    history = {
+      path = vim.fn.stdpath 'data' .. '/telescope_history.sqlite3',
+      limit = 100,
+    },
   },
 }
 
 require('telescope').load_extension 'file_browser'
 require('telescope').load_extension 'live_grep_args'
+require('telescope').load_extension 'smart_history'
 
 --------------
 -- Internal --

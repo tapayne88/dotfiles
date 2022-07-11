@@ -147,6 +147,10 @@ return require('packer').startup(function(use)
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       'nvim-telescope/telescope-live-grep-args.nvim',
+      {
+        'nvim-telescope/telescope-smart-history.nvim',
+        requires = { 'tami5/sqlite.lua' },
+      },
     },
   }
   -- customise vim.ui appearance

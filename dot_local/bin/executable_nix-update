@@ -87,10 +87,6 @@ function command_update {
   eval_command "nix-env -u"
   eval_command "nix flake update $HOME_MANAGER_HOME"
   eval_command "home-manager switch"
-
-  # bug with nix neovim config writes init.vim which conflicts with my init.lua
-  # https://github.com/nix-community/home-manager/issues/1907
-  rm -rf "$XDG_CONFIG_HOME/nvim/init.vim"
 }
 
 while :; do
