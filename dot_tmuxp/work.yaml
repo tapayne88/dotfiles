@@ -11,9 +11,9 @@ windows:
       - clear
     panes:
       - shell_command:
-          - null
+          - "blank"
         focus: true
-      - null
+      - "blank"
   - window_name: core-client
     window_index: 2
     layout: main-vertical
@@ -26,9 +26,9 @@ windows:
       - shell_command:
           - asdf shell nodejs system # uses node v8 which is too old for neovim
         focus: true
-      - null
+      - "blank"
       - shell_command:
-          - null
+          - "blank"
           - echo "press enter to run" && read && yarn --cwd modern install && yarn --cwd modern start
   - window_name: dotfiles
     window_index: 9
@@ -40,6 +40,6 @@ windows:
       - clear
     panes:
       - shell_command:
-          - null
+          - "blank"
         focus: true
-      - null
+      - "blank"
