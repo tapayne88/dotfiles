@@ -13,7 +13,7 @@ local servers = {
     'eslint',
     'jsonls',
     'null-ls',
-    'sumneko_lua@v2.5.6',
+    'sumneko_lua',
     'tsserver',
   },
   -- globally installed servers likely through nix
