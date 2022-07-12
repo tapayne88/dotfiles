@@ -55,11 +55,7 @@ stty -ixon
 KEYTIMEOUT=1
 
 # fzf defaults
-export FZF_DEFAULT_COMMAND="ag --nocolor -g ''"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_TMUX=1
-export FZF_TMUX_HEIGHT="40%"
-export FZF_LEGACY_KEYBINDINGS=0
+export FZF_TMUX_OPTS="-d 40%"
 
 export FZF_CTRL_T_OPTS="\
   --preview 'bat --style=numbers --color=always {} | head -500'
