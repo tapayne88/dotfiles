@@ -161,7 +161,4 @@ function module.get_lsp_clients()
   return active_clients
 end
 
-function module.setup(_)
-end
-
 return module
