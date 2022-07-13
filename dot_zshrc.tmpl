@@ -4,6 +4,7 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
 export ZSH_HOME=~/.config/zsh
+export ZSH_CACHE_DIR=~/.cache/zsh
 
 export SHELL=$HOME/.nix-profile/bin/zsh
 export VISUAL=nvim
@@ -107,7 +108,7 @@ antigen bundle robbyrussell/oh-my-zsh plugins/z
 antigen theme romkatv/powerlevel10k
 
 # personal settings, override modules
-antigen bundle $ZSH_HOME/completions
+antigen bundle $ZSH_CACHE_DIR/completions
 antigen bundle $ZSH_HOME/lib
 antigen bundle $ZSH_HOME/functions
 
