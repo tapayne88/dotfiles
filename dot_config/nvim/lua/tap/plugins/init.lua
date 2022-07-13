@@ -70,6 +70,33 @@ return require('packer').startup {
     use {
       'ckipp01/nvim-jenkinsfile-linter',
       requires = { 'nvim-lua/plenary.nvim' },
+      config = function()
+        require('tap.utils').augroup('JenkinsfileLinter', {
+          {
+            events = { 'BufWritePost' },
+            targets = { 'Jenkinsfile', 'Jenkinsfile.*' },
+            command = function()
+              local user = os.getenv 'JENKINS_USER_ID'
+                or os.getenv 'JENKINS_USERNAME'
+              local password = os.getenv 'JENKINS_PASSWORD'
+              local token = os.getenv 'JENKINS_API_TOKEN'
+                or os.getenv 'JENKINS_TOKEN'
+              local jenkins_url = os.getenv 'JENKINS_URL'
+                or os.getenv 'JENKINS_HOST'
+
+              if user == nil then
+                return
+              elseif password == nil and token == nil then
+                return
+              elseif jenkins_url == nil then
+                return
+              end
+
+              require('jenkinsfile_linter').validate()
+            end,
+          },
+        })
+      end,
     }
 
     -- Interactive neovim scratchpad for lua
