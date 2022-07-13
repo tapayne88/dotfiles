@@ -11,6 +11,7 @@ end)
 
 require 'tap.settings'
 require 'tap.plugins'
+require 'tap.diagnostic'
 require 'tap.colours'
 require 'tap.auto'
 require 'tap.keymap'

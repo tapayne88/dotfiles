@@ -57,7 +57,6 @@ utils.run {
     require('nvim-lsp-installer').setup {
       ensure_installed = servers['nvim-lsp-installer'],
     }
-    require('tap.utils.lsp').setup {}
   end,
 
   -------------
