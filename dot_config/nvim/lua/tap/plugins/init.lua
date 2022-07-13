@@ -67,6 +67,11 @@ return require('packer').startup {
       end,
     }
 
+    use {
+      'ckipp01/nvim-jenkinsfile-linter',
+      requires = { 'nvim-lua/plenary.nvim' },
+    }
+
     -- Interactive neovim scratchpad for lua
     use { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } }
 
