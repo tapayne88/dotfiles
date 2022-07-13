@@ -117,6 +117,7 @@ function module.get_bin_path(cmd)
   return result[1]
 end
 
+-- TODO: Create config module where this can live - duplicated in diagnostic.lua
 local border_window_style = 'rounded'
 
 -- Merge passed config with default config for consistent lsp.setup calls, preserve

@@ -2,6 +2,7 @@ local utils = require 'tap.utils'
 local apply_user_highlights = require('tap.utils').apply_user_highlights
 local nnoremap = require('tap.utils').nnoremap
 
+-- TODO: Create config module where this can live - duplicated in utils/lsp.lua
 local border_window_style = 'rounded'
 
 vim.diagnostic.config {
@@ -20,6 +21,54 @@ vim.diagnostic.config {
   },
 }
 
+local show_cursor_diagnositcs = function()
+  vim.diagnostic.open_float { scope = 'cursor' }
+end
+local show_line_diagnositcs = function()
+  vim.diagnostic.open_float { scope = 'line' }
+end
+
+------------------
+-- Autocommands --
+------------------
+utils.augroup('DiagnosticsCursor', {
+  {
+    events = { 'CursorHold' },
+    targets = { '*' },
+    command = show_cursor_diagnositcs,
+  },
+})
+
+-------------
+-- Keymaps --
+-------------
+nnoremap(
+  '<leader>cc',
+  show_cursor_diagnositcs,
+  { description = 'Show cursor diagnostics' }
+)
+nnoremap(
+  '<space>e',
+  show_line_diagnositcs,
+  { description = 'Show line diagnostics' }
+)
+nnoremap(
+  '<space>q',
+  '<cmd>lua vim.diagnostic.setloclist()<CR>',
+  { description = 'Open buffer diagnostics in local list' }
+)
+
+-- float = false, CursorHold will show diagnostic
+nnoremap('[d', function()
+  vim.diagnostic.goto_prev { float = false }
+end, { description = 'Jump to previous diagnostic' })
+nnoremap(']d', function()
+  vim.diagnostic.goto_next { float = false }
+end, { description = 'Jump to next diagnostic' })
+
+----------------
+-- Highlights --
+----------------
 local user_highlights = function()
   utils.highlight('DiagnosticUnderlineError', {
     guifg = 'none',
@@ -69,42 +118,3 @@ local user_highlights = function()
 end
 
 apply_user_highlights('UtilsLsp', user_highlights, { force = true })
-
-local show_cursor_diagnositcs = function()
-  vim.diagnostic.open_float { scope = 'cursor' }
-end
-local show_line_diagnositcs = function()
-  vim.diagnostic.open_float { scope = 'line' }
-end
-
-utils.augroup('DiagnosticsCursor', {
-  {
-    events = { 'CursorHold' },
-    targets = { '<buffer>' },
-    command = show_cursor_diagnositcs,
-  },
-})
-
-nnoremap(
-  '<leader>cc',
-  show_cursor_diagnositcs,
-  { description = 'Show cursor diagnostics' }
-)
-nnoremap(
-  '<space>e',
-  show_line_diagnositcs,
-  { description = 'Show line diagnostics' }
-)
-nnoremap(
-  '<space>q',
-  '<cmd>lua vim.diagnostic.setloclist()<CR>',
-  { description = 'Open buffer diagnostics in local list' }
-)
-
--- float = false, CursorHold will show diagnostic
-nnoremap('[d', function()
-  vim.diagnostic.goto_prev { float = false }
-end, { description = 'Jump to previous diagnostic' })
-nnoremap(']d', function()
-  vim.diagnostic.goto_next { float = false }
-end, { description = 'Jump to next diagnostic' })
