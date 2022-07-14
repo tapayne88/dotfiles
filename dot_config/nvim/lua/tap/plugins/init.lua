@@ -289,6 +289,12 @@ return require('packer').startup(function(use)
     end,
   }
 
+  use {
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = [[require("tap.plugins.trouble")]],
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
