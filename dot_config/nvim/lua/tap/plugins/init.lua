@@ -150,6 +150,7 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope-smart-history.nvim',
         requires = { 'tami5/sqlite.lua' },
       },
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     },
   }
   -- customise vim.ui appearance
