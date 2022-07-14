@@ -20,16 +20,16 @@ function utils.color(color)
     or utils.colors.nord[color.dark]
 end
 
----@alias lsp_status '"error"' | '"warning"' | '"info"' | '"hint"' | '"ok"'
+---@alias lsp_status 'error' | 'warning' | 'info' | 'hint' | 'ok'
 
----@type table<lsp_status | '"hint_alt"', string>
+---@type { error: string, warning: string, info: string, hint: string, hint_alt: string, ok: string }
 utils.lsp_symbols = {
   error = ' ',
   warning = ' ',
   info = ' ',
   hint = ' ',
   hint_alt = ' ',
-  ok = ' ',
+  ok = '﫠',
 }
 
 ---@param type lsp_status
