@@ -46,9 +46,8 @@ local function bufwidth()
   if sc == 'yes' then
     signwidth = 2
   elseif sc == 'auto' then
-    local signs = vim.fn.execute(
-      string.format('sign place buffer=%d', vim.fn.bufnr '')
-    )
+    local signs =
+      vim.fn.execute(string.format('sign place buffer=%d', vim.fn.bufnr ''))
     signs = vim.fn.split(signs, '\n')
     if #signs > 2 then
       signwidth = 2
@@ -106,6 +105,7 @@ vim.opt.fillchars = {
   vertleft = '┫',
   vertright = '┣',
   verthoriz = '╋',
+  diff = '╱',
 }
 
 -- enable filetype.lua

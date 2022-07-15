@@ -27,4 +27,7 @@ apply_user_highlights('Nord', function()
   highlight('gitmessengerHash', { link = 'Comment' })
   highlight('gitmessengerHistory', { link = 'Constant' })
   highlight('gitmessengerPopupNormal', { link = 'CursorLine' })
+
+  highlight('DiffAdd', { gui = 'None' })
+  highlight('DiffDelete', { gui = 'None' })
 end)

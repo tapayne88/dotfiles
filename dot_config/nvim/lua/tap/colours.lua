@@ -111,4 +111,5 @@ local function setup_theme_watch()
     end,
   })
 end
+
 setup_theme_watch()
