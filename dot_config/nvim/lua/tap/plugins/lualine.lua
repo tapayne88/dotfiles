@@ -265,7 +265,7 @@ local sections = {
         if status == '0 0 0 0' then
           return string.format(' %s ', lsp_symbols.ok)
         end
-        return ''
+        return ' '
       end,
     },
     literal ' ',
