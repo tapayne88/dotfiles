@@ -23,7 +23,8 @@ return require('packer').startup(function(use)
 
   -- treesitter colorscheme
   use {
-    'shaunsingh/nord.nvim',
+    'tapayne88/nord.nvim',
+    branch = 'uniform-diff-background',
     requires = {
       'folke/tokyonight.nvim', -- light colorscheme
     },

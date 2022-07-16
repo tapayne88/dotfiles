@@ -41,6 +41,7 @@ local set_colorscheme = function(theme_future, opts)
 
       vim.g.nord_italic = true
       vim.g.nord_borders = true
+      vim.g.nord_uniform_diff_background = true
       vim.o.background = 'dark'
       require_plugin('tap.plugins.lualine', function(lualine)
         lualine.set_theme 'nord_custom'

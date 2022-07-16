@@ -28,22 +28,4 @@ apply_user_highlights('Nord', function()
   highlight('gitmessengerHash', { link = 'Comment' })
   highlight('gitmessengerHistory', { link = 'Constant' })
   highlight('gitmessengerPopupNormal', { link = 'CursorLine' })
-
-  -- g:nord_uniform_diff_background from arcticicestudio/nord-vim
-  highlight(
-    'DiffAdd',
-    { guifg = nord.nord14_gui, guibg = nord.nord1_gui, gui = nord.none }
-  )
-  highlight(
-    'DiffChange',
-    { guifg = nord.nord13_gui, guibg = nord.nord1_gui, gui = nord.none }
-  )
-  highlight(
-    'DiffDelete',
-    { guifg = nord.nord11_gui, guibg = nord.nord1_gui, gui = nord.none }
-  )
-  highlight(
-    'DiffText',
-    { guifg = nord.nord15_gui, guibg = nord.nord1_gui, gui = nord.none }
-  )
 end)
