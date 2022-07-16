@@ -25,9 +25,8 @@ local get_server_list = function(nested_servers)
 end
 
 local function require_server(server_identifier)
-  local server_name = lsp_installer_servers.parse_server_identifier(
-    server_identifier
-  )
+  local server_name =
+    lsp_installer_servers.parse_server_identifier(server_identifier)
   return require('tap.plugins.lspconfig.servers.' .. server_name)
 end
 
@@ -37,9 +36,8 @@ utils.run {
   --------------
   function()
     for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
-      local _, version = lsp_installer_servers.parse_server_identifier(
-        server_identifier
-      )
+      local _, version =
+        lsp_installer_servers.parse_server_identifier(server_identifier)
 
       local server_config = require_server(server_identifier)
       if server_config.register then

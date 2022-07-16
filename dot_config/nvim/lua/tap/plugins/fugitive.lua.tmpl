@@ -21,30 +21,28 @@ local git = function(args)
   return function(runtime_args)
     local title = 'git ' .. table.concat(args, ' ')
     a.run(function()
-      Job
-        :new({
-          command = 'git',
-          args = vim.tbl_flatten { args, runtime_args },
-          on_exit = function(j, return_val)
-            a.run(function()
-              if return_val ~= 0 then
-                notify(
-                  parse_result(j:result(), 'unknown error'),
-                  'error',
-                  { title = title }
-                )
-                return
-              end
-
+      Job:new({
+        command = 'git',
+        args = vim.tbl_flatten { args, runtime_args },
+        on_exit = function(j, return_val)
+          a.run(function()
+            if return_val ~= 0 then
               notify(
-                parse_result(j:result(), 'success'),
-                'info',
+                parse_result(j:result(), 'unknown error'),
+                'error',
                 { title = title }
               )
-            end)
-          end,
-        })
-        :start()
+              return
+            end
+
+            notify(
+              parse_result(j:result(), 'success'),
+              'info',
+              { title = title }
+            )
+          end)
+        end,
+      }):start()
     end)
   end
 end

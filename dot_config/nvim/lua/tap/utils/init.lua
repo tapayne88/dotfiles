@@ -77,16 +77,14 @@ function utils.get_os_command_output(cmd, cwd)
   end
   local command = table.remove(cmd, 1)
   local stderr = {}
-  local stdout, ret = Job
-    :new({
-      command = command,
-      args = cmd,
-      cwd = cwd,
-      on_stderr = function(_, data)
-        table.insert(stderr, data)
-      end,
-    })
-    :sync()
+  local stdout, ret = Job:new({
+    command = command,
+    args = cmd,
+    cwd = cwd,
+    on_stderr = function(_, data)
+      table.insert(stderr, data)
+    end,
+  }):sync()
   return stdout, ret, stderr
 end
 
@@ -138,11 +136,8 @@ local function make_mapper(mode, o)
   local parent_opts = vim.deepcopy(o)
 
   return function(lhs, rhs, _opts)
-    local opts = vim.tbl_extend(
-      'keep',
-      _opts and vim.deepcopy(_opts) or {},
-      parent_opts
-    )
+    local opts =
+      vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
 
     local description = opts.description and opts.description
       or 'Missing description'

@@ -31,9 +31,8 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
   else
     -- open new split on right
     vim.cmd 'vertical new'
-    local command = utils.get_command_string(
-      utils.command_with_pattern(cmd, pattern)
-    )
+    local command =
+      utils.get_command_string(utils.command_with_pattern(cmd, pattern))
 
     utils.logger.debug('creating term buffer with command `' .. command .. '`')
 

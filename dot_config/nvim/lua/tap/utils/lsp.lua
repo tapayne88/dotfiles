@@ -104,10 +104,8 @@ end
 ---@param cmd string
 ---@return string[]|nil
 function module.get_bin_path(cmd)
-  local result, code = utils.get_os_command_output_async(
-    { 'yarn', 'bin', cmd },
-    nil
-  )
+  local result, code =
+    utils.get_os_command_output_async({ 'yarn', 'bin', cmd }, nil)
 
   if code ~= 0 then
     vim.notify('`yarn bin ' .. cmd .. '` failed', 'error')
