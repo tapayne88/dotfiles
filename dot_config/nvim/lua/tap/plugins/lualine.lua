@@ -10,32 +10,32 @@ local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
 local nord_theme_c = { bg = color 'nord3_gui', fg = color 'nord4_gui' }
 local nord_theme = {
   normal = {
-    a = { bg = color 'nord8_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   insert = {
-    a = { bg = color 'nord4_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   visual = {
-    a = { bg = color 'nord7_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord7_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   replace = {
-    a = { bg = color 'nord13_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord13_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   command = {
-    a = { bg = color 'nord8_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   inactive = {
-    a = { bg = color 'nord4_gui', fg = color 'nord1_gui' },
+    a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
     y = nord_theme_c,
@@ -192,7 +192,20 @@ local diagnostic_section = function(cfg)
 end
 
 local sections = {
-  lualine_a = { 'mode' },
+  lualine_a = {
+    {
+      'mode',
+      fmt = function()
+        return ' '
+      end,
+      color = { gui = 'reverse' },
+      padding = 0,
+    },
+    {
+      'mode',
+      fmt = string.lower,
+    },
+  },
   lualine_b = { { 'branch', icon = '' } },
   lualine_c = {
     {
