@@ -280,7 +280,7 @@ local sections = {
         return conditions.hide_in_width() and status .. ' ' or ''
       end,
     },
-    literal(vim.env.TERM == 'xterm-kitty' and '\\' or '|'),
+    { literal '┃', color = { fg = nord_theme_c.bg } },
     { '%l:%c', icon = '' },
   },
   lualine_z = { { '%p%%', cond = conditions.hide_in_width } },
