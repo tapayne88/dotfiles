@@ -220,6 +220,10 @@ local sections = {
     },
     modified,
     {
+      'diff',
+      symbols = { added = ' ', modified = ' ', removed = ' ' },
+    },
+    {
       '%r',
       fmt = function()
         return ''
