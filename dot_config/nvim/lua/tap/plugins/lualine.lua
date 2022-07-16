@@ -135,11 +135,6 @@ local function tscVersion()
   return tsc_version and string.format('v%s', tsc_version) or ''
 end
 
-local supports_slanted_blocks = vim.env.TERM == 'xterm-kitty'
-local section_separators = supports_slanted_blocks
-    and { left = '', right = '' }
-  or { left = '', right = '' }
-
 local lsp_progress = {
   'lsp_progress',
   separators = { progress = ' ' },
@@ -157,6 +152,8 @@ local lsp_progress = {
   cond = conditions.hide_in_width,
 }
 
+local section_separators = { left = '', right = '' }
+
 local diagnostic_section = function(cfg)
   local default_cfg = {
     diagnostic_empty,
@@ -170,11 +167,16 @@ local diagnostic_section = function(cfg)
     fmt = function(status)
       if tonumber(status, 10) > 0 then
         -- stitch the icon onto the count
-        return string.format(' %s%s ', cfg.symbol, status)
+        return string.format(
+          '%s%s%s',
+          cfg.pad_left and ' ' or '',
+          cfg.symbol,
+          status
+        )
       end
 
       -- Count is 0 so don't return content
-      return supports_slanted_blocks and '' or ' '
+      return ' '
     end,
     -- supress the symbols, default still shows 'E: 1' etc.
     symbols = { error = '', warn = '', hint = '', info = '' },
@@ -221,21 +223,25 @@ local sections = {
       sections = { 'error' },
       color = 'LualineDiagnosticError',
       symbol = lsp_symbols.error,
+      pad_left = false,
     },
     diagnostic_section {
       sections = { 'warn' },
       color = 'LualineDiagnosticWarn',
       symbol = lsp_symbols.warning,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'hint' },
       color = 'LualineDiagnosticHint',
       symbol = lsp_symbols.hint,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'info' },
       color = 'LualineDiagnosticInfo',
       symbol = lsp_symbols.info,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'error', 'warn', 'hint', 'info' },
