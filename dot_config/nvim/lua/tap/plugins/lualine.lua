@@ -10,32 +10,32 @@ local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
 local nord_theme_c = { bg = color 'nord3_gui', fg = color 'nord4_gui' }
 local nord_theme = {
   normal = {
-    a = { bg = color 'nord8_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   insert = {
-    a = { bg = color 'nord4_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   visual = {
-    a = { bg = color 'nord7_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord7_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   replace = {
-    a = { bg = color 'nord13_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord13_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   command = {
-    a = { bg = color 'nord8_gui', fg = color 'nord0_gui' },
+    a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
   },
   inactive = {
-    a = { bg = color 'nord4_gui', fg = color 'nord1_gui' },
+    a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
     c = nord_theme_c,
     y = nord_theme_c,
@@ -135,11 +135,6 @@ local function tscVersion()
   return tsc_version and string.format('v%s', tsc_version) or ''
 end
 
-local supports_slanted_blocks = vim.env.TERM == 'xterm-kitty'
-local section_separators = supports_slanted_blocks
-    and { left = '', right = '' }
-  or { left = '', right = '' }
-
 local lsp_progress = {
   'lsp_progress',
   separators = { progress = ' ' },
@@ -157,6 +152,8 @@ local lsp_progress = {
   cond = conditions.hide_in_width,
 }
 
+local section_separators = { left = '', right = '' }
+
 local diagnostic_section = function(cfg)
   local default_cfg = {
     diagnostic_empty,
@@ -170,11 +167,16 @@ local diagnostic_section = function(cfg)
     fmt = function(status)
       if tonumber(status, 10) > 0 then
         -- stitch the icon onto the count
-        return string.format(' %s%s ', cfg.symbol, status)
+        return string.format(
+          '%s%s%s',
+          cfg.pad_left and ' ' or '',
+          cfg.symbol,
+          status
+        )
       end
 
       -- Count is 0 so don't return content
-      return supports_slanted_blocks and '' or ' '
+      return ' '
     end,
     -- supress the symbols, default still shows 'E: 1' etc.
     symbols = { error = '', warn = '', hint = '', info = '' },
@@ -190,7 +192,20 @@ local diagnostic_section = function(cfg)
 end
 
 local sections = {
-  lualine_a = { 'mode' },
+  lualine_a = {
+    {
+      'mode',
+      fmt = function()
+        return ' '
+      end,
+      color = { gui = 'reverse' },
+      padding = 0,
+    },
+    {
+      'mode',
+      fmt = string.lower,
+    },
+  },
   lualine_b = { { 'branch', icon = '' } },
   lualine_c = {
     {
@@ -204,6 +219,10 @@ local sections = {
       end,
     },
     modified,
+    {
+      'diff',
+      symbols = { added = ' ', modified = ' ', removed = ' ' },
+    },
     {
       '%r',
       fmt = function()
@@ -221,21 +240,25 @@ local sections = {
       sections = { 'error' },
       color = 'LualineDiagnosticError',
       symbol = lsp_symbols.error,
+      pad_left = false,
     },
     diagnostic_section {
       sections = { 'warn' },
       color = 'LualineDiagnosticWarn',
       symbol = lsp_symbols.warning,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'hint' },
       color = 'LualineDiagnosticHint',
       symbol = lsp_symbols.hint,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'info' },
       color = 'LualineDiagnosticInfo',
       symbol = lsp_symbols.info,
+      pad_left = true,
     },
     diagnostic_section {
       sections = { 'error', 'warn', 'hint', 'info' },
@@ -246,7 +269,7 @@ local sections = {
         if status == '0 0 0 0' then
           return string.format(' %s ', lsp_symbols.ok)
         end
-        return ''
+        return ' '
       end,
     },
     literal ' ',
@@ -261,7 +284,7 @@ local sections = {
         return conditions.hide_in_width() and status .. ' ' or ''
       end,
     },
-    literal(vim.env.TERM == 'xterm-kitty' and '\\' or '|'),
+    { literal '┃', color = { fg = nord_theme_c.bg } },
     { '%l:%c', icon = '' },
   },
   lualine_z = { { '%p%%', cond = conditions.hide_in_width } },
