@@ -1,4 +1,5 @@
 local actions = require 'telescope.actions'
+local trouble = require 'trouble.providers.telescope'
 local nnoremap = require('tap.utils').nnoremap
 local vnoremap = require('tap.utils').vnoremap
 local highlight = require('tap.utils').highlight
@@ -20,6 +21,7 @@ require('telescope').setup {
         ['<Down>'] = actions.cycle_history_next,
         -- Allow refining of telescope results
         ['<c-f>'] = actions.to_fuzzy_refine,
+        ['<c-t>'] = trouble.open_with_trouble,
       },
       n = {
         -- Allow selection splitting
@@ -30,6 +32,7 @@ require('telescope').setup {
         -- Cycle through history
         ['<Up>'] = actions.cycle_history_prev,
         ['<Down>'] = actions.cycle_history_next,
+        ['<c-t>'] = trouble.open_with_trouble,
       },
     },
     borderchars = {
