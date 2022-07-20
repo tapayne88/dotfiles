@@ -221,6 +221,31 @@ function utils.highlight(name, opts)
   end
 end
 
+-- Given a highlight name, grab the bg & fg attributes
+-- This can then be passed to utils.highlight
+---@param group string
+---@return table
+function utils.highlight_group_attrs(group)
+  local id = vim.fn.synIDtrans(vim.fn.hlID(group))
+  local hi = {
+    cterm = { fg = 'NONE', bg = 'NONE' },
+    gui = { fg = 'NONE', bg = 'NONE' },
+  }
+  for mode in pairs(hi) do
+    local bg_attr = vim.fn.synIDattr(id, 'bg', mode)
+    local fg_attr = vim.fn.synIDattr(id, 'fg', mode)
+
+    hi[mode].bg = bg_attr == '' and 'NONE' or bg_attr
+    hi[mode].fg = fg_attr == '' and 'NONE' or fg_attr
+  end
+  return {
+    ctermfg = hi.cterm.bg,
+    ctermbg = hi.cterm.fg,
+    guifg = hi.gui.fg,
+    guibg = hi.gui.bg,
+  }
+end
+
 -- try to figure out if the commands are <buffer> targets so we can clear the
 -- group appropraitely
 local function has_buffer_target(commands)

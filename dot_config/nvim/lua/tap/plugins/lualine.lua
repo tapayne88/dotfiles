@@ -2,6 +2,7 @@ local color = require('tap.utils').color
 local lsp_colors = require('tap.utils').lsp_colors
 local lsp_symbols = require('tap.utils').lsp_symbols
 local highlight = require('tap.utils').highlight
+local highlight_group_attrs = require('tap.utils').highlight_group_attrs
 local apply_user_highlights = require('tap.utils').apply_user_highlights
 local require_plugin = require('tap.utils').require_plugin
 local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
@@ -284,7 +285,13 @@ local sections = {
         return conditions.hide_in_width() and status .. ' ' or ''
       end,
     },
-    { literal '┃', color = { fg = nord_theme_c.bg } },
+    {
+      literal '┃',
+      color = function()
+        local hi_attrs = highlight_group_attrs 'lualine_c_normal'
+        return { fg = hi_attrs.guibg }
+      end,
+    },
     { '%l:%c', icon = '' },
   },
   lualine_z = { { '%p%%', cond = conditions.hide_in_width } },
