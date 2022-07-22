@@ -18,6 +18,8 @@ Options:
 
 Commands:
   update          Update all flake inputs to latest (default command when no args)
+  clean [<age>]   Run nix-clean to mark old generations for deletion - delete with nix-collect-garage (default age: 7 days)
+  prune [<age>]   Run nix-clean followed by nix-collect-garage to clean up old generations (default age: 7 days)
 
 EOF
   exit
@@ -82,17 +84,41 @@ HOME_MANAGER_HOME=$XDG_CONFIG_HOME/nixpkgs
 # commands #
 ############
 
+function command_clean {
+  local DEFAULT_MAX_AGE_DAYS="7"
+
+  eval_command "home-manager expire-generations -${1:-$DEFAULT_MAX_AGE_DAYS}days"
+  eval_command "nix-env --delete-generations ${1:-$DEFAULT_MAX_AGE_DAYS}d"
+}
+
+function command_prune {
+  command_clean "$@"
+  eval_command "nix-collect-garbage"
+}
+
 function command_update {
   eval_command "nix-channel --update"
   eval_command "nix-env -u"
   eval_command "nix flake update $HOME_MANAGER_HOME"
   eval_command "home-manager switch"
+
+  # If has tty attached (not being piped)
+  if [ -t 1 ]; then
+    echo
+    read -p "Clean up old generations? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      command_prune
+    fi
+  fi
 }
 
 while :; do
   # default to update
   case "${args[0]-update}" in
+  clean) command_clean "${args[1]-}" ;;
   update) command_update ;;
+  prune) command_prune "${args[1]-}" ;;
   esac
   break
 done
