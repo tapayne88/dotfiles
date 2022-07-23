@@ -57,6 +57,11 @@ nnoremap(
   '<cmd>lua vim.diagnostic.setloclist()<CR>',
   { description = 'Open buffer diagnostics in local list' }
 )
+nnoremap(
+  '<leader>d',
+  require('lsp_lines').toggle,
+  { description = 'Show diagnostic lines' }
+)
 
 -- float = false, CursorHold will show diagnostic
 nnoremap('[d', function()
