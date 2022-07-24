@@ -5,6 +5,8 @@ local nnoremap = require('tap.utils').nnoremap
 -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
 local border_window_style = 'rounded'
 
+require('lsp_lines').setup()
+
 vim.diagnostic.config {
   underline = true,
   update_in_insert = true,
@@ -25,7 +27,22 @@ local show_cursor_diagnositcs = function()
   vim.diagnostic.open_float { scope = 'cursor' }
 end
 local show_line_diagnositcs = function()
-  vim.diagnostic.open_float { scope = 'line' }
+  for namespace in pairs(vim.diagnostic.get_namespaces()) do
+    local current_line_diagnostics = vim.diagnostic.get(
+      0,
+      { namespace = namespace, lnum = vim.fn.line '.' - 1 }
+    )
+    print(
+      'diagnostics for line ' .. vim.fn.line '.' - 1,
+      vim.inspect(current_line_diagnostics)
+    )
+    vim.diagnostic.show(
+      namespace,
+      0,
+      current_line_diagnostics,
+      { virtual_text = true }
+    )
+  end
 end
 
 ------------------
@@ -35,7 +52,7 @@ utils.augroup('DiagnosticsCursor', {
   {
     events = { 'CursorHold' },
     targets = { '*' },
-    command = show_cursor_diagnositcs,
+    command = show_line_diagnositcs,
   },
 })
 
@@ -57,11 +74,11 @@ nnoremap(
   '<cmd>lua vim.diagnostic.setloclist()<CR>',
   { description = 'Open buffer diagnostics in local list' }
 )
-nnoremap(
-  '<leader>d',
-  require('lsp_lines').toggle,
-  { description = 'Show diagnostic lines' }
-)
+-- nnoremap(
+--   '<leader>d',
+--   require('lsp_lines').toggle,
+--   { description = 'Show diagnostic lines' }
+-- )
 
 -- float = false, CursorHold will show diagnostic
 nnoremap('[d', function()
