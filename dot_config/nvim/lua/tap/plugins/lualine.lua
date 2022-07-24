@@ -177,7 +177,7 @@ local diagnostic_section = function(cfg)
       end
 
       -- Count is 0 so don't return content
-      return ' '
+      return ''
     end,
     -- supress the symbols, default still shows 'E: 1' etc.
     symbols = { error = '', warn = '', hint = '', info = '' },
@@ -270,7 +270,7 @@ local sections = {
         if status == '0 0 0 0' then
           return string.format(' %s ', lsp_symbols.ok)
         end
-        return ' '
+        return ''
       end,
     },
     literal ' ',
