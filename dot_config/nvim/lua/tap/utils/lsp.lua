@@ -159,4 +159,54 @@ function module.get_lsp_clients()
   return active_clients
 end
 
+--- Install package at version
+---@param p {} Package object from mason.nvim
+---@param version string Package version
+---@return nil
+local function do_install(p, version)
+  if version ~= nil then
+    vim.notify(
+      string.format('%s: updating to %s', p.name, version),
+      vim.log.levels.INFO
+    )
+  else
+    vim.notify(string.format('%s: installing', p.name), vim.log.levels.INFO)
+  end
+  p:on('install:success', function()
+    vim.notify(
+      string.format('%s: successfully installed', p.name),
+      vim.log.levels.DEBUG
+    )
+  end)
+  p:on('install:failed', function()
+    vim.notify(
+      string.format('%s: failed to install', p.name),
+      vim.log.levels.ERROR
+    )
+  end)
+  p:install { version = version }
+end
+
+--- Install list of mason.nvim recognised packages and ensure they're the correct version
+--- Largely copied from https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/blob/d72842d361d4f2b0504b8b88501411204b5be965/lua/mason-tool-installer/init.lua
+---@param identifiers string[] Array of encoded name/version package identifiers e.g. {'stylua@0.14.1'}
+---@return nil
+function module.ensure_installed(identifiers)
+  for _, identifier in pairs(identifiers) do
+    local name, version = require('mason-core.package').Parse(identifier)
+    local p = require('mason-registry').get_package(name)
+    if p:is_installed() then
+      if version ~= nil then
+        p:get_installed_version(function(ok, installed_version)
+          if ok and installed_version ~= version then
+            do_install(p, version)
+          end
+        end)
+      end
+    else
+      do_install(p, version)
+    end
+  end
+end
+
 return module

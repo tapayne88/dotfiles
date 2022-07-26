@@ -1,56 +1,11 @@
-local Package = require 'mason-core.package'
-local mason_registry = require 'mason-registry'
 local path = require 'mason-core.path'
 local null_ls = require 'null-ls'
 local lsp_utils = require 'tap.utils.lsp'
 
 local M = {}
-local server_name = 'null-ls'
-
-local function do_install(p, version)
-  if version ~= nil then
-    vim.notify(
-      string.format('%s: updating to %s', p.name, version),
-      vim.log.levels.INFO
-    )
-  else
-    vim.notify(string.format('%s: installing', p.name), vim.log.levels.INFO)
-  end
-  p:on('install:success', function()
-    vim.notify(
-      string.format('%s: successfully installed', p.name),
-      vim.log.levels.DEBUG
-    )
-  end)
-  p:on('install:failed', function()
-    vim.notify(
-      string.format('%s: failed to install', p.name),
-      vim.log.levels.ERROR
-    )
-  end)
-  p:install { version = version }
-end
-
-local function ensure_installed(identifiers)
-  for _, identifier in pairs(identifiers) do
-    local name, version = Package.Parse(identifier)
-    local p = mason_registry.get_package(name)
-    if p:is_installed() then
-      if version ~= nil then
-        p:get_installed_version(function(ok, installed_version)
-          if ok and installed_version ~= version then
-            do_install(p, version)
-          end
-        end)
-      end
-    else
-      do_install(p, version)
-    end
-  end
-end
 
 function M.installer()
-  ensure_installed {
+  lsp_utils.ensure_installed {
     'prettierd',
     'markdownlint',
     'stylua',
