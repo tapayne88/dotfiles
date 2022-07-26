@@ -55,7 +55,11 @@ return require('packer').startup(function(use)
           user = true,
           command = function()
             vim.cmd [[LuaCacheClear]]
-            vim.notify 'Cleared impatient.nvim cache'
+            vim.notify(
+              'Module cache cleared',
+              vim.log.levels.INFO,
+              { title = 'impatient.nvim' }
+            )
           end,
         },
       })
