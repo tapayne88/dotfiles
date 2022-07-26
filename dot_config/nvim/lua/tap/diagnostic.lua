@@ -28,17 +28,6 @@ local show_line_diagnositcs = function()
   vim.diagnostic.open_float { scope = 'line' }
 end
 
-------------------
--- Autocommands --
-------------------
-utils.augroup('DiagnosticsCursor', {
-  {
-    events = { 'CursorHold' },
-    targets = { '*' },
-    command = show_cursor_diagnositcs,
-  },
-})
-
 -------------
 -- Keymaps --
 -------------
