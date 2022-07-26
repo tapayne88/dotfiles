@@ -164,24 +164,32 @@ end
 ---@param version string Package version
 ---@return nil
 local function do_install(p, version)
+  local notify_opts = { title = 'mason.nvim' }
   if version ~= nil then
     vim.notify(
       string.format('%s: updating to %s', p.name, version),
-      vim.log.levels.INFO
+      vim.log.levels.INFO,
+      notify_opts
     )
   else
-    vim.notify(string.format('%s: installing', p.name), vim.log.levels.INFO)
+    vim.notify(
+      string.format('%s: installing', p.name),
+      vim.log.levels.INFO,
+      notify_opts
+    )
   end
   p:on('install:success', function()
     vim.notify(
       string.format('%s: successfully installed', p.name),
-      vim.log.levels.DEBUG
+      vim.log.levels.DEBUG,
+      vim.tbl_extend('error', notify_opts, { icon = utils.lsp_symbols.ok })
     )
   end)
   p:on('install:failed', function()
     vim.notify(
       string.format('%s: failed to install', p.name),
-      vim.log.levels.ERROR
+      vim.log.levels.ERROR,
+      notify_opts
     )
   end)
   p:install { version = version }

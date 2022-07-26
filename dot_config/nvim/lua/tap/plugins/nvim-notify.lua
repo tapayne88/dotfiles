@@ -14,6 +14,7 @@ require('notify').setup {
     DEBUG = '',
     TRACE = '✎',
   },
+  level = vim.log.levels.DEBUG,
 }
 
 require('telescope').load_extension 'notify'
