@@ -4,7 +4,7 @@ local lsp_utils = require 'tap.utils.lsp'
 
 local M = {}
 
-function M.installer()
+function M.install()
   lsp_utils.ensure_installed {
     'prettierd',
     'markdownlint',

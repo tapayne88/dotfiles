@@ -15,7 +15,7 @@ local servers = {
     'sumneko_lua',
     'tsserver',
   },
-  -- custom installers that us mason.nvim
+  -- custom installers that use mason.nvim
   ['mason'] = {
     'null-ls',
   },
@@ -38,7 +38,7 @@ utils.run {
   -------------
   function()
     for _, server_name in pairs(servers['mason']) do
-      require_server(server_name).installer()
+      require_server(server_name).install()
     end
   end,
 
