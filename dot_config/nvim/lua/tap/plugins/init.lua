@@ -172,7 +172,13 @@ return require('packer').startup(function(use)
     after = 'nvim-notify',
     config = [[require("tap.plugins.lspconfig")]],
     requires = {
-      'williamboman/nvim-lsp-installer', -- install LSP servers
+      {
+        'williamboman/mason.nvim',
+        config = function()
+          require('mason').setup()
+        end,
+      },
+      'williamboman/mason-lspconfig.nvim',
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/lua-dev.nvim', -- lua-dev setup
       'lukas-reineke/lsp-format.nvim', -- async formatting
