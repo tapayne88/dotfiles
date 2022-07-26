@@ -52,7 +52,7 @@ utils.run {
   function()
     require('lsp-format').setup {}
     -- Ensure desired servers are installed
-    require('nvim-lsp-installer').setup {
+    require('mason-lspconfig').setup {
       ensure_installed = servers['nvim-lsp-installer'],
     }
   end,
