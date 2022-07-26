@@ -1,4 +1,4 @@
-local lsp_installer_servers = require 'nvim-lsp-installer.servers'
+local Package = require 'mason-core.package'
 local utils = require 'tap.utils'
 
 if vim.env.LSP_DEBUG then
@@ -7,14 +7,17 @@ if vim.env.LSP_DEBUG then
 end
 
 local servers = {
-  -- servers installed with williamboman/nvim-lsp-installer
-  ['nvim-lsp-installer'] = {
+  -- language servers installed with mason.nvim / mason-lspconfig.nvim
+  ['mason-lspconfig'] = {
     'bashls',
     'eslint',
     'jsonls',
-    'null-ls',
     'sumneko_lua',
     'tsserver',
+  },
+  -- custom installers that us mason.nvim
+  ['mason'] = {
+    'null-ls',
   },
   -- globally installed servers likely through nix
   ['global-servers'] = { 'rnix' },
@@ -25,24 +28,17 @@ local get_server_list = function(nested_servers)
 end
 
 local function require_server(server_identifier)
-  local server_name =
-    lsp_installer_servers.parse_server_identifier(server_identifier)
+  local server_name = Package.Parse(server_identifier)
   return require('tap.plugins.lspconfig.servers.' .. server_name)
 end
 
 utils.run {
-  --------------
-  -- Register --
-  --------------
+  -------------
+  -- Install --
+  -------------
   function()
-    for _, server_identifier in pairs(servers['nvim-lsp-installer']) do
-      local _, version =
-        lsp_installer_servers.parse_server_identifier(server_identifier)
-
-      local server_config = require_server(server_identifier)
-      if server_config.register then
-        server_config.register(version)
-      end
+    for _, server_name in pairs(servers['mason']) do
+      require_server(server_name).installer()
     end
   end,
 
@@ -53,7 +49,7 @@ utils.run {
     require('lsp-format').setup {}
     -- Ensure desired servers are installed
     require('mason-lspconfig').setup {
-      ensure_installed = servers['nvim-lsp-installer'],
+      ensure_installed = servers['mason-lspconfig'],
     }
   end,
 

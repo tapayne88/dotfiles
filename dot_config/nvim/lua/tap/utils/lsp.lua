@@ -123,13 +123,13 @@ local border_window_style = 'rounded'
 ---@param config Config
 ---@return Config
 function module.merge_with_default_config(config)
-  local lsp_settings = require 'nvim-lsp-installer.settings'
+  local mason_settings = require 'mason.settings'
 
   local base_config = {
     autostart = true,
     on_attach = module.on_attach,
-    -- set cmd_cwd to nvim-lsp-installer dir to ensure node version consistency
-    cmd_cwd = lsp_settings.current.install_root_dir,
+    -- set cmd_cwd to mason install_root_dir to ensure node version consistency
+    cmd_cwd = mason_settings.current.install_root_dir,
     handlers = {
       ['textDocument/signatureHelp'] = vim.lsp.with(
         vim.lsp.handlers.signature_help,
