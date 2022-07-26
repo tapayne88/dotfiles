@@ -120,8 +120,8 @@ local border_window_style = 'rounded'
 
 -- Merge passed config with default config for consistent lsp.setup calls, preserve
 -- passed config
----@param config Config
----@return Config
+---@param config table|nil
+---@return table
 function module.merge_with_default_config(config)
   local mason_settings = require 'mason.settings'
 
@@ -161,7 +161,7 @@ end
 
 --- Install package at version
 ---@param p {} Package object from mason.nvim
----@param version string Package version
+---@param version string|nil Package version
 ---@return nil
 local function do_install(p, version)
   local notify_opts = { title = 'mason.nvim' }
