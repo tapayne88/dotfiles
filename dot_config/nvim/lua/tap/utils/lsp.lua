@@ -120,16 +120,16 @@ local border_window_style = 'rounded'
 
 -- Merge passed config with default config for consistent lsp.setup calls, preserve
 -- passed config
----@param config Config
----@return Config
+---@param config table|nil
+---@return table
 function module.merge_with_default_config(config)
-  local lsp_settings = require 'nvim-lsp-installer.settings'
+  local mason_settings = require 'mason.settings'
 
   local base_config = {
     autostart = true,
     on_attach = module.on_attach,
-    -- set cmd_cwd to nvim-lsp-installer dir to ensure node version consistency
-    cmd_cwd = lsp_settings.current.install_root_dir,
+    -- set cmd_cwd to mason install_root_dir to ensure node version consistency
+    cmd_cwd = mason_settings.current.install_root_dir,
     handlers = {
       ['textDocument/signatureHelp'] = vim.lsp.with(
         vim.lsp.handlers.signature_help,
@@ -157,6 +157,64 @@ function module.get_lsp_clients()
   local active_clients = vim.lsp.get_active_clients()
 
   return active_clients
+end
+
+--- Install package at version
+---@param p {} Package object from mason.nvim
+---@param version string|nil Package version
+---@return nil
+local function do_install(p, version)
+  local notify_opts = { title = 'mason.nvim' }
+  if version ~= nil then
+    vim.notify(
+      string.format('%s: updating to %s', p.name, version),
+      vim.log.levels.INFO,
+      notify_opts
+    )
+  else
+    vim.notify(
+      string.format('%s: installing', p.name),
+      vim.log.levels.INFO,
+      notify_opts
+    )
+  end
+  p:on('install:success', function()
+    vim.notify(
+      string.format('%s: successfully installed', p.name),
+      vim.log.levels.DEBUG,
+      vim.tbl_extend('error', notify_opts, { icon = utils.lsp_symbols.ok })
+    )
+  end)
+  p:on('install:failed', function()
+    vim.notify(
+      string.format('%s: failed to install', p.name),
+      vim.log.levels.ERROR,
+      notify_opts
+    )
+  end)
+  p:install { version = version }
+end
+
+--- Install list of mason.nvim recognised packages and ensure they're the correct version
+--- Largely copied from https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/blob/d72842d361d4f2b0504b8b88501411204b5be965/lua/mason-tool-installer/init.lua
+---@param identifiers string[] Array of encoded name/version package identifiers e.g. {'stylua@0.14.1'}
+---@return nil
+function module.ensure_installed(identifiers)
+  for _, identifier in pairs(identifiers) do
+    local name, version = require('mason-core.package').Parse(identifier)
+    local p = require('mason-registry').get_package(name)
+    if p:is_installed() then
+      if version ~= nil then
+        p:get_installed_version(function(ok, installed_version)
+          if ok and installed_version ~= version then
+            do_install(p, version)
+          end
+        end)
+      end
+    else
+      do_install(p, version)
+    end
+  end
 end
 
 return module

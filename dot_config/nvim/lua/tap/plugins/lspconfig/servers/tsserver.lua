@@ -55,8 +55,13 @@ function module.setup()
           return
         end
 
-        local parsed_msg = vim.fn.json_decode(msg)
-        if parsed_msg.type ~= 'event' or parsed_msg.event ~= 'telemetry' then
+        local parsed_msg = vim.json.decode(msg)
+
+        if
+          parsed_msg == nil
+          or parsed_msg.type ~= 'event'
+          or parsed_msg.event ~= 'telemetry'
+        then
           return
         end
 

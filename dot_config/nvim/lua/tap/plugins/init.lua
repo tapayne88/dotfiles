@@ -166,13 +166,23 @@ return require('packer').startup(function(use)
     requires = { 'nvim-lua/plenary.nvim' },
   }
 
+  -- Language server and external tool installer
+  use {
+    {
+      'williamboman/mason.nvim',
+      config = function()
+        require('mason').setup()
+      end,
+    },
+    'williamboman/mason-lspconfig.nvim',
+  }
+
   -- native neovim LSP support
   use {
     'neovim/nvim-lspconfig', -- LSP server config
     after = 'nvim-notify',
     config = [[require("tap.plugins.lspconfig")]],
     requires = {
-      'williamboman/nvim-lsp-installer', -- install LSP servers
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/lua-dev.nvim', -- lua-dev setup
       'lukas-reineke/lsp-format.nvim', -- async formatting

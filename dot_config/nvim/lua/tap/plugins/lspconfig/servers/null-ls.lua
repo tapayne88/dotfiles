@@ -1,35 +1,18 @@
-local servers = require 'nvim-lsp-installer.servers'
-local server = require 'nvim-lsp-installer.server'
-local npm = require 'nvim-lsp-installer.core.managers.npm'
-local cargo = require 'nvim-lsp-installer.core.managers.cargo'
+local path = require 'mason-core.path'
 local null_ls = require 'null-ls'
 local lsp_utils = require 'tap.utils.lsp'
 
 local M = {}
-local server_name = 'null-ls'
 
-function M.register()
-  local root_dir = server.get_server_root_path(server_name)
-  local installer = function()
-    npm.install {
-      '@fsouza/prettierd',
-      'markdownlint-cli',
-    }
-    cargo.install 'stylua'
-  end
-
-  local null_ls_server = server.Server:new {
-    name = server_name,
-    root_dir = root_dir,
-    async = true,
-    installer = installer,
+function M.install()
+  lsp_utils.ensure_installed {
+    'prettierd',
+    'markdownlint',
+    'stylua',
   }
-
-  servers.register(null_ls_server)
 end
 
 function M.setup()
-  local root_dir = server.get_server_root_path(server_name)
   null_ls.setup(lsp_utils.merge_with_default_config {
     sources = {
       ------------------
@@ -41,7 +24,7 @@ function M.setup()
       -- Diagnostics --
       -----------------
       null_ls.builtins.diagnostics.markdownlint.with {
-        command = root_dir .. '/node_modules/.bin/markdownlint',
+        command = path.bin_prefix 'markdownlint',
         extra_args = {
           '--config',
           vim.fn.stdpath 'config' .. '/markdownlint.json',
@@ -53,13 +36,13 @@ function M.setup()
       -- Formatting --
       ----------------
       null_ls.builtins.formatting.stylua.with {
-        command = root_dir .. '/bin/stylua',
+        command = path.bin_prefix 'stylua',
         condition = function(utils)
           return utils.root_has_file { 'stylua.toml', '.stylua.toml' }
         end,
       },
       null_ls.builtins.formatting.prettierd.with {
-        command = root_dir .. '/node_modules/.bin/prettierd',
+        command = path.bin_prefix 'prettierd',
         condition = function(utils)
           return utils.root_has_file {
             'package.json',
