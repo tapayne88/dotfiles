@@ -181,7 +181,7 @@ local function do_install(p, version)
   p:on('install:success', function()
     vim.notify(
       string.format('%s: successfully installed', p.name),
-      vim.log.levels.DEBUG,
+      vim.log.levels.INFO,
       vim.tbl_extend('error', notify_opts, { icon = utils.lsp_symbols.ok })
     )
   end)
