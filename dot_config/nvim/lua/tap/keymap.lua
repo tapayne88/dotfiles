@@ -52,11 +52,15 @@ nnoremap(
   ':split ' .. vim.g.chezmoi_source_dir .. '/dot_config/nvim/init.lua<CR>',
   { description = 'Open nvim/init.lua in split' }
 )
-nnoremap(
-  '<leader>sv',
-  ":luafile $MYVIMRC<CR>:echom 'Reloaded '. $MYVIMRC<CR>",
-  { description = 'Source nvim/init.lua' }
-)
+nnoremap('<leader>sv', function()
+  require('plenary.reload').reload_module('tap', true)
+  vim.cmd ':source $MYVIMRC'
+  vim.notify(
+    "Cleared 'tap.*' module cache and reloaded " .. vim.env.MYVIMRC,
+    vim.log.levels.INFO,
+    { title = 'Re-source init.vim' }
+  )
+end, { description = 'Source nvim/init.vim' })
 
 tnoremap(
   '<Esc>',
