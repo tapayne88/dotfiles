@@ -20,3 +20,17 @@ require('neotest').setup {
     },
   },
 }
+
+utils.nnoremap('t<C-f>', function()
+  require('neotest').run.run(vim.fn.expand '%')
+end, { description = '[Neotest] Test file' })
+utils.nnoremap(
+  't<C-n>',
+  require('neotest').run.run,
+  { description = '[Neotest] Test nearest' }
+)
+utils.nnoremap(
+  't<C-a>',
+  require('neotest').run.attach,
+  { description = '[Neotest] Attach running test output' }
+)
