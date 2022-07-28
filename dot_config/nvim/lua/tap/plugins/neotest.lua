@@ -49,3 +49,8 @@ utils.nnoremap(
   require('neotest').run.attach,
   { description = '[Neotest] Attach running test output' }
 )
+utils.nnoremap(
+  't<C-s>',
+  require('neotest').summary.toggle,
+  { description = '[Neotest] Attach running test output' }
+)
