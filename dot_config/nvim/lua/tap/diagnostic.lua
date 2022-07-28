@@ -7,7 +7,7 @@ local border_window_style = 'rounded'
 
 vim.diagnostic.config {
   underline = true,
-  update_in_insert = true,
+  update_in_insert = false,
   virtual_text = false,
   signs = {
     -- Make priority higher than vim-signify
