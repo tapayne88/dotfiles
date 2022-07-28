@@ -329,15 +329,7 @@ return require('packer').startup {
         'antoinemadec/FixCursorHold.nvim',
         'haydenmeade/neotest-jest',
       },
-      config = function()
-        require('neotest').setup {
-          adapters = {
-            require 'neotest-jest' {
-              jestCommand = 'npx test --',
-            },
-          },
-        }
-      end,
+      config = [[require("tap.plugins.neotest")]],
     }
 
     -- Automatically set up your configuration after cloning packer.nvim
