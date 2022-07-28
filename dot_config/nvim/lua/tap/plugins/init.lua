@@ -321,6 +321,25 @@ return require('packer').startup {
       config = [[require("tap.plugins.trouble")]],
     }
 
+    use {
+      'nvim-neotest/neotest',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'nvim-treesitter/nvim-treesitter',
+        'antoinemadec/FixCursorHold.nvim',
+        'haydenmeade/neotest-jest',
+      },
+      config = function()
+        require('neotest').setup {
+          adapters = {
+            require 'neotest-jest' {
+              jestCommand = 'npx test --',
+            },
+          },
+        }
+      end,
+    }
+
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
