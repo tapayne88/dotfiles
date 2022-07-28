@@ -29,7 +29,7 @@ utils.lsp_symbols = {
   info = ' ',
   hint = ' ',
   hint_alt = ' ',
-  ok = ' ',
+  ok = ' ',
 }
 
 ---@param type lsp_status
