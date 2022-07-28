@@ -4,6 +4,13 @@ require('neotest').setup {
   discovery = {
     enabled = false,
   },
+  highlights = {
+    failed = 'NeotestFailed',
+    passed = 'NeotestPassed',
+    running = 'NeotestRunning',
+    skipped = 'NeotestSkipped',
+    unknown = 'NeotestUnknown',
+  },
   icons = {
     failed = utils.lsp_symbols.error,
     passed = utils.lsp_symbols.ok,
@@ -20,6 +27,14 @@ require('neotest').setup {
     },
   },
 }
+
+utils.apply_user_highlights('Neotest', function()
+  utils.highlight('NeotestPassed', { guifg = utils.lsp_colors 'ok' })
+  utils.highlight('NeotestFailed', { link = 'DiagnosticError' })
+  utils.highlight('NeotestRunning', { link = 'DiagnosticInfo' })
+  utils.highlight('NeotestSkipped', { link = 'DiagnosticInfo' })
+  utils.highlight('NeotestUnknown', { link = 'DiagnosticInfo' })
+end)
 
 utils.nnoremap('t<C-f>', function()
   require('neotest').run.run(vim.fn.expand '%')
