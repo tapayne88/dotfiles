@@ -24,6 +24,7 @@ require('neotest').setup {
       jestConfigFile = function()
         return ''
       end,
+      env = { CI = true },
     },
   },
 }
