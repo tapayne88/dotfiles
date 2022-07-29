@@ -40,7 +40,6 @@ nnoremap(
   ':!chezmoi apply -v<CR>',
   { description = 'Apply chezmoi changes' }
 )
-nnoremap('<leader>ex', ':Ex<CR>', { description = 'Open netrw' })
 
 nnoremap(
   '<leader>evv',
