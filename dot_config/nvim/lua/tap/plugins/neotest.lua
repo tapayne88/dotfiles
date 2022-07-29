@@ -1,5 +1,4 @@
 local utils = require 'tap.utils'
-local neotest_jest_util = require 'neotest-jest.util'
 
 require('neotest').setup {
   discovery = {
@@ -22,30 +21,7 @@ require('neotest').setup {
   adapters = {
     require 'neotest-jest' {
       jestCommand = 'npm test --',
-      jestConfigFile = function(path)
-        local jest_js_config_parent = neotest_jest_util.root_pattern {
-          'jest.config.js',
-        }(path)
-        local jest_ts_config_parent = neotest_jest_util.root_pattern {
-          'jest.config.ts',
-        }(path)
-        local package_json_parent = neotest_jest_util.root_pattern {
-          'package.json',
-        }(path)
-
-        if package_json_parent == jest_js_config_parent then
-          return neotest_jest_util.path.join(
-            jest_js_config_parent,
-            'jest.config.js'
-          )
-        end
-        if package_json_parent == jest_ts_config_parent then
-          return neotest_jest_util.path.join(
-            jest_ts_config_parent,
-            'jest.config.ts'
-          )
-        end
-
+      jestConfigFile = function()
         return ''
       end,
       env = { CI = true },
