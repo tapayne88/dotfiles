@@ -1,4 +1,5 @@
 local a = require 'plenary.async'
+local scan = require 'plenary.scandir'
 local Job = require 'plenary.job'
 local nord = require 'nord.colors'
 local tokyo_setup = require('tokyonight.colors').setup { style = 'day' }
@@ -407,6 +408,28 @@ function utils.run(fns)
   for _, fn in pairs(fns) do
     fn()
   end
+end
+
+function utils.root_pattern(patterns)
+  local function find_root(start)
+    if start == '/' then
+      return nil
+    end
+    local res = scan.scan_dir(
+      start,
+      { search_pattern = patterns, hidden = true, add_dirs = true, depth = 1 }
+    )
+    print('patterns', vim.inspect(patterns))
+    print('res', vim.inspect(res))
+    if #res == 0 then
+      local new = start .. '/../'
+      return find_root(vim.loop.fs_realpath(new))
+    else
+      return start
+    end
+  end
+
+  return find_root
 end
 
 return utils

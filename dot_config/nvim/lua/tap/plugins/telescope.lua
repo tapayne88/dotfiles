@@ -6,6 +6,7 @@ local highlight = require('tap.utils').highlight
 local color = require('tap.utils').color
 local apply_user_highlights = require('tap.utils').apply_user_highlights
 local command = require('tap.utils').command
+local root_pattern = require('tap.utils').root_pattern
 
 require('telescope').setup {
   defaults = {
@@ -100,9 +101,13 @@ nnoremap('<leader>gF', function()
   require('telescope.builtin').git_files()
 end, { description = 'All git files' })
 nnoremap('<leader>rf', function()
+  local root = require('plenary.path'):new(
+    root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h')
+  )
   require('telescope.builtin').git_files {
     use_git_root = false,
-    cwd = vim.fn.expand '%:p:h',
+    cwd = root.filename,
+    prompt_title = root:make_relative(vim.loop.cwd()),
   }
 end, { description = 'Git files relative to current file' })
 nnoremap('<leader>gb', function()
