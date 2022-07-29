@@ -76,7 +76,11 @@ local get_test_nodes_from_cursor = function(buf, cursor)
   local line = cursor[1] - 1
   local col = cursor[2]
 
-  local parser = vim.treesitter.get_parser(buf)
+  local parser = vim.treesitter.get_parser(
+    buf,
+    require('nvim-treesitter.parsers').ft_to_lang(vim.bo.filetype),
+    {}
+  )
   local ret
   parser:for_each_tree(function(tree)
     if ret then

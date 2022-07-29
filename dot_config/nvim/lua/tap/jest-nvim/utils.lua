@@ -33,7 +33,7 @@ end
 ---@param file_name string
 ---@return string[]
 function M.get_test_command(file_name)
-  local cmd = { 'npx', 'jest', file_name, '--watch' }
+  local cmd = { 'npm', 'test', '--', file_name, '--watch' }
 
   return cmd
 end
@@ -141,6 +141,7 @@ function M.resolve_package_json_parent(path)
 
     return _resolve_package_json_parent(parent)
   end
+
   return _resolve_package_json_parent(Path:new(path))
 end
 
