@@ -419,8 +419,6 @@ function utils.root_pattern(patterns)
       start,
       { search_pattern = patterns, hidden = true, add_dirs = true, depth = 1 }
     )
-    print('patterns', vim.inspect(patterns))
-    print('res', vim.inspect(res))
     if #res == 0 then
       local new = start .. '/../'
       return find_root(vim.loop.fs_realpath(new))
