@@ -45,6 +45,7 @@
     watchman # watch files and run command on change
     wget # fetch things from urls
     yarn # JS package manager
+    yq # yaml cli processor (needs jq)
     zsh # shell
 
     # Unstable Packages
