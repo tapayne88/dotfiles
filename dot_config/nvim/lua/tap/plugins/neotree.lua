@@ -29,6 +29,9 @@ require('neo-tree').setup {
       },
     },
   },
+  filesystem = {
+    bind_to_cwd = false,
+  },
 }
 
 apply_user_highlights('Neotree', function()
