@@ -49,7 +49,7 @@ nnoremap(
 nnoremap(
   '<leader>d',
   require('lsp_lines').toggle,
-  { description = 'Show diagnostic lines' }
+  { description = 'Toggle diagnostic lines' }
 )
 
 -- float = false, CursorHold will show diagnostic
