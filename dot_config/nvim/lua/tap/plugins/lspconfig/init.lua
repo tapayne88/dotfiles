@@ -46,7 +46,12 @@ utils.run {
   -- Setup --
   -----------
   function()
-    require('lsp-format').setup {}
+    require('lsp-format').setup {
+      -- Disabled formatters
+      exclude = {
+        'sumneko_lua', -- use stylua with null-ls for lua
+      },
+    }
     -- Ensure desired servers are installed
     require('mason-lspconfig').setup {
       ensure_installed = servers['mason-lspconfig'],
