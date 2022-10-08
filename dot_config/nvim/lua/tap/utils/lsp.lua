@@ -1,5 +1,6 @@
 local utils = require 'tap.utils'
 local nnoremap = require('tap.utils').nnoremap
+local lsp_format_on_attach = require('tap.utils.format').lsp_format_on_attach
 
 local function toggle_format()
   local filetype = vim.bo.filetype
@@ -29,7 +30,7 @@ local module = {}
 ---@param bufnr number
 ---@return nil
 function module.on_attach(client, bufnr)
-  require('lsp-format').on_attach(client)
+  lsp_format_on_attach(client)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
