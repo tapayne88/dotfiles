@@ -1,5 +1,7 @@
 local lsp_format = require 'lsp-format'
 local root_pattern = require('tap.utils').root_pattern
+local stylua = require 'null-ls.builtins.formatting.stylua'
+local prettierd = require 'null-ls.builtins.formatting.prettierd'
 
 local M = {}
 
@@ -20,10 +22,14 @@ local format = function(options)
   end
 end
 
-local should_format = function()
-  -- TODO: Expand below to use filetype to detect correct root pattern
-  return root_pattern(vim.tbl_flatten {
-    {
+local filetype_patterns = {
+  {
+    filetypes = stylua.filetypes,
+    patterns = { 'stylua.toml', '.stylua.toml' },
+  },
+  {
+    filetypes = prettierd.filetypes,
+    patterns = {
       'package.json',
       '.prettierrc',
       '.prettierrc.json',
@@ -37,8 +43,21 @@ local should_format = function()
       'prettier.config.js',
       'prettier.config.cjs',
     },
-    { 'stylua.toml', '.stylua.toml' },
-  })(vim.fn.expand '%:p:h') ~= nil
+  },
+}
+
+local should_format = function(filetype)
+  -- Filter patterns for matching filetypes
+  local matching_patterns = vim.tbl_filter(function(item)
+    return vim.tbl_contains(item.filetypes, filetype)
+  end, filetype_patterns)
+
+  -- Patterns of matching filetypes
+  local patterns = vim.tbl_map(function(item)
+    return item.patterns
+  end, matching_patterns)
+
+  return root_pattern(vim.tbl_flatten(patterns))(vim.fn.expand '%:p:h') ~= nil
 end
 
 -- Copy of lsp-format's on_attach function to allow overriding of `format` function
@@ -60,7 +79,8 @@ M.lsp_format_on_attach = function(client)
 
   if lsp_format.buffers[bufnr] == nil then
     -- Below line has had logic updated to capture if the format config file is present
-    lsp_format.buffers[bufnr] = { should_format = should_format() }
+    lsp_format.buffers[bufnr] =
+      { should_format = should_format(vim.bo.filetype) }
   end
 
   table.insert(lsp_format.buffers[bufnr], client.id)
