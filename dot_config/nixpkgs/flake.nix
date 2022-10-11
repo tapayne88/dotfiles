@@ -5,7 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # TODO: Fix this (don't forget the overlay)
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     nixgl = {
       url = "github:guibou/nixGL";
@@ -34,7 +35,7 @@
       overlays = [
         overlay-unstable
         overlay-nixgl
-        inputs.neovim-nightly-overlay.overlay
+        # inputs.neovim-nightly-overlay.overlay
       ];
     in
     {
