@@ -50,6 +50,7 @@ utils.run {
       -- Disabled formatters
       exclude = {
         'sumneko_lua', -- use stylua with null-ls for lua
+        'tsserver',
       },
     }
     -- Ensure desired servers are installed
