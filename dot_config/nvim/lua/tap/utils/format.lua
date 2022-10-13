@@ -2,6 +2,7 @@ local lsp_format = require 'lsp-format'
 local root_pattern = require('tap.utils').root_pattern
 local stylua = require 'null-ls.builtins.formatting.stylua'
 local prettierd = require 'null-ls.builtins.formatting.prettierd'
+local log = require 'plenary.log'
 
 local M = {}
 
@@ -66,13 +67,15 @@ end
 ---@return nil
 M.lsp_format_on_attach = function(client)
   if not client.supports_method 'textDocument/formatting' then
-    vim.lsp.log.warn(
-      string.format(
-        '"textDocument/formatting" is not supported for %s, not attaching lsp-format',
-        client.name
+    if vim.env.LSP_DEBUG then
+      log.warn(
+        string.format(
+          '"textDocument/formatting" is not supported for %s, not attaching lsp-format',
+          client.name
+        )
       )
-    )
-    return
+      return
+    end
   end
 
   local bufnr = vim.api.nvim_get_current_buf()
