@@ -124,6 +124,7 @@ local border_window_style = 'rounded'
 ---@return table
 function module.merge_with_default_config(config)
   local mason_settings = require 'mason.settings'
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
   local base_config = {
     autostart = true,
@@ -141,9 +142,7 @@ function module.merge_with_default_config(config)
         border = border_window_style,
       }),
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-      vim.lsp.protocol.make_client_capabilities()
-    ),
+    capabilities = capabilities,
   }
   return vim.tbl_deep_extend('force', base_config, config or {})
 end
