@@ -188,7 +188,7 @@ return require('packer').startup {
       config = [[require("tap.plugins.lspconfig")]],
       requires = {
         'b0o/schemastore.nvim', -- jsonls schemas
-        'folke/lua-dev.nvim', -- lua-dev setup
+        'folke/neodev.nvim', -- lua-dev setup
         'lukas-reineke/lsp-format.nvim', -- async formatting
         'jose-elias-alvarez/null-ls.nvim',
         {
