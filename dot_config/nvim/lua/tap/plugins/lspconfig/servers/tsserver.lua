@@ -89,15 +89,6 @@ function module.setup()
         -- to not use lsp-format's handler.
       end,
     },
-    cmd = vim.tbl_flatten {
-      lspconfig_tsserver.default_config.cmd,
-      { '--log-level', '4' },
-      {
-        '--tsserver-log-file',
-        vim.env.XDG_CACHE_HOME .. '/nvim/tsserver.log',
-      },
-      vim.env.LSP_DEBUG and { '--tsserver-log-verbosity', 'verbose' } or {},
-    },
     on_attach = function(client, bufnr)
       -- force tsserver to not format documents
       client.resolved_capabilities.document_formatting = false
