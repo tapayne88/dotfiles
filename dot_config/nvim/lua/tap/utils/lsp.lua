@@ -22,6 +22,19 @@ local function toggle_format()
   end
 end
 
+local disabled_formatters = {
+  'sumneko_lua', -- use stylua with null-ls for lua
+  'tsserver',
+}
+
+local function attach_formatter(client)
+  if vim.tbl_contains(disabled_formatters, client.name) then
+    return
+  end
+
+  require('lsp-format').on_attach(client)
+end
+
 local module = {}
 
 -- on_attach function for lsp.setup calls
@@ -29,7 +42,7 @@ local module = {}
 ---@param bufnr number
 ---@return nil
 function module.on_attach(client, bufnr)
-  require('lsp-format').on_attach(client)
+  attach_formatter(client)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
