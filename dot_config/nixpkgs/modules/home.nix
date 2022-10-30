@@ -51,6 +51,7 @@
     # Unstable Packages
     unstable._1password # 1password version is quite old - unstable is much newer
     unstable.git # newest git!
+    unstable.jqp # TUI playground for jq
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
   ];
