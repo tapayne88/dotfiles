@@ -37,28 +37,9 @@ function M.setup()
       ----------------
       null_ls.builtins.formatting.stylua.with {
         command = path.bin_prefix 'stylua',
-        condition = function(utils)
-          return utils.root_has_file { 'stylua.toml', '.stylua.toml' }
-        end,
       },
       null_ls.builtins.formatting.prettierd.with {
         command = path.bin_prefix 'prettierd',
-        condition = function(utils)
-          return utils.root_has_file {
-            'package.json',
-            '.prettierrc',
-            '.prettierrc.json',
-            '.prettierrc.toml',
-            '.prettierrc.json',
-            '.prettierrc.yml',
-            '.prettierrc.yaml',
-            '.prettierrc.json5',
-            '.prettierrc.js',
-            '.prettierrc.cjs',
-            'prettier.config.js',
-            'prettier.config.cjs',
-          }
-        end,
       },
 
       -----------
