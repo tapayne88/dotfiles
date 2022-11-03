@@ -107,3 +107,11 @@ After following the homebrew installation instructions we'll want our blessed ho
 ```bash
 brew bundle install --global
 ```
+
+## 8. Font Installation (Non-MacOS Only)
+
+Follow the installation guide from nerd-fonts [here](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures). This will install the ligature supported JetBrains Mono font.
+
+MacOS will use homebrew to install the fonts.
+
+_N.B._ As of writing this alacritty does not support ligatures.

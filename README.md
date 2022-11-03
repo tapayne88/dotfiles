@@ -46,33 +46,6 @@ Download [Nord theme](https://www.nordtheme.com/) from the website for terminal 
 
 To get ligature/italic font support there are a number of steps. You'll want to source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it. If you want icons you'll probably want the [Nerd Fonts](https://www.nerdfonts.com/font-downloads) version.
 
-### Linux
-
-```shell
-sudo fc-cache -f -v
-```
-
-- Ensure `chezmoi` has applied the fonts to `~/.local/share/fonts`
-
-### MacOS
-
-- Double click and install each font in [here](./dot_local/share/fonts)
-
-### Windows
-
-- Double click and install each font in [here](./dot_local/share/fonts/windows)
-- Windows Terminal doesn't support italics
-
-_N.B._ As of writing this alacritty does not support ligatures.
-
-## SSH
-
-Example `~/.ssh/config`
-
-```sshconfig
-Include ~/git/dotfiles/misc/ssh_config
-```
-
 ## Windows Utilities
 
 | Utility                                                 | Description                                                                          |
