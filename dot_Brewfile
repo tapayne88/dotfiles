@@ -1,3 +1,5 @@
+tap "homebrew/cask-fonts"
+
 brew "dark-mode"
 brew "mas"
 brew "node"
@@ -6,6 +8,7 @@ cask "kitty"
 cask "moom"
 cask "raycast"
 cask "rectangle"
+cask "font-jetbrains-mono-nerd-font"
 
 # mas seems a little flakey and can sometime not realise it's installed an app
 # This means every time the bundle is installed it'll try install the app,
