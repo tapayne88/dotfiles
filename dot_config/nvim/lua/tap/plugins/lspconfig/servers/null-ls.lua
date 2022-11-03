@@ -6,6 +6,7 @@ local M = {}
 
 function M.install()
   lsp_utils.ensure_installed {
+    'hadolint',
     'markdownlint',
     'prettierd',
     'stylua',
@@ -23,6 +24,7 @@ function M.setup()
       -----------------
       -- Diagnostics --
       -----------------
+      null_ls.builtins.diagnostics.hadolint,
       null_ls.builtins.diagnostics.markdownlint.with {
         command = path.bin_prefix 'markdownlint',
         extra_args = {
