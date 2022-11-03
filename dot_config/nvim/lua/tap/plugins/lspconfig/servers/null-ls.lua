@@ -6,8 +6,8 @@ local M = {}
 
 function M.install()
   lsp_utils.ensure_installed {
-    'prettierd',
     'markdownlint',
+    'prettierd',
     'stylua',
   }
 end
@@ -35,11 +35,11 @@ function M.setup()
       ----------------
       -- Formatting --
       ----------------
-      null_ls.builtins.formatting.stylua.with {
-        command = path.bin_prefix 'stylua',
-      },
       null_ls.builtins.formatting.prettierd.with {
         command = path.bin_prefix 'prettierd',
+      },
+      null_ls.builtins.formatting.stylua.with {
+        command = path.bin_prefix 'stylua',
       },
 
       -----------
