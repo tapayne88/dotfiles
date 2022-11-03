@@ -76,23 +76,9 @@ return require('packer').startup {
             events = { 'BufWritePost' },
             targets = { 'Jenkinsfile', 'Jenkinsfile.*' },
             command = function()
-              local user = os.getenv 'JENKINS_USER_ID'
-                or os.getenv 'JENKINS_USERNAME'
-              local password = os.getenv 'JENKINS_PASSWORD'
-              local token = os.getenv 'JENKINS_API_TOKEN'
-                or os.getenv 'JENKINS_TOKEN'
-              local jenkins_url = os.getenv 'JENKINS_URL'
-                or os.getenv 'JENKINS_HOST'
-
-              if user == nil then
-                return
-              elseif password == nil and token == nil then
-                return
-              elseif jenkins_url == nil then
-                return
+              if require('jenkinsfile_linter').check_creds() then
+                require('jenkinsfile_linter').validate()
               end
-
-              require('jenkinsfile_linter').validate()
             end,
           },
         })
