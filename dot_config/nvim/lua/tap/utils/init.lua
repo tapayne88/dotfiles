@@ -146,7 +146,7 @@ local function make_mapper(mode, o)
 
     register_with_which_key(lhs, description, mode, opts)
 
-    require('legendary').bind_keymap {
+    require('legendary').keymap {
       lhs,
       rhs,
       description = description,
