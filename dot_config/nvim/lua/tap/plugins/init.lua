@@ -67,6 +67,24 @@ return require('packer').startup {
       end,
     }
 
+    use {
+      'ckipp01/nvim-jenkinsfile-linter',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = function()
+        require('tap.utils').augroup('JenkinsfileLinter', {
+          {
+            events = { 'BufWritePost' },
+            targets = { 'Jenkinsfile', 'Jenkinsfile.*' },
+            command = function()
+              if require('jenkinsfile_linter').check_creds() then
+                require('jenkinsfile_linter').validate()
+              end
+            end,
+          },
+        })
+      end,
+    }
+
     -- Interactive neovim scratchpad for lua
     use { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } }
 
