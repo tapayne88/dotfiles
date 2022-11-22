@@ -46,7 +46,8 @@ local function bufwidth()
   if sc == 'yes' then
     signwidth = 2
   elseif sc == 'auto' then
-    local signs = vim.fn.execute(string.format('sign place buffer=%d', vim.fn.bufnr ''))
+    local signs =
+      vim.fn.execute(string.format('sign place buffer=%d', vim.fn.bufnr ''))
     signs = vim.fn.split(signs, '\n')
     if #signs > 2 then
       signwidth = 2
@@ -112,7 +113,7 @@ vim.filetype.add {
     -- Special handling for chezmoi files (templates, etc.)
     ['tmpl'] = function(path)
       local is_chezmoi_source_dir = path:match('^' .. vim.g.chezmoi_source_dir)
-          ~= nil
+        ~= nil
       local ext = path:match '.*%.(%w+)%.tmpl$'
 
       if is_chezmoi_source_dir and ext ~= nil then
