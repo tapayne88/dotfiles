@@ -38,6 +38,7 @@ end
 local module = {}
 
 -- on_attach function for lsp.setup calls
+---@diagnostic disable-next-line: undefined-doc-name
 ---@param client Client
 ---@param bufnr number
 ---@return nil
@@ -121,7 +122,7 @@ function module.get_bin_path(cmd)
     utils.get_os_command_output_async({ 'yarn', 'bin', cmd }, nil)
 
   if code ~= 0 then
-    vim.notify('`yarn bin ' .. cmd .. '` failed', 'error')
+    vim.notify('`yarn bin ' .. cmd .. '` failed', vim.log.levels.ERROR)
     return nil
   end
 
@@ -160,15 +161,10 @@ function module.merge_with_default_config(config)
   return vim.tbl_deep_extend('force', base_config, config or {})
 end
 
--- Get active LSP clients
+-- Get active LSP clients for buffer
 ---@return table[]
 function module.get_lsp_clients()
-  if next(vim.lsp.buf_get_clients(0)) == nil then
-    return {}
-  end
-  local active_clients = vim.lsp.get_active_clients()
-
-  return active_clients
+  return vim.lsp.get_active_clients { bufnr = vim.api.nvim_get_current_buf() }
 end
 
 --- Install package at version
