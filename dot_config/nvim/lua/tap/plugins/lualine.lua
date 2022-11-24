@@ -363,7 +363,10 @@ require('lualine').setup {
           }
 
           if breadcrumb ~= '' then
-            return breadcrumb .. '%#lualine_a_command#'
+            -- lualine doesn't seem to like it when the content contains
+            -- highlighting patterns so reset back to section highlight so
+            -- separator has correct highlight
+            return breadcrumb .. '%#lualine_a_normal#'
           end
           return breadcrumb
         end,
