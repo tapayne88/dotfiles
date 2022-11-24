@@ -259,6 +259,10 @@ return require('packer').startup {
       requires = {
         { 'kyazdani42/nvim-web-devicons', opt = true },
         'arkav/lualine-lsp-progress',
+        {
+          'SmiteshP/nvim-navic',
+          requires = 'neovim/nvim-lspconfig',
+        },
       },
     }
 
