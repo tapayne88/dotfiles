@@ -326,6 +326,17 @@ require('lualine').setup {
     component_separators = { left = '', right = '' },
     section_separators = section_separators,
     globalstatus = true,
+    disabled_filetypes = {
+      winbar = {
+        'dashboard',
+        'fugitive',
+        'gitcommit',
+        'packer',
+        'qf',
+        'neo-tree',
+        'Trouble',
+      },
+    },
   },
   sections = sections,
   inactive_sections = vim.tbl_deep_extend(
