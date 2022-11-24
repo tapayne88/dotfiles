@@ -333,6 +333,22 @@ require('lualine').setup {
     sections,
     { lualine_a = {}, lualine_x = {} }
   ),
+  winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'filename' },
+  },
+  inactive_winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'filename' },
+  },
 }
 
 local M = {}
