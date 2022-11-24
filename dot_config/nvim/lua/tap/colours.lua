@@ -11,7 +11,7 @@ local get_term_theme = function()
   if code ~= 0 then
     vim.notify(
       'Failed running `term-theme echo`, ensure `term-theme` has been set',
-      'error'
+      vim.log.levels.ERROR
     )
     return 'dark'
   end
@@ -34,7 +34,7 @@ local set_colorscheme = function(theme_future, opts)
       vim.cmd [[colorscheme tokyonight]]
 
       if opts.announce == true then
-        vim.notify('set theme to light', 'info')
+        vim.notify('set theme to light', vim.log.levels.INFO)
       end
     elseif theme == 'dark' then
       vim.g.use_light_theme = false
@@ -49,7 +49,7 @@ local set_colorscheme = function(theme_future, opts)
       vim.cmd [[colorscheme nord]]
 
       if opts.announce == true then
-        vim.notify('set theme to dark', 'info')
+        vim.notify('set theme to dark', vim.log.levels.INFO)
       end
     else
       log.error('unknown colorscheme ' .. theme)

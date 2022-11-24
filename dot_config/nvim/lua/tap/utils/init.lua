@@ -50,7 +50,6 @@ end
 ---@param cmd string[]
 ---@param cwd string|nil
 ---@param fn fun(result: string[], code: number, signal: number)
----@return Job
 utils.get_os_command_output_async = a.wrap(function(cmd, cwd, fn)
   if type(cmd) ~= 'table' then
     print '[get_os_command_output_async]: cmd has to be a table'
@@ -70,11 +69,11 @@ end, 3)
 ---Run cmd synchronously and return value
 ---@param cmd string[]
 ---@param cwd string|nil
----@return string[], number, string[]
+---@return string[]|nil, number|nil, string[]|nil
 function utils.get_os_command_output(cmd, cwd)
   if type(cmd) ~= 'table' then
     print '[get_os_command_output]: cmd has to be a table'
-    return {}
+    return nil, nil, nil
   end
   local command = table.remove(cmd, 1)
   local stderr = {}
@@ -102,15 +101,6 @@ function utils.map_table_to_key(tbl, key)
   return vim.tbl_map(function(value)
     return value[key]
   end, tbl)
-end
-
-local rhs_to_string = function(rhs)
-  -- add functions to a global table keyed by their index
-  if type(rhs) == 'function' then
-    local fn_id = tap._create(rhs)
-    return string.format('<cmd>lua tap._execute(%s)<CR>', fn_id)
-  end
-  return rhs
 end
 
 local function register_with_which_key(lhs, name, mode, options)
@@ -261,7 +251,7 @@ end
 
 -- Convenience for making autocommands
 ---@param name string
----@param commands table<string, string | string[] | fun()>[]
+---@param commands {command: fun()|string, user: boolean, events: string[], targets: string[], modifiers: string[]}[]
 function utils.augroup(name, commands)
   vim.cmd('augroup ' .. name)
 
@@ -353,8 +343,7 @@ function utils.require_plugin(name, callback)
   if not string.match(name, '^tap%.plugins%..+') then
     vim.notify(
       string.format('Attempted to load non-plugin! [%s]', name),
-      'error',
-      { title = 'require_plugin' }
+      vim.log.levels.ERROR { title = 'require_plugin' }
     )
     return nil
   end
@@ -387,8 +376,7 @@ function utils.apply_user_highlights(name, callback, _opts)
   if not force and has_augroup(augroup_name) then
     vim.notify(
       'augroup already exists with name ' .. augroup_name,
-      'error',
-      { title = 'apply_user_highlights' }
+      vim.log.levels.ERROR { title = 'apply_user_highlights' }
     )
     return
   end
