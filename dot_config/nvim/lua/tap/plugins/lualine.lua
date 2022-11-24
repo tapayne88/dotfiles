@@ -318,6 +318,9 @@ apply_user_highlights('Lualine', function()
     guibg = lsp_colors 'ok',
     guifg = color { dark = 'nord3_gui', light = 'fg' },
   })
+  highlight('NavicSeparator', {
+    guifg = color { dark = 'nord3_gui', light = 'fg' },
+  })
 end)
 
 require('lualine').setup {
@@ -345,13 +348,17 @@ require('lualine').setup {
     { lualine_a = {}, lualine_x = {} }
   ),
   winbar = {
-    lualine_a = {},
-    lualine_b = {
+    lualine_a = {
       {
-        require('nvim-navic').get_location,
+        function()
+          return require('nvim-navic').get_location {
+            highlight = true,
+          }
+        end,
         cond = require('nvim-navic').is_available,
       },
     },
+    lualine_b = {},
     lualine_c = {},
     lualine_x = {},
     lualine_y = { 'filename' },
