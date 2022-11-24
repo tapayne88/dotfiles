@@ -350,6 +350,15 @@ return require('packer').startup {
       config = [[require("tap.plugins.neotree")]],
     }
 
+    use {
+      'kevinhwang91/nvim-ufo',
+      requires = {
+        'kevinhwang91/promise-async',
+        'nvim-treesitter/nvim-treesitter',
+      },
+      config = [[require("tap.plugins.nvim-ufo")]],
+    }
+
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then

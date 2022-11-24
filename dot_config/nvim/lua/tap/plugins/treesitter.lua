@@ -1,19 +1,3 @@
-local augroup = require('tap.utils').augroup
-
-local parsers = require 'nvim-treesitter.parsers'
-local configs = parsers.get_parser_configs()
-local ts_fts = vim.tbl_map(function(ft)
-  return configs[ft].filetype or ft
-end, parsers.available_parsers())
-
-augroup('TreesitterFolding', {
-  {
-    events = { 'Filetype' },
-    targets = ts_fts,
-    command = 'setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()',
-  },
-})
-
 require('nvim-treesitter.configs').setup {
   context_commentstring = { enable = true },
   ensure_installed = {
