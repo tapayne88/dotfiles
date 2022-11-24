@@ -362,15 +362,18 @@ require('lualine').setup {
             highlight = true,
           }
 
-          if breadcrumb ~= '' then
+          return table.concat {
+            ' ',
+            breadcrumb == '' and '' or ' ',
+            breadcrumb,
             -- lualine doesn't seem to like it when the content contains
             -- highlighting patterns so reset back to section highlight so
             -- separator has correct highlight
-            return breadcrumb .. '%#lualine_a_normal#'
-          end
-          return breadcrumb
+            '%#lualine_a_normal#',
+          }
         end,
         cond = require('nvim-navic').is_available,
+        color = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
       },
     },
     lualine_b = {},
