@@ -343,16 +343,16 @@ require('lualine').setup {
     },
     lualine_c = {},
     lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'filename' },
+    lualine_y = { 'filename' },
+    lualine_z = {},
   },
   inactive_winbar = {
     lualine_a = {},
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'filename' },
+    lualine_y = { 'filename' },
+    lualine_z = {},
   },
 }
 
