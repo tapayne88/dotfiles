@@ -351,9 +351,14 @@ require('lualine').setup {
     lualine_a = {
       {
         function()
-          return require('nvim-navic').get_location {
+          local breadcrumb = require('nvim-navic').get_location {
             highlight = true,
           }
+
+          if breadcrumb ~= '' then
+            return breadcrumb .. '%#lualine_a_command#'
+          end
+          return breadcrumb
         end,
         cond = require('nvim-navic').is_available,
       },
