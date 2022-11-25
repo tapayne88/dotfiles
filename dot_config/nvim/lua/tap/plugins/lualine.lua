@@ -323,11 +323,9 @@ apply_user_highlights('Lualine', function()
   })
 end)
 
-local filename_when_multiple_windows = {
-  'filename',
-  cond = function()
-    return #vim.api.nvim_list_wins() > 1
-  end,
+local winbar_y = {
+  modified,
+  { 'filename', file_status = false },
 }
 
 require('lualine').setup {
@@ -379,7 +377,7 @@ require('lualine').setup {
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
-    lualine_y = { filename_when_multiple_windows },
+    lualine_y = winbar_y,
     lualine_z = {},
   },
   inactive_winbar = {
@@ -387,7 +385,7 @@ require('lualine').setup {
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
-    lualine_y = { filename_when_multiple_windows },
+    lualine_y = winbar_y,
     lualine_z = {},
   },
 }
