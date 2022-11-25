@@ -8,7 +8,7 @@ local require_plugin = require('tap.utils').require_plugin
 local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
 
 local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
-local nord_theme_c = { bg = color 'nord3_gui', fg = color 'nord4_gui' }
+local nord_theme_c = { bg = color 'nord2_gui', fg = color 'nord4_gui' }
 local nord_theme = {
   normal = {
     a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
@@ -38,8 +38,7 @@ local nord_theme = {
   inactive = {
     a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
-    c = nord_theme_c,
-    y = nord_theme_c,
+    c = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
   },
 }
 
