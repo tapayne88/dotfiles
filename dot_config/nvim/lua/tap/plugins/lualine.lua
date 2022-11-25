@@ -8,7 +8,7 @@ local require_plugin = require('tap.utils').require_plugin
 local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
 
 local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
-local nord_theme_c = { bg = color 'nord3_gui', fg = color 'nord4_gui' }
+local nord_theme_c = { bg = color 'nord2_gui', fg = color 'nord4_gui' }
 local nord_theme = {
   normal = {
     a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
@@ -38,8 +38,7 @@ local nord_theme = {
   inactive = {
     a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
     b = nord_theme_b,
-    c = nord_theme_c,
-    y = nord_theme_c,
+    c = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
   },
 }
 
@@ -318,7 +317,15 @@ apply_user_highlights('Lualine', function()
     guibg = lsp_colors 'ok',
     guifg = color { dark = 'nord3_gui', light = 'fg' },
   })
+  highlight('NavicSeparator', {
+    guifg = color { dark = 'nord3_gui', light = 'fg' },
+  })
 end)
+
+local winbar_y = {
+  modified,
+  { 'filename', file_status = false },
+}
 
 require('lualine').setup {
   options = {
@@ -326,6 +333,17 @@ require('lualine').setup {
     component_separators = { left = '', right = '' },
     section_separators = section_separators,
     globalstatus = true,
+    disabled_filetypes = {
+      winbar = {
+        'dashboard',
+        'fugitive',
+        'gitcommit',
+        'packer',
+        'qf',
+        'neo-tree',
+        'Trouble',
+      },
+    },
   },
   sections = sections,
   inactive_sections = vim.tbl_deep_extend(
@@ -333,6 +351,42 @@ require('lualine').setup {
     sections,
     { lualine_a = {}, lualine_x = {} }
   ),
+  winbar = {
+    lualine_a = {
+      {
+        function()
+          local breadcrumb = require('nvim-navic').get_location {
+            highlight = true,
+          }
+
+          return table.concat {
+            ' ',
+            breadcrumb == '' and '' or ' ',
+            breadcrumb,
+            -- lualine doesn't seem to like it when the content contains
+            -- highlighting patterns so reset back to section highlight so
+            -- separator has correct highlight
+            '%#lualine_a_normal#',
+          }
+        end,
+        cond = require('nvim-navic').is_available,
+        color = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
+      },
+    },
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = winbar_y,
+    lualine_z = {},
+  },
+  inactive_winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = winbar_y,
+    lualine_z = {},
+  },
 }
 
 local M = {}

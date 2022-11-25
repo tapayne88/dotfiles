@@ -1,6 +1,9 @@
 local utils = require 'tap.utils'
 local nnoremap = require('tap.utils').nnoremap
 
+---@class Client
+---@field server_capabilities { documentSymbolProvider: boolean }
+
 local function toggle_format()
   local filetype = vim.bo.filetype
   local disabled = require('lsp-format').disabled_filetypes[filetype]
@@ -38,12 +41,15 @@ end
 local module = {}
 
 -- on_attach function for lsp.setup calls
----@diagnostic disable-next-line: undefined-doc-name
 ---@param client Client
 ---@param bufnr number
 ---@return nil
 function module.on_attach(client, bufnr)
   attach_formatter(client)
+
+  if client.server_capabilities.documentSymbolProvider then
+    require('nvim-navic').attach(client, bufnr)
+  end
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
