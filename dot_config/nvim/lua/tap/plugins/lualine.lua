@@ -326,6 +326,13 @@ local winbar_y = {
   modified,
   { 'filename', file_status = false },
 }
+local filetype_icon_only = {
+  filetype,
+  padding = 0,
+  fmt = function()
+    return ''
+  end,
+}
 
 require('lualine').setup {
   options = {
@@ -377,7 +384,7 @@ require('lualine').setup {
     lualine_c = {},
     lualine_x = {},
     lualine_y = winbar_y,
-    lualine_z = {},
+    lualine_z = { filetype_icon_only },
   },
   inactive_winbar = {
     lualine_a = {},
@@ -385,7 +392,7 @@ require('lualine').setup {
     lualine_c = {},
     lualine_x = {},
     lualine_y = winbar_y,
-    lualine_z = {},
+    lualine_z = { filetype_icon_only },
   },
 }
 
