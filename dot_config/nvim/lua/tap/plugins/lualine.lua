@@ -46,13 +46,8 @@ local conditions = {
   has_lsp = function()
     return #get_lsp_clients() > 0
   end,
-  hide_in_width = function()
+  is_wide_window = function()
     return vim.fn.winwidth(0) > 80
-  end,
-  negate = function(cond)
-    return function()
-      return cond()
-    end
   end,
 }
 
@@ -149,7 +144,7 @@ local lsp_progress = {
     lsp_client_name_enddelay = 1000,
   },
   spinner_symbols = { '⣾', '⣷', '⣯', '⣟', '⡿', '⢿', '⣻', '⣽' },
-  cond = conditions.hide_in_width,
+  cond = conditions.is_wide_window,
 }
 
 local section_separators = { left = '', right = '' }
@@ -235,7 +230,7 @@ local sections = {
   },
   lualine_x = {
     lsp_progress,
-    { tscVersion, cond = conditions.hide_in_width },
+    { tscVersion, cond = conditions.is_wide_window },
     diagnostic_section {
       sections = { 'error' },
       color = 'LualineDiagnosticError',
@@ -281,7 +276,7 @@ local sections = {
       colored = false,
       padding = 0,
       fmt = function(status)
-        return conditions.hide_in_width() and status .. ' ' or ''
+        return conditions.is_wide_window() and status .. ' ' or ''
       end,
     },
     {
@@ -293,7 +288,7 @@ local sections = {
     },
     { '%l:%c', icon = '' },
   },
-  lualine_z = { { '%p%%', cond = conditions.hide_in_width } },
+  lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
 }
 
 apply_user_highlights('Lualine', function()
