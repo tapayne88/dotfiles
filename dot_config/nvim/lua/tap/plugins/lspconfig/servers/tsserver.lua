@@ -43,39 +43,24 @@ local module = { get_tsc_version = get_tsc_version }
 
 function module.setup()
   require('lspconfig').tsserver.setup(lsp_utils.merge_with_default_config {
+    init_options = vim.tbl_deep_extend(
+      'force',
+      lspconfig_tsserver.default_config.init_options,
+      {
+        tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
+      },
+      vim.env.LSP_DEBUG and { tsserver = { logVerbosity = 'verbose' } } or {}
+    ),
     handlers = {
       ['window/logMessage'] = function(_, result, header)
         if result == nil or result.message == nil then
           return
         end
 
-        local msg = result.message:match '%[tsclient%] processMessage (.*)'
+        local version =
+          result.message:match '%[lspserver%] Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
 
-        if msg == nil then
-          return
-        end
-
-        local parsed_msg = vim.json.decode(msg)
-
-        if
-          parsed_msg == nil
-          or parsed_msg.type ~= 'event'
-          or parsed_msg.event ~= 'telemetry'
-        then
-          return
-        end
-
-        local body = vim.tbl_extend(
-          'keep',
-          parsed_msg.body or {},
-          { payload = { version = nil } }
-        )
-
-        if body.payload.version == nil then
-          return
-        end
-
-        set_tsc_version(header.client_id, body.payload.version)
+        set_tsc_version(header.client_id, version)
       end,
     },
   })
