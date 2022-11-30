@@ -231,4 +231,15 @@ function module.ensure_installed(identifiers)
   end
 end
 
+--- Check if we're running in LSP debug mode
+---@return boolean
+function module.isLspDebug()
+  local lspDebug = vim.env.LSP_DEBUG
+  if lspDebug == nil then
+    return false
+  end
+
+  return vim.tbl_contains({ 'true', '1' }, lspDebug:lower())
+end
+
 return module

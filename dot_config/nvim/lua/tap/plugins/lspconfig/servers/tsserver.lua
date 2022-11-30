@@ -49,7 +49,8 @@ function module.setup()
       {
         tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
       },
-      vim.env.LSP_DEBUG and { tsserver = { logVerbosity = 'verbose' } } or {}
+      lsp_utils.isLspDebug() and { tsserver = { logVerbosity = 'verbose' } }
+        or {}
     ),
     handlers = {
       ['window/logMessage'] = function(_, result, header)

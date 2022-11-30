@@ -15,6 +15,7 @@ end
 
 function M.setup()
   null_ls.setup(lsp_utils.merge_with_default_config {
+    debug = lsp_utils.isLspDebug(),
     sources = {
       ------------------
       -- Code Actions --

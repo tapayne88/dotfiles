@@ -1,7 +1,8 @@
 local Package = require 'mason-core.package'
 local utils = require 'tap.utils'
+local lsp_utils = require 'tap.utils.lsp'
 
-if vim.env.LSP_DEBUG then
+if lsp_utils.isLspDebug() then
   vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
   print('LSP debug log: ' .. vim.lsp.get_log_path())
 end
