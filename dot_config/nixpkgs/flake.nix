@@ -34,11 +34,8 @@
       homeConfigurations = {
         # Pixelbook
         "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
-          system = "x86_64-linux";
-          homeDirectory = "/home/tapayne88";
-          username = "tapayne88";
-          stateVersion = "22.11";
-          configuration = { pkgs, ... }:
+          pkgs = inputs.nixpkgs.legacyPackages.${"x86_64-linux"};
+          modules = [
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
@@ -49,7 +46,15 @@
                 ./modules/linux.nix
                 ./modules/neovim.nix
               ];
-            };
+            }
+            {
+              home = {
+                username = "tapayne88";
+                homeDirectory = "/home/tapayne88";
+                stateVersion = "22.11";
+              };
+            }
+          ];
         };
         # MacBook Pro (Work)
         "tom.payne@C02G41YZMD6R" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -77,11 +82,8 @@
         };
         # WSL
         "tpayne@DESKTOP-EACCNGB" = inputs.home-manager.lib.homeManagerConfiguration {
-          system = "x86_64-linux";
-          homeDirectory = "/home/tpayne";
-          username = "tpayne";
-          stateVersion = "22.11";
-          configuration = { pkgs, ... }:
+          pkgs = inputs.nixpkgs.legacyPackages.${"x86_64-linux"};
+          modules = [
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
@@ -91,7 +93,15 @@
                 ./modules/linux.nix
                 ./modules/neovim.nix
               ];
-            };
+            }
+            {
+              home = {
+                username = "tpayne";
+                homeDirectory = "/home/tpayne";
+                stateVersion = "22.11";
+              };
+            }
+          ];
         };
       };
     };
