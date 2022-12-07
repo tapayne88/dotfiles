@@ -34,7 +34,7 @@
       homeConfigurations = {
         # Pixelbook
         "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.${"x86_64-linux"};
+          pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
           modules = [
             {
               nixpkgs.overlays = overlays;
@@ -58,7 +58,7 @@
         };
         # MacBook Pro (Work)
         "tom.payne@C02G41YZMD6R" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.${"x86_64-darwin"};
+          pkgs = inputs.nixpkgs.legacyPackages."x86_64-darwin";
           modules = [
             {
               nixpkgs.overlays = overlays;
@@ -82,7 +82,7 @@
         };
         # WSL
         "tpayne@DESKTOP-EACCNGB" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.${"x86_64-linux"};
+          pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
           modules = [
             {
               nixpkgs.overlays = overlays;
