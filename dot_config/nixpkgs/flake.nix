@@ -24,22 +24,23 @@
           config.allowUnfree = true;
         };
       };
-      overlays = [
-        overlay-unstable
-        nixgl.overlay
-        # inputs.neovim-nightly-overlay.overlay
-      ];
+      system_pkgs = system: import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          overlay-unstable
+          nixgl.overlay
+          # inputs.neovim-nightly-overlay.overlay
+        ];
+      };
     in
     {
       homeConfigurations = {
         # Pixelbook
         "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
+          pkgs = system_pkgs "x86_64-linux";
           modules = [
             {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-
               imports = [
                 ./modules/home.nix
                 ./modules/crostini.nix
@@ -58,12 +59,9 @@
         };
         # MacBook Pro (Work)
         "tom.payne@C02G41YZMD6R" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages."x86_64-darwin";
+          pkgs = system_pkgs "x86_64-darwin";
           modules = [
             {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-
               imports = [
                 ./modules/home.nix
                 ./modules/darwin.nix
@@ -82,12 +80,9 @@
         };
         # WSL
         "tpayne@DESKTOP-EACCNGB" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
+          pkgs = system_pkgs "x86_64-linux";
           modules = [
             {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-
               imports = [
                 ./modules/home.nix
                 ./modules/linux.nix
