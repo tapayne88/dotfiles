@@ -77,6 +77,12 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
   # Fix I/O error when writing XML
   xdg.mime.enable = false;
 
+  home = {
+    username = \"$(whoami)\";
+    homeDirectory = \"$INSTALL_LOCATION\";
+    stateVersion = \"22.11\";
+  };
+
   # Basic packages to setup the rest
   home.packages = [
     pkgs.chezmoi
