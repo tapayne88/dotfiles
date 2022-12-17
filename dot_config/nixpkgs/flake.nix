@@ -8,10 +8,7 @@
     # TODO: Fix this (don't forget the overlay)
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
-    nixgl = {
-      url = "github:guibou/nixGL";
-      flake = false;
-    };
+    nixgl.url = "github:guibou/nixGL";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-22.05";
@@ -19,7 +16,7 @@
     };
   };
 
-  outputs = { self, ... }@inputs:
+  outputs = { self, nixgl, ... }@inputs:
     let
       overlay-unstable = final: prev: {
         unstable = import inputs.nixpkgs-unstable {
@@ -27,14 +24,9 @@
           config.allowUnfree = true;
         };
       };
-      overlay-nixgl = final: prev: {
-        nixgl = import inputs.nixgl {
-          pkgs = inputs.nixpkgs.legacyPackages.${prev.system};
-        };
-      };
       overlays = [
         overlay-unstable
-        overlay-nixgl
+        nixgl.overlay
         # inputs.neovim-nightly-overlay.overlay
       ];
     in
@@ -69,9 +61,6 @@
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
-              nixpkgs.config.permittedInsecurePackages = [
-                "adoptopenjdk-hotspot-bin-13.0.2"
-              ];
 
               imports = [
                 ./modules/home.nix
