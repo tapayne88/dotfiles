@@ -33,15 +33,15 @@ xcode-select --install
 Reconfigure locale to include en_GB ([source](https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian)).
 
 ```shell
-sudo locale-gen en_GB.UTF-8
+sudo locale-gen en_GB.UTF-8; \
 sudo dpkg-reconfigure locales
-
-# Select both en_GB.UTF8 and en_US.UTF8 - default to GB
 ```
+
+N.B. Select both en_GB.UTF8 and en_US.UTF8 - default to GB
 
 ## 3. Install nix and home-manager
 
-- [nix](https://nixos.org/download.html) - to get nix installed on crostini see [`patch-nix`](https://github.com/tapayne88/dotfiles/blob/18080b947f560ff59c0e7fc453b276c0ee9cd548/dot_config/zsh/functions/crostini.zsh#L7) function.
+- [nix](https://nixos.org/download.html)
 - [home-manager](https://github.com/nix-community/home-manager)
 
 Configuring [channels](https://nixos.wiki/wiki/Nix_channels).
@@ -62,11 +62,16 @@ nix-channel --add https://nixos.org/channels/nixos-22.11 nixpkgs;
 
 ## 4. Generate ssh key
 
-Generate ssh key and upload to github
+Generate an ssh key
 
 ```shell
 ssh-keygen -C `hostname`
 ```
+
+Upload to
+
+- [Github](https://github.com/settings/keys)
+- [GitLab](https://gitlab.com/-/profile/keys)
 
 ## 4. Install dotfiles
 
@@ -96,7 +101,7 @@ sudo passwd `whoami`
 Add nix installed zsh to allowed shells and change shell to it.
 
 ```shell
-which zsh | sudo tee --append /etc/shells
+which zsh | sudo tee --append /etc/shells; \
 chsh -s `which zsh`
 ```
 
