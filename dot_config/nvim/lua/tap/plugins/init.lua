@@ -254,7 +254,8 @@ return require('packer').startup {
 
     -- statusline in lua
     use {
-      'nvim-lualine/lualine.nvim',
+      'tapayne88/lualine.nvim',
+      branch = 'suppress-winbar-no-room-error',
       config = [[require("tap.plugins.lualine")]],
       requires = {
         { 'kyazdani42/nvim-web-devicons', opt = true },
