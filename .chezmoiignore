@@ -12,6 +12,7 @@
 # Crostini / Chrome OS only files
 {{- if ne "crostini" .ostype }}
 .config/zsh/functions/crostini.zsh
+.local/share/applications
 {{- end }}
 
 # WSL only files
