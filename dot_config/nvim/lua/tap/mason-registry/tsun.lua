@@ -1,8 +1,5 @@
-local index = require 'mason-registry.index'
 local Pkg = require 'mason-core.package'
 local npm = require 'mason-core.managers.npm'
-
-index['tsun'] = 'tap.mason-registry.tsun'
 
 return Pkg.new {
   name = 'tsun',
