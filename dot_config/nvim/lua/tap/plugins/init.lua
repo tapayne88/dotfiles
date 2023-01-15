@@ -194,6 +194,7 @@ return require('packer').startup {
         'williamboman/mason.nvim',
         config = function()
           require('mason').setup()
+          require 'tap.mason-registry'
         end,
       },
       'williamboman/mason-lspconfig.nvim',
@@ -362,6 +363,17 @@ return require('packer').startup {
         'nvim-treesitter/nvim-treesitter',
       },
       config = [[require("tap.plugins.nvim-ufo")]],
+    }
+
+    -- The interactive scratchpad for hackers
+    use {
+      'metakirby5/codi.vim',
+      after = 'mason.nvim',
+      config = function()
+        require('tap.utils.lsp').ensure_installed {
+          'tsun',
+        }
+      end,
     }
 
     -- Automatically set up your configuration after cloning packer.nvim
