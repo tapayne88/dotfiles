@@ -7,7 +7,7 @@ on:
 
 jobs:
   stylua:
-    name: Stylua check
+    name: Stylua
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +17,19 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: 0.16.0
           args: --check .
+
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prettier
+        uses: creyD/prettier_action@v4.2
+        with:
+          # Options for the `prettier` command
+          prettier_options: --check **/*.{md,json,js}
+          # Running the script in dry mode just shows whether there are files that should be prettified or not
+          dry: true
+          # GitHub Token or PAT token used to authenticate against a repository
+          github_token: # optional, default is ${{ github.token }}
