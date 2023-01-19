@@ -1,6 +1,14 @@
 local keymap = require('tap.utils').keymap
 
 require('gitsigns').setup {
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = 'rounded',
+    style = 'minimal',
+    relative = 'cursor',
+    row = 0,
+    col = 1,
+  },
   on_attach = function()
     local gs = package.loaded.gitsigns
 
