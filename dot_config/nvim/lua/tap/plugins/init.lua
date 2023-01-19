@@ -142,11 +142,6 @@ return require('packer').startup {
       'simeji/winresizer',
       config = [[vim.g.winresizer_start_key = '<leader>w']],
     }
-    -- Fix performance issue with CursorHold events
-    use {
-      'antoinemadec/FixCursorHold.nvim',
-      config = [[vim.g.cursorhold_updatetime = 500]],
-    }
     -- better syntax highlighting
     use {
       {
