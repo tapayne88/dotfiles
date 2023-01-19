@@ -111,7 +111,9 @@ return require('packer').startup {
     -- Markdown previewing commands
     use {
       'iamcco/markdown-preview.nvim',
-      run = ':call mkdp#util#install()',
+      run = function()
+        vim.fn['mkdp#util#install']()
+      end,
       ft = 'markdown',
       cmd = 'MarkdownPreview',
     }
