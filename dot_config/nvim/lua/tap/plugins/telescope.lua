@@ -9,6 +9,22 @@ local apply_user_highlights = require('tap.utils').apply_user_highlights
 local command = require('tap.utils').command
 local root_pattern = require('tap.utils').root_pattern
 
+local yank_selected_entry = function(prompt_bufnr)
+  local action_state = require 'telescope.actions.state'
+  local entry_display = require 'telescope.pickers.entry_display'
+
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local manager = picker.manager
+
+  local selection_row = picker:get_selection_row()
+  local entry = manager:get_entry(picker:get_index(selection_row))
+  local display, _ = entry_display.resolve(picker, entry)
+
+  actions.close(prompt_bufnr)
+
+  vim.fn.setreg('+', display)
+end
+
 require('telescope').setup {
   defaults = {
     prompt_prefix = '❯ ',
@@ -24,6 +40,8 @@ require('telescope').setup {
         -- Allow refining of telescope results
         ['<c-f>'] = actions.to_fuzzy_refine,
         ['<c-t>'] = trouble.open_with_trouble,
+
+        ['<c-y>'] = yank_selected_entry,
       },
       n = {
         -- Allow selection splitting
@@ -35,6 +53,8 @@ require('telescope').setup {
         ['<Up>'] = actions.cycle_history_prev,
         ['<Down>'] = actions.cycle_history_next,
         ['<c-t>'] = trouble.open_with_trouble,
+
+        ['<c-y>'] = yank_selected_entry,
       },
     },
     borderchars = {
