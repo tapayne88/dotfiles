@@ -115,16 +115,6 @@ return require('packer').startup {
       ft = 'markdown',
       cmd = 'MarkdownPreview',
     }
-    -- Git blame for line with commit message
-    use {
-      'rhysd/git-messenger.vim',
-      cmd = 'GitMessenger',
-      setup = function()
-        require('tap.utils').nnoremap('<leader>gm', ':GitMessenger<CR>', {
-          description = 'Show git blame for line',
-        })
-      end,
-    }
 
     -- Git integration ':Gstatus' etc.
     use {
