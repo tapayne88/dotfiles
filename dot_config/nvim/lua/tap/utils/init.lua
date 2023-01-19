@@ -165,6 +165,25 @@ utils.onoremap = make_mapper('o', noremap_opts)
 utils.tnoremap = make_mapper('t', noremap_opts)
 utils.cnoremap = make_mapper('c', { noremap = true, silent = false })
 
+---@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
+
+--- Utility function to support setting a keymap for multiple modes
+---@param _modes Mode[] | Mode
+---@param lhs string
+---@param rhs string | fun(): nil | unknown
+---@param _opts? {description: string}|table
+---@return nil
+function utils.keymap(_modes, lhs, rhs, _opts)
+  local modes = type(_modes) == 'string' and { _modes } or _modes
+  local opts = _opts ~= nil and _opts or {}
+
+  -- TODO: Remove disable line when it behaves!
+  ---@diagnostic disable-next-line: param-type-mismatch
+  for _, mode in ipairs(modes) do
+    make_mapper(mode, noremap_opts)(lhs, rhs, opts)
+  end
+end
+
 -- Shamelessly stolen from akinsho/dotfiles
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/highlights.lua#L56
 --- TODO eventually move to using `nvim_set_hl`
