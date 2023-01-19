@@ -125,8 +125,7 @@ return require('packer').startup {
         'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
       },
     }
-    -- Easier find & replace
-    use { 'wincent/scalpel', config = [[require("tap.plugins.scalpel")]] }
+    --
     -- Simple plugin to easily resize windows
     use {
       'simeji/winresizer',
