@@ -105,9 +105,6 @@ return require('packer').startup {
 
     -- Syntax not supported by treesitter
     use { 'plasticboy/vim-markdown' }
-
-    -- easier vim startup time profiling
-    use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
     -- Markdown previewing commands
     use {
       'iamcco/markdown-preview.nvim',
@@ -118,6 +115,9 @@ return require('packer').startup {
       cmd = 'MarkdownPreview',
     }
 
+    -- easier vim startup time profiling
+    use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
+
     -- Git integration ':Gstatus' etc.
     use {
       'tpope/vim-fugitive',
@@ -127,12 +127,13 @@ return require('packer').startup {
         'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
       },
     }
-    --
+
     -- Simple plugin to easily resize windows
     use {
       'simeji/winresizer',
       config = [[vim.g.winresizer_start_key = '<leader>w']],
     }
+
     -- better syntax highlighting
     use {
       {
@@ -146,6 +147,7 @@ return require('packer').startup {
         cmd = { 'TSPlayground', 'TSPlaygroundToggle' },
       }, -- playground for illustrating the AST treesitter builds
     }
+
     -- whizzy command-p launcher
     use {
       'nvim-telescope/telescope.nvim',
@@ -162,11 +164,13 @@ return require('packer').startup {
         { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       },
     }
+
     -- customise vim.ui appearance
     use {
       'stevearc/dressing.nvim',
       config = [[require("tap.plugins.dressing")]],
     }
+
     -- + & - in column for changed lines
     use {
       'lewis6991/gitsigns.nvim',
