@@ -15,26 +15,24 @@ vim.g.mapleader = ','
 vim.g.maplocalleader = '\\'
 
 return require('lazy').setup({
-  -- treesitter colorscheme
-  {
-    'shaunsingh/nord.nvim',
-    'folke/tokyonight.nvim', -- light colorscheme
-  },
+  'tpope/vim-characterize', -- Adds 'ga' command to show character code
+  'tpope/vim-commentary', -- Adds 'gc' & 'gcc' commands for commenting lines
+  'tpope/vim-eunuch', -- Adds unix commands like ':Move' etc.
+  'tpope/vim-scriptease', -- Vim plugin for making Vim plugins
+  'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
+  'tpope/vim-vinegar', -- Nicer netrw defaults
+  'tpope/vim-sleuth', -- Detect indentation
+  'lervag/file-line', -- Handle filenames with line numbers i.e. :20
+  'nvim-lua/plenary.nvim', -- Utility function used by plugins and my config
+  'RRethy/vim-illuminate', -- Highlight same words
+  'rktjmp/fwatch.nvim', -- Utility for watching files
+  'dhruvasagar/vim-zoom', -- Toggle zoom in / out individual windows
 
-  -- stylua: ignore start
-  'tpope/vim-characterize',                             -- Adds 'ga' command to show character code
-  'tpope/vim-commentary',                               -- Adds 'gc' & 'gcc' commands for commenting lines
-  'tpope/vim-eunuch',                                   -- Adds unix commands like ':Move' etc.
-  'tpope/vim-scriptease',                               -- Vim plugin for making Vim plugins
-  'tpope/vim-unimpaired',                               -- Complementary pairs of mappings for common actions
-  'tpope/vim-vinegar',                                  -- Nicer netrw defaults
-  'tpope/vim-sleuth',                                   -- Detect indentation
-  'lervag/file-line',                                   -- Handle filenames with line numbers i.e. :20
-  'nvim-lua/plenary.nvim',                              -- Utility function used by plugins and my config
-  'RRethy/vim-illuminate',                              -- Highlight same words
-  'rktjmp/fwatch.nvim',                                 -- Utility for watching files
-  'dhruvasagar/vim-zoom',                               -- Toggle zoom in / out individual windows
-  -- stylua: ignore end
+  -- treesitter colorschemes
+  {
+    'shaunsingh/nord.nvim', -- dark theme
+    'folke/tokyonight.nvim', -- light theme
+  },
 
   {
     'ckipp01/nvim-jenkinsfile-linter',
