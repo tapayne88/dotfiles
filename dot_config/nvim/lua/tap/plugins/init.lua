@@ -105,26 +105,18 @@ return require('packer').startup {
 
     -- Syntax not supported by treesitter
     use { 'plasticboy/vim-markdown' }
-
-    -- easier vim startup time profiling
-    use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
     -- Markdown previewing commands
     use {
       'iamcco/markdown-preview.nvim',
-      run = ':call mkdp#util#install()',
+      run = function()
+        vim.fn['mkdp#util#install']()
+      end,
       ft = 'markdown',
       cmd = 'MarkdownPreview',
     }
-    -- Git blame for line with commit message
-    use {
-      'rhysd/git-messenger.vim',
-      cmd = 'GitMessenger',
-      setup = function()
-        require('tap.utils').nnoremap('<leader>gm', ':GitMessenger<CR>', {
-          description = 'Show git blame for line',
-        })
-      end,
-    }
+
+    -- easier vim startup time profiling
+    use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
 
     -- Git integration ':Gstatus' etc.
     use {
@@ -135,18 +127,26 @@ return require('packer').startup {
         'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
       },
     }
-    -- Easier find & replace
-    use { 'wincent/scalpel', config = [[require("tap.plugins.scalpel")]] }
+
+    use {
+      'beauwilliams/focus.nvim',
+      config = function()
+        require('focus').setup {
+          signcolumn = false,
+          excluded_filetypes = { 'fugitive', 'git' },
+        }
+        require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
+          description = '[Focus] Toggle window focusing',
+        })
+      end,
+    }
+
     -- Simple plugin to easily resize windows
     use {
       'simeji/winresizer',
       config = [[vim.g.winresizer_start_key = '<leader>w']],
     }
-    -- Fix performance issue with CursorHold events
-    use {
-      'antoinemadec/FixCursorHold.nvim',
-      config = [[vim.g.cursorhold_updatetime = 500]],
-    }
+
     -- better syntax highlighting
     use {
       {
@@ -160,6 +160,7 @@ return require('packer').startup {
         cmd = { 'TSPlayground', 'TSPlaygroundToggle' },
       }, -- playground for illustrating the AST treesitter builds
     }
+
     -- whizzy command-p launcher
     use {
       'nvim-telescope/telescope.nvim',
@@ -176,11 +177,13 @@ return require('packer').startup {
         { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       },
     }
+
     -- customise vim.ui appearance
     use {
       'stevearc/dressing.nvim',
       config = [[require("tap.plugins.dressing")]],
     }
+
     -- + & - in column for changed lines
     use {
       'lewis6991/gitsigns.nvim',

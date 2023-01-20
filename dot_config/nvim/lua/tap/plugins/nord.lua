@@ -1,4 +1,3 @@
-local nord = require 'nord.colors'
 local highlight = require('tap.utils').highlight
 local color = require('tap.utils').color
 local apply_user_highlights = require('tap.utils').apply_user_highlights
@@ -23,9 +22,4 @@ apply_user_highlights('Nord', function()
   highlight('TSInclude', { gui = 'italic', cterm = 'italic' })
   highlight('TSOperator', { gui = 'italic', cterm = 'italic' })
   highlight('TSKeyword', { gui = 'italic', cterm = 'italic' })
-
-  highlight('gitmessengerHeader', { link = 'Identifier' })
-  highlight('gitmessengerHash', { link = 'Comment' })
-  highlight('gitmessengerHistory', { link = 'Constant' })
-  highlight('gitmessengerPopupNormal', { link = 'CursorLine' })
 end)
