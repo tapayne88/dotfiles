@@ -2,6 +2,9 @@ local command = require('tap.utils').command
 local require_plugin = require('tap.utils').require_plugin
 local get_os_command_output_async =
   require('tap.utils').get_os_command_output_async
+local highlight = require('tap.utils').highlight
+local color = require('tap.utils').color
+local apply_user_highlights = require('tap.utils').apply_user_highlights
 local a = require 'plenary.async'
 local log = require 'plenary.log'
 local fwatch = require 'fwatch'
@@ -114,3 +117,25 @@ local function setup_theme_watch()
 end
 
 setup_theme_watch()
+
+apply_user_highlights('Theme', function()
+  highlight('Search', {
+    guibg = color { dark = 'nord9_gui', light = 'blue2' },
+    guifg = color { dark = 'nord0_gui', light = 'bg' },
+    gui = 'NONE',
+  })
+  highlight('IncSearch', {
+    guibg = color { dark = 'nord9_gui', light = 'blue2' },
+    guifg = color { dark = 'nord0_gui', light = 'bg' },
+    gui = 'NONE',
+  })
+  highlight('FloatBorder', {
+    guifg = color { dark = 'nord9_gui', light = 'blue0' },
+    guibg = color { dark = 'nord0_gui', light = 'none' },
+  })
+
+  -- Treesitter overrides
+  highlight('TSInclude', { gui = 'italic', cterm = 'italic' })
+  highlight('TSOperator', { gui = 'italic', cterm = 'italic' })
+  highlight('TSKeyword', { gui = 'italic', cterm = 'italic' })
+end)

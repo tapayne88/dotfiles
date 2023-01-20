@@ -45,9 +45,6 @@ vim.opt.grepprg = table.concat(tap.safe_call(function()
   return require('telescope.config').values.vimgrep_arguments
 end) or {}, ' ')
 
-vim.g.mapleader = ','
-vim.g.maplocalleader = '\\'
-
 vim.g.netrw_liststyle = 3
 
 vim.g.chezmoi_source_dir = '{{ .chezmoi.sourceDir }}'
