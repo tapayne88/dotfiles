@@ -373,7 +373,12 @@ function utils.require_plugin(name, callback)
     return nil
   end
 
-  return type(callback) == 'function' and callback(plugin) or nil
+  if type(callback) == 'function' then
+    local cbok, val = pcall(callback, plugin)
+    return not cbok and nil or val
+  end
+
+  return nil
 end
 
 local has_augroup = function(name)

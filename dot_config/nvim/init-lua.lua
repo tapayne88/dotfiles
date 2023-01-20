@@ -1,7 +1,7 @@
 require 'tap.globals'
 
 require 'tap.settings'
-require 'tap.plugins'
+require 'tap.lazy' -- Plugins
 require 'tap.diagnostic'
 require 'tap.theme'
 require 'tap.auto'
