@@ -4,6 +4,7 @@ local vnoremap = require('tap.utils').vnoremap
 local tnoremap = require('tap.utils').tnoremap
 local xnoremap = require('tap.utils').xnoremap
 local termcodes = require('tap.utils').termcodes
+local keymap = require('tap.utils').keymap
 
 nnoremap('j', 'gj', { description = 'Jump down one wrapped line' })
 nnoremap('k', 'gk', { description = 'Jump up one wrapped line' })
@@ -142,4 +143,11 @@ nnoremap(
   'k',
   "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'",
   { expr = true }
+)
+
+keymap(
+  'v',
+  '<leader>p',
+  [["_dP]],
+  { description = 'Keep the yanked text when pasting in visual mode' }
 )
