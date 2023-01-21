@@ -1,36 +1,64 @@
 return {
   'nvim-lua/plenary.nvim', -- everything needs plenary
-
-  'tpope/vim-characterize', -- Adds 'ga' command to show character code
-  'tpope/vim-commentary', -- Adds 'gc' & 'gcc' commands for commenting lines
-  'tpope/vim-eunuch', -- Adds unix commands like ':Move' etc.
-  'tpope/vim-scriptease', -- Vim plugin for making Vim plugins
-  'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
-  'tpope/vim-vinegar', -- Nicer netrw defaults
   'tpope/vim-sleuth', -- Detect indentation
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
   'RRethy/vim-illuminate', -- Highlight same words
-  'dhruvasagar/vim-zoom', -- Toggle zoom in / out individual windows
 
-  -- treesitter colorschemes
+  'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
   {
-    'shaunsingh/nord.nvim',
-    lazy = false,
-    dependencies = {
-      'folke/tokyonight.nvim', -- light theme
-      'nvim-lua/plenary.nvim',
-      'rktjmp/fwatch.nvim', -- Utility for watching files
-    },
+    'psliwka/vim-dirtytalk',
+    build = ':DirtytalkUpdate',
     config = function()
-      local theme = require 'tap.utils.theme'
-
-      theme.set_colorscheme(theme.get_term_theme, { announce = false })
-      theme.setup_theme_watch()
+      vim.opt.spelllang = { 'en', 'programming' }
+      vim.opt.rtp:append(vim.fn.stdpath 'data' .. '/site')
     end,
+    keys = {
+      -- vim-unimpaired
+      '[os',
+      ']os',
+      'yos',
+    },
   },
 
-  -- Interactive neovim scratchpad for lua
-  { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } },
+  { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
+  { 'tpope/vim-commentary', keys = { 'gc', 'gcc' } }, -- Adds 'gc' & 'gcc' commands for commenting lines
+  {
+    'tpope/vim-scriptease', -- Vim plugin for making Vim plugins
+    cmd = {
+      'PP',
+      'Runtime',
+      'Disarm',
+      'Scriptnames',
+      'Messages',
+      'Verbose',
+      'Time',
+      'Breakadd',
+      'Vedit',
+    },
+    keys = {
+      'K', -- Look up the :help for the VimL construct under the cursor.
+      'zS', -- Show the active syntax highlighting groups under the cursor.
+      'g=', -- Eval a motion or selection as VimL and replace it with the result. This is handy for doing math, even outside of VimL
+    },
+  },
+  {
+    'tpope/vim-eunuch',
+    cmd = {
+      'Remove',
+      'Delete',
+      'Move',
+      'Chmod',
+      'Mkdir',
+      'Cfind',
+      'Clocate',
+      'Lfind',
+      'Llocate',
+      'Wall',
+      'SudoWrite',
+      'SudoEdit',
+    },
+  }, -- Adds unix commands like ':Move' etc.
+  { 'dhruvasagar/vim-zoom', keys = '<C-w>m' }, -- Toggle zoom in / out individual windows
 
   -- even better % navigation
   {
@@ -42,7 +70,7 @@ return {
   },
 
   -- Filetype icon support with lua support
-  { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' },
+  -- { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' },
 
   -- Syntax not supported by treesitter
   { 'plasticboy/vim-markdown' },
@@ -57,7 +85,13 @@ return {
   },
 
   -- easier vim startup time profiling
-  { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
+  {
+    'dstein64/vim-startuptime',
+    cmd = 'StartupTime',
+    config = function()
+      vim.g.startuptime_tries = 10
+    end,
+  },
 
   -- Simple plugin to easily resize windows
   {
@@ -65,6 +99,7 @@ return {
     config = function()
       vim.g.winresizer_start_key = '<leader>w'
     end,
+    keys = '<leader>w',
   },
 
   -- Language server and external tool installer
@@ -77,13 +112,6 @@ return {
       end,
     },
     'williamboman/mason-lspconfig.nvim',
-  },
-
-  {
-    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    config = function()
-      require('lsp_lines').setup()
-    end,
   },
 
   -- keymap plugins
@@ -122,21 +150,14 @@ return {
   },
 
   {
-    'psliwka/vim-dirtytalk',
-    build = ':DirtytalkUpdate',
-    config = function()
-      vim.opt.spelllang = { 'en', 'programming' }
-      vim.opt.rtp:append(vim.fn.stdpath 'data' .. '/site')
-    end,
-  },
-
-  {
     'kylechui/nvim-surround',
     config = function()
       require('nvim-surround').setup {}
     end,
   },
 
+  -- Interactive neovim scratchpad for lua
+  { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } },
   -- The interactive scratchpad for hackers
   {
     'metakirby5/codi.vim',
@@ -146,5 +167,11 @@ return {
         'tsun',
       }
     end,
+    cmd = {
+      'Codi',
+      'CodiNew',
+      'CodiSelect',
+      'CodiExpand',
+    },
   },
 }

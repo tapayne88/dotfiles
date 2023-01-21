@@ -3,7 +3,7 @@ return {
   'tapayne88/lualine.nvim',
   branch = 'suppress-winbar-no-room-error',
   dependencies = {
-    { 'kyazdani42/nvim-web-devicons', lazy = true },
+    'kyazdani42/nvim-web-devicons',
     'arkav/lualine-lsp-progress',
     {
       'SmiteshP/nvim-navic',
@@ -143,6 +143,17 @@ return {
       return tsc_version and string.format('v%s', tsc_version) or ''
     end
 
+    local function window_zoom_enabled()
+      local ok, is_zoomed = pcall(function()
+        return vim.fn['zoom#statusline']() == 'zoomed'
+      end)
+
+      if ok then
+        return is_zoomed
+      end
+      return false
+    end
+
     local lsp_progress = {
       'lsp_progress',
       separators = { progress = ' ' },
@@ -229,8 +240,7 @@ return {
           'filename',
           file_status = false,
           fmt = function(filename)
-            local is_zoomed = vim.api.nvim_exec(':echo zoom#statusline()', true)
-              == 'zoomed'
+            local is_zoomed = window_zoom_enabled()
             local zoom_text = is_zoomed and ' ﯫ' or ''
             return filename .. zoom_text
           end,

@@ -7,6 +7,7 @@ return {
     'folke/neodev.nvim', -- lua-dev setup
     'lukas-reineke/lsp-format.nvim', -- async formatting
     'jose-elias-alvarez/null-ls.nvim',
+    'rcarriga/nvim-notify',
     {
       'rmagatti/goto-preview',
       config = function()
@@ -24,7 +25,12 @@ return {
         }
       end,
     },
-    'rcarriga/nvim-notify',
+    {
+      'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+      config = function()
+        require('lsp_lines').setup()
+      end,
+    },
   },
   config = function()
     local Package = require 'mason-core.package'
