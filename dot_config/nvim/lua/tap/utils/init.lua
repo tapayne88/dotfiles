@@ -1,24 +1,22 @@
 local a = require 'plenary.async'
 local scan = require 'plenary.scandir'
 local Job = require 'plenary.job'
-local nord = require 'nord.colors'
-local tokyo_setup = require('tokyonight.colors').setup { style = 'day' }
 
 local utils = {}
-
----Export underlying theme colors
----@type table<string, table<string, string>>
-utils.colors = { nord = nord, tokyo = tokyo_setup }
 
 ---@param color string|table<'"light"' | '"dark"', string>
 ---@return string|nil
 function utils.color(color)
+  local nord = require 'nord.colors'
+  local tokyo_setup = require('tokyonight.colors').setup { style = 'day' }
+  local colors = { nord = nord, tokyo = tokyo_setup }
+
   if type(color) ~= 'table' then
     color = { light = color, dark = color }
   end
 
-  return vim.g.use_light_theme == true and utils.colors.tokyo[color.light]
-    or utils.colors.nord[color.dark]
+  return vim.g.use_light_theme == true and colors.tokyo[color.light]
+    or colors.nord[color.dark]
 end
 
 ---@alias lsp_status 'error' | 'warning' | 'info' | 'hint' | 'ok'

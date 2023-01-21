@@ -1,4 +1,6 @@
 return {
+  'nvim-lua/plenary.nvim', -- everything needs plenary
+
   'tpope/vim-characterize', -- Adds 'ga' command to show character code
   'tpope/vim-commentary', -- Adds 'gc' & 'gcc' commands for commenting lines
   'tpope/vim-eunuch', -- Adds unix commands like ':Move' etc.
@@ -7,15 +9,24 @@ return {
   'tpope/vim-vinegar', -- Nicer netrw defaults
   'tpope/vim-sleuth', -- Detect indentation
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
-  'nvim-lua/plenary.nvim', -- Utility function used by plugins and my config
   'RRethy/vim-illuminate', -- Highlight same words
-  'rktjmp/fwatch.nvim', -- Utility for watching files
   'dhruvasagar/vim-zoom', -- Toggle zoom in / out individual windows
 
   -- treesitter colorschemes
   {
-    'shaunsingh/nord.nvim', -- dark theme
-    'folke/tokyonight.nvim', -- light theme
+    'shaunsingh/nord.nvim',
+    lazy = false,
+    dependencies = {
+      'folke/tokyonight.nvim', -- light theme
+      'nvim-lua/plenary.nvim',
+      'rktjmp/fwatch.nvim', -- Utility for watching files
+    },
+    config = function()
+      local theme = require 'tap.utils.theme'
+
+      theme.set_colorscheme(theme.get_term_theme, { announce = false })
+      theme.setup_theme_watch()
+    end,
   },
 
   -- Interactive neovim scratchpad for lua
