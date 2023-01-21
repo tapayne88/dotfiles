@@ -31,9 +31,6 @@ local set_colorscheme = function(theme_future, opts)
       vim.g.use_light_theme = true
 
       vim.o.background = 'light'
-      require_plugin('tap.plugins.lualine', function(lualine)
-        lualine.set_theme 'tokyonight'
-      end)
       vim.cmd [[colorscheme tokyonight]]
 
       if opts.announce == true then
@@ -46,9 +43,6 @@ local set_colorscheme = function(theme_future, opts)
       vim.g.nord_borders = true
       vim.g.nord_uniform_diff_background = true
       vim.o.background = 'dark'
-      require_plugin('tap.plugins.lualine', function(lualine)
-        lualine.set_theme 'nord_custom'
-      end)
       vim.cmd [[colorscheme nord]]
 
       if opts.announce == true then

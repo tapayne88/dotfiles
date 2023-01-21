@@ -337,6 +337,12 @@ return {
       highlight('NavicSeparator', {
         guifg = color { dark = 'nord3_gui', light = 'fg' },
       })
+
+      local theme_name = vim.g.colors_name
+      local theme = theme_name == 'nord' and nord_theme or theme_name
+      if theme then
+        require('lualine').setup { options = { theme = theme } }
+      end
     end)
 
     local winbar_y = {
@@ -412,14 +418,5 @@ return {
         lualine_z = { filetype_icon_only },
       },
     }
-
-    local M = {}
-
-    function M.set_theme(theme_name)
-      local theme = theme_name == 'nord_custom' and nord_theme or theme_name
-      require('lualine').setup { options = { theme = theme } }
-    end
-
-    return M
   end,
 }
