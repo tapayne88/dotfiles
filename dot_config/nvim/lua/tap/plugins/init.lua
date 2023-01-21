@@ -102,18 +102,6 @@ return {
     keys = '<leader>w',
   },
 
-  -- Language server and external tool installer
-  {
-    {
-      'williamboman/mason.nvim',
-      config = function()
-        require('mason').setup()
-        require 'tap.mason-registry'
-      end,
-    },
-    'williamboman/mason-lspconfig.nvim',
-  },
-
   -- keymap plugins
   {
     {
@@ -161,7 +149,6 @@ return {
   -- The interactive scratchpad for hackers
   {
     'metakirby5/codi.vim',
-    -- after = 'mason.nvim',
     config = function()
       require('tap.utils.lsp').ensure_installed {
         'tsun',
