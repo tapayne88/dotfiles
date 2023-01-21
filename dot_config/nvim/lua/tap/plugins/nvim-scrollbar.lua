@@ -2,7 +2,7 @@ return {
   'petertriho/nvim-scrollbar',
   config = function()
     local color = require('tap.utils').color
-    local lsp_colors = require('tap.utils').lsp_colors
+    local lsp_colors = require('tap.utils.lsp').colors
     local apply_user_highlights = require('tap.utils').apply_user_highlights
 
     apply_user_highlights('NvimScrollbar', function()

@@ -3,15 +3,15 @@ return {
   dependencies = 'kyazdani42/nvim-web-devicons',
   config = function()
     local nnoremap = require('tap.utils').nnoremap
-    local lsp_symbols = require('tap.utils').lsp_symbols
+    local lsp_symbols = require('tap.utils.lsp').symbols
 
     require('trouble').setup {
       signs = {
-        error = lsp_symbols.error,
-        warning = lsp_symbols.warning,
-        hint = lsp_symbols.hint,
-        information = lsp_symbols.info,
-        other = lsp_symbols.ok,
+        error = lsp_symbols 'error',
+        warning = lsp_symbols 'warning',
+        hint = lsp_symbols 'hint',
+        information = lsp_symbols 'info',
+        other = lsp_symbols 'ok',
       },
     }
 

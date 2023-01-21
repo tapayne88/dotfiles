@@ -1,7 +1,3 @@
-local a = require 'plenary.async'
-local scan = require 'plenary.scandir'
-local Job = require 'plenary.job'
-
 local utils = {}
 
 ---@param color string|table<'"light"' | '"dark"', string>
@@ -17,73 +13,6 @@ function utils.color(color)
 
   return vim.g.use_light_theme == true and colors.tokyo[color.light]
     or colors.nord[color.dark]
-end
-
----@alias lsp_status 'error' | 'warning' | 'info' | 'hint' | 'ok'
-
----@type { error: string, warning: string, info: string, hint: string, hint_alt: string, ok: string }
-utils.lsp_symbols = {
-  error = ' ',
-  warning = ' ',
-  info = ' ',
-  hint = ' ',
-  hint_alt = ' ',
-  ok = ' ',
-}
-
----@param type lsp_status
----@return string|nil
-utils.lsp_colors = function(type)
-  local color_map = {
-    error = utils.color { dark = 'nord11_gui', light = 'red' },
-    warning = utils.color { dark = 'nord13_gui', light = 'yellow' },
-    info = utils.color { dark = 'nord4_gui', light = 'fg' },
-    hint = utils.color { dark = 'nord10_gui', light = 'blue2' },
-    ok = utils.color { dark = 'nord14_gui', light = 'green' },
-  }
-  return color_map[type]
-end
-
---- Run cmd async and trigger callback on completion - wrapped with plenary.async
----@param cmd string[]
----@param cwd string|nil
----@param fn fun(result: string[], code: number, signal: number)
-utils.get_os_command_output_async = a.wrap(function(cmd, cwd, fn)
-  if type(cmd) ~= 'table' then
-    print '[get_os_command_output_async]: cmd has to be a table'
-    return {}
-  end
-  local command = table.remove(cmd, 1)
-  local job = Job:new { command = command, args = cmd, cwd = cwd }
-  job:after(vim.schedule_wrap(function(j, code, signal)
-    if code == 0 then
-      return fn(j:result(), code, signal)
-    end
-    return fn(j:stderr_result(), code, signal)
-  end))
-  job:start()
-end, 3)
-
----Run cmd synchronously and return value
----@param cmd string[]
----@param cwd string|nil
----@return string[]|nil, number|nil, string[]|nil
-function utils.get_os_command_output(cmd, cwd)
-  if type(cmd) ~= 'table' then
-    print '[get_os_command_output]: cmd has to be a table'
-    return nil, nil, nil
-  end
-  local command = table.remove(cmd, 1)
-  local stderr = {}
-  local stdout, ret = Job:new({
-    command = command,
-    args = cmd,
-    cwd = cwd,
-    on_stderr = function(_, data)
-      table.insert(stderr, data)
-    end,
-  }):sync()
-  return stdout, ret, stderr
 end
 
 ---Map deeply nested table to single key
@@ -425,7 +354,8 @@ function utils.root_pattern(patterns)
     if start == '/' then
       return nil
     end
-    local res = scan.scan_dir(
+    local res = require('plenary.scandir').scan_dir(
+
       start,
       { search_pattern = patterns, hidden = true, add_dirs = true, depth = 1 }
     )

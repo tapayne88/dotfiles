@@ -1,4 +1,6 @@
 local utils = require 'tap.utils'
+local lsp_colors = require('tap.utils.lsp').colors
+local lsp_symbols = require('tap.utils.lsp').symbols
 local apply_user_highlights = require('tap.utils').apply_user_highlights
 local nnoremap = require('tap.utils').nnoremap
 
@@ -67,40 +69,40 @@ local user_highlights = function()
   utils.highlight('DiagnosticUnderlineError', {
     guifg = 'none',
     gui = 'undercurl',
-    guisp = utils.lsp_colors 'error',
+    guisp = lsp_colors 'error',
   })
   utils.highlight('DiagnosticUnderlineWarn', {
     guifg = 'none',
     gui = 'undercurl',
-    guisp = utils.lsp_colors 'warning',
+    guisp = lsp_colors 'warning',
   })
   utils.highlight('DiagnosticUnderlineInfo', {
     guifg = 'none',
     gui = 'undercurl',
-    guisp = utils.lsp_colors 'info',
+    guisp = lsp_colors 'info',
   })
   utils.highlight('DiagnosticUnderlineHint', {
     guifg = 'none',
     gui = 'undercurl',
-    guisp = utils.lsp_colors 'hint',
+    guisp = lsp_colors 'hint',
   })
 
   local signs = {
     Error = {
-      guifg = utils.lsp_colors 'error',
-      icon = utils.lsp_symbols['error'],
+      guifg = lsp_colors 'error',
+      icon = lsp_symbols 'error',
     },
     Warn = {
-      guifg = utils.lsp_colors 'warning',
-      icon = utils.lsp_symbols['warning'],
+      guifg = lsp_colors 'warning',
+      icon = lsp_symbols 'warning',
     },
     Hint = {
-      guifg = utils.lsp_colors 'hint',
-      icon = utils.lsp_symbols['hint'],
+      guifg = lsp_colors 'hint',
+      icon = lsp_symbols 'hint',
     },
     Info = {
-      guifg = utils.lsp_colors 'info',
-      icon = utils.lsp_symbols['info'],
+      guifg = lsp_colors 'info',
+      icon = lsp_symbols 'info',
     },
   }
 

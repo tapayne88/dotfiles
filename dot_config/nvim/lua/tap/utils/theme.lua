@@ -1,6 +1,6 @@
 local command = require('tap.utils').command
 local get_os_command_output_async =
-  require('tap.utils').get_os_command_output_async
+  require('tap.utils.async').get_os_command_output_async
 local a = require 'plenary.async'
 local log = require 'plenary.log'
 local fwatch = require 'fwatch'
