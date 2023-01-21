@@ -262,6 +262,9 @@ return {
       )
     end)
 
+    vim.opt.grepprg =
+      table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
+
     command {
       'Fw',
       function(args)

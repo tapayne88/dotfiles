@@ -41,10 +41,6 @@ vim.opt.cursorline = true
 vim.opt.colorcolumn = '80'
 vim.opt.signcolumn = 'yes'
 
-vim.opt.grepprg = table.concat(tap.safe_call(function()
-  return require('telescope.config').values.vimgrep_arguments
-end) or {}, ' ')
-
 vim.g.netrw_liststyle = 3
 
 vim.g.chezmoi_source_dir = '{{ .chezmoi.sourceDir }}'
