@@ -25,12 +25,6 @@ return {
         }
       end,
     },
-    {
-      'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-      config = function()
-        require('lsp_lines').setup()
-      end,
-    },
   },
   config = function()
     local Package = require 'mason-core.package'
