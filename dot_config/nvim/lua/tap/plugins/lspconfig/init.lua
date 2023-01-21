@@ -31,7 +31,7 @@ return {
     local utils = require 'tap.utils'
     local lsp_utils = require 'tap.utils.lsp'
 
-    if lsp_utils.isLspDebug() then
+    if lsp_utils.lsp_debug_enabled() then
       vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
       vim.notify(
         'LSP debug log: ' .. vim.lsp.get_log_path(),

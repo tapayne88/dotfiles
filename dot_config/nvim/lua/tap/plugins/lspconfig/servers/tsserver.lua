@@ -68,7 +68,8 @@ function module.setup()
       {
         tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
       },
-      lsp_utils.isLspDebug() and { tsserver = { logVerbosity = 'verbose' } }
+      lsp_utils.lsp_debug_enabled()
+          and { tsserver = { logVerbosity = 'verbose' } }
         or {}
     ),
     handlers = {

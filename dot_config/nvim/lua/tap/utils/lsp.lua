@@ -233,7 +233,7 @@ end
 
 --- Check if we're running in LSP debug mode
 ---@return boolean
-function module.isLspDebug()
+function module.lsp_debug_enabled()
   local lspDebug = vim.env.LSP_DEBUG
   if lspDebug == nil then
     return false
