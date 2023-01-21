@@ -6,6 +6,7 @@ return {
     local color = require('tap.utils').color
     local nnoremap = require('tap.utils').nnoremap
     local apply_user_highlights = require('tap.utils').apply_user_highlights
+    local isLspDebug = require('tap.utils.lsp').isLspDebug
 
     vim.notify = require 'notify'
 
@@ -17,6 +18,7 @@ return {
         DEBUG = '',
         TRACE = '✎',
       },
+      level = isLspDebug() and vim.log.levels.DEBUG or vim.log.levels.INFO,
     }
 
     require('telescope').load_extension 'notify'

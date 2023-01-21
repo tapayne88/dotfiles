@@ -24,6 +24,7 @@ return {
         }
       end,
     },
+    'rcarriga/nvim-notify',
   },
   config = function()
     local Package = require 'mason-core.package'
@@ -32,7 +33,11 @@ return {
 
     if lsp_utils.isLspDebug() then
       vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
-      print('LSP debug log: ' .. vim.lsp.get_log_path())
+      vim.notify(
+        'LSP debug log: ' .. vim.lsp.get_log_path(),
+        vim.log.levels.DEBUG,
+        { title = 'lspconfig' }
+      )
     end
 
     local servers = {

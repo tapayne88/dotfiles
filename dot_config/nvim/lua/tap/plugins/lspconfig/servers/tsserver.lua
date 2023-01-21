@@ -41,6 +41,25 @@ end
 
 local module = { get_tsc_version = get_tsc_version }
 
+local handleLogFile = function(message)
+  local file_location = message:match 'Log file: (.*)'
+
+  if file_location then
+    vim.notify(
+      'Log file: ' .. file_location,
+      vim.log.levels.DEBUG,
+      { title = 'tsserver' }
+    )
+  end
+end
+
+local handleTscVersion = function(message, header)
+  local version =
+    message:match '%[lspserver%] Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
+
+  set_tsc_version(header.client_id, version)
+end
+
 function module.setup()
   require('lspconfig').tsserver.setup(lsp_utils.merge_with_default_config {
     init_options = vim.tbl_deep_extend(
@@ -58,10 +77,8 @@ function module.setup()
           return
         end
 
-        local version =
-          result.message:match '%[lspserver%] Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
-
-        set_tsc_version(header.client_id, version)
+        handleLogFile(result.message)
+        handleTscVersion(result.message, header)
       end,
     },
   })
