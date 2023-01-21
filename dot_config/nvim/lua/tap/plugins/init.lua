@@ -102,29 +102,6 @@ return {
     keys = '<leader>w',
   },
 
-  -- keymap plugins
-  {
-    {
-      'mrjones2014/legendary.nvim',
-      config = function()
-        require('legendary').setup {}
-        require('tap.utils').nnoremap(
-          '<leader>p',
-          ':lua require("legendary").find("keymaps")<CR>',
-          {
-            description = 'Legendary keymaps',
-          }
-        )
-      end,
-    },
-    {
-      'folke/which-key.nvim',
-      config = function()
-        require('which-key').setup {}
-      end,
-    },
-  },
-
   {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
