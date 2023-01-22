@@ -53,10 +53,6 @@ end
 local function on_attach(client, bufnr)
   local nnoremap = require('tap.utils').nnoremap
 
-  if client.server_capabilities.documentSymbolProvider then
-    require('nvim-navic').attach(client, bufnr)
-  end
-
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
