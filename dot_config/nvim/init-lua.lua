@@ -2,7 +2,6 @@ require 'tap.globals'
 
 require 'tap.settings'
 require 'tap.lazy' -- Plugins
-require 'tap.theme'
 require 'tap.auto'
 require 'tap.keymap'
 require 'tap.jest-nvim'
