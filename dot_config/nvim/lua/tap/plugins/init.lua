@@ -21,7 +21,7 @@ return {
   },
 
   { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
-  { 'tpope/vim-commentary', keys = { 'gc', 'gcc' } }, -- Adds 'gc' & 'gcc' commands for commenting lines
+  { 'tpope/vim-commentary' }, -- Adds 'gc' & 'gcc' commands for commenting lines
   {
     'tpope/vim-scriptease', -- Vim plugin for making Vim plugins
     cmd = {
