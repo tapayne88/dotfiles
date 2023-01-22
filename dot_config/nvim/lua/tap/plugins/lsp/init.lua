@@ -48,7 +48,7 @@ return {
       local function require_server(server_identifier)
         local server_name =
           require('mason-core.package').Parse(server_identifier)
-        return require('tap.plugins.lspconfig.servers.' .. server_name)
+        return require('tap.plugins.lsp.servers.' .. server_name)
       end
 
       utils.run {

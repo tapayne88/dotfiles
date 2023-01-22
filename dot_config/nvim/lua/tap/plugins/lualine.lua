@@ -132,7 +132,7 @@ return {
 
       local function tscVersion()
         local tsc_version = require_plugin(
-          'tap.plugins.lspconfig.servers.tsserver',
+          'tap.plugins.lsp.servers.tsserver',
           function(tsserver)
             return tsserver.get_tsc_version()
           end
