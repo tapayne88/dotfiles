@@ -35,48 +35,23 @@ M.colors = function(type)
   return color_map[type]
 end
 
-local function toggle_format()
-  local filetype = vim.bo.filetype
-  local disabled = require('lsp-format').disabled_filetypes[filetype]
-
-  if disabled then
-    require('lsp-format').enable { args = filetype }
-    vim.notify(
-      'enabled formatting for ' .. filetype,
-      vim.log.levels.INFO,
-      { title = 'LSP Utils' }
-    )
-  else
-    require('lsp-format').disable { args = filetype }
-    vim.notify(
-      'disabled formatting for ' .. filetype,
-      vim.log.levels.WARN,
-      { title = 'LSP Utils' }
-    )
-  end
-end
-
-local disabled_formatters = {
-  'sumneko_lua', -- use stylua with null-ls for lua
-  'tsserver',
-}
-
-local function attach_formatter(client)
-  if vim.tbl_contains(disabled_formatters, client.name) then
-    return
-  end
-
-  require('lsp-format').on_attach(client)
+---@param on_attach fun(client, buffer)
+function M.on_attach(on_attach)
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+      local buffer = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      on_attach(client, buffer)
+    end,
+  })
 end
 
 -- on_attach function for lsp.setup calls
 ---@param client Client
 ---@param bufnr number
 ---@return nil
-function M.on_attach(client, bufnr)
+local function on_attach(client, bufnr)
   local nnoremap = require('tap.utils').nnoremap
-
-  attach_formatter(client)
 
   if client.server_capabilities.documentSymbolProvider then
     require('nvim-navic').attach(client, bufnr)
@@ -145,10 +120,6 @@ function M.on_attach(client, bufnr)
     '<cmd>lua vim.lsp.buf.type_definition()<CR>',
     with_opts 'Go to type definition'
   )
-
-  -- Formatting
-  nnoremap('<leader>tf', toggle_format, with_opts 'Toggle formatting on save')
-  nnoremap('<space>f', '<cmd>Format<CR>', with_opts 'Run formatting')
 end
 
 -- Async function to find npm executable path
@@ -181,7 +152,7 @@ function M.merge_with_default_config(config)
 
   local base_config = {
     autostart = true,
-    on_attach = M.on_attach,
+    on_attach = on_attach,
     -- set cmd_cwd to mason install_root_dir to ensure node version consistency
     cmd_cwd = mason_settings.current.install_root_dir,
     handlers = {
