@@ -132,6 +132,72 @@ return {
     end,
   },
 
+  -- Git integration ':Gstatus' etc.
+  {
+    'tpope/vim-fugitive',
+    cmd = {
+      'Git',
+      'Gvdiff',
+      'Gedit',
+      'Gread',
+      'GDelete',
+      'GRemove',
+      'GRename',
+      'GMove',
+      'Gwrite',
+      'Gclog',
+      'GBrowse',
+    },
+    dependencies = {
+      'tpope/vim-rhubarb', -- :GBrowse github
+      'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
+    },
+    init = function()
+      local nnoremap = require('tap.utils').nnoremap
+      local xnoremap = require('tap.utils').xnoremap
+
+      nnoremap(
+        '<leader>ga',
+        ':Git add %:p<CR><CR>',
+        { description = 'Git add file' }
+      )
+      nnoremap('<leader>gs', ':Git<CR>', { description = 'Git status' })
+      nnoremap(
+        '<leader>gc',
+        ':Git commit -v -q<CR>',
+        { description = 'Git commit' }
+      )
+      nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
+      nnoremap('<leader>gd', ':Gvdiff<CR>', { description = 'Git diff' })
+      nnoremap('<leader>ge', ':Gedit<CR>')
+      nnoremap('<leader>gr', ':Gread<CR>', { description = 'Git read' })
+      nnoremap('<leader>gw', ':Gwrite<CR>', { description = 'Git write' })
+      nnoremap('<leader>gl', ':Gclog<CR>', { description = 'Git log' })
+      nnoremap(
+        '<leader>go',
+        ':Git checkout<Space>',
+        { description = 'Git checkout' }
+      )
+      nnoremap(
+        '<leader>gp',
+        ':GBrowse<CR>',
+        { description = 'Git browse file' }
+      )
+      xnoremap(
+        '<leader>gp',
+        ":'<,'>GBrowse<CR>",
+        { description = 'Git browse visual selection' }
+      )
+    end,
+    config = function()
+      vim.g.fugitive_dynamic_colors = 0
+      -- vim.g.github_enterprise_urls is set in .vimrc.local
+
+      -- Stops fugitive files being left in buffer by removing all but currently visible
+      vim.cmd 'autocmd BufReadPost fugitive://* set bufhidden=delete'
+    end,
+  },
+
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
