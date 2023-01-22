@@ -39,7 +39,9 @@ local get_tsc_version = function()
   return nil
 end
 
-local module = { get_tsc_version = get_tsc_version }
+local M = { get_tsc_version = get_tsc_version }
+
+M.ensure_installed = { 'tsserver' }
 
 local handleLogFile = function(message)
   local file_location = message:match 'Log file: (.*)'
@@ -60,7 +62,7 @@ local handleTscVersion = function(message, header)
   set_tsc_version(header.client_id, version)
 end
 
-function module.setup()
+function M.setup()
   require('lspconfig').tsserver.setup(lsp_utils.merge_with_default_config {
     init_options = vim.tbl_deep_extend(
       'force',
@@ -85,4 +87,4 @@ function module.setup()
   })
 end
 
-return module
+return M

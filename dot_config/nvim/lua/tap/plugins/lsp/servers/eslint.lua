@@ -1,8 +1,10 @@
 local lsp_utils = require 'tap.utils.lsp'
 
-local module = {}
+local M = {}
 
-function module.setup()
+M.ensure_installed = { 'eslint' }
+
+function M.setup()
   require('lspconfig').eslint.setup(lsp_utils.merge_with_default_config {
     handlers = {
       -- Prevent eslint popup prompt when language server throws an error
@@ -14,4 +16,4 @@ function module.setup()
   })
 end
 
-return module
+return M

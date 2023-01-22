@@ -2,17 +2,16 @@
 return {
   {
     'neovim/nvim-lspconfig', -- LSP server config
+    event = 'BufReadPre',
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
       'lukas-reineke/lsp-format.nvim', -- async formatting
-      'jose-elias-alvarez/null-ls.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
     },
     config = function()
-      local utils = require 'tap.utils'
       local lsp_utils = require 'tap.utils.lsp'
 
       if lsp_utils.lsp_debug_enabled() then
@@ -24,63 +23,75 @@ return {
         )
       end
 
-      local servers = {
-        -- language servers installed with mason.nvim / mason-lspconfig.nvim
-        ['mason-lspconfig'] = {
-          'bashls',
-          'eslint',
-          'jsonls',
-          'sumneko_lua',
-          'tsserver',
-        },
-        -- custom installers that use mason.nvim
-        ['mason'] = {
-          'null-ls',
-        },
-        -- globally installed servers likely through nix
-        ['global-servers'] = { 'rnix' },
+      local servers = require 'tap.plugins.lsp.servers'
+
+      local ensure_installed = vim.tbl_flatten(vim.tbl_map(function(server)
+        return server.ensure_installed
+      end, servers))
+
+      require('mason-lspconfig').setup {
+        ensure_installed = ensure_installed,
       }
 
-      local get_server_list = function(nested_servers)
-        return vim.tbl_flatten(vim.tbl_values(nested_servers))
+      for _, server in pairs(servers) do
+        server.setup()
       end
+    end,
+  },
 
-      local function require_server(server_identifier)
-        local server_name =
-          require('mason-core.package').Parse(server_identifier)
-        return require('tap.plugins.lsp.servers.' .. server_name)
-      end
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    event = 'BufReadPre',
+    dependencies = { 'mason.nvim' },
+    config = function()
+      local null_ls = require 'null-ls'
+      local path = require 'mason-core.path'
+      local lsp_utils = require 'tap.utils.lsp'
 
-      utils.run {
-        -------------
-        -- Install --
-        -------------
-        function()
-          for _, server_name in pairs(servers['mason']) do
-            require_server(server_name).install()
-          end
-        end,
-
-        -----------
-        -- Setup --
-        -----------
-        function()
-          -- Ensure desired servers are installed
-          require('mason-lspconfig').setup {
-            ensure_installed = servers['mason-lspconfig'],
-          }
-        end,
-
-        -------------
-        -- Require --
-        -------------
-        function()
-          -- Setup servers
-          for _, server_identifier in pairs(get_server_list(servers)) do
-            require_server(server_identifier).setup()
-          end
-        end,
+      lsp_utils.ensure_installed {
+        'hadolint',
+        'markdownlint',
+        'prettierd',
+        'stylua',
       }
+
+      null_ls.setup(lsp_utils.merge_with_default_config {
+        debug = lsp_utils.lsp_debug_enabled(),
+        sources = {
+          ------------------
+          -- Code Actions --
+          ------------------
+          null_ls.builtins.code_actions.shellcheck,
+
+          -----------------
+          -- Diagnostics --
+          -----------------
+          null_ls.builtins.diagnostics.hadolint,
+          null_ls.builtins.diagnostics.markdownlint.with {
+            command = path.bin_prefix 'markdownlint',
+            extra_args = {
+              '--config',
+              vim.fn.stdpath 'config' .. '/markdownlint.json',
+            },
+          },
+          null_ls.builtins.diagnostics.shellcheck,
+
+          ----------------
+          -- Formatting --
+          ----------------
+          null_ls.builtins.formatting.prettierd.with {
+            command = path.bin_prefix 'prettierd',
+          },
+          null_ls.builtins.formatting.stylua.with {
+            command = path.bin_prefix 'stylua',
+          },
+
+          -----------
+          -- Hover --
+          -----------
+          null_ls.builtins.hover.dictionary,
+        },
+      })
     end,
   },
 
