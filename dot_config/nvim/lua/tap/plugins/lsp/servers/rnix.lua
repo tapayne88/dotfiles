@@ -1,9 +1,12 @@
 local lsp_utils = require 'tap.utils.lsp'
 
-local module = {}
+local M = {}
 
-function module.setup()
+-- globally installed servers using nix
+M.ensure_installed = {}
+
+function M.setup()
   require('lspconfig').rnix.setup(lsp_utils.merge_with_default_config())
 end
 
-return module
+return M

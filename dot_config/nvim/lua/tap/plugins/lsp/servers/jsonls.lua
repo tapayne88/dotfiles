@@ -1,12 +1,14 @@
 local lsp_utils = require 'tap.utils.lsp'
 
-local module = {}
+local M = {}
 
-function module.setup()
+M.ensure_installed = { 'jsonls' }
+
+function M.setup()
   require('lspconfig').jsonls.setup(lsp_utils.merge_with_default_config {
     init_options = { provideFormatter = false },
     settings = { json = { schemas = require('schemastore').json.schemas() } },
   })
 end
 
-return module
+return M

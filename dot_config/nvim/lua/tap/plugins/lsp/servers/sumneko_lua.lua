@@ -1,10 +1,12 @@
 local lsp_utils = require 'tap.utils.lsp'
 
-local module = {}
+local M = {}
 
-function module.setup()
+M.ensure_installed = { 'sumneko_lua' }
+
+function M.setup()
   require('neodev').setup {}
   require('lspconfig').sumneko_lua.setup(lsp_utils.merge_with_default_config())
 end
 
-return module
+return M

@@ -1,12 +1,13 @@
 local command = require('tap.utils').command
-local require_plugin = require('tap.utils').require_plugin
 local get_os_command_output_async =
-  require('tap.utils').get_os_command_output_async
+  require('tap.utils.async').get_os_command_output_async
 local a = require 'plenary.async'
 local log = require 'plenary.log'
 local fwatch = require 'fwatch'
 
-local get_term_theme = function()
+local M = {}
+
+function M.get_term_theme()
   local res, code = get_os_command_output_async({ 'term-theme', 'echo' }, nil)
   if code ~= 0 then
     vim.notify(
@@ -18,7 +19,7 @@ local get_term_theme = function()
   return res[1]
 end
 
-local set_colorscheme = function(theme_future, opts)
+function M.set_colorscheme(theme_future, opts)
   -- set nord colorscheme upfront to avoid flickering from "default" scheme
   vim.cmd [[colorscheme nord]]
   return a.run(function()
@@ -28,9 +29,6 @@ local set_colorscheme = function(theme_future, opts)
       vim.g.use_light_theme = true
 
       vim.o.background = 'light'
-      require_plugin('tap.plugins.lualine', function(lualine)
-        lualine.set_theme 'tokyonight'
-      end)
       vim.cmd [[colorscheme tokyonight]]
 
       if opts.announce == true then
@@ -43,9 +41,6 @@ local set_colorscheme = function(theme_future, opts)
       vim.g.nord_borders = true
       vim.g.nord_uniform_diff_background = true
       vim.o.background = 'dark'
-      require_plugin('tap.plugins.lualine', function(lualine)
-        lualine.set_theme 'nord_custom'
-      end)
       vim.cmd [[colorscheme nord]]
 
       if opts.announce == true then
@@ -56,8 +51,6 @@ local set_colorscheme = function(theme_future, opts)
     end
   end)
 end
-
-set_colorscheme(get_term_theme, { announce = false })
 
 -- Patch CursorLine highlighting bug in NeoVim
 -- Messes with highlighting of current line in weird ways
@@ -85,7 +78,7 @@ command {
   'TermThemeToggle',
   function()
     a.run(function()
-      if get_term_theme() == 'dark' then
+      if M.get_term_theme() == 'dark' then
         vim.loop.spawn('term-theme', { args = { 'light' } }, nil)
       else
         vim.loop.spawn('term-theme', { args = { 'dark' } }, nil)
@@ -96,21 +89,21 @@ command {
 command {
   'TermThemeRefresh',
   function()
-    set_colorscheme(get_term_theme, { announce = true })
+    M.set_colorscheme(M.get_term_theme, { announce = true })
   end,
 }
 
 --- Attempt to debouce watches by only setting up the listen after handling the
 --- colour change
-local function setup_theme_watch()
+function M.setup_theme_watch()
   fwatch.once(vim.fn.expand '$XDG_CONFIG_HOME' .. '/term_theme', {
     on_event = function()
       vim.schedule(function()
-        set_colorscheme(get_term_theme, { announce = true })
-        setup_theme_watch()
+        M.set_colorscheme(M.get_term_theme, { announce = true })
+        M.setup_theme_watch()
       end)
     end,
   })
 end
 
-setup_theme_watch()
+return M

@@ -1,55 +1,57 @@
-local utils = require 'tap.utils'
-local nnoremap = require('tap.utils').nnoremap
+local M = {}
 
 ---@class Client
 ---@field server_capabilities { documentSymbolProvider: boolean }
 
-local function toggle_format()
-  local filetype = vim.bo.filetype
-  local disabled = require('lsp-format').disabled_filetypes[filetype]
+---@alias lsp_status 'error' | 'warning' | 'info' | 'hint' | 'ok'
 
-  if disabled then
-    require('lsp-format').enable { args = filetype }
-    vim.notify(
-      'enabled formatting for ' .. filetype,
-      vim.log.levels.INFO,
-      { title = 'LSP Utils' }
-    )
-  else
-    require('lsp-format').disable { args = filetype }
-    vim.notify(
-      'disabled formatting for ' .. filetype,
-      vim.log.levels.WARN,
-      { title = 'LSP Utils' }
-    )
-  end
+---@param type lsp_status | 'hint_alt'
+---@return string
+M.symbols = function(type)
+  local symbs = {
+    error = ' ',
+    warning = ' ',
+    info = ' ',
+    hint = ' ',
+    hint_alt = ' ',
+    ok = ' ',
+  }
+
+  return symbs[type]
 end
 
-local disabled_formatters = {
-  'sumneko_lua', -- use stylua with null-ls for lua
-  'tsserver',
-}
+---@param type lsp_status
+---@return string|nil
+M.colors = function(type)
+  local color = require('tap.utils').color
 
-local function attach_formatter(client)
-  if vim.tbl_contains(disabled_formatters, client.name) then
-    return
-  end
-
-  require('lsp-format').on_attach(client)
+  local color_map = {
+    error = color { dark = 'nord11_gui', light = 'red' },
+    warning = color { dark = 'nord13_gui', light = 'yellow' },
+    info = color { dark = 'nord4_gui', light = 'fg' },
+    hint = color { dark = 'nord10_gui', light = 'blue2' },
+    ok = color { dark = 'nord14_gui', light = 'green' },
+  }
+  return color_map[type]
 end
 
-local module = {}
+---@param on_attach fun(client, buffer)
+function M.on_attach(on_attach)
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+      local buffer = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      on_attach(client, buffer)
+    end,
+  })
+end
 
 -- on_attach function for lsp.setup calls
 ---@param client Client
 ---@param bufnr number
 ---@return nil
-function module.on_attach(client, bufnr)
-  attach_formatter(client)
-
-  if client.server_capabilities.documentSymbolProvider then
-    require('nvim-navic').attach(client, bufnr)
-  end
+local function on_attach(client, bufnr)
+  local nnoremap = require('tap.utils').nnoremap
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -58,24 +60,9 @@ function module.on_attach(client, bufnr)
     return { buffer = bufnr, description = '[LSP] ' .. description }
   end
   nnoremap(
-    'gD',
-    '<cmd>Telescope lsp_definitions<CR>',
-    with_opts 'Go to definition'
-  )
-  nnoremap(
-    'gd',
-    '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
-    with_opts 'Go to definition preview'
-  )
-  nnoremap(
     'gi',
     '<cmd>lua vim.lsp.buf.implementation()<CR>',
     with_opts 'Go to implementation'
-  )
-  nnoremap(
-    'gr',
-    '<cmd>Telescope lsp_references<CR>',
-    with_opts 'Get references'
   )
   nnoremap(
     'K',
@@ -114,18 +101,16 @@ function module.on_attach(client, bufnr)
     '<cmd>lua vim.lsp.buf.type_definition()<CR>',
     with_opts 'Go to type definition'
   )
-
-  -- Formatting
-  nnoremap('<leader>tf', toggle_format, with_opts 'Toggle formatting on save')
-  nnoremap('<space>f', '<cmd>Format<CR>', with_opts 'Run formatting')
 end
 
 -- Async function to find npm executable path
 ---@param cmd string
 ---@return string[]|nil
-function module.get_bin_path(cmd)
-  local result, code =
-    utils.get_os_command_output_async({ 'yarn', 'bin', cmd }, nil)
+function M.get_bin_path(cmd)
+  local result, code = require('tap.utils.async').get_os_command_output_async(
+    { 'yarn', 'bin', cmd },
+    nil
+  )
 
   if code ~= 0 then
     vim.notify('`yarn bin ' .. cmd .. '` failed', vim.log.levels.ERROR)
@@ -142,13 +127,13 @@ local border_window_style = 'rounded'
 -- passed config
 ---@param config table|nil
 ---@return table
-function module.merge_with_default_config(config)
+function M.merge_with_default_config(config)
   local mason_settings = require 'mason.settings'
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
   local base_config = {
     autostart = true,
-    on_attach = module.on_attach,
+    on_attach = on_attach,
     -- set cmd_cwd to mason install_root_dir to ensure node version consistency
     cmd_cwd = mason_settings.current.install_root_dir,
     handlers = {
@@ -169,7 +154,7 @@ end
 
 -- Get active LSP clients for buffer
 ---@return table[]
-function module.get_lsp_clients()
+function M.get_lsp_clients()
   return vim.lsp.get_active_clients { bufnr = vim.api.nvim_get_current_buf() }
 end
 
@@ -196,7 +181,7 @@ local function do_install(p, version)
     vim.notify(
       string.format('%s: successfully installed', p.name),
       vim.log.levels.INFO,
-      vim.tbl_extend('error', notify_opts, { icon = utils.lsp_symbols.ok })
+      vim.tbl_extend('error', notify_opts, { icon = M.symbols 'ok' })
     )
   end)
   p:on('install:failed', function()
@@ -213,7 +198,7 @@ end
 --- Largely copied from https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/blob/d72842d361d4f2b0504b8b88501411204b5be965/lua/mason-tool-installer/init.lua
 ---@param identifiers string[] Array of encoded name/version package identifiers e.g. {'stylua@0.14.1'}
 ---@return nil
-function module.ensure_installed(identifiers)
+function M.ensure_installed(identifiers)
   for _, identifier in pairs(identifiers) do
     local name, version = require('mason-core.package').Parse(identifier)
     local p = require('mason-registry').get_package(name)
@@ -233,7 +218,7 @@ end
 
 --- Check if we're running in LSP debug mode
 ---@return boolean
-function module.isLspDebug()
+function M.lsp_debug_enabled()
   local lspDebug = vim.env.LSP_DEBUG
   if lspDebug == nil then
     return false
@@ -242,4 +227,4 @@ function module.isLspDebug()
   return vim.tbl_contains({ 'true', '1' }, lspDebug:lower())
 end
 
-return module
+return M
