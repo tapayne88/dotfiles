@@ -21,6 +21,117 @@ return {
     end,
   },
 
+  -- + & - in column for changed lines
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'BufReadPre',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local keymap = require('tap.utils').keymap
+
+      require('gitsigns').setup {
+        trouble = true,
+        preview_config = {
+          -- Options passed to nvim_open_win
+          border = 'rounded',
+          style = 'minimal',
+          relative = 'cursor',
+          row = 0,
+          col = 1,
+        },
+        on_attach = function()
+          local gs = package.loaded.gitsigns
+
+          -- Navigation
+          keymap('n', ']h', function()
+            if vim.wo.diff then
+              return ']h'
+            end
+            vim.schedule(function()
+              gs.next_hunk()
+            end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          keymap('n', '[h', function()
+            if vim.wo.diff then
+              return '[h'
+            end
+            vim.schedule(function()
+              gs.prev_hunk()
+            end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          -- Actions
+          keymap(
+            { 'n', 'v' },
+            '<leader>hs',
+            ':Gitsigns stage_hunk<CR>',
+            { description = '[Git] Stage hunk' }
+          )
+          keymap(
+            { 'n', 'v' },
+            '<leader>hr',
+            ':Gitsigns reset_hunk<CR>',
+            { description = '[Git] Reset hunk' }
+          )
+          keymap(
+            'n',
+            '<leader>hS',
+            gs.stage_buffer,
+            { description = '[Git] Stage buffer' }
+          )
+          keymap(
+            'n',
+            '<leader>hu',
+            gs.undo_stage_hunk,
+            { description = '[Git] Undo staged hunk' }
+          )
+          keymap(
+            'n',
+            '<leader>hR',
+            gs.reset_buffer,
+            { description = '[Git] Reset buffer' }
+          )
+          keymap(
+            'n',
+            '<leader>hp',
+            gs.preview_hunk,
+            { description = '[Git] Preview hunk' }
+          )
+          keymap('n', '<leader>hb', function()
+            gs.blame_line { full = true }
+          end, { description = '[Git] Blame line' })
+          keymap(
+            'n',
+            '<leader>tb',
+            gs.toggle_current_line_blame,
+            { description = '[Git] Blame current line virtual text' }
+          )
+          keymap(
+            'n',
+            '<leader>hd',
+            gs.diffthis,
+            { description = '[Git] Diff this' }
+          )
+          keymap('n', '<leader>hD', function()
+            gs.diffthis '~'
+          end, { description = '[Git] Diff this' })
+          keymap(
+            'n',
+            '<leader>td',
+            gs.toggle_deleted,
+            { description = '[Git] Diff this against default branch' }
+          )
+
+          -- Text object
+          keymap({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end,
+      }
+    end,
+  },
+
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
@@ -154,5 +265,85 @@ return {
       tmap('<C-k>', [[<C-\><C-n><C-k>]])
       tmap('<C-l>', [[<C-\><C-n><C-l>]])
     end,
+  },
+
+  -- better diagnostics list and others
+  {
+    'folke/trouble.nvim',
+    dependencies = 'kyazdani42/nvim-web-devicons',
+    cmd = { 'TroubleToggle', 'Trouble' },
+    init = function()
+      local nnoremap = require('tap.utils').nnoremap
+
+      nnoremap(
+        '<leader>xx',
+        '<cmd>TroubleToggle<cr>',
+        { description = '[Trouble] Toggle list' }
+      )
+      nnoremap(
+        '<leader>xw',
+        '<cmd>TroubleToggle workspace_diagnostics<cr>',
+        { description = '[Trouble] LSP workspace diagnostics' }
+      )
+      nnoremap(
+        '<leader>xd',
+        '<cmd>TroubleToggle document_diagnostics<cr>',
+        { description = '[Trouble] LSP document diagnostics' }
+      )
+      nnoremap(
+        '<leader>xq',
+        '<cmd>TroubleToggle quickfix<cr>',
+        { description = '[Trouble] Quickfix list' }
+      )
+      nnoremap(
+        '<leader>xl',
+        '<cmd>TroubleToggle loclist<cr>',
+        { description = '[Trouble] Location list' }
+      )
+      nnoremap(
+        'gR',
+        '<cmd>TroubleToggle lsp_references<cr>',
+        { description = '[Trouble] LSP references' }
+      )
+    end,
+    config = function()
+      local lsp_symbols = require('tap.utils.lsp').symbols
+
+      require('trouble').setup {
+        signs = {
+          error = lsp_symbols 'error',
+          warning = lsp_symbols 'warning',
+          hint = lsp_symbols 'hint',
+          information = lsp_symbols 'info',
+          other = lsp_symbols 'ok',
+        },
+      }
+    end,
+  },
+
+  -- Window resizing on focus
+  {
+    'beauwilliams/focus.nvim',
+    config = function()
+      require('focus').setup {
+        signcolumn = false,
+        excluded_filetypes = { 'fugitive', 'git' },
+      }
+      require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
+        description = '[Focus] Toggle window focusing',
+      })
+    end,
+  },
+
+  -- Toggle zoom in / out individual windows
+  { 'dhruvasagar/vim-zoom', keys = '<C-w>m' },
+
+  -- Simple plugin to easily resize windows
+  {
+    'simeji/winresizer',
+    config = function()
+      vim.g.winresizer_start_key = '<leader>w'
+    end,
+    keys = '<leader>w',
   },
 }

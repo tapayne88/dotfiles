@@ -20,7 +20,6 @@ return {
   },
 
   { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
-  { 'tpope/vim-commentary' }, -- Adds 'gc' & 'gcc' commands for commenting lines
   {
     'tpope/vim-scriptease', -- Vim plugin for making Vim plugins
     cmd = {
@@ -57,16 +56,6 @@ return {
       'SudoEdit',
     },
   }, -- Adds unix commands like ':Move' etc.
-  { 'dhruvasagar/vim-zoom', keys = '<C-w>m' }, -- Toggle zoom in / out individual windows
-
-  -- even better % navigation
-  {
-    'andymass/vim-matchup',
-    config = function()
-      vim.g.matchup_surround_enabled = 1
-      vim.g.matchup_matchparen_offscreen = { method = 'popup' }
-    end,
-  },
 
   -- Filetype icon support with lua support
   -- { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' },
@@ -90,51 +79,5 @@ return {
     config = function()
       vim.g.startuptime_tries = 10
     end,
-  },
-
-  -- Simple plugin to easily resize windows
-  {
-    'simeji/winresizer',
-    config = function()
-      vim.g.winresizer_start_key = '<leader>w'
-    end,
-    keys = '<leader>w',
-  },
-
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    config = function()
-      require('indent_blankline').setup {
-        char = '',
-        context_char = '│',
-        space_char_blankline = ' ',
-        show_current_context = true,
-      }
-    end,
-  },
-
-  {
-    'kylechui/nvim-surround',
-    config = function()
-      require('nvim-surround').setup {}
-    end,
-  },
-
-  -- Interactive neovim scratchpad for lua
-  { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } },
-  -- The interactive scratchpad for hackers
-  {
-    'metakirby5/codi.vim',
-    config = function()
-      require('tap.utils.lsp').ensure_installed {
-        'tsun',
-      }
-    end,
-    cmd = {
-      'Codi',
-      'CodiNew',
-      'CodiSelect',
-      'CodiExpand',
-    },
   },
 }
