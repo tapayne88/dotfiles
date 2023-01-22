@@ -1,4 +1,3 @@
-local lspconfig_tsserver = require 'lspconfig.server_configurations.tsserver'
 local lsp_utils = require 'tap.utils.lsp'
 
 local key_name = function(client_id)
@@ -66,7 +65,7 @@ function M.setup()
   require('lspconfig').tsserver.setup(lsp_utils.merge_with_default_config {
     init_options = vim.tbl_deep_extend(
       'force',
-      lspconfig_tsserver.default_config.init_options,
+      require('lspconfig.server_configurations.tsserver').default_config.init_options,
       {
         tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
       },
