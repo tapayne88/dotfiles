@@ -2,7 +2,6 @@ return {
   'nvim-lua/plenary.nvim', -- everything needs plenary
   'tpope/vim-sleuth', -- Detect indentation
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
-  'RRethy/vim-illuminate', -- Highlight same words
 
   'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
   {
