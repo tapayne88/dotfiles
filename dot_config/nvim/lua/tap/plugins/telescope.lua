@@ -15,7 +15,6 @@ return {
   config = function()
     local actions = require 'telescope.actions'
     local lga_actions = require 'telescope-live-grep-args.actions'
-    local trouble = require 'trouble.providers.telescope'
     local nnoremap = require('tap.utils').nnoremap
     local vnoremap = require('tap.utils').vnoremap
     local highlight = require('tap.utils').highlight
@@ -54,7 +53,11 @@ return {
             ['<Down>'] = actions.cycle_history_next,
             -- Allow refining of telescope results
             ['<c-f>'] = actions.to_fuzzy_refine,
-            ['<c-t>'] = trouble.open_with_trouble,
+            ['<c-t>'] = function(...)
+              return require('trouble.providers.telescope').open_with_trouble(
+                ...
+              )
+            end,
 
             ['<c-y>'] = yank_selected_entry,
           },
@@ -67,7 +70,11 @@ return {
             -- Cycle through history
             ['<Up>'] = actions.cycle_history_prev,
             ['<Down>'] = actions.cycle_history_next,
-            ['<c-t>'] = trouble.open_with_trouble,
+            ['<c-t>'] = function(...)
+              return require('trouble.providers.telescope').open_with_trouble(
+                ...
+              )
+            end,
 
             ['<c-y>'] = yank_selected_entry,
           },

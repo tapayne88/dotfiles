@@ -1,19 +1,9 @@
 return {
   'folke/trouble.nvim',
   dependencies = 'kyazdani42/nvim-web-devicons',
-  config = function()
+  cmd = { 'TroubleToggle', 'Trouble' },
+  init = function()
     local nnoremap = require('tap.utils').nnoremap
-    local lsp_symbols = require('tap.utils.lsp').symbols
-
-    require('trouble').setup {
-      signs = {
-        error = lsp_symbols 'error',
-        warning = lsp_symbols 'warning',
-        hint = lsp_symbols 'hint',
-        information = lsp_symbols 'info',
-        other = lsp_symbols 'ok',
-      },
-    }
 
     nnoremap(
       '<leader>xx',
@@ -45,5 +35,18 @@ return {
       '<cmd>TroubleToggle lsp_references<cr>',
       { description = '[Trouble] LSP references' }
     )
+  end,
+  config = function()
+    local lsp_symbols = require('tap.utils.lsp').symbols
+
+    require('trouble').setup {
+      signs = {
+        error = lsp_symbols 'error',
+        warning = lsp_symbols 'warning',
+        hint = lsp_symbols 'hint',
+        information = lsp_symbols 'info',
+        other = lsp_symbols 'ok',
+      },
+    }
   end,
 }

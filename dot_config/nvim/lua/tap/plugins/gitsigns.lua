@@ -6,6 +6,7 @@ return {
     local keymap = require('tap.utils').keymap
 
     require('gitsigns').setup {
+      trouble = true,
       preview_config = {
         -- Options passed to nvim_open_win
         border = 'rounded',
