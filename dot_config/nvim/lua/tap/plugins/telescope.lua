@@ -285,5 +285,18 @@ return {
       nargs = '+',
       extra = '-complete=dir',
     }
+
+    require('tap.utils.lsp').on_attach(function(_, bufnr)
+      require('tap.utils').nnoremap(
+        'gD',
+        '<cmd>Telescope lsp_definitions<CR>',
+        { buffer = bufnr, description = '[LSP] Go to definition' }
+      )
+      require('tap.utils').nnoremap(
+        'gr',
+        '<cmd>Telescope lsp_references<CR>',
+        { buffer = bufnr, description = '[LSP] Get references' }
+      )
+    end)
   end,
 }

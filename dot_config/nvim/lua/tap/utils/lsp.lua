@@ -64,24 +64,9 @@ local function on_attach(client, bufnr)
     return { buffer = bufnr, description = '[LSP] ' .. description }
   end
   nnoremap(
-    'gD',
-    '<cmd>Telescope lsp_definitions<CR>',
-    with_opts 'Go to definition'
-  )
-  nnoremap(
-    'gd',
-    '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
-    with_opts 'Go to definition preview'
-  )
-  nnoremap(
     'gi',
     '<cmd>lua vim.lsp.buf.implementation()<CR>',
     with_opts 'Go to implementation'
-  )
-  nnoremap(
-    'gr',
-    '<cmd>Telescope lsp_references<CR>',
-    with_opts 'Get references'
   )
   nnoremap(
     'K',

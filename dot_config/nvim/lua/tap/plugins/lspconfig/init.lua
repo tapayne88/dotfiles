@@ -2,7 +2,6 @@
 return {
   {
     'neovim/nvim-lspconfig', -- LSP server config
-    -- after = 'nvim-notify',
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
@@ -10,9 +9,9 @@ return {
       'jose-elias-alvarez/null-ls.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
+      'williamboman/mason.nvim',
     },
     config = function()
-      local Package = require 'mason-core.package'
       local utils = require 'tap.utils'
       local lsp_utils = require 'tap.utils.lsp'
 
@@ -47,7 +46,8 @@ return {
       end
 
       local function require_server(server_identifier)
-        local server_name = Package.Parse(server_identifier)
+        local server_name =
+          require('mason-core.package').Parse(server_identifier)
         return require('tap.plugins.lspconfig.servers.' .. server_name)
       end
 
@@ -99,6 +99,14 @@ return {
           '│',
         },
       }
+
+      require('tap.utils.lsp').on_attach(function(_, bufnr)
+        require('tap.utils').nnoremap(
+          'gd',
+          '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
+          { buffer = bufnr, description = '[LSP] Go to definition preview' }
+        )
+      end)
     end,
   },
 
@@ -138,20 +146,15 @@ return {
           require('lsp-format').on_attach(client)
         end
 
-        local with_opts = function(description)
-          return { buffer = bufnr, description = '[LSP] ' .. description }
-        end
-
         -- Formatting
-        require('tap.utils').nnoremap(
-          '<leader>tf',
-          toggle_format,
-          with_opts 'Toggle formatting on save'
-        )
+        require('tap.utils').nnoremap('<leader>tf', toggle_format, {
+          buffer = bufnr,
+          description = '[LSP] Toggle formatting on save',
+        })
         require('tap.utils').nnoremap(
           '<space>f',
           '<cmd>Format<CR>',
-          with_opts 'Run formatting'
+          { buffer = bufnr, description = '[LSP] Run formatting' }
         )
       end)
     end,
