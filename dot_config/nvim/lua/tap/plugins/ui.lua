@@ -236,8 +236,8 @@ return {
   {
     'folke/noice.nvim',
     opts = {
-      -- Hide written messages
       routes = {
+        -- Hide written messages
         {
           filter = {
             event = 'msg_show',
@@ -250,6 +250,21 @@ return {
         {
           view = 'split',
           filter = { event = 'msg_show', min_height = 10 },
+        },
+        -- show treesitter install messages in mini
+        -- TODO: fix highlighting
+        {
+          view = 'mini',
+          filter = {
+            event = 'msg_show',
+            kind = '',
+            find = '^%[nvim%-treesitter%]',
+          },
+        },
+        -- show @recording message
+        {
+          view = 'notify',
+          filter = { event = 'msg_showmode' },
         },
       },
       lsp = {
