@@ -42,13 +42,14 @@ return {
       local highlight = require('tap.utils').highlight
       local apply_user_highlights = require('tap.utils').apply_user_highlights
 
-      -- Avoid showing message extra message when using completion
+      -- Avoid showing extra message when using completion
       vim.opt.shortmess:append 'c'
 
-      -- Set completeopt to have a better completion experience
-      vim.opt.completeopt = { 'menuone', 'noselect' }
-
       cmp.setup {
+        completion = {
+          -- Set completeopt to have a better completion experience
+          completeopt = 'menuone,noselect',
+        },
         mapping = cmp.mapping.preset.insert {
           ['<C-f>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
