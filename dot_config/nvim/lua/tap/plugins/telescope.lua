@@ -96,6 +96,14 @@ return {
         },
       },
       extensions = {
+        file_browser = {
+          mappings = {
+            ['i'] = {
+              -- Allow selection splitting
+              ['<c-s>'] = actions.select_horizontal,
+            },
+          },
+        },
         fzf = {
           fuzzy = true,
           override_generic_sorter = true,
