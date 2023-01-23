@@ -9,7 +9,7 @@ return {
     'nvim-telescope/telescope-live-grep-args.nvim',
     {
       'nvim-telescope/telescope-smart-history.nvim',
-      dependencies = { 'tami5/sqlite.lua' },
+      dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
