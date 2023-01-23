@@ -10,6 +10,7 @@ return {
       vim.notify = require 'notify'
 
       require('notify').setup {
+        render = 'compact',
         icons = {
           ERROR = lsp_symbol 'error',
           WARN = lsp_symbol 'warning',
@@ -235,7 +236,54 @@ return {
   {
     'folke/noice.nvim',
     opts = {
+      -- Hide written messages
+      routes = {
+        {
+          filter = {
+            event = 'msg_show',
+            kind = '',
+            find = 'written',
+          },
+          opts = { skip = true },
+        },
+        -- always route any messages with more than 10 lines to the split view
+        {
+          view = 'split',
+          filter = { event = 'msg_show', min_height = 10 },
+        },
+      },
       lsp = {
+        progress = {
+          enabled = true,
+          format = {
+            {
+              '{progress} ',
+              key = 'progress.percentage',
+              contents = {
+                { '{data.progress.message} ' },
+              },
+              hl_group = 'NoiceLspProgressTitle',
+            },
+            -- TODO: Fix (, ) and % not obeying hl_group
+            -- {
+            --   '({data.progress.percentage}%) ',
+            --   hl_group = 'NoiceLspProgressTitle',
+            -- },
+            { '{spinner} ', hl_group = 'NoiceLspProgressTitle' },
+            { '{data.progress.title} ', hl_group = 'NoiceLspProgressTitle' },
+            { '{data.progress.client} ', hl_group = 'NoiceLspProgressTitle' },
+          },
+          format_done = {
+            {
+              require('tap.utils.lsp').symbols 'ok',
+              hl_group = 'NoiceLspProgressTitle',
+            },
+            { '{data.progress.title} ', hl_group = 'NoiceLspProgressTitle' },
+            { '{data.progress.client} ', hl_group = 'NoiceLspProgressTitle' },
+          },
+          throttle = 1000 / 30, -- frequency to update lsp progress message
+          view = 'mini',
+        },
         override = {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
@@ -245,7 +293,7 @@ return {
       presets = {
         bottom_search = true,
         command_palette = false,
-        long_message_to_split = true,
+        -- long_message_to_split = true,
       },
     },
   },
