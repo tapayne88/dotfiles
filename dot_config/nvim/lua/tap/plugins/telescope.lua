@@ -1,6 +1,7 @@
 -- whizzy command-p launcher
 return {
   'nvim-telescope/telescope.nvim',
+  lazy = true,
   dependencies = {
     'nvim-lua/popup.nvim',
     'nvim-lua/plenary.nvim',
@@ -8,116 +9,16 @@ return {
     'nvim-telescope/telescope-live-grep-args.nvim',
     {
       'nvim-telescope/telescope-smart-history.nvim',
-      dependencies = { 'tami5/sqlite.lua' },
+      dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
-  config = function()
-    local actions = require 'telescope.actions'
-    local lga_actions = require 'telescope-live-grep-args.actions'
+  cmd = 'Telescope',
+  init = function()
     local nnoremap = require('tap.utils').nnoremap
     local vnoremap = require('tap.utils').vnoremap
-    local highlight = require('tap.utils').highlight
-    local color = require('tap.utils').color
-    local apply_user_highlights = require('tap.utils').apply_user_highlights
-    local command = require('tap.utils').command
     local root_pattern = require('tap.utils').root_pattern
-
-    local yank_selected_entry = function(prompt_bufnr)
-      local action_state = require 'telescope.actions.state'
-      local entry_display = require 'telescope.pickers.entry_display'
-
-      local picker = action_state.get_current_picker(prompt_bufnr)
-      local manager = picker.manager
-
-      local selection_row = picker:get_selection_row()
-      local entry = manager:get_entry(picker:get_index(selection_row))
-      local display, _ = entry_display.resolve(picker, entry)
-
-      actions.close(prompt_bufnr)
-
-      vim.fn.setreg('+', display)
-    end
-
-    require('telescope').setup {
-      defaults = {
-        prompt_prefix = '❯ ',
-        layout_strategy = 'flex', -- let telescope figure out what to do given the space
-        layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
-        mappings = {
-          i = {
-            -- Allow selection splitting
-            ['<c-s>'] = actions.select_horizontal,
-            -- Cycle through history
-            ['<Up>'] = actions.cycle_history_prev,
-            ['<Down>'] = actions.cycle_history_next,
-            -- Allow refining of telescope results
-            ['<c-f>'] = actions.to_fuzzy_refine,
-            ['<c-t>'] = function(...)
-              return require('trouble.providers.telescope').open_with_trouble(
-                ...
-              )
-            end,
-
-            ['<c-y>'] = yank_selected_entry,
-          },
-          n = {
-            -- Allow selection splitting
-            ['<c-s>'] = actions.select_horizontal,
-            -- Reestablish insert mode mappings
-            ['<c-p>'] = actions.move_selection_previous,
-            ['<c-n>'] = actions.move_selection_next,
-            -- Cycle through history
-            ['<Up>'] = actions.cycle_history_prev,
-            ['<Down>'] = actions.cycle_history_next,
-            ['<c-t>'] = function(...)
-              return require('trouble.providers.telescope').open_with_trouble(
-                ...
-              )
-            end,
-
-            ['<c-y>'] = yank_selected_entry,
-          },
-        },
-        borderchars = {
-          prompt = { '█', '▌', '▀', '▐', '▐', '▌', '▘', '▝' },
-          results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-          preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-        },
-        preview = { timeout = 100, treesitter = false },
-        path_display = { 'truncate' },
-        dynamic_preview_title = true,
-        cache_picker = {
-          num_pickers = -1,
-        },
-        history = {
-          path = vim.fn.stdpath 'data' .. '/telescope_history.sqlite3',
-          limit = 100,
-        },
-      },
-      extensions = {
-        fzf = {
-          fuzzy = true,
-          override_generic_sorter = true,
-          override_file_sorter = true,
-          case_mode = 'smart_case',
-        },
-        live_grep_args = {
-          auto_quoting = true,
-          mappings = {
-            i = {
-              ['<C-k>'] = lga_actions.quote_prompt(),
-              ['<C-i>'] = lga_actions.quote_prompt { postfix = ' --iglob ' },
-            },
-          },
-        },
-      },
-    }
-
-    require('telescope').load_extension 'file_browser'
-    require('telescope').load_extension 'live_grep_args'
-    require('telescope').load_extension 'smart_history'
-    require('telescope').load_extension 'fzf'
+    local command = require('tap.utils').command
 
     --------------
     -- Internal --
@@ -230,6 +131,142 @@ return {
       )
     end, { description = 'Search current visual selection with ripgrep' })
 
+    command {
+      'Fw',
+      function(args)
+        local word = table.remove(args, 1)
+        local search_dirs = args
+
+        local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
+          or {}
+
+        require('telescope.builtin').grep_string(
+          vim.tbl_extend('error', search_args, {
+            search = word,
+            prompt_title = string.format('Grep: %s', word),
+            use_regex = true,
+          })
+        )
+      end,
+      nargs = '+',
+      extra = '-complete=dir',
+    }
+  end,
+  config = function()
+    local actions = require 'telescope.actions'
+    local lga_actions = require 'telescope-live-grep-args.actions'
+    local highlight = require('tap.utils').highlight
+    local color = require('tap.utils').color
+    local apply_user_highlights = require('tap.utils').apply_user_highlights
+
+    local yank_selected_entry = function(prompt_bufnr)
+      local action_state = require 'telescope.actions.state'
+      local entry_display = require 'telescope.pickers.entry_display'
+
+      local picker = action_state.get_current_picker(prompt_bufnr)
+      local manager = picker.manager
+
+      local selection_row = picker:get_selection_row()
+      local entry = manager:get_entry(picker:get_index(selection_row))
+      local display, _ = entry_display.resolve(picker, entry)
+
+      actions.close(prompt_bufnr)
+
+      vim.fn.setreg('+', display)
+    end
+
+    require('telescope').setup {
+      defaults = {
+        prompt_prefix = '❯ ',
+        layout_strategy = 'flex', -- let telescope figure out what to do given the space
+        layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
+        mappings = {
+          i = {
+            -- Allow selection splitting
+            ['<c-s>'] = actions.select_horizontal,
+            -- Cycle through history
+            ['<Up>'] = actions.cycle_history_prev,
+            ['<Down>'] = actions.cycle_history_next,
+            -- Allow refining of telescope results
+            ['<c-f>'] = actions.to_fuzzy_refine,
+            ['<c-t>'] = function(...)
+              return require('trouble.providers.telescope').open_with_trouble(
+                ...
+              )
+            end,
+
+            ['<c-y>'] = yank_selected_entry,
+          },
+          n = {
+            -- Allow selection splitting
+            ['<c-s>'] = actions.select_horizontal,
+            -- Reestablish insert mode mappings
+            ['<c-p>'] = actions.move_selection_previous,
+            ['<c-n>'] = actions.move_selection_next,
+            -- Cycle through history
+            ['<Up>'] = actions.cycle_history_prev,
+            ['<Down>'] = actions.cycle_history_next,
+            ['<c-t>'] = function(...)
+              return require('trouble.providers.telescope').open_with_trouble(
+                ...
+              )
+            end,
+
+            ['<c-y>'] = yank_selected_entry,
+          },
+        },
+        borderchars = {
+          prompt = { '█', '▌', '▀', '▐', '▐', '▌', '▘', '▝' },
+          results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+          preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+        },
+        preview = { timeout = 100, treesitter = false },
+        path_display = { 'truncate' },
+        dynamic_preview_title = true,
+        cache_picker = {
+          num_pickers = -1,
+        },
+        history = {
+          path = vim.fn.stdpath 'data' .. '/telescope_history.sqlite3',
+          limit = 100,
+        },
+      },
+      extensions = {
+        file_browser = {
+          mappings = {
+            ['i'] = {
+              -- Allow selection splitting
+              ['<c-s>'] = actions.select_horizontal,
+            },
+          },
+        },
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = 'smart_case',
+        },
+        live_grep_args = {
+          auto_quoting = true,
+          mappings = {
+            i = {
+              ['<C-k>'] = lga_actions.quote_prompt(),
+              ['<C-i>'] = lga_actions.quote_prompt { postfix = ' --iglob ' },
+            },
+          },
+        },
+      },
+    }
+
+    require('telescope').load_extension 'file_browser'
+    require('telescope').load_extension 'live_grep_args'
+    require('telescope').load_extension 'smart_history'
+    require('telescope').load_extension 'fzf'
+    require('telescope').load_extension 'notify'
+
+    vim.opt.grepprg =
+      table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
+
     apply_user_highlights('Telescope', function()
       local border_colors = { dark = 'nord2_gui', light = 'blue0' }
 
@@ -268,30 +305,6 @@ return {
         { guifg = color { dark = 'nord13_gui', light = 'yellow' } }
       )
     end)
-
-    vim.opt.grepprg =
-      table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
-
-    command {
-      'Fw',
-      function(args)
-        local word = table.remove(args, 1)
-        local search_dirs = args
-
-        local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
-          or {}
-
-        require('telescope.builtin').grep_string(
-          vim.tbl_extend('error', search_args, {
-            search = word,
-            prompt_title = string.format('Grep: %s', word),
-            use_regex = true,
-          })
-        )
-      end,
-      nargs = '+',
-      extra = '-complete=dir',
-    }
 
     require('tap.utils.lsp').on_attach(function(_, bufnr)
       require('tap.utils').nnoremap(

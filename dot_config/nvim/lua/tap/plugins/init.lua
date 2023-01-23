@@ -1,6 +1,5 @@
 return {
   'nvim-lua/plenary.nvim', -- everything needs plenary
-  'tpope/vim-sleuth', -- Detect indentation
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
 
   'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
@@ -18,6 +17,8 @@ return {
       'yos',
     },
   },
+
+  { 'tpope/vim-sleuth', event = 'BufReadPre' }, -- Detect indentation
 
   { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
   {
@@ -43,6 +44,7 @@ return {
     'tpope/vim-eunuch',
     cmd = {
       'Remove',
+      'Rename',
       'Delete',
       'Move',
       'Chmod',
@@ -61,7 +63,7 @@ return {
   -- { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' },
 
   -- Syntax not supported by treesitter
-  { 'plasticboy/vim-markdown' },
+  { 'plasticboy/vim-markdown', ft = 'markdown' },
   -- Markdown previewing commands
   {
     'iamcco/markdown-preview.nvim',

@@ -42,15 +42,18 @@ return {
       local highlight = require('tap.utils').highlight
       local apply_user_highlights = require('tap.utils').apply_user_highlights
 
-      -- Avoid showing message extra message when using completion
+      local WIDE_HEIGHT = 40
+
+      -- Avoid showing extra message when using completion
       vim.opt.shortmess:append 'c'
 
-      -- Set completeopt to have a better completion experience
-      vim.opt.completeopt = { 'menuone', 'noselect' }
-
       cmp.setup {
+        completion = {
+          -- Set completeopt to have a better completion experience
+          completeopt = 'menuone,noselect',
+        },
         mapping = cmp.mapping.preset.insert {
-          ['<C-f>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.close(),
@@ -86,6 +89,26 @@ return {
           },
         },
 
+        window = {
+          documentation = {
+            border = {
+              '',
+              '',
+              '',
+              ' ',
+              ' ',
+              ' ',
+              ' ',
+              ' ',
+            },
+            max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+            max_width = math.floor(
+              (WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))
+            ),
+            winhighlight = 'Normal:ColorColumn,FloatBorder:ColorColumn,CursorLine:PmenuSel,Search:None',
+          },
+        },
+
         experimental = { ghost_text = true },
       }
 
@@ -100,6 +123,7 @@ return {
   -- even better % navigation
   {
     'andymass/vim-matchup',
+    event = 'BufReadPost',
     config = function()
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
@@ -109,6 +133,7 @@ return {
   -- Add/change/delete surrounding delimiter pairs with ease
   {
     'kylechui/nvim-surround',
+    event = 'BufReadPost',
     config = function()
       require('nvim-surround').setup {}
     end,

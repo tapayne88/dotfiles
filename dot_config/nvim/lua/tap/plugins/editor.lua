@@ -201,6 +201,7 @@ return {
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
+    event = 'BufReadPost',
     dependencies = {
       'kevinhwang91/promise-async',
       'nvim-treesitter/nvim-treesitter',

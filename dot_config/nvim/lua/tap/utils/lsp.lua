@@ -47,13 +47,11 @@ function M.on_attach(on_attach)
 end
 
 -- on_attach function for lsp.setup calls
----@param client Client
+---@param _ Client
 ---@param bufnr number
 ---@return nil
-local function on_attach(client, bufnr)
+local function on_attach(_, bufnr)
   local nnoremap = require('tap.utils').nnoremap
-
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local with_opts = function(description)

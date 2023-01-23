@@ -1,5 +1,6 @@
 return {
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  event = 'BufReadPre',
   config = function()
     local utils = require 'tap.utils'
     local lsp_colors = require('tap.utils.lsp').colors
@@ -28,26 +29,15 @@ return {
       },
     }
 
-    local show_cursor_diagnositcs = function()
-      vim.diagnostic.open_float { scope = 'cursor' }
-    end
-    local show_line_diagnositcs = function()
-      vim.diagnostic.open_float { scope = 'line' }
-    end
-
     -------------
     -- Keymaps --
     -------------
-    nnoremap(
-      '<leader>cc',
-      show_cursor_diagnositcs,
-      { description = 'Show cursor diagnostics' }
-    )
-    nnoremap(
-      '<space>e',
-      show_line_diagnositcs,
-      { description = 'Show line diagnostics' }
-    )
+    nnoremap('<leader>cc', function()
+      vim.diagnostic.open_float { scope = 'cursor' }
+    end, { description = 'Show cursor diagnostics' })
+    nnoremap('<space>e', function()
+      vim.diagnostic.open_float { scope = 'line' }
+    end, { description = 'Show line diagnostics' })
     nnoremap(
       '<space>q',
       '<cmd>lua vim.diagnostic.setloclist()<CR>',

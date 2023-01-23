@@ -42,7 +42,11 @@ return {
   {
     'jose-elias-alvarez/null-ls.nvim',
     event = 'BufReadPre',
-    dependencies = { 'mason.nvim' },
+    dependencies = {
+      'lukas-reineke/lsp-format.nvim', -- async formatting
+      'rmagatti/goto-preview',
+      'williamboman/mason.nvim',
+    },
     config = function()
       local null_ls = require 'null-ls'
       local path = require 'mason-core.path'
@@ -97,6 +101,7 @@ return {
 
   {
     'rmagatti/goto-preview',
+    lazy = true,
     config = function()
       require('goto-preview').setup {
         border = {
@@ -123,6 +128,7 @@ return {
 
   {
     'lukas-reineke/lsp-format.nvim', -- async formatting
+    lazy = true,
     config = function()
       require('lsp-format').setup {}
 

@@ -56,7 +56,7 @@ end
 
 local handleTscVersion = function(message, header)
   local version =
-    message:match '%[lspserver%] Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
+    message:match 'Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
 
   set_tsc_version(header.client_id, version)
 end
