@@ -24,8 +24,6 @@ return {
           or vim.log.levels.INFO,
       }
 
-      require('telescope').load_extension 'notify'
-
       nnoremap(
         '<leader>nc',
         ":lua require('notify').dismiss()<CR>",
