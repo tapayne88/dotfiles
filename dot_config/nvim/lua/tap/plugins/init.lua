@@ -44,6 +44,7 @@ return {
     'tpope/vim-eunuch',
     cmd = {
       'Remove',
+      'Rename',
       'Delete',
       'Move',
       'Chmod',
