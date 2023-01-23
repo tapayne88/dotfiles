@@ -42,6 +42,8 @@ return {
       local highlight = require('tap.utils').highlight
       local apply_user_highlights = require('tap.utils').apply_user_highlights
 
+      local WIDE_HEIGHT = 40
+
       -- Avoid showing extra message when using completion
       vim.opt.shortmess:append 'c'
 
@@ -51,7 +53,7 @@ return {
           completeopt = 'menuone,noselect',
         },
         mapping = cmp.mapping.preset.insert {
-          ['<C-f>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.close(),
@@ -84,6 +86,26 @@ return {
               luasnip = '[snip]',
               spell = '[spell]',
             },
+          },
+        },
+
+        window = {
+          documentation = {
+            border = {
+              '',
+              '',
+              '',
+              ' ',
+              ' ',
+              ' ',
+              ' ',
+              ' ',
+            },
+            max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+            max_width = math.floor(
+              (WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))
+            ),
+            winhighlight = 'Normal:ColorColumn,FloatBorder:ColorColumn,CursorLine:PmenuSel,Search:None',
           },
         },
 
