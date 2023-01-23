@@ -167,6 +167,7 @@ return {
 
   {
     'glepnir/dashboard-nvim',
+    event = 'VimEnter',
     config = function()
       local db = require 'dashboard'
 

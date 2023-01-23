@@ -100,6 +100,7 @@ return {
   -- even better % navigation
   {
     'andymass/vim-matchup',
+    event = 'BufReadPost',
     config = function()
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
@@ -109,6 +110,7 @@ return {
   -- Add/change/delete surrounding delimiter pairs with ease
   {
     'kylechui/nvim-surround',
+    event = 'BufReadPost',
     config = function()
       require('nvim-surround').setup {}
     end,
