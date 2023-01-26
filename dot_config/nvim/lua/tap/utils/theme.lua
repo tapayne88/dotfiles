@@ -19,35 +19,39 @@ function M.get_term_theme()
   return res[1]
 end
 
-function M.set_colorscheme(theme_future, opts)
-  -- set nord colorscheme upfront to avoid flickering from "default" scheme
+local set_dark = function()
+  vim.g.use_light_theme = false
+
+  vim.g.nord_italic = true
+  vim.g.nord_borders = true
+  vim.g.nord_uniform_diff_background = true
+  vim.o.background = 'dark'
   vim.cmd [[colorscheme nord]]
+end
+
+local set_light = function()
+  vim.g.use_light_theme = true
+
+  vim.o.background = 'light'
+  vim.cmd [[colorscheme tokyonight]]
+end
+
+function M.set_colorscheme(theme_future, opts)
+  -- set dark colorscheme upfront to avoid flickering from "default" scheme
+  set_dark()
   return a.run(function()
     local theme = theme_future()
 
     if theme == 'light' then
-      vim.g.use_light_theme = true
-
-      vim.o.background = 'light'
-      vim.cmd [[colorscheme tokyonight]]
-
-      if opts.announce == true then
-        vim.notify('set theme to light', vim.log.levels.INFO)
-      end
+      set_light()
     elseif theme == 'dark' then
-      vim.g.use_light_theme = false
-
-      vim.g.nord_italic = true
-      vim.g.nord_borders = true
-      vim.g.nord_uniform_diff_background = true
-      vim.o.background = 'dark'
-      vim.cmd [[colorscheme nord]]
-
-      if opts.announce == true then
-        vim.notify('set theme to dark', vim.log.levels.INFO)
-      end
+      set_dark()
     else
       log.error('unknown colorscheme ' .. theme)
+    end
+
+    if opts.announce == true then
+      vim.notify('set theme to ' .. theme, vim.log.levels.INFO)
     end
   end)
 end
