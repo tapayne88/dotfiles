@@ -373,7 +373,7 @@ return {
           globalstatus = true,
           disabled_filetypes = {
             winbar = {
-              'dashboard',
+              'alpha',
               'fugitive',
               'gitcommit',
               'packer',

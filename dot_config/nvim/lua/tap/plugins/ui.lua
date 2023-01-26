@@ -126,7 +126,6 @@ return {
         pattern = {
           'help',
           'alpha',
-          'dashboard',
           'neo-tree',
           'Trouble',
           'lazy',
@@ -166,12 +165,11 @@ return {
   },
 
   {
-    'glepnir/dashboard-nvim',
+    'goolord/alpha-nvim',
     event = 'VimEnter',
-    config = function()
-      local db = require 'dashboard'
-
-      db.custom_header = {
+    opts = function()
+      local dashboard = require 'alpha.themes.dashboard'
+      dashboard.section.header.val = {
         '',
         '',
         '███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗',
@@ -182,43 +180,56 @@ return {
         '╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝',
         '',
       }
-      db.custom_center = {
-        {
-          icon = '  ',
-          desc = 'Recent files                                      ',
-          action = 'Telescope oldfiles',
-        },
-        {
-          icon = '  ',
-          desc = 'Git file                                <leader>gf',
-          action = 'norm ,gf',
-        },
-        {
-          icon = '  ',
-          desc = 'Find file                               <leader>ff',
-          action = 'norm ,ff',
-        },
-        {
-          icon = '  ',
-          desc = 'New file                                          ',
-          action = 'enew',
-        },
-        {
-          icon = '  ',
-          desc = 'File browser                            <leader>fb',
-          action = 'norm ,fb',
-        },
-        {
-          icon = '  ',
-          desc = 'Find word                               <leader>fg',
-          action = 'norm ,fg',
-        },
-        {
-          icon = '  ',
-          desc = 'Jump to bookmarks                                 ',
-          action = 'Telescope marks',
-        },
+
+      dashboard.section.buttons.val = {
+        dashboard.button(
+          'r',
+          ' ' .. ' Recent files',
+          ':Telescope oldfiles <CR>'
+        ),
+        dashboard.button(
+          'n',
+          ' ' .. ' New file',
+          ':ene <BAR> startinsert <CR>'
+        ),
+        dashboard.button('f', ' ' .. ' Find file', ':norm ,ff <CR>'),
+        dashboard.button('g', ' ' .. ' Git file', ':norm ,gf <CR>'),
+        dashboard.button('s', ' ' .. ' Find text', ':norm ,fg <CR>'),
+        dashboard.button('l', '鈴' .. ' Lazy', ':Lazy<CR>'),
+        dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
       }
+
+      return dashboard
+    end,
+    config = function(_, dashboard)
+      -- vim.b.miniindentscope_disable = true
+
+      -- close Lazy and re-open when the dashboard is ready
+      if vim.o.filetype == 'lazy' then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'AlphaReady',
+          callback = function()
+            require('lazy').show()
+          end,
+        })
+      end
+
+      require('alpha').setup(dashboard.opts)
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'LazyVimStarted',
+        callback = function()
+          local stats = require('lazy').stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = '⚡ Neovim loaded '
+            .. stats.count
+            .. ' plugins in '
+            .. ms
+            .. 'ms'
+          pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
     end,
   },
 }
