@@ -26,8 +26,8 @@
         },
         "terminal_font": {
           "type": "string",
-          "description": "Terminal font to use",
-          "default": "JetBrainsMono Nerd Font"
+          "description": "Terminal font to use. It should be a mono spaced nerd font variant",
+          "default": "JetBrainsMono Nerd Font Mono"
         },
         "terminal_font_size": {
           "type": "number",
