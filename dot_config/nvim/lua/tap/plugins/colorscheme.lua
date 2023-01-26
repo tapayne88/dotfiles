@@ -31,11 +31,6 @@ return {
         guifg = color { dark = 'nord9_gui', light = 'blue0' },
         guibg = color { dark = 'nord0_gui', light = 'none' },
       })
-
-      -- Treesitter overrides
-      highlight('TSInclude', { gui = 'italic', cterm = 'italic' })
-      highlight('TSOperator', { gui = 'italic', cterm = 'italic' })
-      highlight('TSKeyword', { gui = 'italic', cterm = 'italic' })
     end)
   end,
 }
