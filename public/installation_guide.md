@@ -117,6 +117,17 @@ brew bundle install --global
 
 Follow the installation guide from nerd-fonts [here](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures). This will install the ligature supported JetBrains Mono font.
 
+The following will show the installed font name and supported styles, e.g. italic, etc.
+
+```bash
+fc-list | grep JetBrains
+```
+
 MacOS will use homebrew to install the fonts.
+
+Ensure the chezmoi config specifies the font name that (see [here](https://github.com/tapayne88/dotfiles/blob/c9c49b2fa6c41ca37ed9a1e24e374d72e0379148/public/chezmoi-schema.json#L27-L31))
+
+- has ligature support - doesn't contain `NL` (No Ligatures)
+- is suitable for terminals / monospaced applications - has `Mono` suffix
 
 _N.B._ As of writing this alacritty does not support ligatures.
