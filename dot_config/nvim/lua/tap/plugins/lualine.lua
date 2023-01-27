@@ -10,9 +10,7 @@ return {
       local color = require('tap.utils').color
       local lsp_colors = require('tap.utils.lsp').colors
       local lsp_symbols = require('tap.utils.lsp').symbols
-      local highlight = require('tap.utils').highlight
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
-      local apply_user_highlights = require('tap.utils').apply_user_highlights
       local require_plugin = require('tap.utils').require_plugin
       local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
 
@@ -293,7 +291,7 @@ return {
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
 
-      apply_user_highlights('Lualine', function()
+      require('tap.utils').apply_user_highlights('Lualine', function(highlight)
         highlight('LualineDiagnosticError', {
           guibg = lsp_colors 'error',
           guifg = color { dark = 'nord3_gui', light = 'fg' },

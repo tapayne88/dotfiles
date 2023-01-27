@@ -243,9 +243,6 @@ return {
       )
     end,
     config = function()
-      local apply_user_highlights = require('tap.utils').apply_user_highlights
-      local highlight = require('tap.utils').highlight
-
       vim.g.neo_tree_remove_legacy_commands = 1
 
       require('neo-tree').setup {
@@ -278,7 +275,7 @@ return {
         },
       }
 
-      apply_user_highlights('Neotree', function()
+      require('tap.utils').apply_user_highlights('Neotree', function(highlight)
         highlight('NeoTreeDimText', { link = 'Comment', force = true })
         highlight('NeoTreeGitConflict', { link = 'Warnings', force = true })
         highlight(

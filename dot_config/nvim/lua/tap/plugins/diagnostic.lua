@@ -5,7 +5,6 @@ return {
     local utils = require 'tap.utils'
     local lsp_colors = require('tap.utils.lsp').colors
     local lsp_symbols = require('tap.utils.lsp').symbols
-    local apply_user_highlights = require('tap.utils').apply_user_highlights
     local nnoremap = require('tap.utils').nnoremap
 
     require('lsp_lines').setup()
@@ -108,6 +107,10 @@ return {
       end
     end
 
-    apply_user_highlights('UtilsLsp', user_highlights, { force = true })
+    require('tap.utils').apply_user_highlights(
+      'UtilsLsp',
+      user_highlights,
+      { force = true }
+    )
   end,
 }

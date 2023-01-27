@@ -39,8 +39,6 @@ return {
     config = function()
       local cmp = require 'cmp'
       local lspkind = require 'lspkind'
-      local highlight = require('tap.utils').highlight
-      local apply_user_highlights = require('tap.utils').apply_user_highlights
 
       local WIDE_HEIGHT = 40
 
@@ -112,7 +110,7 @@ return {
         experimental = { ghost_text = true },
       }
 
-      apply_user_highlights('NvimCmp', function()
+      require('tap.utils').apply_user_highlights('NvimCmp', function(highlight)
         highlight('CmpItemAbbrDeprecated', { link = 'Error', force = true })
         highlight('CmpItemKind', { link = 'Special', force = true })
         highlight('CmpItemMenu', { link = 'Comment', force = true })
