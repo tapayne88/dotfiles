@@ -1,11 +1,11 @@
-local utils = {}
+local M = {}
 
 ---@module 'tap.utils.lsp'
 
----@alias utils.color fun(_color: string | { light: string, dark: string }): string | nil
+---@alias Utils.color fun(_color: string | { light: string, dark: string }): string | nil
 
----@type utils.color
-function utils.color(_color)
+---@type Utils.color
+function M.color(_color)
   local color = type(_color) ~= 'table' and { light = _color, dark = _color }
     or _color
 
@@ -27,7 +27,7 @@ end
 ---@param tbl table<string, table<string, any>>
 ---@param key string
 ---@return table<string, any>
-function utils.map_table_to_key(tbl, key)
+function M.map_table_to_key(tbl, key)
   return vim.tbl_map(function(value)
     return value[key]
   end, tbl)
@@ -77,23 +77,23 @@ local function make_mapper(mode, o)
 end
 
 local map_opts = { noremap = false, silent = true }
-utils.nmap = make_mapper('n', map_opts)
-utils.xmap = make_mapper('x', map_opts)
-utils.imap = make_mapper('i', map_opts)
-utils.vmap = make_mapper('v', map_opts)
-utils.omap = make_mapper('o', map_opts)
-utils.tmap = make_mapper('t', map_opts)
-utils.smap = make_mapper('s', map_opts)
-utils.cmap = make_mapper('c', { noremap = false, silent = false })
+M.nmap = make_mapper('n', map_opts)
+M.xmap = make_mapper('x', map_opts)
+M.imap = make_mapper('i', map_opts)
+M.vmap = make_mapper('v', map_opts)
+M.omap = make_mapper('o', map_opts)
+M.tmap = make_mapper('t', map_opts)
+M.smap = make_mapper('s', map_opts)
+M.cmap = make_mapper('c', { noremap = false, silent = false })
 
 local noremap_opts = { noremap = true, silent = true }
-utils.nnoremap = make_mapper('n', noremap_opts)
-utils.xnoremap = make_mapper('x', noremap_opts)
-utils.vnoremap = make_mapper('v', noremap_opts)
-utils.inoremap = make_mapper('i', noremap_opts)
-utils.onoremap = make_mapper('o', noremap_opts)
-utils.tnoremap = make_mapper('t', noremap_opts)
-utils.cnoremap = make_mapper('c', { noremap = true, silent = false })
+M.nnoremap = make_mapper('n', noremap_opts)
+M.xnoremap = make_mapper('x', noremap_opts)
+M.vnoremap = make_mapper('v', noremap_opts)
+M.inoremap = make_mapper('i', noremap_opts)
+M.onoremap = make_mapper('o', noremap_opts)
+M.tnoremap = make_mapper('t', noremap_opts)
+M.cnoremap = make_mapper('c', { noremap = true, silent = false })
 
 ---@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
 
@@ -103,7 +103,7 @@ utils.cnoremap = make_mapper('c', { noremap = true, silent = false })
 ---@param rhs string | fun(): nil | unknown
 ---@param _opts? {description: string}|table
 ---@return nil
-function utils.keymap(_modes, lhs, rhs, _opts)
+function M.keymap(_modes, lhs, rhs, _opts)
   local modes = type(_modes) == 'string' and { _modes } or _modes
   local opts = _opts ~= nil and _opts or {}
 
@@ -118,15 +118,15 @@ end
 ---| { guifg?: string, guibg?: string, gui?: string, guisp?: string, ctermfg?: string, ctermbg?: string, cterm?: string }
 ---| { link?: string, force: boolean }
 
----@alias utils.highlight fun(name: string, opts: HighlightOpts): nil
+---@alias Utils.highlight fun(name: string, opts: HighlightOpts): nil
 
 -- Shamelessly stolen from akinsho/dotfiles
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/highlights.lua#L56
 --- TODO eventually move to using `nvim_set_hl`
 --- however for the time being that expects colors
 --- to be specified as rgb not hex
----@type utils.highlight
-function utils.highlight(name, opts)
+---@type Utils.highlight
+function M.highlight(name, opts)
   local force = opts.force or false
   if name and vim.tbl_count(opts) > 0 then
     if opts.link and opts.link ~= '' then
@@ -167,10 +167,10 @@ function utils.highlight(name, opts)
 end
 
 -- Given a highlight name, grab the bg & fg attributes
--- This can then be passed to utils.highlight
+-- This can then be passed to Utils.highlight
 ---@param group string
 ---@return table
-function utils.highlight_group_attrs(group)
+function M.highlight_group_attrs(group)
   local id = vim.fn.synIDtrans(vim.fn.hlID(group))
   local hi = {
     cterm = { fg = 'NONE', bg = 'NONE' },
@@ -206,7 +206,7 @@ end
 -- Convenience for making autocommands
 ---@param name string
 ---@param commands {command: fun()|string, user: boolean, events: string[], targets: string[], modifiers: string[]}[]
-function utils.augroup(name, commands)
+function M.augroup(name, commands)
   vim.cmd('augroup ' .. name)
 
   -- Clear autogroup appropraitely for <buffer> targets
@@ -241,7 +241,7 @@ end
 --    command({"name", function() {...})
 -- ```
 ---@param args table
-function utils.command(args)
+function M.command(args)
   local nargs = args.nargs or 0
   local name = args[1]
   local rhs = args[2]
@@ -285,7 +285,7 @@ end
 -- Properly escape string for terminal
 ---@param str string
 ---@return string
-function utils.termcodes(str)
+function M.termcodes(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
@@ -293,7 +293,7 @@ end
 ---@param name string
 ---@param callback fun(plugin: any): any
 ---@return any|nil
-function utils.require_plugin(name, callback)
+function M.require_plugin(name, callback)
   if not string.match(name, '^tap%.plugins%..+') then
     vim.notify(
       string.format('Attempted to load non-plugin! [%s]', name),
@@ -324,10 +324,10 @@ end
 
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(p1: utils.highlight, p2: utils.color, p3: Lsp.color): nil
+---@param callback fun(p1: Utils.highlight, p2: Utils.color, p3: Lsp.color): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
-function utils.apply_user_highlights(name, callback, _opts)
+function M.apply_user_highlights(name, callback, _opts)
   local opts = _opts or {}
   local augroup_name = name .. 'TapUserHighlights'
   local force = opts.force or false
@@ -340,26 +340,26 @@ function utils.apply_user_highlights(name, callback, _opts)
     return
   end
 
-  utils.augroup(augroup_name, {
+  M.augroup(augroup_name, {
     {
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
       command = function()
-        callback(utils.highlight, utils.color, require('tap.utils.lsp').color)
+        callback(M.highlight, M.color, require('tap.utils.lsp').color)
       end,
     },
   })
 
-  callback(utils.highlight, utils.color, require('tap.utils.lsp').color)
+  callback(M.highlight, M.color, require('tap.utils.lsp').color)
 end
 
-function utils.run(fns)
+function M.run(fns)
   for _, fn in pairs(fns) do
     fn()
   end
 end
 
-function utils.root_pattern(patterns)
+function M.root_pattern(patterns)
   local function find_root(start)
     if start == '/' then
       return nil
@@ -380,4 +380,4 @@ function utils.root_pattern(patterns)
   return find_root
 end
 
-return utils
+return M
