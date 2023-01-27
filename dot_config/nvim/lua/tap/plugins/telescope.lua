@@ -43,6 +43,9 @@ return {
     nnoremap('<leader>tp', function()
       require('telescope.builtin').pickers()
     end, { description = 'Past telescope pickers with state' })
+    nnoremap('<leader>p', function()
+      require('telescope.builtin').commands()
+    end, { description = 'Neovim commands' })
 
     ---------
     -- Git --
