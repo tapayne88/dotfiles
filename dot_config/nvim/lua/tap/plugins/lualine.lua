@@ -70,23 +70,27 @@ return {
         return comp
       end
 
-      local filetype = require('lualine.components.filetype'):extend()
-      function filetype:draw(default_highlight, is_focused)
-        -- Copied from lualine.component and modified to allow empty status to render
+      ---Copied from lualine.component and modified to allow empty status to render
+      ---driver code of the class
+      ---@param default_highlight string default hl group of section where component resides
+      ---@param is_focused boolean|number whether drawing for active or inactive statusline.
+      ---@return string stl formatted rendering string for component
+      local empty_draw = function(self, default_highlight, is_focused)
         self.status = ''
         self.applied_separator = ''
-
         if self.options.cond ~= nil and self.options.cond() ~= true then
           return self.status
         end
+        self.default_hl = default_highlight
         local status = self:update_status(is_focused)
         if self.options.fmt then
-          status = self.options.fmt(status or '')
+          status = self.options.fmt(status or '', self)
         end
         -- if type(status) == 'string' and #status > 0 then
         self.status = status
         self:apply_icon()
         self:apply_padding()
+        self:apply_on_click()
         self:apply_highlights(default_highlight)
         self:apply_section_separators()
         self:apply_separator()
@@ -94,29 +98,15 @@ return {
         return self.status
       end
 
+      local filetype = require('lualine.components.filetype'):extend()
+      function filetype:draw(...)
+        return empty_draw(self, ...)
+      end
+
       local diagnostic_empty =
         require('lualine.components.diagnostics'):extend()
-      function diagnostic_empty:draw(default_highlight, is_focused)
-        -- Copied from lualine.component and modified to allow empty status to render
-        self.status = ''
-        self.applied_separator = ''
-
-        if self.options.cond ~= nil and self.options.cond() ~= true then
-          return self.status
-        end
-        local status = self:update_status(is_focused)
-        if self.options.fmt then
-          status = self.options.fmt(status or '')
-        end
-        -- if type(status) == 'string' and #status > 0 then
-        self.status = status
-        self:apply_icon()
-        self:apply_padding()
-        self:apply_highlights(default_highlight)
-        self:apply_section_separators()
-        self:apply_separator()
-        -- end
-        return self.status
+      function diagnostic_empty:draw(...)
+        return empty_draw(self, ...)
       end
 
       local function modified()
