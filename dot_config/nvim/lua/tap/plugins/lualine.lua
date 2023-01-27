@@ -292,25 +292,25 @@ return {
 
       require('tap.utils').apply_user_highlights(
         'Lualine',
-        function(highlight, _, lsp_colors)
+        function(highlight, _, lsp_color)
           highlight('LualineDiagnosticError', {
-            guibg = lsp_colors 'error',
+            guibg = lsp_color 'error',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
           highlight('LualineDiagnosticWarn', {
-            guibg = lsp_colors 'warning',
+            guibg = lsp_color 'warning',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
           highlight('LualineDiagnosticHint', {
-            guibg = lsp_colors 'hint',
+            guibg = lsp_color 'hint',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
           highlight('LualineDiagnosticInfo', {
-            guibg = lsp_colors 'info',
+            guibg = lsp_color 'info',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
           highlight('LualineDiagnosticOk', {
-            guibg = lsp_colors 'ok',
+            guibg = lsp_color 'ok',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
           highlight('NavicSeparator', {

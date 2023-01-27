@@ -345,12 +345,12 @@ function utils.apply_user_highlights(name, callback, _opts)
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
       command = function()
-        callback(utils.highlight, utils.color, require('tap.utils.lsp').colors)
+        callback(utils.highlight, utils.color, require('tap.utils.lsp').color)
       end,
     },
   })
 
-  callback(utils.highlight, utils.color, require('tap.utils.lsp').colors)
+  callback(utils.highlight, utils.color, require('tap.utils.lsp').color)
 end
 
 function utils.run(fns)

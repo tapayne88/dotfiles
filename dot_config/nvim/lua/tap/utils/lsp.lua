@@ -23,7 +23,7 @@ end
 ---@alias Lsp.color fun(type: lsp_status): string | nil
 
 ---@type Lsp.color
-M.colors = function(type)
+M.color = function(type)
   local color = require('tap.utils').color
 
   local color_map = {
