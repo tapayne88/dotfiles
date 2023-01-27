@@ -6,7 +6,8 @@ return {
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
-      'lukas-reineke/lsp-format.nvim', -- async formatting
+      'lukas-reineke/lsp-format.nvim',
+      'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
@@ -43,7 +44,8 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     event = 'BufReadPre',
     dependencies = {
-      'lukas-reineke/lsp-format.nvim', -- async formatting
+      'lukas-reineke/lsp-format.nvim',
+      'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
     },
@@ -126,8 +128,9 @@ return {
     end,
   },
 
+  -- async formatting
   {
-    'lukas-reineke/lsp-format.nvim', -- async formatting
+    'lukas-reineke/lsp-format.nvim',
     lazy = true,
     config = function()
       require('lsp-format').setup {}
@@ -174,6 +177,19 @@ return {
           { buffer = bufnr, description = '[LSP] Run formatting' }
         )
       end)
+    end,
+  },
+
+  {
+    'j-hui/fidget.nvim',
+    lazy = true,
+    opts = function()
+      return {
+        text = {
+          spinner = 'dots',
+          done = require('tap.utils.lsp').symbols 'ok',
+        },
+      }
     end,
   },
 }

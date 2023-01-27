@@ -5,7 +5,6 @@ return {
     branch = 'suppress-winbar-no-room-error',
     dependencies = {
       'kyazdani42/nvim-web-devicons',
-      'arkav/lualine-lsp-progress',
     },
     config = function()
       local color = require('tap.utils').color
@@ -152,32 +151,6 @@ return {
         return false
       end
 
-      local lsp_progress = {
-        'lsp_progress',
-        separators = { progress = ' ' },
-        display_components = {
-          'lsp_client_name',
-          'spinner',
-          { 'title', 'percentage', 'message' },
-        },
-        timer = {
-          progress_enddelay = 1000,
-          spinner = 500,
-          lsp_client_name_enddelay = 1000,
-        },
-        spinner_symbols = {
-          '⣾',
-          '⣷',
-          '⣯',
-          '⣟',
-          '⡿',
-          '⢿',
-          '⣻',
-          '⣽',
-        },
-        cond = conditions.is_wide_window,
-      }
-
       local section_separators = { left = '', right = '' }
 
       local diagnostic_section = function(cfg)
@@ -259,7 +232,6 @@ return {
           },
         },
         lualine_x = {
-          lsp_progress,
           { tscVersion, cond = conditions.is_wide_window },
           diagnostic_section {
             sections = { 'error' },
