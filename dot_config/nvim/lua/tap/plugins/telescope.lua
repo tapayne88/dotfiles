@@ -233,7 +233,7 @@ return {
           results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
           preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
         },
-        preview = { timeout = 100, treesitter = false },
+        preview = { timeout = 100, treesitter = true },
         path_display = { 'truncate' },
         dynamic_preview_title = true,
         cache_picker = {
