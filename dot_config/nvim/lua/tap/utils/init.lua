@@ -316,7 +316,7 @@ end
 
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(): nil
+---@param callback fun(fun, fun): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function utils.apply_user_highlights(name, callback, _opts)
@@ -336,11 +336,13 @@ function utils.apply_user_highlights(name, callback, _opts)
     {
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
-      command = callback,
+      command = function()
+        callback(utils.highlight, utils.color)
+      end,
     },
   })
 
-  callback()
+  callback(utils.highlight, utils.color)
 end
 
 function utils.run(fns)

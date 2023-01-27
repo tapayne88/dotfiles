@@ -189,7 +189,19 @@ return {
           spinner = 'dots',
           done = require('tap.utils.lsp').symbols 'ok',
         },
+        window = {
+          blend = 0,
+        },
       }
+    end,
+    init = function()
+      require('tap.utils').apply_user_highlights(
+        'FidgetNvim',
+        function(highlight)
+          highlight('FidgetTitle', { link = 'Title' })
+          highlight('FidgetTask', { link = 'Comment' })
+        end
+      )
     end,
   },
 }
