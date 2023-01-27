@@ -410,4 +410,42 @@ return {
     end,
     keys = '<leader>w',
   },
+
+  -- todo comments
+  {
+
+    'folke/todo-comments.nvim',
+    cmd = { 'TodoTrouble', 'TodoTelescope' },
+    event = 'BufReadPost',
+    config = true,
+    init = function()
+      local keymap = require('tap.utils').keymap
+
+      keymap('n', ']t', function()
+        require('todo-comments').jump_next()
+      end, { description = 'Next todo comment' })
+      keymap('n', '[t', function()
+        require('todo-comments').jump_prev()
+      end, { description = 'Previous todo comment' })
+
+      keymap(
+        'n',
+        '<leader>xt',
+        '<cmd>TodoTrouble<cr>',
+        { description = 'Todo (Trouble)' }
+      )
+      keymap(
+        'n',
+        '<leader>xT',
+        '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>',
+        { description = 'Todo/Fix/Fixme (Trouble)' }
+      )
+      keymap(
+        'n',
+        '<leader>st',
+        '<cmd>TodoTelescope<cr>',
+        { description = 'Todo' }
+      )
+    end,
+  },
 }
