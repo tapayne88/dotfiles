@@ -1,18 +1,19 @@
 local utils = {}
 
----@param color string|table<'"light"' | '"dark"', string>
----@return string|nil
-function utils.color(color)
-  local nord = require 'nord.colors'
-  local tokyo_setup = require('tokyonight.colors').setup { style = 'day' }
-  local colors = { nord = nord, tokyo = tokyo_setup }
+---@alias utils.color fun(_color: string | { light: string, dark: string }): string | nil
 
-  if type(color) ~= 'table' then
-    color = { light = color, dark = color }
+---@type utils.color
+function utils.color(_color)
+  local color = type(_color) ~= 'table' and { light = _color, dark = _color }
+    or _color
+
+  if vim.g.use_light_theme == true then
+    local tokyo = require('tokyonight.colors').setup { style = 'day' }
+    return tokyo[color.light]
+  else
+    local nord = require 'nord.colors'
+    return nord[color.dark]
   end
-
-  return vim.g.use_light_theme == true and colors.tokyo[color.light]
-    or colors.nord[color.dark]
 end
 
 ---Map deeply nested table to single key
@@ -111,13 +112,18 @@ function utils.keymap(_modes, lhs, rhs, _opts)
   end
 end
 
+---@alias HighlightOpts
+---| { guifg?: string, guibg?: string, gui?: string, guisp?: string, ctermfg?: string, ctermbg?: string, cterm?: string }
+---| { link?: string, force: boolean }
+
+---@alias utils.highlight fun(name: string, opts: HighlightOpts): nil
+
 -- Shamelessly stolen from akinsho/dotfiles
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/highlights.lua#L56
 --- TODO eventually move to using `nvim_set_hl`
 --- however for the time being that expects colors
 --- to be specified as rgb not hex
----@param name string
----@param opts table
+---@type utils.highlight
 function utils.highlight(name, opts)
   local force = opts.force or false
   if name and vim.tbl_count(opts) > 0 then
@@ -316,7 +322,7 @@ end
 
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(fun, fun): nil
+---@param callback fun(p1: utils.highlight, p2: utils.color): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function utils.apply_user_highlights(name, callback, _opts)
