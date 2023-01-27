@@ -1,5 +1,7 @@
 local utils = {}
 
+---@module 'tap.utils.lsp'
+
 ---@alias utils.color fun(_color: string | { light: string, dark: string }): string | nil
 
 ---@type utils.color
@@ -322,7 +324,7 @@ end
 
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(p1: utils.highlight, p2: utils.color): nil
+---@param callback fun(p1: utils.highlight, p2: utils.color, p3: Lsp.color): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function utils.apply_user_highlights(name, callback, _opts)
@@ -343,12 +345,12 @@ function utils.apply_user_highlights(name, callback, _opts)
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
       command = function()
-        callback(utils.highlight, utils.color)
+        callback(utils.highlight, utils.color, require('tap.utils.lsp').colors)
       end,
     },
   })
 
-  callback(utils.highlight, utils.color)
+  callback(utils.highlight, utils.color, require('tap.utils.lsp').colors)
 end
 
 function utils.run(fns)

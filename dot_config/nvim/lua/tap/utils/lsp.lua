@@ -20,8 +20,9 @@ M.symbols = function(type)
   return symbs[type]
 end
 
----@param type lsp_status
----@return string|nil
+---@alias Lsp.color fun(type: lsp_status): string | nil
+
+---@type Lsp.color
 M.colors = function(type)
   local color = require('tap.utils').color
 

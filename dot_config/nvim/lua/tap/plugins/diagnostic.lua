@@ -2,8 +2,6 @@ return {
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
   event = 'BufReadPre',
   config = function()
-    local utils = require 'tap.utils'
-    local lsp_colors = require('tap.utils.lsp').colors
     local lsp_symbols = require('tap.utils.lsp').symbols
     local nnoremap = require('tap.utils').nnoremap
 
@@ -59,57 +57,58 @@ return {
     ----------------
     -- Highlights --
     ----------------
-    local user_highlights = function()
-      utils.highlight('DiagnosticUnderlineError', {
-        guifg = 'none',
-        gui = 'undercurl',
-        guisp = lsp_colors 'error',
-      })
-      utils.highlight('DiagnosticUnderlineWarn', {
-        guifg = 'none',
-        gui = 'undercurl',
-        guisp = lsp_colors 'warning',
-      })
-      utils.highlight('DiagnosticUnderlineInfo', {
-        guifg = 'none',
-        gui = 'undercurl',
-        guisp = lsp_colors 'info',
-      })
-      utils.highlight('DiagnosticUnderlineHint', {
-        guifg = 'none',
-        gui = 'undercurl',
-        guisp = lsp_colors 'hint',
-      })
-
-      local signs = {
-        Error = {
-          guifg = lsp_colors 'error',
-          icon = lsp_symbols 'error',
-        },
-        Warn = {
-          guifg = lsp_colors 'warning',
-          icon = lsp_symbols 'warning',
-        },
-        Hint = {
-          guifg = lsp_colors 'hint',
-          icon = lsp_symbols 'hint',
-        },
-        Info = {
-          guifg = lsp_colors 'info',
-          icon = lsp_symbols 'info',
-        },
-      }
-
-      for type, config in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        utils.highlight(hl, { guifg = config.guifg })
-        vim.fn.sign_define(hl, { text = config.icon, texthl = hl, numhl = '' })
-      end
-    end
-
     require('tap.utils').apply_user_highlights(
       'UtilsLsp',
-      user_highlights,
+      function(highlight, _, lsp_color)
+        highlight('DiagnosticUnderlineError', {
+          guifg = 'none',
+          gui = 'undercurl',
+          guisp = lsp_color 'error',
+        })
+        highlight('DiagnosticUnderlineWarn', {
+          guifg = 'none',
+          gui = 'undercurl',
+          guisp = lsp_color 'warning',
+        })
+        highlight('DiagnosticUnderlineInfo', {
+          guifg = 'none',
+          gui = 'undercurl',
+          guisp = lsp_color 'info',
+        })
+        highlight('DiagnosticUnderlineHint', {
+          guifg = 'none',
+          gui = 'undercurl',
+          guisp = lsp_color 'hint',
+        })
+
+        local signs = {
+          Error = {
+            guifg = lsp_color 'error',
+            icon = lsp_symbols 'error',
+          },
+          Warn = {
+            guifg = lsp_color 'warning',
+            icon = lsp_symbols 'warning',
+          },
+          Hint = {
+            guifg = lsp_color 'hint',
+            icon = lsp_symbols 'hint',
+          },
+          Info = {
+            guifg = lsp_color 'info',
+            icon = lsp_symbols 'info',
+          },
+        }
+
+        for type, config in pairs(signs) do
+          local hl = 'DiagnosticSign' .. type
+          highlight(hl, { guifg = config.guifg })
+          vim.fn.sign_define(
+            hl,
+            { text = config.icon, texthl = hl, numhl = '' }
+          )
+        end
+      end,
       { force = true }
     )
   end,

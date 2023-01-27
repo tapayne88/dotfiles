@@ -8,7 +8,6 @@ return {
     },
     config = function()
       local color = require('tap.utils').color
-      local lsp_colors = require('tap.utils.lsp').colors
       local lsp_symbols = require('tap.utils.lsp').symbols
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
       local require_plugin = require('tap.utils').require_plugin
@@ -291,37 +290,40 @@ return {
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
 
-      require('tap.utils').apply_user_highlights('Lualine', function(highlight)
-        highlight('LualineDiagnosticError', {
-          guibg = lsp_colors 'error',
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
-        highlight('LualineDiagnosticWarn', {
-          guibg = lsp_colors 'warning',
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
-        highlight('LualineDiagnosticHint', {
-          guibg = lsp_colors 'hint',
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
-        highlight('LualineDiagnosticInfo', {
-          guibg = lsp_colors 'info',
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
-        highlight('LualineDiagnosticOk', {
-          guibg = lsp_colors 'ok',
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
-        highlight('NavicSeparator', {
-          guifg = color { dark = 'nord3_gui', light = 'fg' },
-        })
+      require('tap.utils').apply_user_highlights(
+        'Lualine',
+        function(highlight, _, lsp_colors)
+          highlight('LualineDiagnosticError', {
+            guibg = lsp_colors 'error',
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
+          highlight('LualineDiagnosticWarn', {
+            guibg = lsp_colors 'warning',
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
+          highlight('LualineDiagnosticHint', {
+            guibg = lsp_colors 'hint',
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
+          highlight('LualineDiagnosticInfo', {
+            guibg = lsp_colors 'info',
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
+          highlight('LualineDiagnosticOk', {
+            guibg = lsp_colors 'ok',
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
+          highlight('NavicSeparator', {
+            guifg = color { dark = 'nord3_gui', light = 'fg' },
+          })
 
-        local theme_name = vim.g.colors_name
-        local theme = theme_name == 'nord' and nord_theme or theme_name
-        if theme then
-          require('lualine').setup { options = { theme = theme } }
+          local theme_name = vim.g.colors_name
+          local theme = theme_name == 'nord' and nord_theme or theme_name
+          if theme then
+            require('lualine').setup { options = { theme = theme } }
+          end
         end
-      end)
+      )
 
       local winbar_y = {
         modified,

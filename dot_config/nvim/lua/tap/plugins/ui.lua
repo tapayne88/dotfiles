@@ -142,21 +142,19 @@ return {
   {
     'petertriho/nvim-scrollbar',
     init = function()
-      local lsp_colors = require('tap.utils.lsp').colors
-
       require('tap.utils').apply_user_highlights(
         'NvimScrollbar',
-        function(_, color)
+        function(_, color, lsp_color)
           require('scrollbar').setup {
             handle = {
               color = color { dark = 'nord1_gui', light = 'bg_highlight' },
             },
             marks = {
               Search = { color = color { dark = 'nord0_gui', light = 'bg' } },
-              Error = { color = lsp_colors 'error' },
-              Warn = { color = lsp_colors 'warning' },
-              Info = { color = lsp_colors 'info' },
-              Hint = { color = lsp_colors 'hint' },
+              Error = { color = lsp_color 'error' },
+              Warn = { color = lsp_color 'warning' },
+              Info = { color = lsp_color 'info' },
+              Hint = { color = lsp_color 'hint' },
               Misc = { color = color { dark = 'nord15_gui', light = 'purple' } },
             },
           }
