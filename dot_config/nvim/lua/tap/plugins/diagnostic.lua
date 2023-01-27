@@ -2,7 +2,7 @@ return {
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
   event = 'BufReadPre',
   config = function()
-    local lsp_symbols = require('tap.utils.lsp').symbols
+    local lsp_symbol = require('tap.utils.lsp').symbol
     local nnoremap = require('tap.utils').nnoremap
 
     require('lsp_lines').setup()
@@ -84,19 +84,19 @@ return {
         local signs = {
           Error = {
             guifg = lsp_color 'error',
-            icon = lsp_symbols 'error',
+            icon = lsp_symbol 'error',
           },
           Warn = {
             guifg = lsp_color 'warning',
-            icon = lsp_symbols 'warning',
+            icon = lsp_symbol 'warning',
           },
           Hint = {
             guifg = lsp_color 'hint',
-            icon = lsp_symbols 'hint',
+            icon = lsp_symbol 'hint',
           },
           Info = {
             guifg = lsp_color 'info',
-            icon = lsp_symbols 'info',
+            icon = lsp_symbol 'info',
           },
         }
 

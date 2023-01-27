@@ -8,7 +8,7 @@ return {
     },
     config = function()
       local color = require('tap.utils').color
-      local lsp_symbols = require('tap.utils.lsp').symbols
+      local lsp_symbol = require('tap.utils.lsp').symbol
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
       local require_plugin = require('tap.utils').require_plugin
       local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
@@ -233,25 +233,25 @@ return {
           diagnostic_section {
             sections = { 'error' },
             color = 'LualineDiagnosticError',
-            symbol = lsp_symbols 'error',
+            symbol = lsp_symbol 'error',
             pad_left = false,
           },
           diagnostic_section {
             sections = { 'warn' },
             color = 'LualineDiagnosticWarn',
-            symbol = lsp_symbols 'warning',
+            symbol = lsp_symbol 'warning',
             pad_left = true,
           },
           diagnostic_section {
             sections = { 'hint' },
             color = 'LualineDiagnosticHint',
-            symbol = lsp_symbols 'hint',
+            symbol = lsp_symbol 'hint',
             pad_left = true,
           },
           diagnostic_section {
             sections = { 'info' },
             color = 'LualineDiagnosticInfo',
-            symbol = lsp_symbols 'info',
+            symbol = lsp_symbol 'info',
             pad_left = true,
           },
           diagnostic_section {
@@ -261,7 +261,7 @@ return {
               -- diagnostics will only report numbers so if they are all 0
               -- then we are all ok
               if status == '0 0 0 0' then
-                return string.format(' %s ', lsp_symbols 'ok')
+                return string.format(' %s ', lsp_symbol 'ok')
               end
               return ''
             end,

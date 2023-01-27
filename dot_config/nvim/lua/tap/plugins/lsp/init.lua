@@ -13,9 +13,7 @@ return {
       'williamboman/mason.nvim',
     },
     config = function()
-      local lsp_utils = require 'tap.utils.lsp'
-
-      if lsp_utils.lsp_debug_enabled() then
+      if require('tap.utils.lsp').lsp_debug_enabled() then
         vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
         vim.notify(
           'LSP debug log: ' .. vim.lsp.get_log_path(),
@@ -187,7 +185,7 @@ return {
       return {
         text = {
           spinner = 'dots',
-          done = require('tap.utils.lsp').symbols 'ok',
+          done = require('tap.utils.lsp').symbol 'ok',
         },
         window = {
           blend = 0,

@@ -3,7 +3,7 @@ return {
   {
     'rcarriga/nvim-notify',
     config = function()
-      local lsp_symbols = require('tap.utils.lsp').symbols
+      local lsp_symbol = require('tap.utils.lsp').symbol
       local nnoremap = require('tap.utils').nnoremap
       local lsp_debug_enabled = require('tap.utils.lsp').lsp_debug_enabled
 
@@ -11,9 +11,9 @@ return {
 
       require('notify').setup {
         icons = {
-          ERROR = lsp_symbols 'error',
-          WARN = lsp_symbols 'warning',
-          INFO = lsp_symbols 'info',
+          ERROR = lsp_symbol 'error',
+          WARN = lsp_symbol 'warning',
+          INFO = lsp_symbol 'info',
           DEBUG = '',
           TRACE = '✎',
         },

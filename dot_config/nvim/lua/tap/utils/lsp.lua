@@ -7,8 +7,8 @@ local M = {}
 
 ---@param type lsp_status | 'hint_alt'
 ---@return string
-M.symbols = function(type)
-  local symbs = {
+M.symbol = function(type)
+  local symbols = {
     error = ' ',
     warning = ' ',
     info = ' ',
@@ -17,7 +17,7 @@ M.symbols = function(type)
     ok = ' ',
   }
 
-  return symbs[type]
+  return symbols[type]
 end
 
 ---@alias Lsp.color fun(type: lsp_status): string | nil
