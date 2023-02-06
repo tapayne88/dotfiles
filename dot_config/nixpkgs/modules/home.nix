@@ -19,6 +19,7 @@
     fpp # facebook picker
     fzf # fuzzy-finder
     gawk # gnu awk
+    glow # markdown on the CLI, with pizzazz!
     gnupg # gnu pretty good privacy
     gti # alias for git, with a gti
     htop # pretty top
