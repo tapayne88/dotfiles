@@ -45,6 +45,7 @@
     vim # vim
     watchman # watch files and run command on change
     wget # fetch things from urls
+    xsv # fast CSV toolkit
     yarn # JS package manager
     yq # yaml cli processor (needs jq)
     zsh # shell
