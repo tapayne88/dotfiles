@@ -33,6 +33,7 @@ return {
           'rust',
           'scala',
           'scss',
+          'terraform',
           'tsx',
           'typescript',
           'vim',
