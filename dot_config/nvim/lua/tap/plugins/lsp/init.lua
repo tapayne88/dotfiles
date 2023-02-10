@@ -2,7 +2,7 @@
 return {
   {
     'neovim/nvim-lspconfig', -- LSP server config
-    event = 'BufReadPre',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
@@ -40,7 +40,7 @@ return {
 
   {
     'jose-elias-alvarez/null-ls.nvim',
-    event = 'BufReadPre',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'lukas-reineke/lsp-format.nvim',
       'j-hui/fidget.nvim',

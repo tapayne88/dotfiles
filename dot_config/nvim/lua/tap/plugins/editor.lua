@@ -201,7 +201,7 @@ return {
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
-    event = 'BufReadPost',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'kevinhwang91/promise-async',
       'nvim-treesitter/nvim-treesitter',
@@ -216,6 +216,10 @@ return {
       -- see https://github.com/kevinhwang91/nvim-ufo/issues/4
       vim.opt.fillchars:append 'foldopen:'
       vim.opt.fillchars:append 'foldclose:'
+
+      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+      require('tap.utils').keymap('n', 'zR', require('ufo').openAllFolds)
+      require('tap.utils').keymap('n', 'zM', require('ufo').closeAllFolds)
 
       require('ufo').setup {
         provider_selector = function()
