@@ -188,6 +188,49 @@ return {
       vim.fn.setreg('+', display)
     end
 
+    local max_size = math.pow(1024, 2) / 2 -- 500KB
+    local min_file_lines = 10
+    local check_file_minified = function(filepath, callback)
+      vim.loop.fs_stat(filepath, function(_, stat)
+        if not stat then
+          return callback(false)
+        end
+
+        if stat.size > max_size then
+          local path = require('plenary.path'):new(filepath)
+          local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
+          local is_file_minified = lines ~= min_file_lines
+          return callback(is_file_minified)
+        end
+        return callback(false)
+      end)
+    end
+
+    local new_maker = function(filepath, bufnr, opts)
+      opts = opts or {}
+
+      filepath = vim.fn.expand(filepath)
+      -- require('tap.utils').logger.info(
+      --   'stat',
+      --   filepath,
+      --   stat.size,
+      --   math.floor(stat.size / math.pow(1024, 2)),
+      --   vim.inspect(stat)
+      -- )
+
+      check_file_minified(filepath, function(is_file_minified)
+        require('telescope.previewers').buffer_previewer_maker(
+          filepath,
+          bufnr,
+          vim.tbl_deep_extend(
+            'force',
+            opts,
+            { preview = { treesitter = not is_file_minified } }
+          )
+        )
+      end)
+    end
+
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
@@ -233,7 +276,50 @@ return {
           results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
           preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
         },
-        preview = { timeout = 100, treesitter = true },
+        buffer_previewer_maker = new_maker,
+        preview = {
+          timeout = 100,
+          -- Need to disable treesitter in config to override default (true)
+          -- The custom buffer_previewer_maker will detect when to use it
+          treesitter = false,
+          -- filesize_limit = 0,
+          -- 2) Truncate lines to preview window for too large files
+          -- filesize_hook = function(filepath, bufnr, opts)
+          --   local path = require("plenary.path"):new(filepath)
+          --   -- opts exposes winid
+          --   local height = vim.api.nvim_win_get_height(opts.winid)
+          --   local lines = vim.split(path:head(height), "[\r]?\n")
+          --   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+          -- end,
+          -- filesize_hook = function(filepath, bufnr, opts)
+          --   require('tap.utils').logger.info 'here'
+          --   -- local max_bytes = 10000
+          --   -- local cmd = { 'head', '-c', max_bytes, filepath }
+          --   -- require('telescope.previewers.utils').job_maker(cmd, bufnr, opts)
+          --   opts = opts or {}
+
+          --   filepath = vim.fn.expand(filepath)
+          --   vim.loop.fs_stat(filepath, function(_, stat)
+          --     require('tap.utils').logger.info(
+          --       'stat',
+          --       stat.size,
+          --       math.floor(stat.size / math.pow(1024, 2))
+          --     )
+          --     if not stat then
+          --       return
+          --     end
+          --     if stat.size > 100000 then
+          --       return
+          --     else
+          --       require('telescope.previewers').buffer_previewer_maker(
+          --         filepath,
+          --         bufnr,
+          --         opts
+          --       )
+          --     end
+          --   end)
+          -- end,
+        },
         path_display = { 'truncate' },
         dynamic_preview_title = true,
         cache_picker = {
