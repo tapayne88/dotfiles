@@ -190,20 +190,20 @@ return {
 
     local max_size = math.pow(1024, 2) / 2 -- 500KB
     local min_file_lines = 10
-    local check_file_minified = function(filepath, callback)
-      vim.loop.fs_stat(filepath, function(_, stat)
-        if not stat then
-          return callback(false)
-        end
+    local check_file_minified = function(filepath)
+      local ok, stat = pcall(vim.loop.fs_stat, filepath)
 
-        if stat.size > max_size then
-          local path = require('plenary.path'):new(filepath)
-          local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
-          local is_file_minified = lines ~= min_file_lines
-          return callback(is_file_minified)
-        end
-        return callback(false)
-      end)
+      if not ok or not stat then
+        return false
+      end
+
+      if stat.size > max_size then
+        local path = require('plenary.path'):new(filepath)
+        local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
+        local is_file_minified = lines ~= min_file_lines
+        return is_file_minified
+      end
+      return false
     end
 
     local new_maker = function(filepath, bufnr, opts)
@@ -211,24 +211,24 @@ return {
 
       filepath = vim.fn.expand(filepath)
 
-      check_file_minified(filepath, function(is_file_minified)
-        if is_file_minified then
-          require('tap.utils').logger.info(
-            'disabled treesitter in telescope preview for ',
-            filepath
-          )
-        end
+      local is_file_minified = check_file_minified(filepath)
 
-        require('telescope.previewers').buffer_previewer_maker(
-          filepath,
-          bufnr,
-          vim.tbl_deep_extend(
-            'force',
-            opts,
-            { preview = { treesitter = not is_file_minified } }
-          )
+      if is_file_minified then
+        require('tap.utils').logger.info(
+          'disabled treesitter in telescope preview for ',
+          filepath
         )
-      end)
+      end
+
+      require('telescope.previewers').buffer_previewer_maker(
+        filepath,
+        bufnr,
+        vim.tbl_deep_extend(
+          'force',
+          opts,
+          { preview = { treesitter = not is_file_minified } }
+        )
+      )
     end
 
     require('telescope').setup {
