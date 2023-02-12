@@ -184,7 +184,7 @@ return {
         dashboard.button(
           'r',
           ' ' .. ' Recent files',
-          ':Telescope oldfiles <CR>'
+          ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'
         ),
         dashboard.button(
           'n',
