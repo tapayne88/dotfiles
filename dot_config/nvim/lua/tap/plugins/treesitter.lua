@@ -39,7 +39,24 @@ return {
           'vim',
           'yaml',
         },
-        highlight = { enable = true },
+        highlight = {
+          enable = true,
+          disable = function(_, buf)
+            local filepath = vim.api.nvim_buf_get_name(buf)
+
+            local is_file_minified =
+              require('tap.utils').check_file_minified(filepath)
+
+            if is_file_minified then
+              require('tap.utils').logger.info(
+                'disabled treesitter for file ',
+                filepath
+              )
+            end
+
+            return is_file_minified
+          end,
+        },
         matchup = { enable = true },
         playground = {
           enable = true,
