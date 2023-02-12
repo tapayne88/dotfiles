@@ -210,15 +210,15 @@ return {
       opts = opts or {}
 
       filepath = vim.fn.expand(filepath)
-      -- require('tap.utils').logger.info(
-      --   'stat',
-      --   filepath,
-      --   stat.size,
-      --   math.floor(stat.size / math.pow(1024, 2)),
-      --   vim.inspect(stat)
-      -- )
 
       check_file_minified(filepath, function(is_file_minified)
+        if is_file_minified then
+          require('tap.utils').logger.info(
+            'disabled treesitter in telescope preview for ',
+            filepath
+          )
+        end
+
         require('telescope.previewers').buffer_previewer_maker(
           filepath,
           bufnr,

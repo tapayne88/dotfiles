@@ -32,7 +32,7 @@ end)
 
 M.logger = log.new {
   plugin = plugin,
-  level = DEBUG and 'debug' or 'info',
+  level = DEBUG and 'debug' or 'warn',
 }
 
 ---@module 'tap.utils.lsp'
