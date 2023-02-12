@@ -188,7 +188,8 @@ return {
       vim.fn.setreg('+', display)
     end
 
-    local new_maker = function(filepath, bufnr, opts)
+    --- Disable treesitter for files that look to be minified
+    local buffer_previewer_maker_custom = function(filepath, bufnr, opts)
       opts = opts or {}
 
       filepath = vim.fn.expand(filepath)
@@ -259,7 +260,7 @@ return {
           results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
           preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
         },
-        buffer_previewer_maker = new_maker,
+        buffer_previewer_maker = buffer_previewer_maker_custom,
         preview = {
           timeout = 100,
           -- Need to disable treesitter in config to override default (true)
