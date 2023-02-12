@@ -415,4 +415,25 @@ function M.root_pattern(patterns)
   return find_root
 end
 
+local max_size = math.pow(1024, 2) / 2 -- 500KB
+local min_file_lines = 10
+---Determine if file looks to be minifed. Criteria is a large file with few lines
+---@param filepath string
+---@return boolean
+function M.check_file_minified(filepath)
+  local ok, stat = pcall(vim.loop.fs_stat, filepath)
+
+  if not ok or not stat then
+    return false
+  end
+
+  if stat.size > max_size then
+    local path = require('plenary.path'):new(filepath)
+    local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
+    local is_file_minified = lines ~= min_file_lines
+    return is_file_minified
+  end
+  return false
+end
+
 return M

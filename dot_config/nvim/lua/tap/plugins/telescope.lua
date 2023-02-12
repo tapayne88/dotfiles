@@ -188,30 +188,13 @@ return {
       vim.fn.setreg('+', display)
     end
 
-    local max_size = math.pow(1024, 2) / 2 -- 500KB
-    local min_file_lines = 10
-    local check_file_minified = function(filepath)
-      local ok, stat = pcall(vim.loop.fs_stat, filepath)
-
-      if not ok or not stat then
-        return false
-      end
-
-      if stat.size > max_size then
-        local path = require('plenary.path'):new(filepath)
-        local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
-        local is_file_minified = lines ~= min_file_lines
-        return is_file_minified
-      end
-      return false
-    end
-
     local new_maker = function(filepath, bufnr, opts)
       opts = opts or {}
 
       filepath = vim.fn.expand(filepath)
 
-      local is_file_minified = check_file_minified(filepath)
+      local is_file_minified =
+        require('tap.utils').check_file_minified(filepath)
 
       if is_file_minified then
         require('tap.utils').logger.info(
