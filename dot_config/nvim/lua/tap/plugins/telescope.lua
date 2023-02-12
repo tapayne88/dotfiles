@@ -282,43 +282,6 @@ return {
           -- Need to disable treesitter in config to override default (true)
           -- The custom buffer_previewer_maker will detect when to use it
           treesitter = false,
-          -- filesize_limit = 0,
-          -- 2) Truncate lines to preview window for too large files
-          -- filesize_hook = function(filepath, bufnr, opts)
-          --   local path = require("plenary.path"):new(filepath)
-          --   -- opts exposes winid
-          --   local height = vim.api.nvim_win_get_height(opts.winid)
-          --   local lines = vim.split(path:head(height), "[\r]?\n")
-          --   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-          -- end,
-          -- filesize_hook = function(filepath, bufnr, opts)
-          --   require('tap.utils').logger.info 'here'
-          --   -- local max_bytes = 10000
-          --   -- local cmd = { 'head', '-c', max_bytes, filepath }
-          --   -- require('telescope.previewers.utils').job_maker(cmd, bufnr, opts)
-          --   opts = opts or {}
-
-          --   filepath = vim.fn.expand(filepath)
-          --   vim.loop.fs_stat(filepath, function(_, stat)
-          --     require('tap.utils').logger.info(
-          --       'stat',
-          --       stat.size,
-          --       math.floor(stat.size / math.pow(1024, 2))
-          --     )
-          --     if not stat then
-          --       return
-          --     end
-          --     if stat.size > 100000 then
-          --       return
-          --     else
-          --       require('telescope.previewers').buffer_previewer_maker(
-          --         filepath,
-          --         bufnr,
-          --         opts
-          --       )
-          --     end
-          --   end)
-          -- end,
         },
         path_display = { 'truncate' },
         dynamic_preview_title = true,
