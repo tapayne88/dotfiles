@@ -155,7 +155,7 @@ return {
       end
 
       local disabled_formatters = {
-        'sumneko_lua', -- use stylua with null-ls for lua
+        'lua_ls', -- use stylua with null-ls for lua
         'tsserver',
       }
 
