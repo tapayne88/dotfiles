@@ -1,4 +1,39 @@
+local log = require 'plenary.log'
+
 local M = {}
+
+---Detect if environment variable is set and is truthy
+---@param env_var string
+---@return boolean
+function M.getenv_bool(env_var)
+  local value = vim.fn.getenv(env_var)
+  if value == vim.NIL then
+    return false
+  end
+
+  return vim.tbl_contains({ 'true', '1' }, value:lower())
+end
+
+-- Setup logger
+local plugin = 'tap-lua'
+local DEBUG = M.getenv_bool 'DEBUG'
+
+vim.schedule(function()
+  if DEBUG then
+    vim.notify(
+      string.format(
+        '%s/%s.log',
+        vim.api.nvim_call_function('stdpath', { 'cache' }),
+        plugin
+      )
+    )
+  end
+end)
+
+M.logger = log.new {
+  plugin = plugin,
+  level = DEBUG and 'debug' or 'info',
+}
 
 ---@module 'tap.utils.lsp'
 
