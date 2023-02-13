@@ -48,6 +48,11 @@ return {
               require('tap.utils').check_file_minified(filepath)
 
             if is_file_minified then
+              vim.notify(
+                'Suspected minified file, disabling treesitter',
+                vim.log.levels.INFO,
+                { title = 'treesitter.nvim' }
+              )
               require('tap.utils').logger.info(
                 'disabled treesitter for file ',
                 filepath
