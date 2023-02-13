@@ -195,6 +195,7 @@ return {
         dashboard.button('g', ' ' .. ' Git file', ':norm ,gf <CR>'),
         dashboard.button('s', ' ' .. ' Find text', ':norm ,fg <CR>'),
         dashboard.button('l', '鈴' .. ' Lazy', ':Lazy<CR>'),
+        dashboard.button('m', '◍ ' .. ' Mason', ':Mason<CR>'),
         dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
       }
 
