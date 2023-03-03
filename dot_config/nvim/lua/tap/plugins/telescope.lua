@@ -188,6 +188,33 @@ return {
       vim.fn.setreg('+', display)
     end
 
+    --- Disable treesitter for files that look to be minified
+    local buffer_previewer_maker_custom = function(filepath, bufnr, opts)
+      opts = opts or {}
+
+      filepath = vim.fn.expand(filepath)
+
+      local is_file_minified =
+        require('tap.utils').check_file_minified(filepath)
+
+      if is_file_minified then
+        require('tap.utils').logger.info(
+          'disabled treesitter in telescope preview for ',
+          filepath
+        )
+      end
+
+      require('telescope.previewers').buffer_previewer_maker(
+        filepath,
+        bufnr,
+        vim.tbl_deep_extend(
+          'force',
+          opts,
+          { preview = { treesitter = not is_file_minified } }
+        )
+      )
+    end
+
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
@@ -233,7 +260,13 @@ return {
           results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
           preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
         },
-        preview = { timeout = 100, treesitter = true },
+        buffer_previewer_maker = buffer_previewer_maker_custom,
+        preview = {
+          timeout = 100,
+          -- Need to disable treesitter in config to override default (true)
+          -- The custom buffer_previewer_maker will detect when to use it
+          treesitter = false,
+        },
         path_display = { 'truncate' },
         dynamic_preview_title = true,
         cache_picker = {

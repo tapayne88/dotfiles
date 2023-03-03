@@ -221,12 +221,7 @@ end
 --- Check if we're running in LSP debug mode
 ---@return boolean
 function M.lsp_debug_enabled()
-  local lspDebug = vim.env.LSP_DEBUG
-  if lspDebug == nil then
-    return false
-  end
-
-  return vim.tbl_contains({ 'true', '1' }, lspDebug:lower())
+  return require('tap.utils').getenv_bool 'LSP_DEBUG'
 end
 
 return M

@@ -1,4 +1,39 @@
+local log = require 'plenary.log'
+
 local M = {}
+
+---Detect if environment variable is set and is truthy
+---@param env_var string
+---@return boolean
+function M.getenv_bool(env_var)
+  local value = vim.fn.getenv(env_var)
+  if value == vim.NIL then
+    return false
+  end
+
+  return vim.tbl_contains({ 'true', '1' }, value:lower())
+end
+
+-- Setup logger
+local plugin = 'tap-lua'
+local DEBUG = M.getenv_bool 'DEBUG'
+
+vim.schedule(function()
+  if DEBUG then
+    vim.notify(
+      string.format(
+        '%s/%s.log',
+        vim.api.nvim_call_function('stdpath', { 'cache' }),
+        plugin
+      )
+    )
+  end
+end)
+
+M.logger = log.new {
+  plugin = plugin,
+  level = DEBUG and 'debug' or 'warn',
+}
 
 ---@module 'tap.utils.lsp'
 
@@ -378,6 +413,27 @@ function M.root_pattern(patterns)
   end
 
   return find_root
+end
+
+local max_size = math.pow(1024, 2) / 2 -- 500KB
+local min_file_lines = 10
+---Determine if file looks to be minifed. Criteria is a large file with few lines
+---@param filepath string
+---@return boolean
+function M.check_file_minified(filepath)
+  local ok, stat = pcall(vim.loop.fs_stat, filepath)
+
+  if not ok or not stat then
+    return false
+  end
+
+  if stat.size > max_size then
+    local path = require('plenary.path'):new(filepath)
+    local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
+    local is_file_minified = lines ~= min_file_lines
+    return is_file_minified
+  end
+  return false
 end
 
 return M
