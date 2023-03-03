@@ -273,7 +273,7 @@ end
 
 -- Convenience for making commands
 -- ```lua
---    command({"name", function() {...})
+--    command({"name", function() ... end})
 -- ```
 ---@param args table
 function M.command(args)

@@ -173,6 +173,7 @@ return {
           build = 'npm install --legacy-peer-deps && npm run compile',
         },
       },
+      'rcarriga/nvim-dap-ui',
       'hrsh7th/nvim-cmp',
     },
     config = function()
@@ -191,6 +192,17 @@ return {
         -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
         -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
         -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+      }
+
+      require('dapui').setup()
+
+      -- require('dap').defaults.fallback.terminal_win_cmd =
+      --   'FocusSplitNicely | set filetype=terminal'
+      require('tap.utils').command {
+        'DapUi',
+        function()
+          require('dapui').toggle()
+        end,
       }
 
       require('cmp').setup.filetype(

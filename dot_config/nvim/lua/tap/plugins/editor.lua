@@ -395,7 +395,17 @@ return {
     config = function()
       require('focus').setup {
         signcolumn = false,
-        excluded_filetypes = { 'fugitive', 'git', '', 'dap-repl' },
+        excluded_filetypes = {
+          '',
+          'dap-repl',
+          'dapui_breakpoints',
+          'dapui_console',
+          'dapui_scopes',
+          'dapui_stacks',
+          'dapui_watches',
+          'fugitive',
+          'git',
+        },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
         description = '[Focus] Toggle window focusing',

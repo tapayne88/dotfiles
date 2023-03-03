@@ -124,12 +124,19 @@ return {
     config = function(_, opts)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = {
-          'help',
           'alpha',
-          'neo-tree',
-          'Trouble',
+          'dap-repl',
+          'dapui_breakpoints',
+          'dapui_console',
+          'dapui_scopes',
+          'dapui_stacks',
+          'dapui_watches',
+          'help',
           'lazy',
           'mason',
+          'neo-tree',
+          'terminal',
+          'Trouble',
         },
         callback = function()
           vim.b.miniindentscope_disable = true
