@@ -25,11 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Prettier
-        uses: creyD/prettier_action@v4.2
+        uses: creyD/prettier_action@v4.3
         with:
           # Options for the `prettier` command
           prettier_options: --check **/*.{md,json,js}
           # Running the script in dry mode just shows whether there are files that should be prettified or not
           dry: true
           # GitHub Token or PAT token used to authenticate against a repository
-          github_token: # optional, default is ${{ github.token }}
+          github_token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
