@@ -35,6 +35,7 @@ return {
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
       'f3fora/cmp-spell',
+      'rcarriga/cmp-dap',
     },
     config = function()
       local cmp = require 'cmp'
@@ -46,6 +47,10 @@ return {
       vim.opt.shortmess:append 'c'
 
       cmp.setup {
+        enabled = function()
+          return require 'cmp.config.default'().enabled()
+            or require('cmp_dap').is_dap_buffer()
+        end,
         completion = {
           -- Set completeopt to have a better completion experience
           completeopt = 'menuone,noselect',
@@ -168,6 +173,7 @@ return {
           build = 'npm install --legacy-peer-deps && npm run compile',
         },
       },
+      'hrsh7th/nvim-cmp',
     },
     config = function()
       require('dap-vscode-js').setup {
@@ -186,6 +192,15 @@ return {
         -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
         -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
       }
+
+      require('cmp').setup.filetype(
+        { 'dap-repl', 'dapui_watches', 'dapui_hover' },
+        {
+          sources = {
+            { name = 'dap' },
+          },
+        }
+      )
       -- require('dap').configurations.javascript = {
       --   {
       --     name = 'Launch',
