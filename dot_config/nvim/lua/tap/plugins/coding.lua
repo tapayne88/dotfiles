@@ -174,6 +174,7 @@ return {
         },
       },
       'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
       'hrsh7th/nvim-cmp',
     },
     config = function()
@@ -227,6 +228,7 @@ return {
           expanded = '',
         },
       }
+      require('nvim-dap-virtual-text').setup()
 
       -- require('dap').defaults.fallback.terminal_win_cmd =
       --   'FocusSplitNicely | set filetype=terminal'
