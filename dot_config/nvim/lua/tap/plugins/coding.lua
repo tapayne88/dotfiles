@@ -35,7 +35,6 @@ return {
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
       'f3fora/cmp-spell',
-      'rcarriga/cmp-dap',
     },
     config = function()
       local cmp = require 'cmp'
@@ -47,10 +46,6 @@ return {
       vim.opt.shortmess:append 'c'
 
       cmp.setup {
-        enabled = function()
-          return require 'cmp.config.default'().enabled()
-            or require('cmp_dap').is_dap_buffer()
-        end,
         completion = {
           -- Set completeopt to have a better completion experience
           completeopt = 'menuone,noselect',
@@ -162,6 +157,9 @@ return {
 
   {
     'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
     lazy = true,
     init = function()
       require('tap.utils').command {
@@ -182,6 +180,7 @@ return {
 
   {
     'mxsdev/nvim-dap-vscode-js',
+    lazy = true,
     dependencies = {
       'microsoft/vscode-js-debug',
       -- Pinned to version as build step was refactored and output changed (also
@@ -213,13 +212,37 @@ return {
 
   {
     'mfussenegger/nvim-dap',
+    lazy = true,
     dependencies = {
-      'williamboman/mason.nvim',
       'mxsdev/nvim-dap-vscode-js',
-      'rcarriga/nvim-dap-ui',
       { 'theHamsta/nvim-dap-virtual-text', config = true },
       'hrsh7th/nvim-cmp',
+      'rcarriga/cmp-dap',
     },
+    init = function()
+      require('tap.utils').command {
+        'DapToggleBreakpoint',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+      }
+      require('tap.utils').command {
+        'DapConditionalBreakpoint',
+        function()
+          require('dap').set_breakpoint(vim.fn.input 'Breakpoint Condition: ')
+        end,
+      }
+      require('tap.utils').command {
+        'DapLogPoint',
+        function()
+          require('dap').set_breakpoint(
+            nil,
+            nil,
+            vim.fn.input 'Log point message: '
+          )
+        end,
+      }
+    end,
     config = function()
       vim.fn.sign_define('DapBreakpoint', {
         text = '⬤ ',
@@ -246,27 +269,12 @@ return {
         numhl = '',
       })
 
-      require('tap.utils').command {
-        'DapConditionalBreakpoint',
-        function()
-          require('tap.utils').keymap('n', '<Leader>lp', function()
-            require('dap').set_breakpoint(vim.fn.input 'Breakpoint Condition: ')
-          end)
+      require('cmp').setup {
+        enabled = function()
+          return require 'cmp.config.default'().enabled()
+            or require('cmp_dap').is_dap_buffer()
         end,
       }
-      require('tap.utils').command {
-        'DapLogPoint',
-        function()
-          require('tap.utils').keymap('n', '<Leader>lp', function()
-            require('dap').set_breakpoint(
-              nil,
-              nil,
-              vim.fn.input 'Log point message: '
-            )
-          end)
-        end,
-      }
-
       require('cmp').setup.filetype(
         { 'dap-repl', 'dapui_watches', 'dapui_hover' },
         {
@@ -280,6 +288,7 @@ return {
 
   {
     'David-Kunz/jester',
+    lazy = true,
     dependencies = {
       'mfussenegger/nvim-dap',
     },
