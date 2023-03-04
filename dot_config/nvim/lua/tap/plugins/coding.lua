@@ -161,21 +161,32 @@ return {
   },
 
   {
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      'williamboman/mason.nvim',
-      {
-        'mxsdev/nvim-dap-vscode-js',
-        dependencies = {
-          'microsoft/vscode-js-debug',
-          -- TODO: Figure out why this doesn't work
-          commit = '581f6451f6b5ed187ffa579623df19ff82d1476f',
-          build = 'npm install --legacy-peer-deps && npm run compile',
-        },
+    'rcarriga/nvim-dap-ui',
+    lazy = true,
+    init = function()
+      require('tap.utils').command {
+        'DapUi',
+        function()
+          require('dapui').toggle()
+        end,
+      }
+    end,
+    opts = {
+      icons = {
+        collapsed = '',
+        current_frame = '',
+        expanded = '',
       },
-      'rcarriga/nvim-dap-ui',
-      'theHamsta/nvim-dap-virtual-text',
-      'hrsh7th/nvim-cmp',
+    },
+  },
+
+  {
+    'mxsdev/nvim-dap-vscode-js',
+    dependencies = {
+      'microsoft/vscode-js-debug',
+      -- TODO: Figure out why this doesn't work
+      commit = '581f6451f6b5ed187ffa579623df19ff82d1476f',
+      build = 'npm install --legacy-peer-deps && npm run compile',
     },
     config = function()
       local log_file_path = vim.fn.stdpath 'cache' .. '/dap_vscode_js.log' -- Path for file logging
@@ -185,7 +196,6 @@ return {
         { title = 'nvim-dap' }
       )
 
-      -- TODO: Tidy up config
       require('dap-vscode-js').setup {
         -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
         debugger_path = require('lazy.core.config').options.root
@@ -193,10 +203,23 @@ return {
         -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
         adapters = { 'pwa-node' }, -- which adapters to register in nvim-dap
         log_file_path = log_file_path, -- Path for file logging
-        log_file_level = require('tap.utils').debug_enabled() and 'debug'
-          or 'warn', -- Logging level for output to file. Set to false to disable file logging.
+        log_file_level = require('tap.utils').debug_enabled()
+            and vim.log.levels.DEBUG
+          or vim.log.levels.WARN, -- Logging level for output to file. Set to false to disable file logging.
       }
+    end,
+  },
 
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'mxsdev/nvim-dap-vscode-js',
+      'rcarriga/nvim-dap-ui',
+      { 'theHamsta/nvim-dap-virtual-text', config = true },
+      'hrsh7th/nvim-cmp',
+    },
+    config = function()
       vim.fn.sign_define('DapBreakpoint', {
         text = '⬤ ',
         texthl = 'DiagnosticSignError',
@@ -222,22 +245,6 @@ return {
         numhl = '',
       })
 
-      require('dapui').setup {
-        icons = {
-          collapsed = '',
-          current_frame = '',
-          expanded = '',
-        },
-      }
-      require('nvim-dap-virtual-text').setup()
-
-      require('tap.utils').command {
-        'DapUi',
-        function()
-          require('dapui').toggle()
-        end,
-      }
-
       require('tap.utils').command {
         'DapConditionalBreakpoint',
         function()
@@ -246,7 +253,6 @@ return {
           end)
         end,
       }
-
       require('tap.utils').command {
         'DapLogPoint',
         function()
