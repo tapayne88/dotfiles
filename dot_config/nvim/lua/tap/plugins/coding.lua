@@ -195,7 +195,38 @@ return {
         -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
       }
 
-      require('dapui').setup()
+      vim.fn.sign_define('DapBreakpoint', {
+        text = '⬤ ',
+        texthl = 'DiagnosticSignError',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapBreakpointCondition', {
+        text = '⬤ ',
+        texthl = 'DiagnosticSignWarn',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapLogPoint', {
+        text = '⬤ ',
+        texthl = 'DiagnosticSignHint',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapBreakpointRejected', {
+        text = '',
+        texthl = 'DiagnosticSignError',
+        linehl = '',
+        numhl = '',
+      })
+
+      require('dapui').setup {
+        icons = {
+          collapsed = '',
+          current_frame = '',
+          expanded = '',
+        },
+      }
 
       -- require('dap').defaults.fallback.terminal_win_cmd =
       --   'FocusSplitNicely | set filetype=terminal'
