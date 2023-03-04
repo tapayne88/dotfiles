@@ -237,6 +237,28 @@ return {
         end,
       }
 
+      require('tap.utils').command {
+        'DapConditionalBreakpoint',
+        function()
+          require('tap.utils').keymap('n', '<Leader>lp', function()
+            require('dap').set_breakpoint(vim.fn.input 'Breakpoint Condition: ')
+          end)
+        end,
+      }
+
+      require('tap.utils').command {
+        'DapLogPoint',
+        function()
+          require('tap.utils').keymap('n', '<Leader>lp', function()
+            require('dap').set_breakpoint(
+              nil,
+              nil,
+              vim.fn.input 'Log point message: '
+            )
+          end)
+        end,
+      }
+
       require('cmp').setup.filetype(
         { 'dap-repl', 'dapui_watches', 'dapui_hover' },
         {

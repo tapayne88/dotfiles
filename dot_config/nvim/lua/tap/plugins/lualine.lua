@@ -372,6 +372,7 @@ return {
                   -- lualine doesn't seem to like it when the content contains
                   -- highlighting patterns so reset back to section highlight so
                   -- separator has correct highlight
+                  -- TODO: Fix this as the color of the  is subtly off
                   '%#lualine_a_normal#',
                 }
               end,
