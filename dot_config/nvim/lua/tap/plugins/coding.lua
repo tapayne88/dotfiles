@@ -184,7 +184,8 @@ return {
     'mxsdev/nvim-dap-vscode-js',
     dependencies = {
       'microsoft/vscode-js-debug',
-      -- TODO: Figure out why this doesn't work
+      -- Pinned to version as build step was refactored and output changed (also
+      -- doesn't seem to work)
       commit = '581f6451f6b5ed187ffa579623df19ff82d1476f',
       build = 'npm install --legacy-peer-deps && npm run compile',
     },
