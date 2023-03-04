@@ -178,22 +178,23 @@ return {
       'hrsh7th/nvim-cmp',
     },
     config = function()
+      local log_file_path = vim.fn.stdpath 'cache' .. '/dap_vscode_js.log' -- Path for file logging
+      require('tap.utils').notify_in_debug(
+        log_file_path,
+        vim.log.levels.DEBUG,
+        { title = 'nvim-dap' }
+      )
+
       -- TODO: Tidy up config
       require('dap-vscode-js').setup {
         -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
         debugger_path = require('lazy.core.config').options.root
           .. '/vscode-js-debug', -- Path to vscode-js-debug installation.
         -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-        adapters = {
-          'pwa-node',
-          -- 'pwa-chrome',
-          -- 'pwa-msedge',
-          -- 'node-terminal',
-          -- 'pwa-extensionHost',
-        }, -- which adapters to register in nvim-dap
-        -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-        -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
-        -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+        adapters = { 'pwa-node' }, -- which adapters to register in nvim-dap
+        log_file_path = log_file_path, -- Path for file logging
+        log_file_level = require('tap.utils').debug_enabled() and 'debug'
+          or 'warn', -- Logging level for output to file. Set to false to disable file logging.
       }
 
       vim.fn.sign_define('DapBreakpoint', {
@@ -230,8 +231,6 @@ return {
       }
       require('nvim-dap-virtual-text').setup()
 
-      -- require('dap').defaults.fallback.terminal_win_cmd =
-      --   'FocusSplitNicely | set filetype=terminal'
       require('tap.utils').command {
         'DapUi',
         function()
@@ -269,25 +268,6 @@ return {
           },
         }
       )
-      -- require('dap').configurations.javascript = {
-      --   {
-      --     name = 'Launch',
-      --     type = 'node2',
-      --     request = 'launch',
-      --     program = '${file}',
-      --     cwd = vim.fn.getcwd(),
-      --     sourceMaps = true,
-      --     protocol = 'inspector',
-      --     console = 'integratedTerminal',
-      --   },
-      --   {
-      --     -- For this to work you need to make sure the node process is started with the `--inspect` flag.
-      --     name = 'Attach to process',
-      --     type = 'node2',
-      --     request = 'attach',
-      --     processId = require('dap.utils').pick_process,
-      --   },
-      -- }
     end,
   },
 

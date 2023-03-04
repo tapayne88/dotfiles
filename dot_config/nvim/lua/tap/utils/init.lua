@@ -14,25 +14,41 @@ function M.getenv_bool(env_var)
   return vim.tbl_contains({ 'true', '1' }, value:lower())
 end
 
+---Detect if DEBUG environment variable is set and is truthy
+---@return boolean
+function M.debug_enabled()
+  return M.getenv_bool 'DEBUG'
+end
+
+---Wrapper around vim.notify to log when DEBUG is enabled
+---@param msg string Content of the notification to show to the user.
+---@param level number|nil One of the values from |vim.log.levels|.
+---@param opts table|nil Optional parameters. Unused by default.
+function M.notify_in_debug(msg, level, opts)
+  vim.schedule(function()
+    if M.debug_enabled() then
+      vim.notify(msg, level, opts)
+    end
+  end)
+end
+
 -- Setup logger
 local plugin = 'tap-lua'
-local DEBUG = M.getenv_bool 'DEBUG'
 
-vim.schedule(function()
-  if DEBUG then
-    vim.notify(
-      string.format(
-        '%s/%s.log',
-        vim.api.nvim_call_function('stdpath', { 'cache' }),
-        plugin
-      )
-    )
-  end
-end)
+M.notify_in_debug(
+  -- Copied from https://github.com/nvim-lua/plenary.nvim/blob/253d34830709d690f013daf2853a9d21ad7accab/lua/plenary/log.lua#L57
+  string.format(
+    '%s/%s.log',
+    vim.api.nvim_call_function('stdpath', { 'cache' }),
+    plugin
+  ),
+  vim.log.levels.DEBUG,
+  { title = plugin }
+)
 
 M.logger = log.new {
   plugin = plugin,
-  level = DEBUG and 'debug' or 'warn',
+  level = M.debug_enabled() and 'debug' or 'warn',
 }
 
 ---@module 'tap.utils.lsp'
