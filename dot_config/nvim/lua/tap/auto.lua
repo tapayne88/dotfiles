@@ -13,6 +13,7 @@ augroup('TapWinResize', {
           vim.api.nvim_buf_get_option(window_info.bufnr, 'filetype')
         return vim.tbl_contains({
           'dap-repl',
+          'dapui_breakpoints',
           'dapui_console',
           'dapui_scopes',
           'dapui_stacks',

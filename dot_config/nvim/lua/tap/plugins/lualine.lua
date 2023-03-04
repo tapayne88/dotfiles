@@ -336,11 +336,17 @@ return {
           disabled_filetypes = {
             winbar = {
               'alpha',
+              'dap-repl',
+              'dapui_breakpoints',
+              'dapui_console',
+              'dapui_scopes',
+              'dapui_stacks',
+              'dapui_watches',
               'fugitive',
               'gitcommit',
+              'neo-tree',
               'packer',
               'qf',
-              'neo-tree',
               'Trouble',
             },
           },
