@@ -1,12 +1,33 @@
 local augroup = require('tap.utils').augroup
 local termcodes = require('tap.utils').termcodes
+local test_visible_buffers = require('tap.utils').test_visible_buffers
 
 -- Automatically resize vim splits on resize
 augroup('TapWinResize', {
   {
     events = { 'VimResized' },
     targets = { '*' },
-    command = 'execute "normal! ' .. termcodes '<c-w>' .. '="',
+    command = function()
+      local is_dap_ui_running = test_visible_buffers(function(window_info)
+        local buffer_filetype =
+          vim.api.nvim_buf_get_option(window_info.bufnr, 'filetype')
+        return vim.tbl_contains({
+          'dap-repl',
+          'dapui_console',
+          'dapui_scopes',
+          'dapui_stacks',
+          'dapui_watches',
+        }, buffer_filetype)
+      end)
+
+      -- Don't attempt to resize if we're running dap-ui
+      if not is_dap_ui_running then
+        vim.api.nvim_exec(
+          'execute "normal! ' .. termcodes '<c-w>' .. '="',
+          false
+        )
+      end
+    end,
   },
 })
 

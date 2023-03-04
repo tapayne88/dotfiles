@@ -436,4 +436,19 @@ function M.check_file_minified(filepath)
   return false
 end
 
+---Test visible buffers with passed function
+---@param test_fn fun(tbl: {bufnr: number}): boolean
+---@return boolean has the condition returned true for a visible buffer
+function M.test_visible_buffers(test_fn)
+  for _, buffer in ipairs(vim.fn.getwininfo()) do
+    local is_truthy = test_fn(buffer)
+
+    if is_truthy then
+      return true
+    end
+  end
+
+  return false
+end
+
 return M

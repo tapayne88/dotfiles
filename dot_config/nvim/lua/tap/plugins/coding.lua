@@ -168,8 +168,8 @@ return {
         'mxsdev/nvim-dap-vscode-js',
         dependencies = {
           'microsoft/vscode-js-debug',
+          -- TODO: Figure out why this doesn't work
           commit = '581f6451f6b5ed187ffa579623df19ff82d1476f',
-          pin = true,
           build = 'npm install --legacy-peer-deps && npm run compile',
         },
       },
@@ -177,6 +177,7 @@ return {
       'hrsh7th/nvim-cmp',
     },
     config = function()
+      -- TODO: Tidy up config
       require('dap-vscode-js').setup {
         -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
         debugger_path = require('lazy.core.config').options.root
@@ -246,6 +247,7 @@ return {
         identifiers = { 'test', 'it' }, -- used to identify tests
         prepend = { 'describe' }, -- prepend describe blocks
         expressions = { 'call_expression' }, -- tree-sitter object used to scan for tests/describe blocks
+        -- TODO: Remove hard coded jest paths
         path_to_jest_run = '/Users/tom.payne/git/work/dashboards-and-visualisations/node_modules/.pnpm/jest@26.6.3/node_modules/jest/bin/jest.js', -- used to run tests
         path_to_jest_debug = '/Users/tom.payne/git/work/dashboards-and-visualisations/node_modules/.pnpm/jest@26.6.3/node_modules/jest/bin/jest.js', -- used for debugging
         terminal_cmd = ':vsplit | terminal', -- used to spawn a terminal for running tests, for debugging refer to nvim-dap's config
@@ -291,6 +293,7 @@ return {
           args = { '--no-cache' },
           rootPath = '${workspaceFolder}',
           -- cwd = '${workspaceFolder}',
+          -- TODO: Remove hard coded paths
           cwd = '/Users/tom.payne/git/work/dashboards-and-visualisations/packages/formula-formatter',
           console = 'integratedTerminal',
           internalConsoleOptions = 'neverOpen',
