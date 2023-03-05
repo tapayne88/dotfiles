@@ -292,63 +292,193 @@ return {
     dependencies = {
       'mfussenegger/nvim-dap',
     },
+    init = function()
+      local script_name_map = {
+        ['jest'] = { './node_modules/jest/bin/jest.js' },
+        ['react-scripts'] = {
+          './node_modules/react-scripts/bin/react-scripts.js',
+          './node_modules/@anaplan/react-scripts/bin/react-scripts.js',
+        },
+      }
+
+      local is_env_var = function(token)
+        if token:match '^[A-Z_]+=' then
+          return true
+        end
+        return false
+      end
+
+      local is_flag = function(token)
+        if token:match '^%-%-[%w-]+' then
+          return true
+        end
+        return false
+      end
+
+      local get_runtime = function(token, cwd)
+        for script_name, script_paths in pairs(script_name_map) do
+          if token == script_name then
+            for _, script_path in ipairs(script_paths) do
+              if vim.loop.fs_stat(cwd .. '/' .. script_path) ~= nil then
+                return script_path
+              end
+            end
+          end
+        end
+
+        return token
+      end
+
+      local get_runtime_args = function(pkg_script, cwd)
+        local token_types = {
+          env = {},
+          script = {},
+          flags = {},
+        }
+
+        for token in pkg_script:gmatch '[^%s]+' do
+          if is_env_var(token) then
+            table.insert(token_types.env, token)
+          elseif is_flag(token) then
+            table.insert(token_types.flags, token)
+          else
+            table.insert(token_types.script, get_runtime(token, cwd))
+          end
+        end
+
+        if
+          #token_types.env == 0
+          and #token_types.script == 0
+          and #token_types.flags == 0
+        then
+          return nil
+        end
+        return token_types
+      end
+
+      require('tap.utils').command {
+        'JesterDebug',
+        function()
+          require('plenary.async').run(function()
+            -- 1. Find nearest package.json
+            local file_dir = vim.fn.expand '%:p:h'
+            local package_json_filename = 'package.json'
+            local cwd = require('tap.utils').root_pattern {
+              package_json_filename,
+            }(file_dir)
+
+            if not cwd then
+              vim.notify(
+                'Could not find package.json for file path ' .. file_dir,
+                vim.log.levels.INFO,
+                { title = 'jester' }
+              )
+              return
+            end
+
+            -- 2. Parse package.json
+            local package_json_filepath = cwd .. '/' .. package_json_filename
+            local package_json_content =
+              require('tap.utils').read_file(package_json_filepath)
+
+            local package_json = vim.json.decode(package_json_content)
+
+            -- 3. Look for test script
+            if not package_json.scripts then
+              vim.notify(
+                'Could not find scripts in ' .. package_json_filepath,
+                vim.log.levels.INFO,
+                { title = 'jester' }
+              )
+              return
+            end
+
+            local test_script = package_json.scripts.jest
+              or package_json.scripts.test
+
+            if not test_script then
+              vim.notify(
+                'Could not find test script in ' .. package_json_filepath,
+                vim.log.levels.INFO,
+                { title = 'jester' }
+              )
+              return
+            end
+
+            require('tap.utils').logger.info(
+              string.format('Found test script `%s`', test_script)
+            )
+
+            -- 4. Convert executable to .js source file
+            local script_tokens = get_runtime_args(test_script, cwd)
+
+            if script_tokens == nil then
+              vim.notify(
+                string.format(
+                  'Could not determine test arguments for script `%s`',
+                  test_script
+                ),
+                vim.log.levels.INFO,
+                { title = 'jester' }
+              )
+              return
+            end
+
+            local runtimeArgs = vim.tbl_flatten {
+              '--inspect-brk',
+              script_tokens.script,
+              script_tokens.flags,
+              '--runInBand',
+              '--no-coverage',
+              '--no-cache',
+              '--watchAll=false',
+              '--testNamePattern',
+              '$result',
+              '--',
+              '$file',
+            }
+
+            require('tap.utils').logger.info(
+              'Running jester.debug with runtimeArgs',
+              runtimeArgs,
+              'and env',
+              script_tokens.env
+            )
+
+            -- 5. Run debugger with source file, env vars and args from script
+            vim.schedule(function()
+              require('jester').debug {
+                escape_regex = false,
+                dap = {
+                  type = 'pwa-node',
+                  request = 'launch',
+                  name = 'Debug Jest Tests',
+                  -- trace = true, -- include debugger info
+                  runtimeExecutable = 'node',
+                  runtimeArgs = runtimeArgs,
+                  args = {}, -- override default, causes issues with $file (last arg of runtimeArgs)
+                  env = script_tokens.env,
+                  sourceMaps = true,
+                  rootPath = '${workspaceFolder}',
+                  cwd = cwd,
+                  console = 'integratedTerminal',
+                  internalConsoleOptions = 'neverOpen',
+                },
+              }
+            end)
+          end)
+        end,
+      }
+    end,
     config = function()
       require('jester').setup {
-        cmd = "jest --config=jest.config.js -t '$result' -- $file", -- run command
+        cmd = "npm test -- $file --testNamePattern '$result'", -- run command
         identifiers = { 'test', 'it' }, -- used to identify tests
         prepend = { 'describe' }, -- prepend describe blocks
         expressions = { 'call_expression' }, -- tree-sitter object used to scan for tests/describe blocks
-        -- TODO: Remove hard coded jest paths
-        path_to_jest_run = '/Users/tom.payne/git/work/dashboards-and-visualisations/node_modules/.pnpm/jest@26.6.3/node_modules/jest/bin/jest.js', -- used to run tests
-        path_to_jest_debug = '/Users/tom.payne/git/work/dashboards-and-visualisations/node_modules/.pnpm/jest@26.6.3/node_modules/jest/bin/jest.js', -- used for debugging
+        path_to_jest_run = './node_modules/jest/bin/jest.js',
+        path_to_jest_debug = './node_modules/jest/bin/jest.js',
         terminal_cmd = ':vsplit | terminal', -- used to spawn a terminal for running tests, for debugging refer to nvim-dap's config
-        -- dap = { -- debug adapter configuration
-        --   type = 'node2',
-        --   request = 'launch',
-        --   cwd = '/Users/tom.payne/git/work/dashboards-and-visualisations/packages/formula-formatter',
-        --   runtimeArgs = {
-        --     '--inspect-brk',
-        --     '$path_to_jest',
-        --     '--no-coverage',
-        --     '-t',
-        --     '$result',
-        --     '--',
-        --     '$file',
-        --   },
-        --   args = { '--no-cache' },
-        --   sourceMaps = false,
-        --   protocol = 'inspector',
-        --   skipFiles = { '<node_internals>/**/*.js' },
-        --   console = 'integratedTerminal',
-        --   port = 9229,
-        --   disableOptimisticBPs = true,
-        -- },
-        dap = {
-          type = 'pwa-node',
-          request = 'launch',
-          name = 'Debug Jest Tests',
-          -- trace = true, -- include debugger info
-          runtimeExecutable = 'node',
-          runtimeArgs = {
-            -- './node_modules/jest/bin/jest.js',
-            '--inspect-brk',
-            '$path_to_jest',
-            '--runInBand',
-            '--no-coverage',
-            '-t',
-            '$result',
-            '--',
-            '$file',
-          },
-          sourceMaps = true,
-          args = { '--no-cache' },
-          rootPath = '${workspaceFolder}',
-          -- cwd = '${workspaceFolder}',
-          -- TODO: Remove hard coded paths
-          cwd = '/Users/tom.payne/git/work/dashboards-and-visualisations/packages/formula-formatter',
-          console = 'integratedTerminal',
-          internalConsoleOptions = 'neverOpen',
-        },
       }
     end,
   },
