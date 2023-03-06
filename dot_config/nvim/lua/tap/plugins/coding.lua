@@ -294,10 +294,21 @@ return {
     },
     init = function()
       local script_name_map = {
-        ['jest'] = { './node_modules/jest/bin/jest.js' },
+        ['jest'] = {
+          {
+            executable = './node_modules/jest/bin/jest.js',
+            args = { '--', '$file' },
+          },
+        },
         ['react-scripts'] = {
-          './node_modules/react-scripts/bin/react-scripts.js',
-          './node_modules/@anaplan/react-scripts/bin/react-scripts.js',
+          {
+            executable = './node_modules/react-scripts/bin/react-scripts.js',
+            args = { '$file' },
+          },
+          {
+            executable = './node_modules/@anaplan/react-scripts/bin/react-scripts.js',
+            args = { '$file' },
+          },
         },
       }
 
@@ -318,22 +329,24 @@ return {
       local get_runtime = function(token, cwd)
         for script_name, script_paths in pairs(script_name_map) do
           if token == script_name then
-            for _, script_path in ipairs(script_paths) do
-              if vim.loop.fs_stat(cwd .. '/' .. script_path) ~= nil then
-                return script_path
+            for _, script in ipairs(script_paths) do
+              if vim.loop.fs_stat(cwd .. '/' .. script.executable) ~= nil then
+                return script
               end
             end
           end
         end
 
-        return token
+        return nil
       end
 
       local get_runtime_args = function(pkg_script, cwd)
         local token_types = {
           env = {},
           script = {},
+          command = {},
           flags = {},
+          args = {},
         }
 
         for token in pkg_script:gmatch '[^%s]+' do
@@ -342,15 +355,18 @@ return {
           elseif is_flag(token) then
             table.insert(token_types.flags, token)
           else
-            table.insert(token_types.script, get_runtime(token, cwd))
+            local runtime = get_runtime(token, cwd)
+
+            if runtime ~= nil then
+              table.insert(token_types.script, runtime.executable)
+              table.insert(token_types.args, runtime.args)
+            else
+              table.insert(token_types.command, token)
+            end
           end
         end
 
-        if
-          #token_types.env == 0
-          and #token_types.script == 0
-          and #token_types.flags == 0
-        then
+        if #token_types.script == 0 then
           return nil
         end
         return token_types
@@ -427,6 +443,7 @@ return {
             local runtimeArgs = vim.tbl_flatten {
               '--inspect-brk',
               script_tokens.script,
+              script_tokens.command,
               script_tokens.flags,
               '--runInBand',
               '--no-coverage',
@@ -434,8 +451,7 @@ return {
               '--watchAll=false',
               '--testNamePattern',
               '$result',
-              '--',
-              '$file',
+              script_tokens.args,
             }
 
             require('tap.utils').logger.info(
