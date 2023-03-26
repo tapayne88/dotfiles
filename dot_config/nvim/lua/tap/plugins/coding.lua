@@ -162,6 +162,8 @@ return {
       'mfussenegger/nvim-dap',
     },
     init = function()
+      -- Map of test executable to node_modules path which can be passed to node
+      -- It also describes how arguments are passed to the script
       local script_name_map = {
         ['jest'] = {
           {
@@ -175,12 +177,14 @@ return {
             args = { '$file' },
           },
           {
+            -- fork of react-scripts
             executable = './node_modules/@anaplan/react-scripts/bin/react-scripts.js',
             args = { '$file' },
           },
         },
       }
 
+      -- Detect if token is an environment variable
       local is_env_var = function(token)
         if token:match '^[A-Z_]+=' then
           return true
@@ -188,6 +192,7 @@ return {
         return false
       end
 
+      -- Detect if token is a command flag
       local is_flag = function(token)
         if token:match '^%-%-[%w-]+' then
           return true
@@ -195,7 +200,8 @@ return {
         return false
       end
 
-      local get_runtime = function(token, cwd)
+      -- Attempt to get the node_modules script path for the token
+      local get_executable_path = function(token, cwd)
         for script_name, script_paths in pairs(script_name_map) do
           if token == script_name then
             for _, script in ipairs(script_paths) do
@@ -209,7 +215,9 @@ return {
         return nil
       end
 
-      local get_runtime_args = function(pkg_script, cwd)
+      -- Parse the script's tokens into their different types
+      -- i.e. env var, flag, executable, etc.
+      local parse_test_script = function(pkg_script, cwd)
         local token_types = {
           env = {},
           script = {},
@@ -218,13 +226,14 @@ return {
           args = {},
         }
 
+        -- Split script into tokens separated by spaces
         for token in pkg_script:gmatch '[^%s]+' do
           if is_env_var(token) then
             table.insert(token_types.env, token)
           elseif is_flag(token) then
             table.insert(token_types.flags, token)
           else
-            local runtime = get_runtime(token, cwd)
+            local runtime = get_executable_path(token, cwd)
 
             if runtime ~= nil then
               table.insert(token_types.script, runtime.executable)
@@ -235,6 +244,8 @@ return {
           end
         end
 
+        -- If we haven't been able to match the script name to executable path
+        -- then abort
         if #token_types.script == 0 then
           return nil
         end
@@ -298,7 +309,7 @@ return {
 
             -- 4. Convert executable to .js source file
             local script_tokens =
-              get_runtime_args(test_script, package_json_dir)
+              parse_test_script(test_script, package_json_dir)
 
             if script_tokens == nil then
               vim.notify(
