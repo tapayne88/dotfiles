@@ -252,9 +252,8 @@ return {
         return token_types
       end
 
-      require('tap.utils').command {
-        'JesterDebug',
-        function()
+      local test_runner = function(jester_fn)
+        return function()
           require('plenary.async').run(function()
             -- 1. Find nearest package.json
             local file_dir = vim.fn.expand '%:p:h'
@@ -323,7 +322,7 @@ return {
               return
             end
 
-            local runtimeArgs = vim.tbl_flatten {
+            local runtime_args = vim.tbl_flatten {
               '--inspect-brk',
               script_tokens.script,
               script_tokens.command,
@@ -339,14 +338,14 @@ return {
 
             require('tap.utils').logger.info(
               'Running jester.debug with runtimeArgs',
-              runtimeArgs,
+              runtime_args,
               'and env',
               script_tokens.env
             )
 
             -- 5. Run debugger with source file, env vars and args from script
             vim.schedule(function()
-              require('jester').debug {
+              require('jester')[jester_fn] {
                 escape_regex = false,
                 dap = {
                   type = 'pwa-node',
@@ -354,7 +353,7 @@ return {
                   name = 'Debug Jest Tests',
                   -- trace = true, -- include debugger info
                   runtimeExecutable = 'node',
-                  runtimeArgs = runtimeArgs,
+                  runtimeArgs = runtime_args,
                   args = {}, -- override default, causes issues with $file (last arg of runtimeArgs)
                   env = script_tokens.env,
                   sourceMaps = true,
@@ -366,7 +365,16 @@ return {
               }
             end)
           end)
-        end,
+        end
+      end
+
+      require('tap.utils').command {
+        'JesterDebug',
+        test_runner 'debug',
+      }
+      require('tap.utils').command {
+        'JesterDebugFile',
+        test_runner 'debug_file',
       }
     end,
     config = function()
