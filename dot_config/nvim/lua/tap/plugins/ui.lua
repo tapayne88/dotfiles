@@ -125,18 +125,13 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = {
           'alpha',
-          'dap-repl',
-          'dapui_breakpoints',
-          'dapui_console',
-          'dapui_scopes',
-          'dapui_stacks',
-          'dapui_watches',
           'help',
           'lazy',
           'mason',
           'neo-tree',
           'terminal',
           'Trouble',
+          unpack(require('tap.utils').dap_filetypes),
         },
         callback = function()
           vim.b.miniindentscope_disable = true

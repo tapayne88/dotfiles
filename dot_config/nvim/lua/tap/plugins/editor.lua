@@ -397,14 +397,9 @@ return {
         signcolumn = false,
         excluded_filetypes = {
           '',
-          'dap-repl',
-          'dapui_breakpoints',
-          'dapui_console',
-          'dapui_scopes',
-          'dapui_stacks',
-          'dapui_watches',
           'fugitive',
           'git',
+          unpack(require('tap.utils').dap_filetypes),
         },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {

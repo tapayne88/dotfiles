@@ -487,4 +487,14 @@ function M.read_file(path)
   return data
 end
 
+-- Map of DAP buffer filetypes
+M.dap_filetypes = {
+  'dap-repl',
+  'dapui_breakpoints',
+  'dapui_console',
+  'dapui_scopes',
+  'dapui_stacks',
+  'dapui_watches',
+}
+
 return M

@@ -11,14 +11,10 @@ augroup('TapWinResize', {
       local is_dap_ui_running = test_visible_buffers(function(window_info)
         local buffer_filetype =
           vim.api.nvim_buf_get_option(window_info.bufnr, 'filetype')
-        return vim.tbl_contains({
-          'dap-repl',
-          'dapui_breakpoints',
-          'dapui_console',
-          'dapui_scopes',
-          'dapui_stacks',
-          'dapui_watches',
-        }, buffer_filetype)
+        return vim.tbl_contains(
+          require('tap.utils').dap_filetypes,
+          buffer_filetype
+        )
       end)
 
       -- Don't attempt to resize if we're running dap-ui
