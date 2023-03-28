@@ -252,7 +252,7 @@ return {
         return token_types
       end
 
-      local test_runner = function(jester_fn)
+      local test_runner = function(jester_fn, additional_runtime_args)
         return function()
           require('plenary.async').run(function()
             -- 1. Find nearest package.json
@@ -331,8 +331,7 @@ return {
               '--no-coverage',
               '--no-cache',
               '--watchAll=false',
-              '--testNamePattern',
-              '$result',
+              unpack(additional_runtime_args),
               script_tokens.args,
             }
 
@@ -368,13 +367,17 @@ return {
         end
       end
 
+      local test_nearest =
+        test_runner('debug', { '--testNamePattern', '$result' })
+      local test_file = test_runner('debug_file', {})
+
       require('tap.utils').command {
         'JesterDebug',
-        test_runner 'debug',
+        test_nearest,
       }
       require('tap.utils').command {
         'JesterDebugFile',
-        test_runner 'debug_file',
+        test_file,
       }
     end,
     config = function()
