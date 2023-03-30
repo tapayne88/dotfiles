@@ -27,10 +27,7 @@ return {
     lazy = true,
     dependencies = {
       'microsoft/vscode-js-debug',
-      -- Pinned to version as build step was refactored and output changed (also
-      -- doesn't seem to work)
-      commit = '581f6451f6b5ed187ffa579623df19ff82d1476f',
-      build = 'npm install --legacy-peer-deps && npm run compile',
+      build = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out',
     },
     config = function()
       local log_file_path = vim.fn.stdpath 'cache' .. '/dap_vscode_js.log' -- Path for file logging
