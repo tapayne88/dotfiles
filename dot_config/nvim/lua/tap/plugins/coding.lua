@@ -352,12 +352,13 @@ return {
               '--no-coverage',
               '--no-cache',
               '--watchAll=false',
-              unpack(additional_runtime_args),
+              additional_runtime_args,
               script_tokens.args,
             }
 
             require('tap.utils').logger.info(
-              'Running jester.debug with runtimeArgs',
+              '[jester] Running jester.' .. jester_fn,
+              'with runtimeArgs,',
               runtime_args,
               'and env',
               script_tokens.env
