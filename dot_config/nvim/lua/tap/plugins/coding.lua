@@ -247,9 +247,9 @@ return {
         -- If we haven't been able to match the script name to executable path
         -- then abort
         if #token_types.script == 0 then
-          return nil
+          return false, token_types
         end
-        return token_types
+        return true, token_types
       end
 
       local test_runner = function(jester_fn, additional_runtime_args)
@@ -287,6 +287,13 @@ return {
                 vim.log.levels.INFO,
                 { title = 'jester' }
               )
+              require('tap.utils').logger.info(
+                string.format(
+                  '[jester] Parsed content of %s: %s',
+                  package_json_filepath,
+                  package_json
+                )
+              )
               return
             end
 
@@ -299,18 +306,25 @@ return {
                 vim.log.levels.INFO,
                 { title = 'jester' }
               )
+              require('tap.utils').logger.info(
+                string.format(
+                  '[jester] Parsed content of %s: %s',
+                  package_json_filepath,
+                  package_json
+                )
+              )
               return
             end
 
             require('tap.utils').logger.info(
-              string.format('Found test script `%s`', test_script)
+              string.format('[jester] Found test script `%s`', test_script)
             )
 
             -- 4. Convert executable to .js source file
-            local script_tokens =
+            local successfully_parsed, script_tokens =
               parse_test_script(test_script, package_json_dir)
 
-            if script_tokens == nil then
+            if not successfully_parsed then
               vim.notify(
                 string.format(
                   'Could not determine test arguments for script `%s`',
@@ -318,6 +332,13 @@ return {
                 ),
                 vim.log.levels.INFO,
                 { title = 'jester' }
+              )
+              require('tap.utils').logger.info(
+                string.format(
+                  '[jester] Could not determine test arguments for script `%s`, found %s',
+                  test_script,
+                  script_tokens
+                )
               )
               return
             end
