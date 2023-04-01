@@ -33,21 +33,10 @@ function M.notify_in_debug(msg, level, opts)
 end
 
 -- Setup logger
-local plugin = 'tap-lua'
-
-M.notify_in_debug(
-  -- Copied from https://github.com/nvim-lua/plenary.nvim/blob/253d34830709d690f013daf2853a9d21ad7accab/lua/plenary/log.lua#L57
-  string.format(
-    '%s/%s.log',
-    vim.api.nvim_call_function('stdpath', { 'cache' }),
-    plugin
-  ),
-  vim.log.levels.DEBUG,
-  { title = plugin }
-)
+M.logger_scope = 'tap-lua'
 
 M.logger = log.new {
-  plugin = plugin,
+  plugin = M.logger_scope,
   level = M.debug_enabled() and 'debug' or 'warn',
 }
 
