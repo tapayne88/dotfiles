@@ -7,6 +7,7 @@ return {
   },
   config = function()
     require('mason').setup()
+
     require 'tap.plugins.mason.registry'
   end,
 }

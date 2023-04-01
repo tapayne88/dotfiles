@@ -14,25 +14,41 @@ function M.getenv_bool(env_var)
   return vim.tbl_contains({ 'true', '1' }, value:lower())
 end
 
+---Detect if DEBUG environment variable is set and is truthy
+---@return boolean
+function M.debug_enabled()
+  return M.getenv_bool 'DEBUG'
+end
+
+---Wrapper around vim.notify to log when DEBUG is enabled
+---@param msg string Content of the notification to show to the user.
+---@param level number|nil One of the values from |vim.log.levels|.
+---@param opts table|nil Optional parameters. Unused by default.
+function M.notify_in_debug(msg, level, opts)
+  vim.schedule(function()
+    if M.debug_enabled() then
+      vim.notify(msg, level, opts)
+    end
+  end)
+end
+
 -- Setup logger
 local plugin = 'tap-lua'
-local DEBUG = M.getenv_bool 'DEBUG'
 
-vim.schedule(function()
-  if DEBUG then
-    vim.notify(
-      string.format(
-        '%s/%s.log',
-        vim.api.nvim_call_function('stdpath', { 'cache' }),
-        plugin
-      )
-    )
-  end
-end)
+M.notify_in_debug(
+  -- Copied from https://github.com/nvim-lua/plenary.nvim/blob/253d34830709d690f013daf2853a9d21ad7accab/lua/plenary/log.lua#L57
+  string.format(
+    '%s/%s.log',
+    vim.api.nvim_call_function('stdpath', { 'cache' }),
+    plugin
+  ),
+  vim.log.levels.DEBUG,
+  { title = plugin }
+)
 
 M.logger = log.new {
   plugin = plugin,
-  level = DEBUG and 'debug' or 'warn',
+  level = M.debug_enabled() and 'debug' or 'warn',
 }
 
 ---@module 'tap.utils.lsp'
@@ -273,7 +289,7 @@ end
 
 -- Convenience for making commands
 -- ```lua
---    command({"name", function() {...})
+--    command({"name", function() ... end})
 -- ```
 ---@param args table
 function M.command(args)
@@ -400,7 +416,6 @@ function M.root_pattern(patterns)
       return nil
     end
     local res = require('plenary.scandir').scan_dir(
-
       start,
       { search_pattern = patterns, hidden = true, add_dirs = true, depth = 1 }
     )
@@ -435,5 +450,51 @@ function M.check_file_minified(filepath)
   end
   return false
 end
+
+---Test visible buffers with passed function
+---@param test_fn fun(tbl: {bufnr: number}): boolean
+---@return boolean has the condition returned true for a visible buffer
+function M.test_visible_buffers(test_fn)
+  for _, buffer in ipairs(vim.fn.getwininfo()) do
+    local is_truthy = test_fn(buffer)
+
+    if is_truthy then
+      return true
+    end
+  end
+
+  return false
+end
+
+---Read file contents
+---@param path string
+---@return unknown
+function M.read_file(path)
+  local a = require 'plenary.async'
+
+  local err_open, fd = a.uv.fs_open(path, 'r', 438)
+  assert(not err_open, err_open)
+
+  local err_stat, stat = a.uv.fs_fstat(fd)
+  assert(not err_stat, err_stat)
+
+  local err_read, data = a.uv.fs_read(fd, stat.size, 0)
+  assert(not err_read, err_read)
+
+  local err_close = a.uv.fs_close(fd)
+  assert(not err_close, err_close)
+
+  return data
+end
+
+-- Map of DAP buffer filetypes
+M.dap_filetypes = {
+  'dap-repl',
+  'dapui_breakpoints',
+  'dapui_console',
+  'dapui_scopes',
+  'dapui_stacks',
+  'dapui_watches',
+}
 
 return M

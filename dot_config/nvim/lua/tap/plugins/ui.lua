@@ -5,7 +5,9 @@ return {
     config = function()
       local lsp_symbol = require('tap.utils.lsp').symbol
       local nnoremap = require('tap.utils').nnoremap
-      local lsp_debug_enabled = require('tap.utils.lsp').lsp_debug_enabled
+
+      local debug_enabled = require('tap.utils').debug_enabled()
+        or require('tap.utils.lsp').lsp_debug_enabled()
 
       vim.notify = require 'notify'
 
@@ -17,8 +19,7 @@ return {
           DEBUG = '',
           TRACE = '✎',
         },
-        level = lsp_debug_enabled() and vim.log.levels.DEBUG
-          or vim.log.levels.INFO,
+        level = debug_enabled and vim.log.levels.DEBUG or vim.log.levels.INFO,
       }
 
       nnoremap(
@@ -123,13 +124,15 @@ return {
     },
     config = function(_, opts)
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = {
-          'help',
+        pattern = vim.tbl_flatten {
           'alpha',
-          'neo-tree',
-          'Trouble',
+          'help',
           'lazy',
           'mason',
+          'neo-tree',
+          'terminal',
+          'Trouble',
+          require('tap.utils').dap_filetypes,
         },
         callback = function()
           vim.b.miniindentscope_disable = true
