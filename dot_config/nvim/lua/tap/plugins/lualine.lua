@@ -334,7 +334,7 @@ return {
           section_separators = section_separators,
           globalstatus = true,
           disabled_filetypes = {
-            winbar = {
+            winbar = vim.tbl_flatten {
               'alpha',
               'fugitive',
               'gitcommit',
@@ -342,7 +342,7 @@ return {
               'packer',
               'qf',
               'Trouble',
-              unpack(require('tap.utils').dap_filetypes),
+              require('tap.utils').dap_filetypes,
             },
           },
         },

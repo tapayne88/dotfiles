@@ -395,11 +395,11 @@ return {
     config = function()
       require('focus').setup {
         signcolumn = false,
-        excluded_filetypes = {
+        excluded_filetypes = vim.tbl_flatten {
           '',
           'fugitive',
           'git',
-          unpack(require('tap.utils').dap_filetypes),
+          require('tap.utils').dap_filetypes,
         },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
