@@ -73,20 +73,56 @@ return {
           require('dap').toggle_breakpoint()
         end,
       }
+
+      local vim_ui_input_async = require('plenary.async').wrap(vim.ui.input, 2)
+
+      local breakpoint_condition_msg = 'Breakpoint condition: '
+      local log_point_msg = 'Log point message (interpolate with {foo}): '
+
       require('tap.utils').command {
         'DapConditionalBreakpoint',
         function()
-          require('dap').set_breakpoint(vim.fn.input 'Breakpoint Condition: ')
+          require('plenary.async').run(function()
+            local cond =
+              vim_ui_input_async { prompt = breakpoint_condition_msg }
+            if cond == nil then
+              return
+            end
+
+            require('dap').set_breakpoint(cond)
+          end)
         end,
       }
       require('tap.utils').command {
         'DapLogPoint',
         function()
-          require('dap').set_breakpoint(
-            nil,
-            nil,
-            vim.fn.input 'Log point message: '
-          )
+          require('plenary.async').run(function()
+            local msg = vim_ui_input_async { prompt = log_point_msg }
+            if msg == nil then
+              return
+            end
+
+            require('dap').set_breakpoint(nil, nil, msg)
+          end)
+        end,
+      }
+      require('tap.utils').command {
+        'DapConditionalLogPoint',
+        function()
+          require('plenary.async').run(function()
+            local cond =
+              vim_ui_input_async { prompt = breakpoint_condition_msg }
+            if cond == nil then
+              return
+            end
+
+            local msg = vim_ui_input_async { prompt = log_point_msg }
+            if msg == nil then
+              return
+            end
+
+            require('dap').set_breakpoint(cond, nil, msg)
+          end)
         end,
       }
     end,
