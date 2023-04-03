@@ -185,6 +185,11 @@ return {
 
       dashboard.section.buttons.val = {
         dashboard.button(
+          'p',
+          ' ' .. ' Restore last session',
+          ':lua require("persistence").load()<CR>'
+        ),
+        dashboard.button(
           'r',
           ' ' .. ' Recent files',
           ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'
