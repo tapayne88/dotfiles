@@ -462,4 +462,23 @@ return {
       )
     end,
   },
+
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre', -- this will only start session saving when an actual file was opened
+    config = function()
+      -- Prevent Persistence from saving a session for commit messages
+      require('tap.utils').augroup('TapPersistence', {
+        {
+          events = { 'FileType' },
+          targets = { 'gitcommit' },
+          command = function()
+            require('persistence').stop()
+          end,
+        },
+      })
+
+      require('persistence').setup()
+    end,
+  },
 }
