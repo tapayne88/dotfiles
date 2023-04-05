@@ -473,7 +473,12 @@ return {
           events = { 'FileType' },
           targets = { 'gitcommit' },
           command = function()
-            require('persistence').stop()
+            -- If there is only one buffer open then it's probably a commit
+            -- message instance (which we don't want to save as the directories
+            -- session)
+            if #vim.api.nvim_list_bufs() == 1 then
+              require('persistence').stop()
+            end
           end,
         },
       })
