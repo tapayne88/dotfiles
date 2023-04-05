@@ -242,7 +242,7 @@ return {
     init = function()
       require('tap.utils').nnoremap(
         '<leader>ex',
-        ':Neotree reveal<CR>',
+        ':Neotree toggle current<CR>',
         { description = 'Open neotree at current file' }
       )
     end,
