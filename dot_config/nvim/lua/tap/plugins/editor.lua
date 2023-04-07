@@ -462,4 +462,53 @@ return {
       )
     end,
   },
+
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre', -- this will only start session saving when an actual file was opened
+    config = function()
+      -- Prevent Persistence from saving a session for commit messages
+      require('tap.utils').augroup('TapPersistence', {
+        {
+          events = { 'FileType' },
+          targets = { 'gitcommit' },
+          command = function()
+            -- If there is only one buffer open then it's probably a commit
+            -- message instance (which we don't want to save as the directories
+            -- session)
+            if #vim.api.nvim_list_bufs() == 1 then
+              require('persistence').stop()
+            end
+          end,
+        },
+      })
+
+      local excluded_filetypes = { 'fugitive' }
+
+      require('persistence').setup {
+        -- Close excluded filetype buffers before saving the session
+        pre_save = function()
+          for _, buf_hndl in ipairs(vim.api.nvim_list_bufs()) do
+            -- Filter for loaded buffers
+            if vim.api.nvim_buf_is_loaded(buf_hndl) then
+              if
+                vim.tbl_contains(
+                  excluded_filetypes,
+                  vim.api.nvim_buf_get_option(buf_hndl, 'filetype')
+                )
+              then
+                require('tap.utils').logger.info(
+                  string.format(
+                    '[persistence.nvim] Deleting buffer %s before saving session',
+                    vim.api.nvim_buf_get_name(buf_hndl)
+                  )
+                )
+                vim.api.nvim_buf_delete(buf_hndl, {})
+              end
+            end
+          end
+        end,
+      }
+    end,
+  },
 }
