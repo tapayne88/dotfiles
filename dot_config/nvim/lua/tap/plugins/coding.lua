@@ -142,7 +142,7 @@ return {
   -- The interactive scratchpad for hackers
   {
     'metakirby5/codi.vim',
-    config = function()
+    init = function()
       require('tap.utils.lsp').ensure_installed {
         'tsun',
       }
