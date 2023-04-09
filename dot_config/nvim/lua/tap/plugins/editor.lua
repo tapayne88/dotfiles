@@ -397,8 +397,10 @@ return {
         signcolumn = false,
         excluded_filetypes = vim.tbl_flatten {
           '',
+          'diff',
           'fugitive',
           'git',
+          'undotree',
           require('tap.utils').dap_filetypes,
         },
       }
@@ -509,6 +511,15 @@ return {
           end
         end,
       }
+    end,
+  },
+
+  {
+    'mbbill/undotree',
+    config = function()
+      require('tap.utils').keymap('n', '<leader>u', vim.cmd.UndotreeToggle)
+
+      vim.opt.undofile = true
     end,
   },
 }
