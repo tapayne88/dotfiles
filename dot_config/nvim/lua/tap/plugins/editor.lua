@@ -485,7 +485,10 @@ return {
         },
       })
 
-      local excluded_filetypes = { 'fugitive' }
+      local excluded_filetypes = {
+        'fugitive', -- git status with fugitive (causes errors when restored)
+        'git', -- git push / fetch with fugitive and pushed into buffer with ctrl-d
+      }
 
       require('persistence').setup {
         -- Close excluded filetype buffers before saving the session
