@@ -551,4 +551,33 @@ return {
       }
     end,
   },
+
+  {
+    'lewis6991/hover.nvim',
+    lazy = true,
+    init = function()
+      require('tap.utils').keymap('n', 'K', function()
+        return require('hover').hover()
+      end, { description = 'hover.nvim' })
+      require('tap.utils').keymap('n', 'gK', function()
+        return require('hover').hover_select()
+      end, { description = 'hover.nvim (select)' })
+    end,
+    config = function()
+      require('hover').setup {
+        init = function()
+          require 'hover.providers.lsp'
+          require 'hover.providers.man'
+          require 'hover.providers.dictionary'
+        end,
+        preview_opts = {
+          border = 'rounded',
+        },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = false,
+        title = true,
+      }
+    end,
+  },
 }

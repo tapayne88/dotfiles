@@ -64,11 +64,6 @@ local function on_attach(_, bufnr)
     with_opts 'Go to implementation'
   )
   nnoremap(
-    'K',
-    '<cmd>lua vim.lsp.buf.hover()<CR>',
-    with_opts 'Show hover information'
-  )
-  nnoremap(
     '<leader>ac',
     '<cmd>lua vim.lsp.buf.code_action()<CR>',
     with_opts 'Show code actions'
