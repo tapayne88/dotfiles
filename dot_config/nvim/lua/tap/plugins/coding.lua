@@ -28,7 +28,6 @@ return {
     event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'onsails/lspkind-nvim',
@@ -38,7 +37,6 @@ return {
     },
     config = function()
       local cmp = require 'cmp'
-      local lspkind = require 'lspkind'
 
       local WIDE_HEIGHT = 40
 
@@ -66,7 +64,6 @@ return {
 
         sources = {
           { name = 'nvim_lsp' },
-          { name = 'nvim_lua' },
           { name = 'path' },
           { name = 'buffer' },
           { name = 'luasnip' },
@@ -74,11 +71,10 @@ return {
         },
 
         formatting = {
-          format = lspkind.cmp_format {
+          format = require('lspkind').cmp_format {
             with_text = true,
             menu = {
               nvim_lsp = '[LSP]',
-              nvim_lua = '[api]',
               path = '[path]',
               buffer = '[buf]',
               luasnip = '[snip]',
