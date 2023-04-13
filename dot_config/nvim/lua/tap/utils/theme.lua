@@ -22,18 +22,15 @@ end
 local set_dark = function()
   vim.g.use_light_theme = false
 
-  vim.g.nord_italic = true
-  vim.g.nord_borders = true
-  vim.g.nord_uniform_diff_background = true
   vim.o.background = 'dark'
-  vim.cmd [[colorscheme nord]]
+  vim.cmd [[colorscheme catppuccin-frappe]]
 end
 
 local set_light = function()
   vim.g.use_light_theme = true
 
   vim.o.background = 'light'
-  vim.cmd [[colorscheme tokyonight]]
+  vim.cmd [[colorscheme catppuccin-latte]]
 end
 
 function M.set_colorscheme(theme_future, opts)
