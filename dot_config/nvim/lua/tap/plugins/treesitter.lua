@@ -16,7 +16,6 @@ return {
           'dockerfile',
           'go',
           'graphql',
-          'help',
           'html',
           'java',
           'javascript',
@@ -37,6 +36,7 @@ return {
           'tsx',
           'typescript',
           'vim',
+          'vimdoc',
           'yaml',
         },
         highlight = {
