@@ -85,8 +85,8 @@ setup_colors
 KITTY_THEME_DARK="Catppuccin-Frappe"
 KITTY_THEME_LIGHT="Catppuccin-Latte"
 
-BAT_THEME_DARK="Nord"
-BAT_THEME_LIGHT="base16"
+BAT_THEME_DARK="Catppuccin-frappe"
+BAT_THEME_LIGHT="Catppuccin-latte"
 
 ###########
 # Helpers #
