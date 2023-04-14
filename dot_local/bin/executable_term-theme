@@ -85,6 +85,9 @@ setup_colors
 THEME_DARK="nord"
 THEME_LIGHT="tokyonight_day"
 
+KITTY_THEME_DARK="Nord"
+KITTY_THEME_LIGHT="Tokyo Night Day"
+
 BAT_THEME_DARK="Nord"
 BAT_THEME_LIGHT="base16"
 
@@ -103,9 +106,8 @@ set_kitty_theme() {
     msg "${YELLOW}   unsupported terminal${NOFORMAT}\nSupport for colour scheme changing is only available in kitty"
   else
     local THEME
-    [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
-    echo "include $THEME.conf" > "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
-    kitty @ --to "$KITTY_LISTEN_ON" set-colors "$XDG_CONFIG_HOME/kitty/colors/theme.conf"
+    [ "$1" = "dark" ] && THEME="$KITTY_THEME_DARK" || THEME="$KITTY_THEME_LIGHT"
+    kitty +kitten themes --reload-in all --config-file-name theme.conf "$THEME"
   fi
 }
 
@@ -153,7 +155,7 @@ command_echo() {
 
   if [ "$THEME" = "" ]; then
     die "no theme set, try running \`term-theme dark\` or \`term-theme light\`"
-  elif [ "$THEME" = "nord" ]; then
+  elif [ "$THEME" = "$THEME_DARK" ]; then
     echo "dark"
   else
     echo "light"

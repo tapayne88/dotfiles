@@ -14,7 +14,7 @@ linux_display_server x11
 ##########
 # Colors #
 ##########
-include colors/theme.conf
+include theme.conf
 
 #########
 # Fonts #
@@ -25,10 +25,7 @@ font_size   {{ .terminal_font_size }}
 #############
 # Behaviour #
 #############
-allow_remote_control                yes
-listen_on                           unix:/tmp/mykitty
 cursor_shape                        block
-cursor_text_color                   background
 cursor_blink_interval               0
 disable_ligatures                   cursor
 scrollback_lines                    0
