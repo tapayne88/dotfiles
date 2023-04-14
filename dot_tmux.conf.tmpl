@@ -22,11 +22,12 @@ set -g focus-events on
 # Source local config file - if it exists
 source-file -q "$HOME/.tmux.local.conf"
 
-# Unset theme should defualt to nord
+# Unset theme should defualt to dark 
 if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
   source-file -q "$HOME/.tmux/tmux_tokyonight_day.conf"
 } {
   source-file -q "$HOME/.tmux/tmux_nord.conf"
+  source-file -q "$HOME/.tmux/theme.conf"
 }
 
 # New window at current path
