@@ -82,9 +82,6 @@ setup_colors
 # Constants #
 #############
 
-THEME_DARK="nord"
-THEME_LIGHT="tokyonight_day"
-
 KITTY_THEME_DARK="Nord"
 KITTY_THEME_LIGHT="Tokyo Night Day"
 
@@ -97,7 +94,7 @@ BAT_THEME_LIGHT="base16"
 
 set_theme() {
   local THEME
-  [ "$1" = "dark" ] && THEME="$THEME_DARK" || THEME="$THEME_LIGHT"
+  [ "$1" = "dark" ] && THEME="dark" || THEME="light"
   echo "$THEME" > "$THEME_FNAME"
 }
 
@@ -155,11 +152,8 @@ command_echo() {
 
   if [ "$THEME" = "" ]; then
     die "no theme set, try running \`term-theme dark\` or \`term-theme light\`"
-  elif [ "$THEME" = "$THEME_DARK" ]; then
-    echo "dark"
-  else
-    echo "light"
   fi
+  echo "$THEME"
 }
 
 command_toggle() {
