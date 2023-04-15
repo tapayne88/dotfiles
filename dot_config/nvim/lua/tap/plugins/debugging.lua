@@ -129,25 +129,25 @@ return {
     config = function()
       vim.fn.sign_define('DapBreakpoint', {
         text = '',
-        texthl = 'DiagnosticSignError',
+        texthl = 'DapBreakpoint',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapBreakpointCondition', {
         text = '',
-        texthl = 'DiagnosticSignWarn',
+        texthl = 'DapBreakpointCondition',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapLogPoint', {
-        text = '',
-        texthl = 'DiagnosticSignHint',
+        text = '◆',
+        texthl = 'DapLogPoint',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapBreakpointRejected', {
         text = '',
-        texthl = 'DiagnosticSignError',
+        texthl = 'DapBreakpoint',
         linehl = '',
         numhl = '',
       })

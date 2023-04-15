@@ -5,10 +5,39 @@ return {
     name = 'catppuccin',
     opts = {
       integrations = {
+        cmp = true,
+        dap = {
+          enabled = true,
+          enable_ui = true,
+        },
+        gitsigns = true,
+        illuminate = true,
+        lsp_trouble = true,
+        mason = true,
+        neotree = true,
+        native_lsp = {
+          enabled = true,
+          virtual_text = {
+            errors = { 'italic' },
+            hints = { 'italic' },
+            warnings = { 'italic' },
+            information = { 'italic' },
+          },
+          underlines = {
+            errors = { 'underline' },
+            hints = { 'underline' },
+            warnings = { 'underline' },
+            information = { 'underline' },
+          },
+        },
         navic = {
           enabled = true,
           custom_bg = '#292c3c',
         },
+        notify = true,
+        telescope = true,
+        treesitter = true,
+        which_key = true,
       },
     },
   },
