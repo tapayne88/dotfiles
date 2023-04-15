@@ -184,12 +184,16 @@ return {
             fmt = function()
               return ' '
             end,
-            color = { gui = 'reverse' },
             padding = 0,
           },
           {
             'mode',
-            fmt = string.lower,
+            fmt = function(...)
+              -- Reset the highlight for the section separator so it aligns with
+              -- { gui = 'reverse' } of the component
+              return string.lower(...) .. '%#lualine_c_normal#'
+            end,
+            color = { gui = 'reverse' },
           },
         },
         lualine_b = { { 'branch', icon = '' } },
