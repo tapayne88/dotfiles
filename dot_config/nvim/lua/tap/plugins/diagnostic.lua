@@ -54,62 +54,27 @@ return {
       vim.diagnostic.goto_next { float = false }
     end, { description = 'Jump to next diagnostic' })
 
-    ----------------
-    -- Highlights --
-    ----------------
-    require('tap.utils').apply_user_highlights(
-      'UtilsLsp',
-      function(highlight, _, lsp_color)
-        highlight('DiagnosticUnderlineError', {
-          guifg = 'none',
-          gui = 'undercurl',
-          guisp = lsp_color 'error',
-        })
-        highlight('DiagnosticUnderlineWarn', {
-          guifg = 'none',
-          gui = 'undercurl',
-          guisp = lsp_color 'warning',
-        })
-        highlight('DiagnosticUnderlineInfo', {
-          guifg = 'none',
-          gui = 'undercurl',
-          guisp = lsp_color 'info',
-        })
-        highlight('DiagnosticUnderlineHint', {
-          guifg = 'none',
-          gui = 'undercurl',
-          guisp = lsp_color 'hint',
-        })
+    -----------
+    -- Signs --
+    -----------
+    local signs = {
+      Error = {
+        icon = lsp_symbol 'error',
+      },
+      Warn = {
+        icon = lsp_symbol 'warning',
+      },
+      Hint = {
+        icon = lsp_symbol 'hint',
+      },
+      Info = {
+        icon = lsp_symbol 'info',
+      },
+    }
 
-        local signs = {
-          Error = {
-            guifg = lsp_color 'error',
-            icon = lsp_symbol 'error',
-          },
-          Warn = {
-            guifg = lsp_color 'warning',
-            icon = lsp_symbol 'warning',
-          },
-          Hint = {
-            guifg = lsp_color 'hint',
-            icon = lsp_symbol 'hint',
-          },
-          Info = {
-            guifg = lsp_color 'info',
-            icon = lsp_symbol 'info',
-          },
-        }
-
-        for type, config in pairs(signs) do
-          local hl = 'DiagnosticSign' .. type
-          highlight(hl, { guifg = config.guifg })
-          vim.fn.sign_define(
-            hl,
-            { text = config.icon, texthl = hl, numhl = '' }
-          )
-        end
-      end,
-      { force = true }
-    )
+    for type, config in pairs(signs) do
+      local hl = 'DiagnosticSign' .. type
+      vim.fn.sign_define(hl, { text = config.icon, texthl = hl, numhl = '' })
+    end
   end,
 }
