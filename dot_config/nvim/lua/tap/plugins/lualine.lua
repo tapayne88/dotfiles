@@ -303,9 +303,6 @@ return {
             guibg = lsp_color 'ok',
             guifg = color { dark = 'nord3_gui', light = 'fg' },
           })
-          highlight('NavicSeparator', {
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
 
           local theme_name = vim.g.colors_name
           local theme = theme_name == 'nord' and nord_theme or theme_name
@@ -355,32 +352,32 @@ return {
         winbar = {
           lualine_a = {
             {
+              literal '  ',
+              cond = function()
+                -- navic is lazy and loaded only when an LSP supports the correct capabilities
+                return package.loaded['nvim-navic']
+                  and require('nvim-navic').is_available()
+              end,
+            },
+          },
+          lualine_b = {},
+          lualine_c = {
+            {
               function()
-                local breadcrumb = require('nvim-navic').get_location {
+                local loc = require('nvim-navic').get_location {
                   highlight = true,
                 }
-
-                return table.concat {
-                  ' ',
-                  breadcrumb == '' and '' or ' ',
-                  breadcrumb,
-                  -- lualine doesn't seem to like it when the content contains
-                  -- highlighting patterns so reset back to section highlight so
-                  -- separator has correct highlight
-                  -- TODO: Fix this as the color of the  is subtly off
-                  '%#lualine_a_normal#',
-                }
+                -- Need to append lualine_c_normal highlight to avoid a gap of
+                -- bg=NONE, not sure where this is coming from
+                return loc .. '%#lualine_c_normal#'
               end,
               cond = function()
                 -- navic is lazy and loaded only when an LSP supports the correct capabilities
                 return package.loaded['nvim-navic']
                   and require('nvim-navic').is_available()
               end,
-              color = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
             },
           },
-          lualine_b = {},
-          lualine_c = {},
           lualine_x = {},
           lualine_y = winbar_y,
           lualine_z = { filetype_icon_only },

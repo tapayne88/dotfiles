@@ -1,6 +1,17 @@
 -- treesitter colorschemes
 return {
-  { 'catppuccin/nvim', name = 'catppuccin' },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    opts = {
+      integrations = {
+        navic = {
+          enabled = true,
+          custom_bg = '#292c3c',
+        },
+      },
+    },
+  },
 
   {
     'shaunsingh/nord.nvim',
