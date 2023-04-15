@@ -284,37 +284,28 @@ return {
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
 
-      require('tap.utils').apply_user_highlights(
-        'Lualine',
-        function(highlight, _, lsp_color)
-          highlight('LualineDiagnosticError', {
-            guibg = lsp_color 'error',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-          highlight('LualineDiagnosticWarn', {
-            guibg = lsp_color 'warning',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-          highlight('LualineDiagnosticHint', {
-            guibg = lsp_color 'hint',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-          highlight('LualineDiagnosticInfo', {
-            guibg = lsp_color 'info',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-          highlight('LualineDiagnosticOk', {
-            guibg = lsp_color 'ok',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-
-          local theme_name = vim.g.colors_name
-          local theme = theme_name == 'nord' and nord_theme or theme_name
-          if theme then
-            require('lualine').setup { options = { theme = theme } }
-          end
-        end
-      )
+      require('tap.utils').apply_user_highlights('Lualine', function(highlight)
+        highlight('LualineDiagnosticError', {
+          guibg = highlight_group_attrs('DiagnosticError').guifg,
+          guifg = highlight_group_attrs('lualine_c_normal').guibg,
+        })
+        highlight('LualineDiagnosticWarn', {
+          guibg = highlight_group_attrs('DiagnosticWarn').guifg,
+          guifg = highlight_group_attrs('lualine_c_normal').guibg,
+        })
+        highlight('LualineDiagnosticHint', {
+          guibg = highlight_group_attrs('DiagnosticHint').guifg,
+          guifg = highlight_group_attrs('lualine_c_normal').guibg,
+        })
+        highlight('LualineDiagnosticInfo', {
+          guibg = highlight_group_attrs('DiagnosticInfo').guifg,
+          guifg = highlight_group_attrs('lualine_c_normal').guibg,
+        })
+        highlight('LualineDiagnosticOk', {
+          guibg = highlight_group_attrs('DiagnosticOk').guifg,
+          guifg = highlight_group_attrs('lualine_c_normal').guibg,
+        })
+      end)
 
       local winbar_y = {
         modified,
