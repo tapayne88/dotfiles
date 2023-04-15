@@ -7,46 +7,10 @@ return {
       'kyazdani42/nvim-web-devicons',
     },
     config = function()
-      local color = require('tap.utils').color
       local lsp_symbol = require('tap.utils.lsp').symbol
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
       local require_plugin = require('tap.utils').require_plugin
       local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
-
-      local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
-      local nord_theme_c = { bg = color 'nord2_gui', fg = color 'nord4_gui' }
-      local nord_theme = {
-        normal = {
-          a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        insert = {
-          a = { bg = color 'nord0_gui', fg = color 'nord4_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        visual = {
-          a = { bg = color 'nord0_gui', fg = color 'nord7_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        replace = {
-          a = { bg = color 'nord0_gui', fg = color 'nord13_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        command = {
-          a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        inactive = {
-          a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
-          b = nord_theme_b,
-          c = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-        },
-      }
 
       local conditions = {
         has_lsp = function()
