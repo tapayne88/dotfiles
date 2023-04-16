@@ -152,12 +152,9 @@ return {
           },
           {
             'mode',
-            fmt = function(...)
-              -- Reset the highlight for the section separator so it aligns with
-              -- { gui = 'reverse' } of the component
-              return string.lower(...) .. '%#lualine_c_normal#'
-            end,
+            fmt = string.lower,
             color = { gui = 'reverse' },
+            separator = { '' },
           },
         },
         lualine_b = { { 'branch', icon = '' } },
