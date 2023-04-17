@@ -307,5 +307,25 @@ return {
 
     vim.opt.grepprg =
       table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
+
+    require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
+      hl('TelescopeMatching', { guifg = p.peach })
+
+      hl('TelescopeSelectionCaret', { guifg = p.flamingo, guibg = p.surface1 })
+      hl('TelescopeSelection', { guifg = p.text, guibg = p.surface1 })
+      hl('TelescopeMultiSelection', { guifg = p.text, guibg = p.surface2 })
+
+      hl('TelescopeTitle', { guifg = p.crust, guibg = p.green })
+
+      hl('TelescopePromptBorder', { guifg = p.surface0, guibg = p.surface0 })
+      hl('TelescopePromptTitle', { guifg = p.crust, guibg = p.mauve })
+      hl('TelescopePromptNormal', { guifg = p.flamingo, guibg = p.surface0 })
+
+      hl('TelescopePreviewBorder', { guifg = p.mantle, guibg = p.mantle })
+      hl('TelescopePreviewTitle', { guifg = p.crust, guibg = p.red })
+
+      hl('TelescopeResultsBorder', { guifg = p.mantle, guibg = p.mantle })
+      hl('TelescopeResultsNormal', { guibg = p.mantle })
+    end)
   end,
 }
