@@ -344,9 +344,15 @@ local has_augroup = function(name)
   return augroups:match('%s' .. name .. '%s') ~= nil
 end
 
+local get_catppuccin_palette = function()
+  return require('catppuccin.palettes').get_palette(
+    require('catppuccin').flavour
+  )
+end
+
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(p1: Utils.highlight): nil
+---@param callback fun(p1: Utils.highlight, p2: table): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function M.apply_user_highlights(name, callback, _opts)
@@ -367,12 +373,12 @@ function M.apply_user_highlights(name, callback, _opts)
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
       command = function()
-        callback(M.highlight)
+        callback(M.highlight, get_catppuccin_palette())
       end,
     },
   })
 
-  callback(M.highlight)
+  callback(M.highlight, get_catppuccin_palette())
 end
 
 function M.run(fns)
