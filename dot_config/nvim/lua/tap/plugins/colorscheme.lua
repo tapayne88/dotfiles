@@ -18,12 +18,12 @@ return {
           TelescopePromptTitle = { fg = cp.crust, bg = cp.mauve },
           TelescopePreviewTitle = { fg = cp.crust, bg = cp.red },
 
-          TelescopePromptNormal = { fg = cp.flamingo, bg = cp.surface1 },
-          TelescopeResultsNormal = { bg = cp.surface0 },
+          TelescopePromptNormal = { fg = cp.flamingo, bg = cp.surface0 },
+          TelescopeResultsNormal = { bg = cp.mantle },
 
           TelescopePreviewBorder = { fg = cp.mantle, bg = cp.mantle },
-          TelescopePromptBorder = { fg = cp.surface1, bg = cp.surface1 },
-          TelescopeResultsBorder = { fg = cp.surface0, bg = cp.surface0 },
+          TelescopePromptBorder = { fg = cp.surface0, bg = cp.surface0 },
+          TelescopeResultsBorder = { fg = cp.mantle, bg = cp.mantle },
         }
       end
 
