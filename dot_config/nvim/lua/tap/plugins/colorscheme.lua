@@ -62,7 +62,6 @@ return {
           },
           navic = {
             enabled = true,
-            custom_bg = '#292c3c',
           },
           notify = true,
           telescope = true,
