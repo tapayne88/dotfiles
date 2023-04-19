@@ -19,6 +19,11 @@ return {
         is_wide_window = function()
           return vim.fn.winwidth(0) > 80
         end,
+        is_navic_available = function()
+          -- navic is lazy and loaded only when an LSP supports the correct capabilities
+          return package.loaded['nvim-navic']
+            and require('nvim-navic').is_available()
+        end,
       }
 
       local function literal(str)
@@ -245,28 +250,31 @@ return {
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
 
-      require('tap.utils').apply_user_highlights('Lualine', function(highlight)
-        highlight('LualineDiagnosticError', {
-          guibg = highlight_group_attrs('DiagnosticError').guifg,
-          guifg = highlight_group_attrs('lualine_c_normal').guibg,
-        })
-        highlight('LualineDiagnosticWarn', {
-          guibg = highlight_group_attrs('DiagnosticWarn').guifg,
-          guifg = highlight_group_attrs('lualine_c_normal').guibg,
-        })
-        highlight('LualineDiagnosticHint', {
-          guibg = highlight_group_attrs('DiagnosticHint').guifg,
-          guifg = highlight_group_attrs('lualine_c_normal').guibg,
-        })
-        highlight('LualineDiagnosticInfo', {
-          guibg = highlight_group_attrs('DiagnosticInfo').guifg,
-          guifg = highlight_group_attrs('lualine_c_normal').guibg,
-        })
-        highlight('LualineDiagnosticOk', {
-          guibg = highlight_group_attrs('DiagnosticOk').guifg,
-          guifg = highlight_group_attrs('lualine_c_normal').guibg,
-        })
-      end)
+      require('tap.utils').apply_user_highlights(
+        'Lualine',
+        function(highlight, palette)
+          highlight('LualineDiagnosticError', {
+            guibg = highlight_group_attrs('DiagnosticError').guifg,
+            guifg = palette.mantle,
+          })
+          highlight('LualineDiagnosticWarn', {
+            guibg = highlight_group_attrs('DiagnosticWarn').guifg,
+            guifg = palette.mantle,
+          })
+          highlight('LualineDiagnosticHint', {
+            guibg = highlight_group_attrs('DiagnosticHint').guifg,
+            guifg = palette.mantle,
+          })
+          highlight('LualineDiagnosticInfo', {
+            guibg = highlight_group_attrs('DiagnosticInfo').guifg,
+            guifg = palette.mantle,
+          })
+          highlight('LualineDiagnosticOk', {
+            guibg = highlight_group_attrs('DiagnosticOk').guifg,
+            guifg = palette.mantle,
+          })
+        end
+      )
 
       local winbar_y = {
         modified,
@@ -309,11 +317,7 @@ return {
           lualine_a = {
             {
               literal '  ',
-              cond = function()
-                -- navic is lazy and loaded only when an LSP supports the correct capabilities
-                return package.loaded['nvim-navic']
-                  and require('nvim-navic').is_available()
-              end,
+              cond = conditions.is_navic_available,
             },
           },
           lualine_b = {},
@@ -327,11 +331,7 @@ return {
                 -- bg=NONE, not sure where this is coming from
                 return loc .. '%#lualine_c_normal#'
               end,
-              cond = function()
-                -- navic is lazy and loaded only when an LSP supports the correct capabilities
-                return package.loaded['nvim-navic']
-                  and require('nvim-navic').is_available()
-              end,
+              cond = conditions.is_navic_available,
             },
           },
           lualine_x = {},
@@ -358,6 +358,11 @@ return {
       require('tap.utils').apply_user_highlights('Navic', function(hl, palette)
         local bg = palette.mantle
 
+        -- Set Navic highlights to ensure the bg value updates when the
+        -- colorscheme changes
+        --
+        -- Copy of Navic highlights from
+        -- https://github.com/catppuccin/nvim/blob/fa9a4465672fa81c06b23634c0f04f6a5d622211/lua/catppuccin/groups/integrations/navic.lua
         hl('NavicIconsFile', { guifg = palette.blue, guibg = bg })
         hl('NavicIconsModule', { guifg = palette.blue, guibg = bg })
         hl('NavicIconsNamespace', { guifg = palette.blue, guibg = bg })
