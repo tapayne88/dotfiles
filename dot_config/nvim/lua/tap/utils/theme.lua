@@ -23,14 +23,14 @@ local set_dark = function()
   vim.g.use_light_theme = false
 
   vim.o.background = 'dark'
-  vim.cmd [[colorscheme catppuccin-frappe]]
+  vim.cmd.colorscheme 'catppuccin-frappe'
 end
 
 local set_light = function()
   vim.g.use_light_theme = true
 
   vim.o.background = 'light'
-  vim.cmd [[colorscheme catppuccin-latte]]
+  vim.cmd.colorscheme 'catppuccin-latte'
 end
 
 function M.set_colorscheme(theme_future, opts)
