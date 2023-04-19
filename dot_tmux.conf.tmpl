@@ -24,9 +24,9 @@ source-file -q "$HOME/.tmux.local.conf"
 
 # Unset theme should defualt to dark 
 if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
-  source-file -q "$HOME/.tmux/theme_catppuccin_latte.conf"
+  source-file -q "$HOME/.tmux/themes/catppuccin_latte.conf"
 } {
-  source-file -q "$HOME/.tmux/theme_catppuccin_frappe.conf"
+  source-file -q "$HOME/.tmux/themes/catppuccin_frappe.conf"
 }
 
 source-file -q "$HOME/.tmux/theme.conf"
