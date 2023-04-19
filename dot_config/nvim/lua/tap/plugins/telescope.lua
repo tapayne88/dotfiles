@@ -308,6 +308,7 @@ return {
     vim.opt.grepprg =
       table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
 
+    -- Setup borderless telescope layout
     require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
       hl('TelescopeMatching', { guifg = p.peach })
 
