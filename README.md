@@ -36,7 +36,7 @@ I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage 
 
 ## Colour scheme
 
-Download [Nord theme](https://www.nordtheme.com/) from the website for terminal of choice.
+[Catppuccin](https://github.com/catppuccin) theme for neovim, tmux, kitty, alacritty, etc.
 
 ## [`asdf`](https://asdf-vm.com/#/)
 
