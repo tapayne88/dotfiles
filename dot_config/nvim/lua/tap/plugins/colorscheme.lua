@@ -34,9 +34,10 @@ return {
             information = { 'undercurl' },
           },
         },
-        navic = {
-          enabled = true,
-        },
+        -- Enabled manually in ./lualine.lua
+        -- navic = {
+        --   enabled = true,
+        -- },
         notify = true,
         telescope = true,
         treesitter = true,

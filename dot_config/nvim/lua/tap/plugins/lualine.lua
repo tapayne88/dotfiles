@@ -358,7 +358,7 @@ return {
       require('tap.utils').apply_user_highlights('Navic', function(hl, palette)
         local bg = palette.mantle
 
-        -- Set Navic highlights to ensure the bg value updates when the
+        -- Set Navic highlights manually to ensure the bg value updates when the
         -- colorscheme changes
         --
         -- Copy of Navic highlights from
