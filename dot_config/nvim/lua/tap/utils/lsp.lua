@@ -20,22 +20,6 @@ M.symbol = function(type)
   return symbols[type]
 end
 
----@alias Lsp.color fun(type: lsp_status): string | nil
-
----@type Lsp.color
-M.color = function(type)
-  local color = require('tap.utils').color
-
-  local color_map = {
-    error = color { dark = 'nord11_gui', light = 'red' },
-    warning = color { dark = 'nord13_gui', light = 'yellow' },
-    info = color { dark = 'nord4_gui', light = 'fg' },
-    hint = color { dark = 'nord10_gui', light = 'blue2' },
-    ok = color { dark = 'nord14_gui', light = 'green' },
-  }
-  return color_map[type]
-end
-
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd('LspAttach', {

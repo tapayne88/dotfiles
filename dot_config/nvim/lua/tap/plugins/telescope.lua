@@ -255,11 +255,6 @@ return {
             ['<c-y>'] = yank_selected_entry,
           },
         },
-        borderchars = {
-          prompt = { '█', '▌', '▀', '▐', '▐', '▌', '▘', '▝' },
-          results = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-          preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-        },
         buffer_previewer_maker = buffer_previewer_maker_custom,
         preview = {
           timeout = 100,
@@ -313,46 +308,25 @@ return {
     vim.opt.grepprg =
       table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
 
-    require('tap.utils').apply_user_highlights(
-      'Telescope',
-      function(highlight, color)
-        local border_colors = { dark = 'nord2_gui', light = 'blue0' }
+    -- Setup borderless telescope layout
+    require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
+      hl('TelescopeMatching', { guifg = p.peach })
 
-        highlight('TelescopeBorder', { guifg = color(border_colors) })
-        highlight('TelescopePromptBorder', {
-          guifg = color(border_colors),
-          guibg = color { dark = 'nord0_gui', light = 'none' },
-        })
-        highlight('TelescopePreviewBorder', { guifg = color(border_colors) })
-        highlight('TelescopeResultsBorder', { guifg = color(border_colors) })
+      hl('TelescopeSelectionCaret', { guifg = p.flamingo, guibg = p.surface1 })
+      hl('TelescopeSelection', { guifg = p.text, guibg = p.surface1 })
+      hl('TelescopeMultiSelection', { guifg = p.text, guibg = p.surface2 })
 
-        highlight('TelescopePromptTitle', {
-          guifg = color { dark = 'nord2_gui', light = 'bg' },
-          guibg = color { dark = 'nord7_gui', light = 'none' },
-        })
-        highlight('TelescopePromptNormal', {
-          guifg = color { dark = 'nord4_gui', light = 'fg' },
-          guibg = color(border_colors),
-        })
-        highlight('TelescopePromptCounter', {
-          guifg = color { dark = 'nord5_gui', light = 'fg' },
-          guibg = color(border_colors),
-        })
+      hl('TelescopeTitle', { guifg = p.crust, guibg = p.green })
 
-        highlight('TelescopePreviewTitle', {
-          guifg = color { dark = 'nord2_gui', light = 'bg' },
-          guibg = color { dark = 'nord14_gui', light = 'green' },
-        })
-        highlight('TelescopeResultsTitle', {
-          guifg = color { dark = 'nord4_gui', light = 'fg' },
-          guibg = color { dark = 'nord3_gui', light = 'blue0' },
-        })
+      hl('TelescopePromptBorder', { guifg = p.surface0, guibg = p.surface0 })
+      hl('TelescopePromptTitle', { guifg = p.crust, guibg = p.mauve })
+      hl('TelescopePromptNormal', { guifg = p.flamingo, guibg = p.surface0 })
 
-        highlight(
-          'TelescopeMatching',
-          { guifg = color { dark = 'nord13_gui', light = 'yellow' } }
-        )
-      end
-    )
+      hl('TelescopePreviewBorder', { guifg = p.mantle, guibg = p.mantle })
+      hl('TelescopePreviewTitle', { guifg = p.crust, guibg = p.red })
+
+      hl('TelescopeResultsBorder', { guifg = p.mantle, guibg = p.mantle })
+      hl('TelescopeResultsNormal', { guibg = p.mantle })
+    end)
   end,
 }

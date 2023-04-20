@@ -27,37 +27,6 @@ return {
         ":lua require('notify').dismiss()<CR>",
         { description = 'Clear notifications' }
       )
-
-      require('tap.utils').apply_user_highlights(
-        'NvimNotify',
-        function(highlight, color)
-          -- stylua: ignore start
-          highlight("NotifyERRORBorder", {guifg = color({dark = "nord11_gui", light = "red"})})
-          highlight("NotifyWARNBorder", {guifg = color({dark = "nord13_gui", light = "yellow"})})
-          highlight("NotifyINFOBorder", {guifg = color({dark = "nord10_gui", light = "blue2"})})
-          highlight("NotifyDEBUGBorder", {guifg = color({dark = "nord7_gui", light = "cyan"})})
-          highlight("NotifyTRACEBorder", {guifg = color({dark="nord15_gui", light="purple"})})
-
-          highlight("NotifyERRORIcon", {guifg = color({dark = "nord11_gui", light = "red"})})
-          highlight("NotifyWARNIcon", {guifg = color({dark = "nord13_gui", light = "yellow"})})
-          highlight("NotifyINFOIcon", {guifg = color({dark = "nord10_gui", light = "blue2"})})
-          highlight("NotifyDEBUGIcon", {guifg = color({dark = "nord7_gui", light = "cyan"})})
-          highlight("NotifyTRACEIcon", {guifg = color({dark="nord15_gui", light="purple"})})
-
-          highlight("NotifyERRORTitle", {guifg = color({dark = "nord11_gui", light = "red"})})
-          highlight("NotifyWARNTitle", {guifg = color({dark = "nord13_gui", light = "yellow"})})
-          highlight("NotifyINFOTitle", {guifg = color({dark = "nord10_gui", light = "blue2"})})
-          highlight("NotifyDEBUGTitle", {guifg = color({dark = "nord7_gui", light = "cyan"})})
-          highlight("NotifyTRACETitle", {guifg = color({dark="nord15_gui", light="purple"})})
-          -- stylua: ignore end
-
-          highlight('NotifyERRORBody', { link = 'Normal' })
-          highlight('NotifyWARNBody', { link = 'Normal' })
-          highlight('NotifyINFOBody', { link = 'Normal' })
-          highlight('NotifyDEBUGBody', { link = 'Normal' })
-          highlight('NotifyTRACEBody', { link = 'Normal' })
-        end
-      )
     end,
   },
 
@@ -145,24 +114,7 @@ return {
   {
     'petertriho/nvim-scrollbar',
     init = function()
-      require('tap.utils').apply_user_highlights(
-        'NvimScrollbar',
-        function(_, color, lsp_color)
-          require('scrollbar').setup {
-            handle = {
-              color = color { dark = 'nord1_gui', light = 'bg_highlight' },
-            },
-            marks = {
-              Search = { color = color { dark = 'nord0_gui', light = 'bg' } },
-              Error = { color = lsp_color 'error' },
-              Warn = { color = lsp_color 'warning' },
-              Info = { color = lsp_color 'info' },
-              Hint = { color = lsp_color 'hint' },
-              Misc = { color = color { dark = 'nord15_gui', light = 'purple' } },
-            },
-          }
-        end
-      )
+      require('scrollbar').setup {}
     end,
   },
 

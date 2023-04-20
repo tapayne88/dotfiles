@@ -40,24 +40,6 @@ M.logger = log.new {
   level = M.debug_enabled() and 'debug' or 'warn',
 }
 
----@module 'tap.utils.lsp'
-
----@alias Utils.color fun(_color: string | { light: string, dark: string }): string | nil
-
----@type Utils.color
-function M.color(_color)
-  local color = type(_color) ~= 'table' and { light = _color, dark = _color }
-    or _color
-
-  if vim.g.use_light_theme == true then
-    local tokyo = require('tokyonight.colors').setup { style = 'day' }
-    return tokyo[color.light]
-  else
-    local nord = require 'nord.colors'
-    return nord[color.dark]
-  end
-end
-
 ---Map deeply nested table to single key
 ---```lua
 ---  local tbl = {name = {foo = {1, 2}, bar = {3, 4}}}
@@ -362,9 +344,15 @@ local has_augroup = function(name)
   return augroups:match('%s' .. name .. '%s') ~= nil
 end
 
+local get_catppuccin_palette = function()
+  return require('catppuccin.palettes').get_palette(
+    require('catppuccin').flavour
+  )
+end
+
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(p1: Utils.highlight, p2: Utils.color, p3: Lsp.color): nil
+---@param callback fun(p1: Utils.highlight, p2: table): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function M.apply_user_highlights(name, callback, _opts)
@@ -385,12 +373,12 @@ function M.apply_user_highlights(name, callback, _opts)
       events = { 'VimEnter', 'ColorScheme' },
       targets = { '*' },
       command = function()
-        callback(M.highlight, M.color, require('tap.utils.lsp').color)
+        callback(M.highlight, get_catppuccin_palette())
       end,
     },
   })
 
-  callback(M.highlight, M.color, require('tap.utils.lsp').color)
+  callback(M.highlight, get_catppuccin_palette())
 end
 
 function M.run(fns)

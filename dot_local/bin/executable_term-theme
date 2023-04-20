@@ -82,11 +82,11 @@ setup_colors
 # Constants #
 #############
 
-KITTY_THEME_DARK="Nord"
-KITTY_THEME_LIGHT="Tokyo Night Day"
+KITTY_THEME_DARK="Catppuccin-Frappe"
+KITTY_THEME_LIGHT="Catppuccin-Latte"
 
-BAT_THEME_DARK="Nord"
-BAT_THEME_LIGHT="base16"
+BAT_THEME_DARK="Catppuccin-frappe"
+BAT_THEME_LIGHT="Catppuccin-latte"
 
 ###########
 # Helpers #

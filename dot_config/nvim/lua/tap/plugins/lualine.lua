@@ -7,46 +7,10 @@ return {
       'kyazdani42/nvim-web-devicons',
     },
     config = function()
-      local color = require('tap.utils').color
       local lsp_symbol = require('tap.utils.lsp').symbol
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
       local require_plugin = require('tap.utils').require_plugin
       local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
-
-      local nord_theme_b = { bg = color 'nord1_gui', fg = color 'nord4_gui' }
-      local nord_theme_c = { bg = color 'nord2_gui', fg = color 'nord4_gui' }
-      local nord_theme = {
-        normal = {
-          a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        insert = {
-          a = { bg = color 'nord0_gui', fg = color 'nord4_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        visual = {
-          a = { bg = color 'nord0_gui', fg = color 'nord7_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        replace = {
-          a = { bg = color 'nord0_gui', fg = color 'nord13_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        command = {
-          a = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-          b = nord_theme_b,
-          c = nord_theme_c,
-        },
-        inactive = {
-          a = { bg = color 'nord1_gui', fg = color 'nord4_gui' },
-          b = nord_theme_b,
-          c = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
-        },
-      }
 
       local conditions = {
         has_lsp = function()
@@ -54,6 +18,11 @@ return {
         end,
         is_wide_window = function()
           return vim.fn.winwidth(0) > 80
+        end,
+        is_navic_available = function()
+          -- navic is lazy and loaded only when an LSP supports the correct capabilities
+          return package.loaded['nvim-navic']
+            and require('nvim-navic').is_available()
         end,
       }
 
@@ -184,12 +153,13 @@ return {
             fmt = function()
               return ' '
             end,
-            color = { gui = 'reverse' },
             padding = 0,
           },
           {
             'mode',
             fmt = string.lower,
+            color = { gui = 'reverse' },
+            separator = { '' },
           },
         },
         lualine_b = { { 'branch', icon = '' } },
@@ -282,36 +252,27 @@ return {
 
       require('tap.utils').apply_user_highlights(
         'Lualine',
-        function(highlight, _, lsp_color)
+        function(highlight, palette)
           highlight('LualineDiagnosticError', {
-            guibg = lsp_color 'error',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
+            guibg = highlight_group_attrs('DiagnosticError').guifg,
+            guifg = palette.mantle,
           })
           highlight('LualineDiagnosticWarn', {
-            guibg = lsp_color 'warning',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
+            guibg = highlight_group_attrs('DiagnosticWarn').guifg,
+            guifg = palette.mantle,
           })
           highlight('LualineDiagnosticHint', {
-            guibg = lsp_color 'hint',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
+            guibg = highlight_group_attrs('DiagnosticHint').guifg,
+            guifg = palette.mantle,
           })
           highlight('LualineDiagnosticInfo', {
-            guibg = lsp_color 'info',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
+            guibg = highlight_group_attrs('DiagnosticInfo').guifg,
+            guifg = palette.mantle,
           })
           highlight('LualineDiagnosticOk', {
-            guibg = lsp_color 'ok',
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
+            guibg = highlight_group_attrs('DiagnosticOk').guifg,
+            guifg = palette.mantle,
           })
-          highlight('NavicSeparator', {
-            guifg = color { dark = 'nord3_gui', light = 'fg' },
-          })
-
-          local theme_name = vim.g.colors_name
-          local theme = theme_name == 'nord' and nord_theme or theme_name
-          if theme then
-            require('lualine').setup { options = { theme = theme } }
-          end
         end
       )
 
@@ -329,7 +290,7 @@ return {
 
       require('lualine').setup {
         options = {
-          theme = nord_theme,
+          theme = 'catppuccin',
           component_separators = { left = '', right = '' },
           section_separators = section_separators,
           globalstatus = true,
@@ -355,32 +316,24 @@ return {
         winbar = {
           lualine_a = {
             {
-              function()
-                local breadcrumb = require('nvim-navic').get_location {
-                  highlight = true,
-                }
-
-                return table.concat {
-                  ' ',
-                  breadcrumb == '' and '' or ' ',
-                  breadcrumb,
-                  -- lualine doesn't seem to like it when the content contains
-                  -- highlighting patterns so reset back to section highlight so
-                  -- separator has correct highlight
-                  -- TODO: Fix this as the color of the  is subtly off
-                  '%#lualine_a_normal#',
-                }
-              end,
-              cond = function()
-                -- navic is lazy and loaded only when an LSP supports the correct capabilities
-                return package.loaded['nvim-navic']
-                  and require('nvim-navic').is_available()
-              end,
-              color = { bg = color 'nord0_gui', fg = color 'nord8_gui' },
+              literal '  ',
+              cond = conditions.is_navic_available,
             },
           },
           lualine_b = {},
-          lualine_c = {},
+          lualine_c = {
+            {
+              function()
+                local loc = require('nvim-navic').get_location {
+                  highlight = true,
+                }
+                -- Need to append lualine_c_normal highlight to avoid a gap of
+                -- bg=NONE, not sure where this is coming from
+                return loc .. '%#lualine_c_normal#'
+              end,
+              cond = conditions.is_navic_available,
+            },
+          },
           lualine_x = {},
           lualine_y = winbar_y,
           lualine_z = { filetype_icon_only },
@@ -402,6 +355,43 @@ return {
     dependencies = 'neovim/nvim-lspconfig',
     lazy = true,
     init = function()
+      require('tap.utils').apply_user_highlights('Navic', function(hl, palette)
+        local bg = palette.mantle
+
+        -- Set Navic highlights manually to ensure the bg value updates when the
+        -- colorscheme changes
+        --
+        -- Copy of Navic highlights from
+        -- https://github.com/catppuccin/nvim/blob/fa9a4465672fa81c06b23634c0f04f6a5d622211/lua/catppuccin/groups/integrations/navic.lua
+        hl('NavicIconsFile', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsModule', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsNamespace', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsPackage', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsClass', { guifg = palette.yellow, guibg = bg })
+        hl('NavicIconsMethod', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsProperty', { guifg = palette.green, guibg = bg })
+        hl('NavicIconsField', { guifg = palette.green, guibg = bg })
+        hl('NavicIconsConstructor', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsEnum', { guifg = palette.green, guibg = bg })
+        hl('NavicIconsInterface', { guifg = palette.yellow, guibg = bg })
+        hl('NavicIconsFunction', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsVariable', { guifg = palette.flamingo, guibg = bg })
+        hl('NavicIconsConstant', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsString', { guifg = palette.green, bg = bg })
+        hl('NavicIconsNumber', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsBoolean', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsArray', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsObject', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsKey', { guifg = palette.pink, bg = bg })
+        hl('NavicIconsNull', { guifg = palette.peach, guibg = bg })
+        hl('NavicIconsEnumMember', { guifg = palette.red, guibg = bg })
+        hl('NavicIconsStruct', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsEvent', { guifg = palette.blue, guibg = bg })
+        hl('NavicIconsOperator', { guifg = palette.sky, guibg = bg })
+        hl('NavicIconsTypeParameter', { guifg = palette.blue, guibg = bg })
+        hl('NavicText', { guifg = palette.teal, guibg = bg })
+        hl('NavicSeparator', { guifg = palette.text, guibg = bg })
+      end)
       require('tap.utils.lsp').on_attach(function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
           require('nvim-navic').attach(client, bufnr)
