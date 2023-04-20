@@ -6,43 +6,44 @@ return {
     'nvim-lua/plenary.nvim',
     'rktjmp/fwatch.nvim', -- Utility for watching files
   },
-  opts = {
-    integrations = {
-      cmp = true,
-      dap = {
-        enabled = true,
-        enable_ui = true,
-      },
-      gitsigns = true,
-      illuminate = true,
-      lsp_trouble = true,
-      mason = true,
-      neotree = true,
-      native_lsp = {
-        enabled = true,
-        virtual_text = {
-          errors = { 'italic' },
-          hints = { 'italic' },
-          warnings = { 'italic' },
-          information = { 'italic' },
-        },
-        underlines = {
-          errors = { 'undercurl' },
-          hints = { 'undercurl' },
-          warnings = { 'undercurl' },
-          information = { 'undercurl' },
-        },
-      },
-      navic = {
-        enabled = true,
-      },
-      notify = true,
-      telescope = true,
-      treesitter = true,
-      which_key = true,
-    },
-  },
   config = function()
+    require('catppuccin').setup {
+      integrations = {
+        cmp = true,
+        dap = {
+          enabled = true,
+          enable_ui = true,
+        },
+        gitsigns = true,
+        illuminate = true,
+        lsp_trouble = true,
+        mason = true,
+        neotree = true,
+        native_lsp = {
+          enabled = true,
+          virtual_text = {
+            errors = { 'italic' },
+            hints = { 'italic' },
+            warnings = { 'italic' },
+            information = { 'italic' },
+          },
+          underlines = {
+            errors = { 'undercurl' },
+            hints = { 'undercurl' },
+            warnings = { 'undercurl' },
+            information = { 'undercurl' },
+          },
+        },
+        navic = {
+          enabled = true,
+        },
+        notify = true,
+        telescope = true,
+        treesitter = true,
+        which_key = true,
+      },
+    }
+
     local theme = require 'tap.utils.theme'
 
     theme.set_colorscheme(theme.get_term_theme, { announce = false })
