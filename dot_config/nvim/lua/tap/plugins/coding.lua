@@ -77,13 +77,9 @@ return {
 
         formatting = {
           format = require('lspkind').cmp_format {
-            with_text = true,
-            menu = {
-              nvim_lsp = '[LSP]',
-              path = '[path]',
-              buffer = '[buf]',
-              luasnip = '[snip]',
-              spell = '[spell]',
+            mode = 'symbol_text',
+            symbol_map = {
+              Copilot = '',
             },
           },
         },
