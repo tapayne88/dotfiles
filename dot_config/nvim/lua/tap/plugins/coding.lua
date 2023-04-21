@@ -276,6 +276,22 @@ return {
 
             local package_json = vim.json.decode(package_json_content)
 
+            if not package_json then
+              vim.notify(
+                'Could not parse ' .. package_json_filepath,
+                vim.log.levels.INFO,
+                { title = 'jester' }
+              )
+              require('tap.utils').logger.info(
+                string.format(
+                  '[jester] Raw content of %s: %s',
+                  package_json_filepath,
+                  package_json
+                )
+              )
+              return
+            end
+
             -- 3. Look for test script
             if not package_json.scripts then
               vim.notify(
