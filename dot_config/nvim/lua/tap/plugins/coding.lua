@@ -53,7 +53,11 @@ return {
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.close(),
-          ['<CR>'] = cmp.mapping.confirm(), -- needed to select snippets
+          -- needed to select snippets and copilot
+          ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+          },
         },
 
         snippet = {
@@ -63,6 +67,7 @@ return {
         },
 
         sources = {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'path' },
           { name = 'buffer' },
@@ -424,6 +429,23 @@ return {
         path_to_jest_debug = './node_modules/jest/bin/jest.js',
         terminal_cmd = ':vsplit | terminal', -- used to spawn a terminal for running tests, for debugging refer to nvim-dap's config
       }
+    end,
+  },
+
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    dependencies = {
+      'hrsh7th/nvim-cmp',
+      'zbirenbaum/copilot-cmp',
+    },
+    config = function()
+      require('copilot').setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      }
+      require('copilot_cmp').setup()
     end,
   },
 }
