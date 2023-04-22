@@ -24,6 +24,10 @@ return {
           return package.loaded['nvim-navic']
             and require('nvim-navic').is_available()
         end,
+        is_copilot_available = function()
+          return package.loaded['copilot']
+            and require('copilot.client').buf_is_attached()
+        end,
       }
 
       local function literal(str)
@@ -189,6 +193,20 @@ return {
           },
         },
         lualine_x = {
+          {
+            function()
+              return ''
+            end,
+            separator = {
+              left = section_separators.right,
+              right = section_separators.left,
+            },
+            padding = 0,
+            colored = false,
+            color = 'LualineCopilot',
+            cond = conditions.is_copilot_available,
+          },
+          literal ' ',
           { tscVersion, cond = conditions.is_wide_window },
           diagnostic_section {
             sections = { 'error' },
@@ -273,6 +291,10 @@ return {
             guibg = highlight_group_attrs('DiagnosticOk').guifg,
             guifg = palette.mantle,
           })
+          highlight('LualineCopilot', {
+            guibg = palette.lavender,
+            guifg = palette.mantle,
+          })
         end
       )
 
@@ -282,6 +304,7 @@ return {
       }
       local filetype_icon_only = {
         filetype,
+        colored = false,
         padding = 0,
         fmt = function()
           return ''

@@ -53,7 +53,11 @@ return {
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.close(),
-          ['<CR>'] = cmp.mapping.confirm(), -- needed to select snippets
+          -- needed to select snippets and copilot
+          ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+          },
         },
 
         snippet = {
@@ -63,6 +67,7 @@ return {
         },
 
         sources = {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'path' },
           { name = 'buffer' },
@@ -72,13 +77,9 @@ return {
 
         formatting = {
           format = require('lspkind').cmp_format {
-            with_text = true,
-            menu = {
-              nvim_lsp = '[LSP]',
-              path = '[path]',
-              buffer = '[buf]',
-              luasnip = '[snip]',
-              spell = '[spell]',
+            mode = 'symbol_text',
+            symbol_map = {
+              Copilot = '',
             },
           },
         },
@@ -424,6 +425,61 @@ return {
         path_to_jest_debug = './node_modules/jest/bin/jest.js',
         terminal_cmd = ':vsplit | terminal', -- used to spawn a terminal for running tests, for debugging refer to nvim-dap's config
       }
+    end,
+  },
+
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    dependencies = {
+      'hrsh7th/nvim-cmp',
+      'zbirenbaum/copilot-cmp',
+    },
+    config = function()
+      require('copilot').setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      }
+      require('copilot_cmp').setup()
+
+      local progress_kind_map = {
+        InProgress = 'begin',
+        Normal = 'end',
+        Warning = 'report',
+        [''] = 'report',
+      }
+
+      -- Register for notifications of request status
+      require('copilot.api').register_status_notification_handler(
+        function(status)
+          local client_id = require('copilot.client').id
+          if client_id == nil then
+            return
+          end
+
+          local msg = {
+            token = 'copilot',
+            value = {
+              title = 'copilot',
+              kind = progress_kind_map[status.status],
+              message = status.message,
+            },
+          }
+          local ctx = { client_id = client_id }
+
+          require('tap.utils').logger.info(
+            string.format(
+              '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+              vim.inspect(msg),
+              vim.inspect(ctx)
+            )
+          )
+
+          -- Dispatch request status to fidget.nvim
+          vim.lsp.handlers['$/progress'](nil, msg, ctx)
+        end
+      )
     end,
   },
 }
