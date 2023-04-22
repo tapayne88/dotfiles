@@ -442,6 +442,42 @@ return {
         panel = { enabled = false },
       }
       require('copilot_cmp').setup()
+
+      local progress_kind_map = {
+        InProgress = 'begin',
+        Normal = 'end',
+        Warning = 'report',
+        [''] = 'report',
+      }
+
+      -- Register for notifications of request status
+      require('copilot.api').register_status_notification_handler(
+        function(status)
+          local client_id = require('copilot.client').id
+          if client_id == nil then
+            return
+          end
+
+          local msg = {
+            token = 'copilot',
+            value = {
+              title = 'copilot',
+              kind = progress_kind_map[status.status],
+              message = status.message,
+            },
+          }
+          local ctx = { client_id = client_id }
+
+          require('tap.utils').logger.info(
+            '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+            vim.inspect(msg),
+            vim.inspect(ctx)
+          )
+
+          -- Dispatch request status to fidget.nvim
+          vim.lsp.handlers['$/progress'](nil, msg, ctx)
+        end
+      )
     end,
   },
 }
