@@ -197,8 +197,16 @@ return {
             function()
               return ''
             end,
+            separator = {
+              left = section_separators.right,
+              right = section_separators.left,
+            },
+            padding = 0,
+            colored = false,
+            color = 'LualineCopilot',
             cond = conditions.is_copilot_available,
           },
+          literal ' ',
           { tscVersion, cond = conditions.is_wide_window },
           diagnostic_section {
             sections = { 'error' },
@@ -281,6 +289,10 @@ return {
           })
           highlight('LualineDiagnosticOk', {
             guibg = highlight_group_attrs('DiagnosticOk').guifg,
+            guifg = palette.mantle,
+          })
+          highlight('LualineCopilot', {
+            guibg = palette.lavender,
             guifg = palette.mantle,
           })
         end
