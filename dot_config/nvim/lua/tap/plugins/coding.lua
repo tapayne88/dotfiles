@@ -469,9 +469,11 @@ return {
           local ctx = { client_id = client_id }
 
           require('tap.utils').logger.info(
-            '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
-            vim.inspect(msg),
-            vim.inspect(ctx)
+            string.format(
+              '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+              vim.inspect(msg),
+              vim.inspect(ctx)
+            )
           )
 
           -- Dispatch request status to fidget.nvim
