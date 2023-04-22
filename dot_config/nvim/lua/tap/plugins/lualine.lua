@@ -24,6 +24,10 @@ return {
           return package.loaded['nvim-navic']
             and require('nvim-navic').is_available()
         end,
+        is_copilot_available = function()
+          local client = vim.lsp.get_active_clients({ name = 'copilot' })[1]
+          return client ~= nil
+        end,
       }
 
       local function literal(str)
@@ -189,6 +193,12 @@ return {
           },
         },
         lualine_x = {
+          {
+            function()
+              return ''
+            end,
+            cond = conditions.is_copilot_available,
+          },
           { tscVersion, cond = conditions.is_wide_window },
           diagnostic_section {
             sections = { 'error' },
@@ -282,6 +292,7 @@ return {
       }
       local filetype_icon_only = {
         filetype,
+        colored = false,
         padding = 0,
         fmt = function()
           return ''
