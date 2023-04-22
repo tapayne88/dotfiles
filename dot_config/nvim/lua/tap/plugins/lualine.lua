@@ -25,8 +25,8 @@ return {
             and require('nvim-navic').is_available()
         end,
         is_copilot_available = function()
-          local client = vim.lsp.get_active_clients({ name = 'copilot' })[1]
-          return client ~= nil
+          return package.loaded['copilot']
+            and require('copilot.client').buf_is_attached()
         end,
       }
 
