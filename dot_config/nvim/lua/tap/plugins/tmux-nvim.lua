@@ -28,8 +28,8 @@ return {
     augroup('TmuxNvimNetrw', {
       {
         events = { 'Filetype' },
-        targets = { 'netrw' },
-        command = function()
+        pattern = { 'netrw' },
+        callback = function()
           nnoremap(
             '<C-h>',
             require('tmux').move_left,

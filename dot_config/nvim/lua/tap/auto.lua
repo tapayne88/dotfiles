@@ -6,8 +6,8 @@ local test_visible_buffers = require('tap.utils').test_visible_buffers
 augroup('TapWinResize', {
   {
     events = { 'VimResized' },
-    targets = { '*' },
-    command = function()
+    pattern = { '*' },
+    callback = function()
       local is_dap_ui_running = test_visible_buffers(function(window_info)
         local buffer_filetype =
           vim.api.nvim_buf_get_option(window_info.bufnr, 'filetype')
@@ -30,10 +30,10 @@ augroup('TapWinResize', {
 
 -- Save and load vim views - remembers scroll position & folds
 augroup('TapMkViews', {
-  { events = { 'BufWinLeave' }, targets = { '*.*' }, command = 'mkview' },
+  { events = { 'BufWinLeave' }, pattern = { '*.*' }, command = 'mkview' },
   {
     events = { 'BufWinEnter' },
-    targets = { '*.*' },
+    pattern = { '*.*' },
     command = 'silent! loadview',
   },
 })

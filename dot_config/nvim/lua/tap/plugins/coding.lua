@@ -11,8 +11,8 @@ return {
       require('tap.utils').augroup('JenkinsfileLinter', {
         {
           events = { 'BufWritePost' },
-          targets = { 'Jenkinsfile', 'Jenkinsfile.*' },
-          command = function()
+          pattern = { 'Jenkinsfile', 'Jenkinsfile.*' },
+          callback = function()
             if require('jenkinsfile_linter').check_creds() then
               require('jenkinsfile_linter').validate()
             end

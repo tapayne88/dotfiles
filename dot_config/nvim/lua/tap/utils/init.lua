@@ -213,49 +213,21 @@ function M.highlight_group_attrs(group)
   }
 end
 
--- try to figure out if the commands are <buffer> targets so we can clear the
--- group appropraitely
-local function has_buffer_target(commands)
-  return #vim.tbl_filter(function(item)
-    return #vim.tbl_filter(function(target)
-      -- Only supports <buffer>, more complicated for things like
-      -- <buffer=N>
-      return target == '<buffer>'
-    end, item.targets or {}) > 0
-  end, commands) > 0
-end
-
--- Convenience for making autocommands
+-- Convenience for making autocommands within a group
 ---@param name string
----@param commands {command: fun()|string, user: boolean, events: string[], targets: string[], modifiers: string[]}[]
+---@param commands {events: any, opts?: table<string, any>}[]
 function M.augroup(name, commands)
-  vim.cmd('augroup ' .. name)
+  local group_id = vim.api.nvim_create_augroup(name, { clear = true })
 
-  -- Clear autogroup appropraitely for <buffer> targets
-  if has_buffer_target(commands) then
-    vim.cmd 'autocmd! * <buffer>'
-  else
-    vim.cmd 'autocmd!'
-  end
+  for _, cmd in ipairs(commands) do
+    local events = cmd.events
+    cmd.events = nil
 
-  for _, c in ipairs(commands) do
-    local command = c.command
-    if type(command) == 'function' then
-      local fn_id = tap._create(command)
-      command = string.format('lua tap._execute(%s)', fn_id)
-    end
-    vim.cmd(
-      string.format(
-        'autocmd %s%s %s %s %s',
-        c.user and 'User ' or '',
-        table.concat(c.events, ','),
-        table.concat(c.targets or {}, ','),
-        table.concat(c.modifiers or {}, ' '),
-        command
-      )
+    vim.api.nvim_create_autocmd(
+      events,
+      vim.tbl_extend('error', cmd, { group = group_id })
     )
   end
-  vim.cmd 'augroup END'
 end
 
 -- Properly escape string for terminal
@@ -325,8 +297,8 @@ function M.apply_user_highlights(name, callback, _opts)
   M.augroup(augroup_name, {
     {
       events = { 'VimEnter', 'ColorScheme' },
-      targets = { '*' },
-      command = function()
+      pattern = { '*' },
+      callback = function()
         callback(M.highlight, get_catppuccin_palette())
       end,
     },
