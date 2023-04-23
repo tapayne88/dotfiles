@@ -611,28 +611,25 @@ return {
         always_update = false,
       }
 
-      require('tap.utils').command {
-        'ColorizerToggle',
-        function()
-          local colorizer = require 'colorizer'
+      vim.api.nvim_create_user_command('ColorizerToggle', function()
+        local colorizer = require 'colorizer'
 
-          if colorizer.is_buffer_attached(0) then
-            colorizer.detach_from_buffer(0)
-            vim.notify(
-              'Disabled colorizing for buffer',
-              vim.log.levels.INFO,
-              { title = 'Colorizer' }
-            )
-          else
-            colorizer.attach_to_buffer(0, opts)
-            vim.notify(
-              'Enabled colorizing for buffer',
-              vim.log.levels.INFO,
-              { title = 'Colorizer' }
-            )
-          end
-        end,
-      }
+        if colorizer.is_buffer_attached(0) then
+          colorizer.detach_from_buffer(0)
+          vim.notify(
+            'Disabled colorizing for buffer',
+            vim.log.levels.INFO,
+            { title = 'Colorizer' }
+          )
+        else
+          colorizer.attach_to_buffer(0, opts)
+          vim.notify(
+            'Enabled colorizing for buffer',
+            vim.log.levels.INFO,
+            { title = 'Colorizer' }
+          )
+        end
+      end, { desc = 'Toggle colorizer' })
     end,
   },
 }

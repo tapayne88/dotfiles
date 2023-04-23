@@ -18,7 +18,6 @@ return {
     local nnoremap = require('tap.utils').nnoremap
     local vnoremap = require('tap.utils').vnoremap
     local root_pattern = require('tap.utils').root_pattern
-    local command = require('tap.utils').command
 
     --------------
     -- Internal --
@@ -147,28 +146,25 @@ return {
       )
     end)
 
-    command {
-      'Fw',
-      function(args)
-        local word = table.remove(args, 1)
-        local search_dirs = args
+    vim.api.nvim_create_user_command('Fw', function(args)
+      local word = table.remove(args, 1)
+      local search_dirs = args
 
-        local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
-          or {}
+      local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
+        or {}
 
-        require('telescope.builtin').grep_string(
-          vim.tbl_extend('error', search_args, {
-            search = word,
-            prompt_title = string.format('Grep: %s', word),
-            use_regex = true,
-          })
-        )
-      end,
-      {
-        nargs = '+',
-        complete = 'dir',
-      },
-    }
+      require('telescope.builtin').grep_string(
+        vim.tbl_extend('error', search_args, {
+          search = word,
+          prompt_title = string.format('Grep: %s', word),
+          use_regex = true,
+        })
+      )
+    end, {
+      desc = 'Search for a word in a list of directories',
+      nargs = '+',
+      complete = 'dir',
+    })
   end,
   config = function()
     local actions = require 'telescope.actions'

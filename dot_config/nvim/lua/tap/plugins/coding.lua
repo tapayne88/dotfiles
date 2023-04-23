@@ -406,14 +406,16 @@ return {
         test_runner('debug', { '--testNamePattern', '$result' })
       local test_file = test_runner('debug_file', {})
 
-      require('tap.utils').command {
+      vim.api.nvim_create_user_command(
         'JesterDebug',
         test_nearest,
-      }
-      require('tap.utils').command {
+        { desc = 'Run nearest test with debugger' }
+      )
+      vim.api.nvim_create_user_command(
         'JesterDebugFile',
         test_file,
-      }
+        { desc = 'Run all tests in file with debugger' }
+      )
     end,
     config = function()
       require('jester').setup {

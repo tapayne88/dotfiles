@@ -258,15 +258,6 @@ function M.augroup(name, commands)
   vim.cmd 'augroup END'
 end
 
--- Convenience for making commands
--- ```lua
---    command({"name", function() ... end})
--- ```
----@param args table
-function M.command(args)
-  return vim.api.nvim_create_user_command(args[1], args[2], args[3] or {})
-end
-
 -- Properly escape string for terminal
 ---@param str string
 ---@return string
