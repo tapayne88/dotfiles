@@ -264,44 +264,7 @@ end
 -- ```
 ---@param args table
 function M.command(args)
-  local nargs = args.nargs or 0
-  local name = args[1]
-  local rhs = args[2]
-  local types = (args.types and type(args.types) == 'table')
-      and table.concat(args.types, ' ')
-    or ''
-  local extra = args.extra or ''
-
-  local fn_has_args = function(num_args)
-    if type(num_args) == 'string' then
-      return true
-    end
-    if type(num_args) == 'number' then
-      return num_args > 0
-    end
-    return false
-  end
-
-  if type(rhs) == 'function' then
-    local fn_id = tap._create(rhs)
-    local has_args = fn_has_args(nargs)
-    rhs = string.format(
-      'lua tap._execute(%d%s)',
-      fn_id,
-      has_args and ', {<f-args>}' or ''
-    )
-  end
-
-  vim.cmd(
-    string.format(
-      'command! -nargs=%s %s %s %s %s',
-      nargs,
-      types,
-      extra,
-      name,
-      rhs
-    )
-  )
+  return vim.api.nvim_create_user_command(args[1], args[2], args[3] or {})
 end
 
 -- Properly escape string for terminal

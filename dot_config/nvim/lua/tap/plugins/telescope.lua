@@ -164,8 +164,10 @@ return {
           })
         )
       end,
-      nargs = '+',
-      extra = '-complete=dir',
+      {
+        nargs = '+',
+        complete = 'dir',
+      },
     }
   end,
   config = function()
