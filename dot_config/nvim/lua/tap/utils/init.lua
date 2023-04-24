@@ -55,19 +55,38 @@ function M.map_table_to_key(tbl, key)
   end, tbl)
 end
 
-local function register_with_which_key(lhs, name, mode, options)
-  local present, wk = pcall(require, 'which-key')
-  if not present then
-    return
-  end
-  wk.register {
+---@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
+
+--- Utility function to support setting a keymap for multiple modes
+---@param _modes Mode[] | Mode
+---@param lhs string
+---@param rhs string | fun(): nil | unknown
+---@param _opts? {desc: string}|table
+---@return nil
+function M.keymap(_modes, lhs, rhs, _opts)
+  local modes = type(_modes) == 'string' and { _modes } or _modes
+  local opts = _opts ~= nil and _opts or {}
+
+  local description = opts.desc and opts.desc or 'Missing description'
+  opts.desc = nil
+
+  require('which-key').register {
     [lhs] = {
-      name,
-      mode = mode,
-      noremap = options.noremap,
-      silent = options.silent,
-      buffer = options.buffer,
+      description,
+      mode = modes,
+      noremap = opts.noremap,
+      silent = opts.silent,
+      buffer = opts.buffer,
+      nowait = opts.nowait,
     },
+  }
+
+  require('legendary').keymap {
+    lhs,
+    rhs,
+    description = description,
+    mode = modes,
+    opts = opts,
   }
 end
 
@@ -82,19 +101,7 @@ local function make_mapper(mode, o)
     local opts =
       vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
 
-    local description = opts.description and opts.description
-      or 'Missing description'
-    opts.description = nil
-
-    register_with_which_key(lhs, description, mode, opts)
-
-    require('legendary').keymap {
-      lhs,
-      rhs,
-      description = description,
-      mode = { mode },
-      opts = opts,
-    }
+    M.keymap(mode, lhs, rhs, opts)
   end
 end
 
@@ -117,75 +124,13 @@ M.onoremap = make_mapper('o', noremap_opts)
 M.tnoremap = make_mapper('t', noremap_opts)
 M.cnoremap = make_mapper('c', { noremap = true, silent = false })
 
----@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
+---@alias Utils.highlight fun(name: string, opts: table<string, any>): nil
 
---- Utility function to support setting a keymap for multiple modes
----@param _modes Mode[] | Mode
----@param lhs string
----@param rhs string | fun(): nil | unknown
----@param _opts? {description: string}|table
----@return nil
-function M.keymap(_modes, lhs, rhs, _opts)
-  local modes = type(_modes) == 'string' and { _modes } or _modes
-  local opts = _opts ~= nil and _opts or {}
-
-  -- TODO: Remove disable line when it behaves!
-  ---@diagnostic disable-next-line: param-type-mismatch
-  for _, mode in ipairs(modes) do
-    make_mapper(mode, noremap_opts)(lhs, rhs, opts)
-  end
-end
-
----@alias HighlightOpts
----| { guifg?: string, guibg?: string, gui?: string, guisp?: string, ctermfg?: string, ctermbg?: string, cterm?: string }
----| { link?: string, force: boolean }
-
----@alias Utils.highlight fun(name: string, opts: HighlightOpts): nil
-
--- Shamelessly stolen from akinsho/dotfiles
--- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/highlights.lua#L56
---- TODO eventually move to using `nvim_set_hl`
---- however for the time being that expects colors
---- to be specified as rgb not hex
+---Friendly named wrapper around vim.api.nvim_set_hl
 ---@type Utils.highlight
 function M.highlight(name, opts)
-  local force = opts.force or false
-  if name and vim.tbl_count(opts) > 0 then
-    if opts.link and opts.link ~= '' then
-      vim.cmd(
-        'highlight'
-          .. (force and '!' or '')
-          .. ' link '
-          .. name
-          .. ' '
-          .. opts.link
-      )
-    else
-      local cmd = { 'highlight', name }
-      if opts.guifg and opts.guifg ~= '' then
-        table.insert(cmd, 'guifg=' .. opts.guifg)
-      end
-      if opts.guibg and opts.guibg ~= '' then
-        table.insert(cmd, 'guibg=' .. opts.guibg)
-      end
-      if opts.gui and opts.gui ~= '' then
-        table.insert(cmd, 'gui=' .. opts.gui)
-      end
-      if opts.guisp and opts.guisp ~= '' then
-        table.insert(cmd, 'guisp=' .. opts.guisp)
-      end
-      if opts.ctermfg and opts.ctermfg ~= '' then
-        table.insert(cmd, 'ctermfg=' .. opts.ctermfg)
-      end
-      if opts.ctermbg and opts.ctermbg ~= '' then
-        table.insert(cmd, 'ctermbg=' .. opts.ctermbg)
-      end
-      if opts.cterm and opts.cterm ~= '' then
-        table.insert(cmd, 'cterm=' .. opts.cterm)
-      end
-      vim.cmd(table.concat(cmd, ' '))
-    end
-  end
+  local global_namespace = 0
+  vim.api.nvim_set_hl(global_namespace, name, opts)
 end
 
 -- Given a highlight name, grab the bg & fg attributes
@@ -208,100 +153,26 @@ function M.highlight_group_attrs(group)
   return {
     ctermfg = hi.cterm.bg,
     ctermbg = hi.cterm.fg,
-    guifg = hi.gui.fg,
-    guibg = hi.gui.bg,
+    fg = hi.gui.fg,
+    bg = hi.gui.bg,
   }
 end
 
--- try to figure out if the commands are <buffer> targets so we can clear the
--- group appropraitely
-local function has_buffer_target(commands)
-  return #vim.tbl_filter(function(item)
-    return #vim.tbl_filter(function(target)
-      -- Only supports <buffer>, more complicated for things like
-      -- <buffer=N>
-      return target == '<buffer>'
-    end, item.targets or {}) > 0
-  end, commands) > 0
-end
-
--- Convenience for making autocommands
+-- Convenience for making autocommands within a group
 ---@param name string
----@param commands {command: fun()|string, user: boolean, events: string[], targets: string[], modifiers: string[]}[]
+---@param commands {events: any, opts?: table<string, any>}[]
 function M.augroup(name, commands)
-  vim.cmd('augroup ' .. name)
+  local group_id = vim.api.nvim_create_augroup(name, { clear = true })
 
-  -- Clear autogroup appropraitely for <buffer> targets
-  if has_buffer_target(commands) then
-    vim.cmd 'autocmd! * <buffer>'
-  else
-    vim.cmd 'autocmd!'
-  end
+  for _, cmd in ipairs(commands) do
+    local events = cmd.events
+    cmd.events = nil
 
-  for _, c in ipairs(commands) do
-    local command = c.command
-    if type(command) == 'function' then
-      local fn_id = tap._create(command)
-      command = string.format('lua tap._execute(%s)', fn_id)
-    end
-    vim.cmd(
-      string.format(
-        'autocmd %s%s %s %s %s',
-        c.user and 'User ' or '',
-        table.concat(c.events, ','),
-        table.concat(c.targets or {}, ','),
-        table.concat(c.modifiers or {}, ' '),
-        command
-      )
+    vim.api.nvim_create_autocmd(
+      events,
+      vim.tbl_extend('error', cmd, { group = group_id })
     )
   end
-  vim.cmd 'augroup END'
-end
-
--- Convenience for making commands
--- ```lua
---    command({"name", function() ... end})
--- ```
----@param args table
-function M.command(args)
-  local nargs = args.nargs or 0
-  local name = args[1]
-  local rhs = args[2]
-  local types = (args.types and type(args.types) == 'table')
-      and table.concat(args.types, ' ')
-    or ''
-  local extra = args.extra or ''
-
-  local fn_has_args = function(num_args)
-    if type(num_args) == 'string' then
-      return true
-    end
-    if type(num_args) == 'number' then
-      return num_args > 0
-    end
-    return false
-  end
-
-  if type(rhs) == 'function' then
-    local fn_id = tap._create(rhs)
-    local has_args = fn_has_args(nargs)
-    rhs = string.format(
-      'lua tap._execute(%d%s)',
-      fn_id,
-      has_args and ', {<f-args>}' or ''
-    )
-  end
-
-  vim.cmd(
-    string.format(
-      'command! -nargs=%s %s %s %s %s',
-      nargs,
-      types,
-      extra,
-      name,
-      rhs
-    )
-  )
 end
 
 -- Properly escape string for terminal
@@ -339,7 +210,9 @@ function M.require_plugin(name, callback)
 end
 
 local has_augroup = function(name)
-  local augroups = ' ' .. vim.api.nvim_exec('augroup', true) .. ' '
+  local augroups = ' '
+    .. vim.api.nvim_exec2('augroup', { output = true }).output
+    .. ' '
 
   return augroups:match('%s' .. name .. '%s') ~= nil
 end
@@ -371,8 +244,8 @@ function M.apply_user_highlights(name, callback, _opts)
   M.augroup(augroup_name, {
     {
       events = { 'VimEnter', 'ColorScheme' },
-      targets = { '*' },
-      command = function()
+      pattern = { '*' },
+      callback = function()
         callback(M.highlight, get_catppuccin_palette())
       end,
     },

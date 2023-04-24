@@ -18,14 +18,13 @@ return {
     local nnoremap = require('tap.utils').nnoremap
     local vnoremap = require('tap.utils').vnoremap
     local root_pattern = require('tap.utils').root_pattern
-    local command = require('tap.utils').command
 
     --------------
     -- Internal --
     --------------
     nnoremap('<leader>ts', function()
       require('telescope.builtin').builtin { include_extensions = true }
-    end, { description = 'Give me Telescope!' })
+    end, { desc = 'Give me Telescope!' })
     nnoremap('<leader>l', function()
       require('telescope.builtin').buffers {
         sort_lastused = true,
@@ -33,29 +32,29 @@ return {
         show_all_buffers = true,
         selection_strategy = 'closest',
       }
-    end, { description = 'List buffers' })
+    end, { desc = 'List buffers' })
     nnoremap('<leader>gh', function()
       require('telescope.builtin').help_tags()
-    end, { description = 'Help tags' })
+    end, { desc = 'Help tags' })
     nnoremap('<leader>ch', function()
       require('telescope.builtin').command_history()
-    end, { description = 'Command history' })
+    end, { desc = 'Command history' })
     nnoremap('<leader>tp', function()
       require('telescope.builtin').pickers()
-    end, { description = 'Past telescope pickers with state' })
+    end, { desc = 'Past telescope pickers with state' })
     nnoremap('<leader>p', function()
       require('telescope.builtin').commands()
-    end, { description = 'Neovim commands' })
+    end, { desc = 'Neovim commands' })
 
     ---------
     -- Git --
     ---------
     nnoremap('<leader>gf', function()
       require('telescope.builtin').git_files { use_git_root = false }
-    end, { description = 'Git files relative to pwd' })
+    end, { desc = 'Git files relative to pwd' })
     nnoremap('<leader>gF', function()
       require('telescope.builtin').git_files()
-    end, { description = 'All git files' })
+    end, { desc = 'All git files' })
     nnoremap('<leader>rf', function()
       local root = require('plenary.path'):new(
         root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h')
@@ -65,32 +64,32 @@ return {
         cwd = root.filename,
         prompt_title = root:make_relative(vim.loop.cwd()),
       }
-    end, { description = 'Git files relative to current file' })
+    end, { desc = 'Git files relative to current file' })
     nnoremap('<leader>gb', function()
       require('telescope.builtin').git_branches()
-    end, { description = 'Git branches' })
+    end, { desc = 'Git branches' })
 
     -----------
     -- Files --
     -----------
     nnoremap('<leader>ff', function()
       require('telescope.builtin').find_files { hidden = true }
-    end, { description = 'Fuzzy file finder' })
+    end, { desc = 'Fuzzy file finder' })
     nnoremap('<leader>fb', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand '%:p:h',
         hidden = true,
       }
-    end, { description = 'File browser at current file' })
+    end, { desc = 'File browser at current file' })
     nnoremap('<leader>fB', function()
       require('telescope').extensions.file_browser.file_browser { hidden = true }
-    end, { description = 'File browser at pwd' })
+    end, { desc = 'File browser at pwd' })
     nnoremap('<leader>fh', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = '~',
         hidden = true,
       }
-    end, { description = 'File browser at $HOME' })
+    end, { desc = 'File browser at $HOME' })
 
     ------------
     -- Search --
@@ -118,55 +117,54 @@ return {
     }
     nnoremap('<leader>fg', function()
       require('telescope').extensions.live_grep_args.live_grep_args(search_opts)
-    end, { description = 'Search with ripgrep' })
+    end, { desc = 'Search with ripgrep' })
     nnoremap('<leader>fw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = vim.fn.expand '<cword>',
         })
       )
-    end, { description = 'Search current word with ripgrep' })
+    end, { desc = 'Search current word with ripgrep' })
     vnoremap('<leader>fw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = getVisualSelection(),
         })
       )
-    end, { description = 'Search current visual selection with ripgrep' })
+    end, { desc = 'Search current visual selection with ripgrep' })
 
     require('tap.utils.lsp').on_attach(function(_, bufnr)
       require('tap.utils').nnoremap(
         'gD',
         '<cmd>Telescope lsp_definitions<CR>',
-        { buffer = bufnr, description = '[LSP] Go to definition' }
+        { buffer = bufnr, desc = '[LSP] Go to definition' }
       )
       require('tap.utils').nnoremap(
         'gr',
         '<cmd>Telescope lsp_references<CR>',
-        { buffer = bufnr, description = '[LSP] Get references' }
+        { buffer = bufnr, desc = '[LSP] Get references' }
       )
     end)
 
-    command {
-      'Fw',
-      function(args)
-        local word = table.remove(args, 1)
-        local search_dirs = args
+    vim.api.nvim_create_user_command('Fw', function(args)
+      local word = table.remove(args, 1)
+      local search_dirs = args
 
-        local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
-          or {}
+      local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
+        or {}
 
-        require('telescope.builtin').grep_string(
-          vim.tbl_extend('error', search_args, {
-            search = word,
-            prompt_title = string.format('Grep: %s', word),
-            use_regex = true,
-          })
-        )
-      end,
+      require('telescope.builtin').grep_string(
+        vim.tbl_extend('error', search_args, {
+          search = word,
+          prompt_title = string.format('Grep: %s', word),
+          use_regex = true,
+        })
+      )
+    end, {
+      desc = 'Search for a word in a list of directories',
       nargs = '+',
-      extra = '-complete=dir',
-    }
+      complete = 'dir',
+    })
   end,
   config = function()
     local actions = require 'telescope.actions'
@@ -310,23 +308,23 @@ return {
 
     -- Setup borderless telescope layout
     require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
-      hl('TelescopeMatching', { guifg = p.peach })
+      hl('TelescopeMatching', { fg = p.peach })
 
-      hl('TelescopeSelectionCaret', { guifg = p.flamingo, guibg = p.surface1 })
-      hl('TelescopeSelection', { guifg = p.text, guibg = p.surface1 })
-      hl('TelescopeMultiSelection', { guifg = p.text, guibg = p.surface2 })
+      hl('TelescopeSelectionCaret', { fg = p.flamingo, bg = p.surface1 })
+      hl('TelescopeSelection', { fg = p.text, bg = p.surface1 })
+      hl('TelescopeMultiSelection', { fg = p.text, bg = p.surface2 })
 
-      hl('TelescopeTitle', { guifg = p.crust, guibg = p.green })
+      hl('TelescopeTitle', { fg = p.crust, bg = p.green })
 
-      hl('TelescopePromptBorder', { guifg = p.surface0, guibg = p.surface0 })
-      hl('TelescopePromptTitle', { guifg = p.crust, guibg = p.mauve })
-      hl('TelescopePromptNormal', { guifg = p.flamingo, guibg = p.surface0 })
+      hl('TelescopePromptBorder', { fg = p.surface0, bg = p.surface0 })
+      hl('TelescopePromptTitle', { fg = p.crust, bg = p.mauve })
+      hl('TelescopePromptNormal', { fg = p.flamingo, bg = p.surface0 })
 
-      hl('TelescopePreviewBorder', { guifg = p.mantle, guibg = p.mantle })
-      hl('TelescopePreviewTitle', { guifg = p.crust, guibg = p.red })
+      hl('TelescopePreviewBorder', { fg = p.mantle, bg = p.mantle })
+      hl('TelescopePreviewTitle', { fg = p.crust, bg = p.red })
 
-      hl('TelescopeResultsBorder', { guifg = p.mantle, guibg = p.mantle })
-      hl('TelescopeResultsNormal', { guibg = p.mantle })
+      hl('TelescopeResultsBorder', { fg = p.mantle, bg = p.mantle })
+      hl('TelescopeResultsNormal', { bg = p.mantle })
     end)
   end,
 }

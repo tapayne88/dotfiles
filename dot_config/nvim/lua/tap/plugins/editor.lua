@@ -8,7 +8,7 @@ return {
       require('tap.utils').nnoremap('<leader>k', function()
         require('legendary').find 'keymaps'
       end, {
-        description = 'Legendary keymaps',
+        desc = 'Legendary keymaps',
       })
     end,
   },
@@ -51,7 +51,7 @@ return {
               gs.next_hunk()
             end)
             return '<Ignore>'
-          end, { expr = true })
+          end, { expr = true, desc = '[Git] Next hunk' })
 
           keymap('n', '[h', function()
             if vim.wo.diff then
@@ -61,68 +61,63 @@ return {
               gs.prev_hunk()
             end)
             return '<Ignore>'
-          end, { expr = true })
+          end, { expr = true, desc = '[Git] Previous hunk' })
 
           -- Actions
           keymap(
             { 'n', 'v' },
             '<leader>hs',
             ':Gitsigns stage_hunk<CR>',
-            { description = '[Git] Stage hunk' }
+            { desc = '[Git] Stage hunk' }
           )
           keymap(
             { 'n', 'v' },
             '<leader>hr',
             ':Gitsigns reset_hunk<CR>',
-            { description = '[Git] Reset hunk' }
+            { desc = '[Git] Reset hunk' }
           )
           keymap(
             'n',
             '<leader>hS',
             gs.stage_buffer,
-            { description = '[Git] Stage buffer' }
+            { desc = '[Git] Stage buffer' }
           )
           keymap(
             'n',
             '<leader>hu',
             gs.undo_stage_hunk,
-            { description = '[Git] Undo staged hunk' }
+            { desc = '[Git] Undo staged hunk' }
           )
           keymap(
             'n',
             '<leader>hR',
             gs.reset_buffer,
-            { description = '[Git] Reset buffer' }
+            { desc = '[Git] Reset buffer' }
           )
           keymap(
             'n',
             '<leader>hp',
             gs.preview_hunk,
-            { description = '[Git] Preview hunk' }
+            { desc = '[Git] Preview hunk' }
           )
           keymap('n', '<leader>hb', function()
             gs.blame_line { full = true }
-          end, { description = '[Git] Blame line' })
+          end, { desc = '[Git] Blame line' })
           keymap(
             'n',
             '<leader>tb',
             gs.toggle_current_line_blame,
-            { description = '[Git] Blame current line virtual text' }
+            { desc = '[Git] Blame current line virtual text' }
           )
-          keymap(
-            'n',
-            '<leader>hd',
-            gs.diffthis,
-            { description = '[Git] Diff this' }
-          )
+          keymap('n', '<leader>hd', gs.diffthis, { desc = '[Git] Diff this' })
           keymap('n', '<leader>hD', function()
             gs.diffthis '~'
-          end, { description = '[Git] Diff this' })
+          end, { desc = '[Git] Diff this' })
           keymap(
             'n',
             '<leader>td',
             gs.toggle_deleted,
-            { description = '[Git] Diff this against default branch' }
+            { desc = '[Git] Diff this against default branch' }
           )
 
           -- Text object
@@ -156,37 +151,21 @@ return {
       local nnoremap = require('tap.utils').nnoremap
       local xnoremap = require('tap.utils').xnoremap
 
-      nnoremap(
-        '<leader>ga',
-        ':Git add %:p<CR><CR>',
-        { description = 'Git add file' }
-      )
-      nnoremap('<leader>gs', ':Git<CR>', { description = 'Git status' })
-      nnoremap(
-        '<leader>gc',
-        ':Git commit -v -q<CR>',
-        { description = 'Git commit' }
-      )
+      nnoremap('<leader>ga', ':Git add %:p<CR><CR>', { desc = 'Git add file' })
+      nnoremap('<leader>gs', ':Git<CR>', { desc = 'Git status' })
+      nnoremap('<leader>gc', ':Git commit -v -q<CR>', { desc = 'Git commit' })
       nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
-      nnoremap('<leader>gd', ':Gvdiff<CR>', { description = 'Git diff' })
+      nnoremap('<leader>gd', ':Gvdiff<CR>', { desc = 'Git diff' })
       nnoremap('<leader>ge', ':Gedit<CR>')
-      nnoremap('<leader>gr', ':Gread<CR>', { description = 'Git read' })
-      nnoremap('<leader>gw', ':Gwrite<CR>', { description = 'Git write' })
-      nnoremap('<leader>gl', ':Gclog<CR>', { description = 'Git log' })
-      nnoremap(
-        '<leader>go',
-        ':Git checkout<Space>',
-        { description = 'Git checkout' }
-      )
-      nnoremap(
-        '<leader>gp',
-        ':GBrowse<CR>',
-        { description = 'Git browse file' }
-      )
+      nnoremap('<leader>gr', ':Gread<CR>', { desc = 'Git read' })
+      nnoremap('<leader>gw', ':Gwrite<CR>', { desc = 'Git write' })
+      nnoremap('<leader>gl', ':Gclog<CR>', { desc = 'Git log' })
+      nnoremap('<leader>go', ':Git checkout<Space>', { desc = 'Git checkout' })
+      nnoremap('<leader>gp', ':GBrowse<CR>', { desc = 'Git browse file' })
       xnoremap(
         '<leader>gp',
         ":'<,'>GBrowse<CR>",
-        { description = 'Git browse visual selection' }
+        { desc = 'Git browse visual selection' }
       )
     end,
     config = function()
@@ -212,8 +191,6 @@ return {
       vim.opt.foldlevelstart = 99
       vim.opt.foldenable = true
 
-      -- TODO: Remove numbers from foldcolumn
-      -- see https://github.com/kevinhwang91/nvim-ufo/issues/4
       vim.opt.fillchars:append 'foldopen:'
       vim.opt.fillchars:append 'foldclose:'
 
@@ -243,7 +220,7 @@ return {
       require('tap.utils').nnoremap(
         '<leader>ex',
         ':Neotree toggle current<CR>',
-        { description = 'Open neotree at current file' }
+        { desc = 'Open neotree at current file' }
       )
     end,
     config = function()
@@ -280,12 +257,9 @@ return {
       }
 
       require('tap.utils').apply_user_highlights('Neotree', function(highlight)
-        highlight('NeoTreeDimText', { link = 'Comment', force = true })
-        highlight('NeoTreeGitConflict', { link = 'Warnings', force = true })
-        highlight(
-          'NeoTreeGitUntracked',
-          { link = 'NvimTreeGitNew', force = true }
-        )
+        highlight('NeoTreeDimText', { link = 'Comment' })
+        highlight('NeoTreeGitConflict', { link = 'Warnings' })
+        highlight('NeoTreeGitUntracked', { link = 'NvimTreeGitNew' })
       end)
     end,
   },
@@ -302,10 +276,10 @@ return {
 
       nnoremap(']]', function()
         require('illuminate').goto_next_reference(false)
-      end, { description = 'Next Reference' })
+      end, { desc = 'Next Reference' })
       nnoremap('[[', function()
         require('illuminate').goto_prev_reference(false)
-      end, { description = 'Prev Reference' })
+      end, { desc = 'Prev Reference' })
     end,
     keys = {
       ']]',
@@ -346,47 +320,37 @@ return {
       nnoremap(
         '<leader>xx',
         '<cmd>TroubleToggle<cr>',
-        { description = '[Trouble] Toggle list' }
+        { desc = '[Trouble] Toggle list' }
       )
       nnoremap(
         '<leader>xw',
-        '<cmd>TroubleToggle workspace_diagnostics<cr>',
-        { description = '[Trouble] LSP workspace diagnostics' }
+        '<cmd>Trouble workspace_diagnostics<cr>',
+        { desc = '[Trouble] LSP workspace diagnostics' }
       )
       nnoremap(
         '<leader>xd',
-        '<cmd>TroubleToggle document_diagnostics<cr>',
-        { description = '[Trouble] LSP document diagnostics' }
+        '<cmd>Trouble document_diagnostics<cr>',
+        { desc = '[Trouble] LSP document diagnostics' }
       )
       nnoremap(
         '<leader>xq',
-        '<cmd>TroubleToggle quickfix<cr>',
-        { description = '[Trouble] Quickfix list' }
+        '<cmd>Trouble quickfix<cr>',
+        { desc = '[Trouble] Quickfix list' }
       )
       nnoremap(
         '<leader>xl',
-        '<cmd>TroubleToggle loclist<cr>',
-        { description = '[Trouble] Location list' }
+        '<cmd>Trouble loclist<cr>',
+        { desc = '[Trouble] Location list' }
       )
       nnoremap(
         'gR',
-        '<cmd>TroubleToggle lsp_references<cr>',
-        { description = '[Trouble] LSP references' }
+        '<cmd>Trouble lsp_references<cr>',
+        { desc = '[Trouble] LSP references' }
       )
     end,
-    config = function()
-      local lsp_symbol = require('tap.utils.lsp').symbol
-
-      require('trouble').setup {
-        signs = {
-          error = lsp_symbol 'error',
-          warning = lsp_symbol 'warning',
-          hint = lsp_symbol 'hint',
-          information = lsp_symbol 'info',
-          other = lsp_symbol 'ok',
-        },
-      }
-    end,
+    opts = {
+      use_diagnostic_signs = true,
+    },
   },
 
   -- Window resizing on focus
@@ -405,7 +369,7 @@ return {
         },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
-        description = '[Focus] Toggle window focusing',
+        desc = '[Focus] Toggle window focusing',
       })
     end,
   },
@@ -439,29 +403,24 @@ return {
 
       keymap('n', ']t', function()
         require('todo-comments').jump_next()
-      end, { description = 'Next todo comment' })
+      end, { desc = 'Next todo comment' })
       keymap('n', '[t', function()
         require('todo-comments').jump_prev()
-      end, { description = 'Previous todo comment' })
+      end, { desc = 'Previous todo comment' })
 
       keymap(
         'n',
         '<leader>xt',
         '<cmd>TodoTrouble<cr>',
-        { description = 'Todo (Trouble)' }
+        { desc = 'Todo (Trouble)' }
       )
       keymap(
         'n',
         '<leader>xT',
         '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>',
-        { description = 'Todo/Fix/Fixme (Trouble)' }
+        { desc = 'Todo/Fix/Fixme (Trouble)' }
       )
-      keymap(
-        'n',
-        '<leader>st',
-        '<cmd>TodoTelescope<cr>',
-        { description = 'Todo' }
-      )
+      keymap('n', '<leader>st', '<cmd>TodoTelescope<cr>', { desc = 'Todo' })
     end,
   },
 
@@ -473,8 +432,8 @@ return {
       require('tap.utils').augroup('TapPersistence', {
         {
           events = { 'FileType' },
-          targets = { 'gitcommit' },
-          command = function()
+          pattern = { 'gitcommit' },
+          callback = function()
             -- If there is only one buffer open then it's probably a commit
             -- message instance (which we don't want to save as the directories
             -- session)
@@ -520,7 +479,12 @@ return {
   {
     'mbbill/undotree',
     config = function()
-      require('tap.utils').keymap('n', '<leader>u', vim.cmd.UndotreeToggle)
+      require('tap.utils').keymap(
+        'n',
+        '<leader>u',
+        vim.cmd.UndotreeToggle,
+        { desc = 'Toggle undo tree' }
+      )
 
       vim.opt.undofile = true
     end,
@@ -558,10 +522,10 @@ return {
     init = function()
       require('tap.utils').keymap('n', 'K', function()
         return require('hover').hover()
-      end, { description = 'hover.nvim' })
+      end, { desc = 'hover.nvim' })
       require('tap.utils').keymap('n', 'gK', function()
         return require('hover').hover_select()
-      end, { description = 'hover.nvim (select)' })
+      end, { desc = 'hover.nvim (select)' })
     end,
     config = function()
       require('hover').setup {
@@ -611,28 +575,25 @@ return {
         always_update = false,
       }
 
-      require('tap.utils').command {
-        'ColorizerToggle',
-        function()
-          local colorizer = require 'colorizer'
+      vim.api.nvim_create_user_command('ColorizerToggle', function()
+        local colorizer = require 'colorizer'
 
-          if colorizer.is_buffer_attached(0) then
-            colorizer.detach_from_buffer(0)
-            vim.notify(
-              'Disabled colorizing for buffer',
-              vim.log.levels.INFO,
-              { title = 'Colorizer' }
-            )
-          else
-            colorizer.attach_to_buffer(0, opts)
-            vim.notify(
-              'Enabled colorizing for buffer',
-              vim.log.levels.INFO,
-              { title = 'Colorizer' }
-            )
-          end
-        end,
-      }
+        if colorizer.is_buffer_attached(0) then
+          colorizer.detach_from_buffer(0)
+          vim.notify(
+            'Disabled colorizing for buffer',
+            vim.log.levels.INFO,
+            { title = 'Colorizer' }
+          )
+        else
+          colorizer.attach_to_buffer(0, opts)
+          vim.notify(
+            'Enabled colorizing for buffer',
+            vim.log.levels.INFO,
+            { title = 'Colorizer' }
+          )
+        end
+      end, { desc = 'Toggle colorizer' })
     end,
   },
 }

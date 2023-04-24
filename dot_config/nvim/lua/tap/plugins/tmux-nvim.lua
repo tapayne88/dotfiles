@@ -28,27 +28,27 @@ return {
     augroup('TmuxNvimNetrw', {
       {
         events = { 'Filetype' },
-        targets = { 'netrw' },
-        command = function()
+        pattern = { 'netrw' },
+        callback = function()
           nnoremap(
             '<C-h>',
             require('tmux').move_left,
-            { buffer = 0, description = 'Swap to split left' }
+            { buffer = 0, desc = 'Swap to split left' }
           )
           nnoremap(
             '<C-j>',
             require('tmux').move_bottom,
-            { buffer = 0, description = 'Swap to split below' }
+            { buffer = 0, desc = 'Swap to split below' }
           )
           nnoremap(
             '<C-k>',
             require('tmux').move_top,
-            { buffer = 0, description = 'Swap to split above' }
+            { buffer = 0, desc = 'Swap to split above' }
           )
           nnoremap(
             '<C-l>',
             require('tmux').move_right,
-            { buffer = 0, description = 'Swap to split right' }
+            { buffer = 0, desc = 'Swap to split right' }
           )
         end,
       },

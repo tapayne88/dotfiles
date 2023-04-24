@@ -39,8 +39,8 @@ local function on_attach(_, bufnr)
   local nnoremap = require('tap.utils').nnoremap
 
   -- Mappings.
-  local with_opts = function(description)
-    return { buffer = bufnr, description = '[LSP] ' .. description }
+  local with_opts = function(desc)
+    return { buffer = bufnr, desc = '[LSP] ' .. desc }
   end
   nnoremap(
     'gi',

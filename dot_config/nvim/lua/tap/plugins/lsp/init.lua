@@ -120,7 +120,7 @@ return {
         require('tap.utils').nnoremap(
           'gd',
           '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
-          { buffer = bufnr, description = '[LSP] Go to definition preview' }
+          { buffer = bufnr, desc = '[LSP] Go to definition preview' }
         )
       end)
     end,
@@ -167,12 +167,12 @@ return {
         -- Formatting
         require('tap.utils').nnoremap('<leader>tf', toggle_format, {
           buffer = bufnr,
-          description = '[LSP] Toggle formatting on save',
+          desc = '[LSP] Toggle formatting on save',
         })
         require('tap.utils').nnoremap(
           '<space>f',
           '<cmd>Format<CR>',
-          { buffer = bufnr, description = '[LSP] Run formatting' }
+          { buffer = bufnr, desc = '[LSP] Run formatting' }
         )
       end)
     end,
@@ -185,7 +185,7 @@ return {
       return {
         text = {
           spinner = 'dots',
-          done = require('tap.utils.lsp').symbol 'ok',
+          done = '',
         },
         window = {
           blend = 0,

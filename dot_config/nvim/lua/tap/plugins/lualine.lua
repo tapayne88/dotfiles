@@ -260,7 +260,7 @@ return {
             literal '┃',
             color = function()
               local hi_attrs = highlight_group_attrs 'lualine_c_normal'
-              return { fg = hi_attrs.guibg }
+              return { fg = hi_attrs.bg }
             end,
           },
           { '%l:%c', icon = '' },
@@ -272,28 +272,28 @@ return {
         'Lualine',
         function(highlight, palette)
           highlight('LualineDiagnosticError', {
-            guibg = highlight_group_attrs('DiagnosticError').guifg,
-            guifg = palette.mantle,
+            bg = highlight_group_attrs('DiagnosticError').fg,
+            fg = palette.mantle,
           })
           highlight('LualineDiagnosticWarn', {
-            guibg = highlight_group_attrs('DiagnosticWarn').guifg,
-            guifg = palette.mantle,
+            bg = highlight_group_attrs('DiagnosticWarn').fg,
+            fg = palette.mantle,
           })
           highlight('LualineDiagnosticHint', {
-            guibg = highlight_group_attrs('DiagnosticHint').guifg,
-            guifg = palette.mantle,
+            bg = highlight_group_attrs('DiagnosticHint').fg,
+            fg = palette.mantle,
           })
           highlight('LualineDiagnosticInfo', {
-            guibg = highlight_group_attrs('DiagnosticInfo').guifg,
-            guifg = palette.mantle,
+            bg = highlight_group_attrs('DiagnosticInfo').fg,
+            fg = palette.mantle,
           })
           highlight('LualineDiagnosticOk', {
-            guibg = highlight_group_attrs('DiagnosticOk').guifg,
-            guifg = palette.mantle,
+            bg = highlight_group_attrs('DiagnosticOk').fg,
+            fg = palette.mantle,
           })
           highlight('LualineCopilot', {
-            guibg = palette.lavender,
-            guifg = palette.mantle,
+            bg = palette.lavender,
+            fg = palette.mantle,
           })
         end
       )
@@ -386,34 +386,34 @@ return {
         --
         -- Copy of Navic highlights from
         -- https://github.com/catppuccin/nvim/blob/fa9a4465672fa81c06b23634c0f04f6a5d622211/lua/catppuccin/groups/integrations/navic.lua
-        hl('NavicIconsFile', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsModule', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsNamespace', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsPackage', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsClass', { guifg = palette.yellow, guibg = bg })
-        hl('NavicIconsMethod', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsProperty', { guifg = palette.green, guibg = bg })
-        hl('NavicIconsField', { guifg = palette.green, guibg = bg })
-        hl('NavicIconsConstructor', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsEnum', { guifg = palette.green, guibg = bg })
-        hl('NavicIconsInterface', { guifg = palette.yellow, guibg = bg })
-        hl('NavicIconsFunction', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsVariable', { guifg = palette.flamingo, guibg = bg })
-        hl('NavicIconsConstant', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsString', { guifg = palette.green, bg = bg })
-        hl('NavicIconsNumber', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsBoolean', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsArray', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsObject', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsKey', { guifg = palette.pink, bg = bg })
-        hl('NavicIconsNull', { guifg = palette.peach, guibg = bg })
-        hl('NavicIconsEnumMember', { guifg = palette.red, guibg = bg })
-        hl('NavicIconsStruct', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsEvent', { guifg = palette.blue, guibg = bg })
-        hl('NavicIconsOperator', { guifg = palette.sky, guibg = bg })
-        hl('NavicIconsTypeParameter', { guifg = palette.blue, guibg = bg })
-        hl('NavicText', { guifg = palette.teal, guibg = bg })
-        hl('NavicSeparator', { guifg = palette.text, guibg = bg })
+        hl('NavicIconsFile', { fg = palette.blue, bg = bg })
+        hl('NavicIconsModule', { fg = palette.blue, bg = bg })
+        hl('NavicIconsNamespace', { fg = palette.blue, bg = bg })
+        hl('NavicIconsPackage', { fg = palette.blue, bg = bg })
+        hl('NavicIconsClass', { fg = palette.yellow, bg = bg })
+        hl('NavicIconsMethod', { fg = palette.blue, bg = bg })
+        hl('NavicIconsProperty', { fg = palette.green, bg = bg })
+        hl('NavicIconsField', { fg = palette.green, bg = bg })
+        hl('NavicIconsConstructor', { fg = palette.blue, bg = bg })
+        hl('NavicIconsEnum', { fg = palette.green, bg = bg })
+        hl('NavicIconsInterface', { fg = palette.yellow, bg = bg })
+        hl('NavicIconsFunction', { fg = palette.blue, bg = bg })
+        hl('NavicIconsVariable', { fg = palette.flamingo, bg = bg })
+        hl('NavicIconsConstant', { fg = palette.peach, bg = bg })
+        hl('NavicIconsString', { fg = palette.green, bg = bg })
+        hl('NavicIconsNumber', { fg = palette.peach, bg = bg })
+        hl('NavicIconsBoolean', { fg = palette.peach, bg = bg })
+        hl('NavicIconsArray', { fg = palette.peach, bg = bg })
+        hl('NavicIconsObject', { fg = palette.peach, bg = bg })
+        hl('NavicIconsKey', { fg = palette.pink, bg = bg })
+        hl('NavicIconsNull', { fg = palette.peach, bg = bg })
+        hl('NavicIconsEnumMember', { fg = palette.red, bg = bg })
+        hl('NavicIconsStruct', { fg = palette.blue, bg = bg })
+        hl('NavicIconsEvent', { fg = palette.blue, bg = bg })
+        hl('NavicIconsOperator', { fg = palette.sky, bg = bg })
+        hl('NavicIconsTypeParameter', { fg = palette.blue, bg = bg })
+        hl('NavicText', { fg = palette.teal, bg = bg })
+        hl('NavicSeparator', { fg = palette.text, bg = bg })
       end)
       require('tap.utils.lsp').on_attach(function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then

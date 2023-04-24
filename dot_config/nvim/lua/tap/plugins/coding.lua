@@ -11,8 +11,8 @@ return {
       require('tap.utils').augroup('JenkinsfileLinter', {
         {
           events = { 'BufWritePost' },
-          targets = { 'Jenkinsfile', 'Jenkinsfile.*' },
-          command = function()
+          pattern = { 'Jenkinsfile', 'Jenkinsfile.*' },
+          callback = function()
             if require('jenkinsfile_linter').check_creds() then
               require('jenkinsfile_linter').validate()
             end
@@ -108,9 +108,9 @@ return {
       }
 
       require('tap.utils').apply_user_highlights('NvimCmp', function(highlight)
-        highlight('CmpItemAbbrDeprecated', { link = 'Error', force = true })
-        highlight('CmpItemKind', { link = 'Special', force = true })
-        highlight('CmpItemMenu', { link = 'Comment', force = true })
+        highlight('CmpItemAbbrDeprecated', { link = 'Error' })
+        highlight('CmpItemKind', { link = 'Special' })
+        highlight('CmpItemMenu', { link = 'Comment' })
       end)
     end,
   },
@@ -406,14 +406,16 @@ return {
         test_runner('debug', { '--testNamePattern', '$result' })
       local test_file = test_runner('debug_file', {})
 
-      require('tap.utils').command {
+      vim.api.nvim_create_user_command(
         'JesterDebug',
         test_nearest,
-      }
-      require('tap.utils').command {
+        { desc = 'Run nearest test with debugger' }
+      )
+      vim.api.nvim_create_user_command(
         'JesterDebugFile',
         test_file,
-      }
+        { desc = 'Run all tests in file with debugger' }
+      )
     end,
     config = function()
       require('jester').setup {

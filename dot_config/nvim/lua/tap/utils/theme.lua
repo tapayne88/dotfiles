@@ -1,4 +1,3 @@
-local command = require('tap.utils').command
 local get_os_command_output_async =
   require('tap.utils.async').get_os_command_output_async
 local a = require 'plenary.async'
@@ -75,24 +74,18 @@ end
 --     }
 -- })
 
-command {
-  'TermThemeToggle',
-  function()
-    a.run(function()
-      if M.get_term_theme() == 'dark' then
-        vim.loop.spawn('term-theme', { args = { 'light' } }, nil)
-      else
-        vim.loop.spawn('term-theme', { args = { 'dark' } }, nil)
-      end
-    end)
-  end,
-}
-command {
-  'TermThemeRefresh',
-  function()
-    M.set_colorscheme(M.get_term_theme, { announce = true })
-  end,
-}
+vim.api.nvim_create_user_command('TermThemeToggle', function()
+  a.run(function()
+    if M.get_term_theme() == 'dark' then
+      vim.loop.spawn('term-theme', { args = { 'light' } }, nil)
+    else
+      vim.loop.spawn('term-theme', { args = { 'dark' } }, nil)
+    end
+  end)
+end, { desc = 'Toggle between dark and light themes' })
+vim.api.nvim_create_user_command('TermThemeRefresh', function()
+  M.set_colorscheme(M.get_term_theme, { announce = true })
+end, { desc = 'Refresh the theme' })
 
 --- Attempt to debouce watches by only setting up the listen after handling the
 --- colour change
