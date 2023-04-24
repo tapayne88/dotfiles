@@ -210,7 +210,9 @@ function M.require_plugin(name, callback)
 end
 
 local has_augroup = function(name)
-  local augroups = ' ' .. vim.api.nvim_exec('augroup', true) .. ' '
+  local augroups = ' '
+    .. vim.api.nvim_exec2('augroup', { output = true }).output
+    .. ' '
 
   return augroups:match('%s' .. name .. '%s') ~= nil
 end

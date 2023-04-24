@@ -19,9 +19,9 @@ augroup('TapWinResize', {
 
       -- Don't attempt to resize if we're running dap-ui
       if not is_dap_ui_running then
-        vim.api.nvim_exec(
+        vim.api.nvim_exec2(
           'execute "normal! ' .. termcodes '<c-w>' .. '="',
-          false
+          { output = false }
         )
       end
     end,
