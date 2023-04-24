@@ -1,7 +1,6 @@
 local get_os_command_output_async =
   require('tap.utils.async').get_os_command_output_async
 local a = require 'plenary.async'
-local log = require 'plenary.log'
 local fwatch = require 'fwatch'
 
 local M = {}
@@ -43,7 +42,7 @@ function M.set_colorscheme(theme_future, opts)
     elseif theme == 'dark' then
       set_dark()
     else
-      log.error('unknown colorscheme ' .. theme)
+      require('tap.utils').logger.error('unknown colorscheme ' .. theme)
     end
 
     if opts.announce == true then
