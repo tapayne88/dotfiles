@@ -132,7 +132,7 @@ return {
     'tpope/vim-fugitive',
     cmd = {
       'Git',
-      'Gvdiff',
+      'Gvdiffsplit',
       'Gedit',
       'Gread',
       'GDelete',
@@ -155,7 +155,7 @@ return {
       nnoremap('<leader>gs', ':Git<CR>', { desc = 'Git status' })
       nnoremap('<leader>gc', ':Git commit -v -q<CR>', { desc = 'Git commit' })
       nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
-      nnoremap('<leader>gd', ':Gvdiff<CR>', { desc = 'Git diff' })
+      nnoremap('<leader>gd', ':Gvdiffsplit<CR>', { desc = 'Git diff' })
       nnoremap('<leader>ge', ':Gedit<CR>')
       nnoremap('<leader>gr', ':Gread<CR>', { desc = 'Git read' })
       nnoremap('<leader>gw', ':Gwrite<CR>', { desc = 'Git write' })
