@@ -153,8 +153,8 @@ function M.highlight_group_attrs(group)
   return {
     ctermfg = hi.cterm.bg,
     ctermbg = hi.cterm.fg,
-    guifg = hi.gui.fg,
-    guibg = hi.gui.bg,
+    fg = hi.gui.fg,
+    bg = hi.gui.bg,
   }
 end
 

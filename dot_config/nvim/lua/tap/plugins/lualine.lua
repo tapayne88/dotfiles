@@ -260,7 +260,7 @@ return {
             literal '┃',
             color = function()
               local hi_attrs = highlight_group_attrs 'lualine_c_normal'
-              return { fg = hi_attrs.guibg }
+              return { fg = hi_attrs.bg }
             end,
           },
           { '%l:%c', icon = '' },
@@ -272,23 +272,23 @@ return {
         'Lualine',
         function(highlight, palette)
           highlight('LualineDiagnosticError', {
-            bg = highlight_group_attrs('DiagnosticError').guifg,
+            bg = highlight_group_attrs('DiagnosticError').fg,
             fg = palette.mantle,
           })
           highlight('LualineDiagnosticWarn', {
-            bg = highlight_group_attrs('DiagnosticWarn').guifg,
+            bg = highlight_group_attrs('DiagnosticWarn').fg,
             fg = palette.mantle,
           })
           highlight('LualineDiagnosticHint', {
-            bg = highlight_group_attrs('DiagnosticHint').guifg,
+            bg = highlight_group_attrs('DiagnosticHint').fg,
             fg = palette.mantle,
           })
           highlight('LualineDiagnosticInfo', {
-            bg = highlight_group_attrs('DiagnosticInfo').guifg,
+            bg = highlight_group_attrs('DiagnosticInfo').fg,
             fg = palette.mantle,
           })
           highlight('LualineDiagnosticOk', {
-            bg = highlight_group_attrs('DiagnosticOk').guifg,
+            bg = highlight_group_attrs('DiagnosticOk').fg,
             fg = palette.mantle,
           })
           highlight('LualineCopilot', {
