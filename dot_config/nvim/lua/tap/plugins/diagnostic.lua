@@ -31,28 +31,28 @@ return {
     -------------
     nnoremap('<leader>cc', function()
       vim.diagnostic.open_float { scope = 'cursor' }
-    end, { description = 'Show cursor diagnostics' })
+    end, { desc = 'Show cursor diagnostics' })
     nnoremap('<space>e', function()
       vim.diagnostic.open_float { scope = 'line' }
-    end, { description = 'Show line diagnostics' })
+    end, { desc = 'Show line diagnostics' })
     nnoremap(
       '<space>q',
       '<cmd>lua vim.diagnostic.setloclist()<CR>',
-      { description = 'Open buffer diagnostics in local list' }
+      { desc = 'Open buffer diagnostics in local list' }
     )
     nnoremap(
       '<leader>d',
       require('lsp_lines').toggle,
-      { description = 'Toggle diagnostic lines' }
+      { desc = 'Toggle diagnostic lines' }
     )
 
     -- float = false, CursorHold will show diagnostic
     nnoremap('[d', function()
       vim.diagnostic.goto_prev { float = false }
-    end, { description = 'Jump to previous diagnostic' })
+    end, { desc = 'Jump to previous diagnostic' })
     nnoremap(']d', function()
       vim.diagnostic.goto_next { float = false }
-    end, { description = 'Jump to next diagnostic' })
+    end, { desc = 'Jump to next diagnostic' })
 
     -----------
     -- Signs --

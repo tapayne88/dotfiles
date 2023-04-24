@@ -106,5 +106,5 @@ local test_nearest = function()
   run_test(pattern)
 end
 
-nnoremap('t<C-f>', test_file, { description = '[Jest.nvim] Test file' })
-nnoremap('t<C-n>', test_nearest, { description = '[Jest.nvm] Test nearest' })
+nnoremap('t<C-f>', test_file, { desc = '[Jest.nvim] Test file' })
+nnoremap('t<C-n>', test_nearest, { desc = '[Jest.nvm] Test nearest' })

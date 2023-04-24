@@ -82,9 +82,8 @@ local function make_mapper(mode, o)
     local opts =
       vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
 
-    local description = opts.description and opts.description
-      or 'Missing description'
-    opts.description = nil
+    local description = opts.desc and opts.desc or 'Missing description'
+    opts.desc = nil
 
     register_with_which_key(lhs, description, mode, opts)
 
@@ -123,7 +122,7 @@ M.cnoremap = make_mapper('c', { noremap = true, silent = false })
 ---@param _modes Mode[] | Mode
 ---@param lhs string
 ---@param rhs string | fun(): nil | unknown
----@param _opts? {description: string}|table
+---@param _opts? {desc: string}|table
 ---@return nil
 function M.keymap(_modes, lhs, rhs, _opts)
   local modes = type(_modes) == 'string' and { _modes } or _modes

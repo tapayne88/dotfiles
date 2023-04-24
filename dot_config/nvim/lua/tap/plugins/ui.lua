@@ -25,7 +25,7 @@ return {
       nnoremap(
         '<leader>nc',
         ":lua require('notify').dismiss()<CR>",
-        { description = 'Clear notifications' }
+        { desc = 'Clear notifications' }
       )
     end,
   },
