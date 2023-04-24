@@ -324,27 +324,27 @@ return {
       )
       nnoremap(
         '<leader>xw',
-        '<cmd>TroubleToggle workspace_diagnostics<cr>',
+        '<cmd>Trouble workspace_diagnostics<cr>',
         { desc = '[Trouble] LSP workspace diagnostics' }
       )
       nnoremap(
         '<leader>xd',
-        '<cmd>TroubleToggle document_diagnostics<cr>',
+        '<cmd>Trouble document_diagnostics<cr>',
         { desc = '[Trouble] LSP document diagnostics' }
       )
       nnoremap(
         '<leader>xq',
-        '<cmd>TroubleToggle quickfix<cr>',
+        '<cmd>Trouble quickfix<cr>',
         { desc = '[Trouble] Quickfix list' }
       )
       nnoremap(
         '<leader>xl',
-        '<cmd>TroubleToggle loclist<cr>',
+        '<cmd>Trouble loclist<cr>',
         { desc = '[Trouble] Location list' }
       )
       nnoremap(
         'gR',
-        '<cmd>TroubleToggle lsp_references<cr>',
+        '<cmd>Trouble lsp_references<cr>',
         { desc = '[Trouble] LSP references' }
       )
     end,
