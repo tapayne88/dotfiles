@@ -191,8 +191,6 @@ return {
       vim.opt.foldlevelstart = 99
       vim.opt.foldenable = true
 
-      -- TODO: Remove numbers from foldcolumn
-      -- see https://github.com/kevinhwang91/nvim-ufo/issues/4
       vim.opt.fillchars:append 'foldopen:'
       vim.opt.fillchars:append 'foldclose:'
 
