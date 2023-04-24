@@ -55,19 +55,38 @@ function M.map_table_to_key(tbl, key)
   end, tbl)
 end
 
-local function register_with_which_key(lhs, name, mode, options)
-  local present, wk = pcall(require, 'which-key')
-  if not present then
-    return
-  end
-  wk.register {
+---@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
+
+--- Utility function to support setting a keymap for multiple modes
+---@param _modes Mode[] | Mode
+---@param lhs string
+---@param rhs string | fun(): nil | unknown
+---@param _opts? {desc: string}|table
+---@return nil
+function M.keymap(_modes, lhs, rhs, _opts)
+  local modes = type(_modes) == 'string' and { _modes } or _modes
+  local opts = _opts ~= nil and _opts or {}
+
+  local description = opts.desc and opts.desc or 'Missing description'
+  opts.desc = nil
+
+  require('which-key').register {
     [lhs] = {
-      name,
-      mode = mode,
-      noremap = options.noremap,
-      silent = options.silent,
-      buffer = options.buffer,
+      description,
+      mode = modes,
+      noremap = opts.noremap,
+      silent = opts.silent,
+      buffer = opts.buffer,
+      nowait = opts.nowait,
     },
+  }
+
+  require('legendary').keymap {
+    lhs,
+    rhs,
+    description = description,
+    mode = modes,
+    opts = opts,
   }
 end
 
@@ -82,18 +101,7 @@ local function make_mapper(mode, o)
     local opts =
       vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
 
-    local description = opts.desc and opts.desc or 'Missing description'
-    opts.desc = nil
-
-    register_with_which_key(lhs, description, mode, opts)
-
-    require('legendary').keymap {
-      lhs,
-      rhs,
-      description = description,
-      mode = { mode },
-      opts = opts,
-    }
+    M.keymap(mode, lhs, rhs, opts)
   end
 end
 
@@ -115,25 +123,6 @@ M.inoremap = make_mapper('i', noremap_opts)
 M.onoremap = make_mapper('o', noremap_opts)
 M.tnoremap = make_mapper('t', noremap_opts)
 M.cnoremap = make_mapper('c', { noremap = true, silent = false })
-
----@alias Mode "n" | "x" | "v" | "i" | "o" | "t" | "c"
-
---- Utility function to support setting a keymap for multiple modes
----@param _modes Mode[] | Mode
----@param lhs string
----@param rhs string | fun(): nil | unknown
----@param _opts? {desc: string}|table
----@return nil
-function M.keymap(_modes, lhs, rhs, _opts)
-  local modes = type(_modes) == 'string' and { _modes } or _modes
-  local opts = _opts ~= nil and _opts or {}
-
-  -- TODO: Remove disable line when it behaves!
-  ---@diagnostic disable-next-line: param-type-mismatch
-  for _, mode in ipairs(modes) do
-    make_mapper(mode, noremap_opts)(lhs, rhs, opts)
-  end
-end
 
 ---@alias HighlightOpts
 ---| { guifg?: string, guibg?: string, gui?: string, guisp?: string, ctermfg?: string, ctermbg?: string, cterm?: string }
