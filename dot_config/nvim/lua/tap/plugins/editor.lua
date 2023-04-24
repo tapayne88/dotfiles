@@ -494,7 +494,12 @@ return {
   {
     'mbbill/undotree',
     config = function()
-      require('tap.utils').keymap('n', '<leader>u', vim.cmd.UndotreeToggle)
+      require('tap.utils').keymap(
+        'n',
+        '<leader>u',
+        vim.cmd.UndotreeToggle,
+        { desc = 'Toggle undo tree' }
+      )
 
       vim.opt.undofile = true
     end,
