@@ -308,23 +308,23 @@ return {
 
     -- Setup borderless telescope layout
     require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
-      hl('TelescopeMatching', { guifg = p.peach })
+      hl('TelescopeMatching', { fg = p.peach })
 
-      hl('TelescopeSelectionCaret', { guifg = p.flamingo, guibg = p.surface1 })
-      hl('TelescopeSelection', { guifg = p.text, guibg = p.surface1 })
-      hl('TelescopeMultiSelection', { guifg = p.text, guibg = p.surface2 })
+      hl('TelescopeSelectionCaret', { fg = p.flamingo, bg = p.surface1 })
+      hl('TelescopeSelection', { fg = p.text, bg = p.surface1 })
+      hl('TelescopeMultiSelection', { fg = p.text, bg = p.surface2 })
 
-      hl('TelescopeTitle', { guifg = p.crust, guibg = p.green })
+      hl('TelescopeTitle', { fg = p.crust, bg = p.green })
 
-      hl('TelescopePromptBorder', { guifg = p.surface0, guibg = p.surface0 })
-      hl('TelescopePromptTitle', { guifg = p.crust, guibg = p.mauve })
-      hl('TelescopePromptNormal', { guifg = p.flamingo, guibg = p.surface0 })
+      hl('TelescopePromptBorder', { fg = p.surface0, bg = p.surface0 })
+      hl('TelescopePromptTitle', { fg = p.crust, bg = p.mauve })
+      hl('TelescopePromptNormal', { fg = p.flamingo, bg = p.surface0 })
 
-      hl('TelescopePreviewBorder', { guifg = p.mantle, guibg = p.mantle })
-      hl('TelescopePreviewTitle', { guifg = p.crust, guibg = p.red })
+      hl('TelescopePreviewBorder', { fg = p.mantle, bg = p.mantle })
+      hl('TelescopePreviewTitle', { fg = p.crust, bg = p.red })
 
-      hl('TelescopeResultsBorder', { guifg = p.mantle, guibg = p.mantle })
-      hl('TelescopeResultsNormal', { guibg = p.mantle })
+      hl('TelescopeResultsBorder', { fg = p.mantle, bg = p.mantle })
+      hl('TelescopeResultsNormal', { bg = p.mantle })
     end)
   end,
 }

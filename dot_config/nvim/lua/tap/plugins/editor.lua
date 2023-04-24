@@ -259,12 +259,9 @@ return {
       }
 
       require('tap.utils').apply_user_highlights('Neotree', function(highlight)
-        highlight('NeoTreeDimText', { link = 'Comment', force = true })
-        highlight('NeoTreeGitConflict', { link = 'Warnings', force = true })
-        highlight(
-          'NeoTreeGitUntracked',
-          { link = 'NvimTreeGitNew', force = true }
-        )
+        highlight('NeoTreeDimText', { link = 'Comment' })
+        highlight('NeoTreeGitConflict', { link = 'Warnings' })
+        highlight('NeoTreeGitUntracked', { link = 'NvimTreeGitNew' })
       end)
     end,
   },

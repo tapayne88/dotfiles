@@ -124,56 +124,13 @@ M.onoremap = make_mapper('o', noremap_opts)
 M.tnoremap = make_mapper('t', noremap_opts)
 M.cnoremap = make_mapper('c', { noremap = true, silent = false })
 
----@alias HighlightOpts
----| { guifg?: string, guibg?: string, gui?: string, guisp?: string, ctermfg?: string, ctermbg?: string, cterm?: string }
----| { link?: string, force: boolean }
+---@alias Utils.highlight fun(name: string, opts: table<string, any>): nil
 
----@alias Utils.highlight fun(name: string, opts: HighlightOpts): nil
-
--- Shamelessly stolen from akinsho/dotfiles
--- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/highlights.lua#L56
---- TODO eventually move to using `nvim_set_hl`
---- however for the time being that expects colors
---- to be specified as rgb not hex
+---Friendly named wrapper around vim.api.nvim_set_hl
 ---@type Utils.highlight
 function M.highlight(name, opts)
-  local force = opts.force or false
-  if name and vim.tbl_count(opts) > 0 then
-    if opts.link and opts.link ~= '' then
-      vim.cmd(
-        'highlight'
-          .. (force and '!' or '')
-          .. ' link '
-          .. name
-          .. ' '
-          .. opts.link
-      )
-    else
-      local cmd = { 'highlight', name }
-      if opts.guifg and opts.guifg ~= '' then
-        table.insert(cmd, 'guifg=' .. opts.guifg)
-      end
-      if opts.guibg and opts.guibg ~= '' then
-        table.insert(cmd, 'guibg=' .. opts.guibg)
-      end
-      if opts.gui and opts.gui ~= '' then
-        table.insert(cmd, 'gui=' .. opts.gui)
-      end
-      if opts.guisp and opts.guisp ~= '' then
-        table.insert(cmd, 'guisp=' .. opts.guisp)
-      end
-      if opts.ctermfg and opts.ctermfg ~= '' then
-        table.insert(cmd, 'ctermfg=' .. opts.ctermfg)
-      end
-      if opts.ctermbg and opts.ctermbg ~= '' then
-        table.insert(cmd, 'ctermbg=' .. opts.ctermbg)
-      end
-      if opts.cterm and opts.cterm ~= '' then
-        table.insert(cmd, 'cterm=' .. opts.cterm)
-      end
-      vim.cmd(table.concat(cmd, ' '))
-    end
-  end
+  local global_namespace = 0
+  vim.api.nvim_set_hl(global_namespace, name, opts)
 end
 
 -- Given a highlight name, grab the bg & fg attributes

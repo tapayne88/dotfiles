@@ -108,9 +108,9 @@ return {
       }
 
       require('tap.utils').apply_user_highlights('NvimCmp', function(highlight)
-        highlight('CmpItemAbbrDeprecated', { link = 'Error', force = true })
-        highlight('CmpItemKind', { link = 'Special', force = true })
-        highlight('CmpItemMenu', { link = 'Comment', force = true })
+        highlight('CmpItemAbbrDeprecated', { link = 'Error' })
+        highlight('CmpItemKind', { link = 'Special' })
+        highlight('CmpItemMenu', { link = 'Comment' })
       end)
     end,
   },
