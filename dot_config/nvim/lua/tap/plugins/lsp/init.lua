@@ -185,7 +185,7 @@ return {
       return {
         text = {
           spinner = 'dots',
-          done = require('tap.utils.lsp').symbol 'ok',
+          done = '',
         },
         window = {
           blend = 0,

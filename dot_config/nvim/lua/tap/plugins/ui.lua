@@ -3,7 +3,6 @@ return {
   {
     'rcarriga/nvim-notify',
     config = function()
-      local lsp_symbol = require('tap.utils.lsp').symbol
       local nnoremap = require('tap.utils').nnoremap
 
       local debug_enabled = require('tap.utils').debug_enabled()
@@ -13,11 +12,11 @@ return {
 
       require('notify').setup {
         icons = {
-          ERROR = lsp_symbol 'error',
-          WARN = lsp_symbol 'warning',
-          INFO = lsp_symbol 'info',
+          ERROR = '',
+          WARN = '',
+          INFO = '',
           DEBUG = '',
-          TRACE = '✎',
+          TRACE = '󱡴',
         },
         level = debug_enabled and vim.log.levels.DEBUG or vim.log.levels.INFO,
       }

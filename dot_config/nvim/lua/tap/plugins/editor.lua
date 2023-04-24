@@ -348,19 +348,9 @@ return {
         { desc = '[Trouble] LSP references' }
       )
     end,
-    config = function()
-      local lsp_symbol = require('tap.utils.lsp').symbol
-
-      require('trouble').setup {
-        signs = {
-          error = lsp_symbol 'error',
-          warning = lsp_symbol 'warning',
-          hint = lsp_symbol 'hint',
-          information = lsp_symbol 'info',
-          other = lsp_symbol 'ok',
-        },
-      }
-    end,
+    opts = {
+      use_diagnostic_signs = true,
+    },
   },
 
   -- Window resizing on focus

@@ -58,23 +58,15 @@ return {
     -- Signs --
     -----------
     local signs = {
-      Error = {
-        icon = lsp_symbol 'error',
-      },
-      Warn = {
-        icon = lsp_symbol 'warning',
-      },
-      Hint = {
-        icon = lsp_symbol 'hint',
-      },
-      Info = {
-        icon = lsp_symbol 'info',
-      },
+      Error = lsp_symbol 'error',
+      Warn = lsp_symbol 'warning',
+      Hint = lsp_symbol 'hint',
+      Info = lsp_symbol 'info',
     }
 
-    for type, config in pairs(signs) do
+    for type, icon in pairs(signs) do
       local hl = 'DiagnosticSign' .. type
-      vim.fn.sign_define(hl, { text = config.icon, texthl = hl, numhl = '' })
+      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
     end
   end,
 }
