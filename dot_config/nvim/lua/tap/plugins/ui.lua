@@ -12,8 +12,8 @@ return {
 
       require('notify').setup {
         icons = {
-          ERROR = '',
-          WARN = '',
+          ERROR = '󰅚',
+          WARN = '󰀪',
           INFO = '',
           DEBUG = '',
           TRACE = '󱡴',
@@ -142,7 +142,7 @@ return {
         ),
         dashboard.button(
           'r',
-          ' ' .. ' Recent files',
+          '󰄉 ' .. ' Recent files',
           ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'
         ),
         dashboard.button(
@@ -151,9 +151,9 @@ return {
           ':ene <BAR> startinsert <CR>'
         ),
         dashboard.button('f', ' ' .. ' Find file', ':norm ,ff <CR>'),
-        dashboard.button('g', ' ' .. ' Git file', ':norm ,gf <CR>'),
+        dashboard.button('g', '󰊢 ' .. ' Git file', ':norm ,gf <CR>'),
         dashboard.button('s', ' ' .. ' Find text', ':norm ,fg <CR>'),
-        dashboard.button('l', '鈴' .. ' Lazy', ':Lazy<CR>'),
+        dashboard.button('l', '󰒲' .. ' Lazy', ':Lazy<CR>'),
         dashboard.button('m', '◍ ' .. ' Mason', ':Mason<CR>'),
         dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
       }

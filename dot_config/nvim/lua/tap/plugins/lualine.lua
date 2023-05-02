@@ -168,14 +168,14 @@ return {
             separator = { '' },
           },
         },
-        lualine_b = { { 'branch', icon = '' } },
+        lualine_b = { { 'branch', icon = '󰊢' } },
         lualine_c = {
           {
             'filename',
             file_status = false,
             fmt = function(filename)
               local is_zoomed = window_zoom_enabled()
-              local zoom_text = is_zoomed and ' ﯫ' or ''
+              local zoom_text = is_zoomed and ' 󰛭' or ''
               return filename .. zoom_text
             end,
           },
@@ -341,7 +341,7 @@ return {
         winbar = {
           lualine_a = {
             {
-              literal '  ',
+              literal ' 󰆧 ',
               cond = conditions.is_navic_available,
             },
           },
