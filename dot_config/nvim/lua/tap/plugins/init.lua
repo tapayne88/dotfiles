@@ -59,9 +59,6 @@ return {
     },
   }, -- Adds unix commands like ':Move' etc.
 
-  -- Filetype icon support with lua support
-  -- { 'ryanoasis/vim-devicons', 'kyazdani42/nvim-web-devicons' },
-
   -- Syntax not supported by treesitter
   { 'plasticboy/vim-markdown', ft = 'markdown' },
   -- Markdown previewing commands
