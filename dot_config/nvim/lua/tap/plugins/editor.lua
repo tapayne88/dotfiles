@@ -237,12 +237,20 @@ return {
           },
         },
         default_component_configs = {
+          icon = {
+            folder_closed = '',
+            folder_open = '',
+            folder_empty = '󰜌',
+            folder_empty_open = '󰜌',
+          },
           git_status = {
             symbols = {
+              -- Change type
               added = '',
               modified = '',
               deleted = '',
               renamed = '󰁕',
+              -- Status type
               untracked = '',
               ignored = '',
               unstaged = '󰄱',
