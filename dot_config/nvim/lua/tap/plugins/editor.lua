@@ -213,7 +213,7 @@ return {
     cmd = 'Neotree',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
+      'tapayne88/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
     },
     init = function()
@@ -320,7 +320,7 @@ return {
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',
-    dependencies = 'kyazdani42/nvim-web-devicons',
+    dependencies = 'tapayne88/nvim-web-devicons',
     cmd = { 'TroubleToggle', 'Trouble' },
     init = function()
       local nnoremap = require('tap.utils').nnoremap
