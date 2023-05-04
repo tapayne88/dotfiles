@@ -14,6 +14,11 @@
 [core]
   pager = delta --features default
 
+# Without the below my p10k prompt would show incorrect git status info, see issue
+# https://github.com/romkatv/powerlevel10k/issues/2232#issuecomment-1478166292
+[index]
+  skipHash = false
+
 [color]
   diff = auto
   status = auto
