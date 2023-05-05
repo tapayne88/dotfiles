@@ -1,6 +1,7 @@
 # Crostini / Chrome OS only files
 {{- if ne "crostini" .ostype }}
 .config/zsh/functions/crostini.zsh
+.local/bin/update-nerd-font
 .local/share
 {{- end }}
 
@@ -15,6 +16,7 @@
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
+.local/share/fonts/update-fonts
 # Ignore window font folder
 .local/share/fonts/windows
 
