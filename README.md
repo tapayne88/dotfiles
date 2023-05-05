@@ -53,9 +53,10 @@ For Linux systems which rely on the fonts in [`dot_local/share/fonts`](./dot_loc
 ```bash
 ./dot_local/share/fonts/update-fonts
 
-# Clean up the old fonts
+# Clean up the old font files
 rm ~/.local/share/fonts/JetBrainsMonoNerdFont*
 
+# Apply the new font files
 chezmoi apply -v
 
 fc-cache -r
