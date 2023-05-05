@@ -113,9 +113,28 @@ After following the homebrew installation instructions we'll want our blessed ho
 brew bundle install --global
 ```
 
-## 8. Font Installation (Non-MacOS Only)
+## 8. Font Installation
 
-Follow the installation guide from nerd-fonts [here](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures). This will install the ligature supported JetBrains Mono font.
+Ensure chezmoi config specifies the appropriate font name (see [here](https://github.com/tapayne88/dotfiles/blob/c9c49b2fa6c41ca37ed9a1e24e374d72e0379148/public/chezmoi-schema.json#L27-L31)).
+
+The selected Nerd font should
+
+- have ligature support - filename shouldn't contain `NL` (No Ligatures)
+- is suitable for terminals / monospaced applications - has `Mono` suffix
+
+_N.B._ As of writing this alacritty does not support ligatures.
+
+### MacOS
+
+MacOS will use homebrew to install the fonts. Use MacOS' builtin Font Book app to verify the font name.
+
+### Linux
+
+Running `chezmoi apply` _should_ put the JetBrainsMono Nerd font files in the correct directory. Following this you'll need to reload the system font cache with
+
+```bash
+fc-cache -r
+```
 
 The following will show the installed font name and supported styles, e.g. italic, etc.
 
@@ -123,11 +142,6 @@ The following will show the installed font name and supported styles, e.g. itali
 fc-list | grep JetBrains
 ```
 
-MacOS will use homebrew to install the fonts.
+### Windows
 
-Ensure the chezmoi config specifies the font name that (see [here](https://github.com/tapayne88/dotfiles/blob/c9c49b2fa6c41ca37ed9a1e24e374d72e0379148/public/chezmoi-schema.json#L27-L31))
-
-- has ligature support - doesn't contain `NL` (No Ligatures)
-- is suitable for terminals / monospaced applications - has `Mono` suffix
-
-_N.B._ As of writing this alacritty does not support ligatures.
+Double-click each of the font files in the [fonts directory](../dot_local/share/fonts). As of Nerd font v3 there are no Windows specific font files, each font should support all systems.
