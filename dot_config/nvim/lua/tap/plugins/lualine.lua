@@ -6,7 +6,7 @@ return {
     'tapayne88/lualine.nvim',
     branch = 'suppress-winbar-no-room-error',
     dependencies = {
-      'tapayne88/nvim-web-devicons',
+      'nvim-tree/nvim-web-devicons',
     },
     config = function()
       local lsp_symbol = require('tap.utils.lsp').symbol

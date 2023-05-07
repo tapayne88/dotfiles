@@ -59,13 +59,6 @@ return {
     },
   }, -- Adds unix commands like ':Move' etc.
 
-  -- TODO: Remove use of fork once PR is merged - find the other instances!
-  -- https://github.com/nvim-tree/nvim-web-devicons/pull/264
-  {
-    'tapayne88/nvim-web-devicons',
-    branch = 'fix/nerdfont-v3-remaining',
-  },
-
   -- Syntax not supported by treesitter
   { 'plasticboy/vim-markdown', ft = 'markdown' },
   -- Markdown previewing commands
