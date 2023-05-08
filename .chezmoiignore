@@ -1,5 +1,6 @@
-# Linux only files
-{{- if eq "macOS" .ostype }}
+# Crostini / Chrome OS only files
+{{- if ne "crostini" .ostype }}
+.config/zsh/functions/crostini.zsh
 .local/share
 {{- end }}
 
@@ -9,25 +10,16 @@
 .config/zsh/functions/brew.zsh
 {{- end }}
 
-# Crostini / Chrome OS only files
-{{- if ne "crostini" .ostype }}
-.config/zsh/functions/crostini.zsh
-.local/share/applications
-{{- end }}
-
 # WSL only files
 {{- if ne "wsl" .ostype }}
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
-stylua.toml
-public
-.prettierrc.js
-misc
-README.md
-
-# Ignore icons with kitty config
-.config/kitty/icons
-
 # Ignore window font folder
 .local/share/fonts/windows
+
+.prettierrc.js
+misc
+public
+README.md
+stylua.toml
