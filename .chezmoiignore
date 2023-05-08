@@ -16,9 +16,6 @@
 {{- end }}
 
 .local/share/fonts/update-fonts
-# Ignore window font folder
-.local/share/fonts/windows
-
 .prettierrc.js
 misc
 public

@@ -21,3 +21,5 @@ unzip "$DOWNLOAD_FILE" -d "$EXTRACT_DIR"
 echo "copying font files to $script_dir"
 
 command cp -r "$EXTRACT_DIR/${FONT_NAME}NerdFont"-* "$script_dir/"
+# Copy Mono font too for WSL
+command cp -r "$EXTRACT_DIR/${FONT_NAME}NerdFontMono"-* "$script_dir/"
