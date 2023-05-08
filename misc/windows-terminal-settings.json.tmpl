@@ -1,4 +1,5 @@
 {
+    "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
     "actions": [],
     "alwaysShowTabs": true,
@@ -7,12 +8,12 @@
     {
         "defaults": 
         {
-            "colorScheme": "nord",
+            "colorScheme": "Catppuccin Frappe",
             "cursorShape": "filledBox",
             "font": 
             {
                 "face": "{{ .terminal_font }}",
-                "size": {{ .terminal_font_size }}
+                "size": {{ .terminal_font_size }}.0
             }
         },
         "list": 
@@ -29,13 +30,11 @@
                 "startingDirectory": "{{ .chezmoi.homeDir }}"
             },
             {
-                "commandline": "powershell.exe",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": false,
                 "name": "Windows PowerShell"
             },
             {
-                "commandline": "cmd.exe",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
                 "name": "cmd"
@@ -95,6 +94,29 @@
             "selectionBackground": "#FFFFFF",
             "white": "#CCCCCC",
             "yellow": "#C19C00"
+        },
+        {
+            "background": "#303446",
+            "black": "#51576D",
+            "blue": "#8CAAEE",
+            "brightBlack": "#626880",
+            "brightBlue": "#8CAAEE",
+            "brightCyan": "#81C8BE",
+            "brightGreen": "#A6D189",
+            "brightPurple": "#F4B8E4",
+            "brightRed": "#E78284",
+            "brightWhite": "#A5ADCE",
+            "brightYellow": "#E5C890",
+            "cursorColor": "#F2D5CF",
+            "cyan": "#81C8BE",
+            "foreground": "#C6D0F5",
+            "green": "#A6D189",
+            "name": "Catppuccin Frappe",
+            "purple": "#F4B8E4",
+            "red": "#E78284",
+            "selectionBackground": "#626880",
+            "white": "#B5BFE2",
+            "yellow": "#E5C890"
         },
         {
             "background": "#282C34",
@@ -279,6 +301,27 @@
             "selectionBackground": "#FFFFFF",
             "white": "#E5E9F0",
             "yellow": "#EBCB8B"
+        }
+    ],
+    "themes": 
+    [
+        {
+            "name": "Catppuccin Frappe",
+            "tab": 
+            {
+                "background": "#303446FF",
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "tabRow": 
+            {
+                "background": "#292C3CFF",
+                "unfocusedBackground": "#232634FF"
+            },
+            "window": 
+            {
+                "applicationTheme": "dark"
+            }
         }
     ]
 }

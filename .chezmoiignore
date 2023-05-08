@@ -15,9 +15,7 @@
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
-# Ignore window font folder
-.local/share/fonts/windows
-
+.local/share/fonts/update-fonts
 .prettierrc.js
 misc
 public

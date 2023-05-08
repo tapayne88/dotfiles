@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Script to update the Nerd font files in this repo
+
+set -Eeuo pipefail
+
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+TEMP_DIR=$(mktemp -d)
+FONT_NAME='JetBrainsMono'
+
+DOWNLOAD_FILE="$TEMP_DIR/$FONT_NAME.zip"
+EXTRACT_DIR="$TEMP_DIR/$FONT_NAME"
+
+echo "downloading font to $DOWNLOAD_FILE"
+echo ""
+
+curl --location --output "$DOWNLOAD_FILE" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$FONT_NAME.zip"
+unzip "$DOWNLOAD_FILE" -d "$EXTRACT_DIR"
+
+echo "copying font files to $script_dir"
+
+command cp -r "$EXTRACT_DIR/${FONT_NAME}NerdFont"-* "$script_dir/"
+# Copy Mono font too for WSL
+command cp -r "$EXTRACT_DIR/${FONT_NAME}NerdFontMono"-* "$script_dir/"

@@ -213,7 +213,7 @@ return {
     cmd = 'Neotree',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
+      'nvim-tree/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
     },
     init = function()
@@ -237,15 +237,23 @@ return {
           },
         },
         default_component_configs = {
+          icon = {
+            folder_closed = '',
+            folder_open = '',
+            folder_empty = '󰜌',
+            folder_empty_open = '󰜌',
+          },
           git_status = {
             symbols = {
+              -- Change type
               added = '',
               modified = '',
               deleted = '',
-              renamed = '',
+              renamed = '󰁕',
+              -- Status type
               untracked = '',
               ignored = '',
-              unstaged = '',
+              unstaged = '󰄱',
               staged = '',
               conflict = '',
             },
@@ -312,7 +320,7 @@ return {
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',
-    dependencies = 'kyazdani42/nvim-web-devicons',
+    dependencies = 'nvim-tree/nvim-web-devicons',
     cmd = { 'TroubleToggle', 'Trouble' },
     init = function()
       local nnoremap = require('tap.utils').nnoremap

@@ -647,7 +647,7 @@
 
   # Node.js version from asdf.
   typeset -g POWERLEVEL9K_ASDF_NODEJS_FOREGROUND=5
-  typeset -g POWERLEVEL9K_ASDF_NODEJS_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_ASDF_NODEJS_VISUAL_IDENTIFIER_EXPANSION='󰎙'
   # typeset -g POWERLEVEL9K_ASDF_NODEJS_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Rust version from asdf.
@@ -972,7 +972,7 @@
   # If set to false, hide node version if it's equal to "system".
   typeset -g POWERLEVEL9K_NODENV_SHOW_SYSTEM=true
   # Custom icon.
-  typeset -g POWERLEVEL9K_NODENV_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_NODENV_VISUAL_IDENTIFIER_EXPANSION='󰎙'
 
   ##############[ nvm: node.js version from nvm (https://github.com/nvm-sh/nvm) ]###############
   # Nvm color.
@@ -988,7 +988,7 @@
   # Separate environment name from Node version only with a space.
   typeset -g POWERLEVEL9K_NODEENV_{LEFT,RIGHT}_DELIMITER=
   # Custom icon.
-  typeset -g POWERLEVEL9K_NODEENV_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_NODEENV_VISUAL_IDENTIFIER_EXPANSION='󰎙'
 
   ##############################[ node_version: node.js version ]###############################
   # Node version color.
@@ -996,7 +996,7 @@
   # Show node version only when in a directory tree containing package.json.
   typeset -g POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY=true
   # Custom icon.
-  typeset -g POWERLEVEL9K_NODE_VERSION_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_NODE_VERSION_VISUAL_IDENTIFIER_EXPANSION='󰎙'
 
   #######################[ go_version: go version (https://golang.org) ]########################
   # Go version color.

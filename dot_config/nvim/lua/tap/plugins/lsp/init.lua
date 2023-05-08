@@ -185,7 +185,7 @@ return {
       return {
         text = {
           spinner = 'dots',
-          done = '',
+          done = '󰄴',
         },
         window = {
           blend = 0,

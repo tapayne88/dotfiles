@@ -46,6 +46,24 @@ I use Nix (and [home-manager](https://github.com/rycee/home-manager)) to manage 
 
 To get ligature/italic font support there are a number of steps. You'll want to source a font like [JetBrains Mono](https://www.jetbrains.com/lp/mono/) and install it. If you want icons you'll probably want the [Nerd Fonts](https://www.nerdfonts.com/font-downloads) version.
 
+### Updating the font files
+
+For Linux systems which rely on the fonts in [`dot_local/share/fonts`](./dot_local/share/fonts) the following script can be run to download the latest font files from Nerd fonts.
+
+```bash
+./dot_local/share/fonts/update-fonts
+
+# Clean up the old font files
+rm ~/.local/share/fonts/JetBrainsMonoNerdFont*
+
+# Apply the new font files
+chezmoi apply -v
+
+fc-cache -r
+```
+
+_N.B_ MacOS manages it's fonts through Homebrew.
+
 ## Windows Utilities
 
 | Utility                                                 | Description                                                                          |

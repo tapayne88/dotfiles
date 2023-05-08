@@ -9,12 +9,12 @@ local M = {}
 ---@return string
 M.symbol = function(type)
   local symbols = {
-    error = ' ',
-    warning = ' ',
+    error = '󰅚 ',
+    warning = '󰀪 ',
     info = ' ',
-    hint = ' ',
-    hint_alt = ' ',
-    ok = ' ',
+    hint = '󰌶 ',
+    hint_alt = '󰌵 ',
+    ok = '󰄴 ',
   }
 
   return symbols[type]

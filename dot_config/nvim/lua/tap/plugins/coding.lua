@@ -79,6 +79,7 @@ return {
           format = require('lspkind').cmp_format {
             mode = 'symbol_text',
             symbol_map = {
+              -- Additional icons
               Copilot = '',
             },
           },

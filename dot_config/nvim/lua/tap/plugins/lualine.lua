@@ -6,7 +6,7 @@ return {
     'tapayne88/lualine.nvim',
     branch = 'suppress-winbar-no-room-error',
     dependencies = {
-      'kyazdani42/nvim-web-devicons',
+      'nvim-tree/nvim-web-devicons',
     },
     config = function()
       local lsp_symbol = require('tap.utils.lsp').symbol
@@ -168,14 +168,14 @@ return {
             separator = { '' },
           },
         },
-        lualine_b = { { 'branch', icon = '' } },
+        lualine_b = { { 'branch', icon = '󰊢' } },
         lualine_c = {
           {
             'filename',
             file_status = false,
             fmt = function(filename)
               local is_zoomed = window_zoom_enabled()
-              local zoom_text = is_zoomed and ' ﯫ' or ''
+              local zoom_text = is_zoomed and ' 󰛭' or ''
               return filename .. zoom_text
             end,
           },
@@ -341,7 +341,7 @@ return {
         winbar = {
           lualine_a = {
             {
-              literal '  ',
+              literal ' 󰆧 ',
               cond = conditions.is_navic_available,
             },
           },
@@ -379,6 +379,37 @@ return {
     'SmiteshP/nvim-navic',
     dependencies = 'neovim/nvim-lspconfig',
     lazy = true,
+    opts = {
+      icons = {
+        File = '󰈙 ',
+        Module = ' ',
+        Namespace = '󰌗 ',
+        Package = ' ',
+        Class = '󰌗 ',
+        Method = '󰆧 ',
+        Property = ' ',
+        Field = ' ',
+        Constructor = ' ',
+        Enum = '󰕘 ',
+        Interface = '󰕘 ',
+        Function = '󰊕 ',
+        Variable = '󰆧 ',
+        Constant = '󰏿 ',
+        String = '󰀬 ',
+        Number = '󰎠 ',
+        Boolean = '◩ ',
+        Array = '󰅪 ',
+        Object = '󰅩 ',
+        Key = '󰌋 ',
+        Null = '󰟢 ',
+        EnumMember = ' ',
+        Struct = '󰌗 ',
+        Event = ' ',
+        Operator = '󰆕 ',
+        TypeParameter = '󰊄 ',
+        Macro = '󰉨 ',
+      },
+    },
     init = function()
       require('tap.utils').apply_user_highlights('Navic', function(hl, palette)
         local bg = palette.mantle
