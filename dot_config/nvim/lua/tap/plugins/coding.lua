@@ -105,7 +105,7 @@ return {
           },
         },
 
-        experimental = { ghost_text = true },
+        experimental = { ghost_text = { hl_group = 'Comment' } },
       }
 
       require('tap.utils').apply_user_highlights('NvimCmp', function(highlight)
