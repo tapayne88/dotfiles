@@ -38,6 +38,23 @@ augroup('TapMkViews', {
   },
 })
 
+-- Only show colorcolumn for certain filetypes
+augroup('TapColorColumn', {
+  {
+    events = { 'FileType' },
+    pattern = { '*' },
+    callback = function()
+      local ft_excluded_colorcolumn = { 'qf', 'Trouble', 'TelescopeResults' }
+
+      if vim.tbl_contains(ft_excluded_colorcolumn, vim.bo.filetype) then
+        vim.opt_local.colorcolumn = ''
+      else
+        vim.opt_local.colorcolumn = '80'
+      end
+    end,
+  },
+})
+
 -- Automatically disable search highlight done searching
 local function toggle_hlsearch(char)
   if vim.fn.mode() == 'n' then
