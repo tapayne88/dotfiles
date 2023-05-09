@@ -105,14 +105,10 @@ function git-worktree-init() {
   PARENT_DIR=$(dirname $REPO_DIR)
   REPO_NAME=$(basename $REPO_DIR)
 
-  TEMP_REPO="/tmp/$REPO_NAME"
+  TEMP_REPO="$(mktemp -d)/$REPO_NAME"
 
-  echo "checking out default branch"
-  DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-  git checkout $DEFAULT_BRANCH > /dev/null 2>&1
-  
   # Remove old location files
-  echo "moving current repo to /tmp"
+  echo "moving current repo to $TEMP_REPO"
   cd ..
   mv $REPO_NAME $TEMP_REPO
 
@@ -125,4 +121,6 @@ function git-worktree-init() {
   echo "setting hidden repo as bare"
   cd "$REPO_NAME/.$REPO_NAME.git"
   git config --bool core.bare true
+
+  echo "run \`git worktree add ../worktrees/<worktree_name> <branch>\` to add a worktree"
 }
