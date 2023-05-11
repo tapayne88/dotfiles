@@ -81,7 +81,7 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = "!f() { git log --pretty=better-oneline --color=always "$*" | fzf --bind='?:toggle-preview' --ansi --preview \"git show $(echo {1} | tr -d '[:space:]') | delta --features fzf\"; }; f"
+  l = forgit log
   lb = l origin/master..
   lu = l @{u}
   lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
