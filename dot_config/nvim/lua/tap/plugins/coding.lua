@@ -443,6 +443,8 @@ return {
       require('copilot').setup {
         suggestion = { enabled = false },
         panel = { enabled = false },
+        -- TODO: Set copilot to alway use asdf global node version
+        -- copilot_node_command = 'node', -- Node.js version must be > 16.x
       }
       require('copilot_cmp').setup()
 
