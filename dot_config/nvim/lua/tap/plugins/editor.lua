@@ -622,4 +622,11 @@ return {
       end, { desc = 'Toggle colorizer' })
     end,
   },
+
+  {
+    'chrishrb/gx.nvim',
+    event = { 'BufEnter' },
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = true,
+  },
 }
