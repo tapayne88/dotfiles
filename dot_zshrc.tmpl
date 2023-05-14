@@ -112,7 +112,7 @@ antigen bundle robbyrussell/oh-my-zsh plugins/terraform
 antigen bundle robbyrussell/oh-my-zsh plugins/tmux
 antigen bundle robbyrussell/oh-my-zsh plugins/z
 
-antigen bundle wfxr/forgit
+antigen bundle tapayne88/forgit
 
 antigen theme romkatv/powerlevel10k
 
@@ -128,8 +128,11 @@ sourceOPSession
 # Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
 prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
 
+# forgit config
+# configure checkout_branch to sort by most recent commit
+export FORGIT_CHECKOUT_BRANCH_BRANCH_GIT_OPTS='--sort=-committerdate'
 # append `git-forgit` to path
-export PATH="$PATH:$(dirname $FORGIT)"
+export PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
 
 # Need to run this after oh-my-zsh lib/completion as it resets it
 # for the benefit of macOS
