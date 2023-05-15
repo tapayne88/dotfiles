@@ -12,6 +12,7 @@
 
 # WSL only files
 {{- if ne "wsl" .ostype }}
+.aws/
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
