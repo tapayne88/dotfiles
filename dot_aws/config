@@ -1,4 +1,8 @@
+[default]
+region=eu-west-1
+
 # Profile for sync_lr script
 [profile lightroom-sync]
+region=eu-west-1
 s3 =
   max_concurrent_requests = 5
