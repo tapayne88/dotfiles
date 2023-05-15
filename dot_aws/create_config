@@ -1,0 +1,4 @@
+# Profile for sync_lr script
+[profile lightroom-sync]
+s3 =
+  max_concurrent_requests = 5
