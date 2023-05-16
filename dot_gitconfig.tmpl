@@ -57,8 +57,7 @@
   cm = commit
   cma = commit --amend
   cmae = commit --amend --no-edit
-  co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git checkout-fzf; fi }; f"
-  checkout-fzf = "!f() { BRANCH=$(git branch --sort=-committerdate | grep -v "^*"  | tr -d '[:blank:]' | fzf --bind='?:toggle-preview' --height 15 --preview \"git show {1} | delta --features fzf\"); [ -n \"$BRANCH\" ] && git checkout-command \"$BRANCH\"; }; f"
+  co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git forgit checkout_branch; fi }; f"
   checkout-command = checkout --ignore-other-worktrees
   pl = pull
   ft = fetch
