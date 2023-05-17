@@ -440,51 +440,83 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     config = function()
-      require('copilot').setup {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        -- TODO: Set copilot to alway use asdf global node version
-        -- copilot_node_command = 'node', -- Node.js version must be > 16.x
-      }
-      require('copilot_cmp').setup()
+      local get_asdf_node_executable = function()
+        local home_dir = vim.fn.getenv 'HOME'
 
-      local progress_kind_map = {
-        InProgress = 'begin',
-        Normal = 'end',
-        Warning = 'report',
-        [''] = 'report',
-      }
-
-      -- Register for notifications of request status
-      require('copilot.api').register_status_notification_handler(
-        function(status)
-          local client_id = require('copilot.client').id
-          if client_id == nil then
-            return
-          end
-
-          local msg = {
-            token = 'copilot',
-            value = {
-              title = 'copilot',
-              kind = progress_kind_map[status.status],
-              message = status.message,
-            },
-          }
-          local ctx = { client_id = client_id }
-
-          require('tap.utils').logger.info(
-            string.format(
-              '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
-              vim.inspect(msg),
-              vim.inspect(ctx)
-            )
+        local res, code =
+          require('tap.utils.async').get_os_command_output_async(
+            { 'asdf', 'which', 'node' },
+            home_dir
           )
 
-          -- Dispatch request status to fidget.nvim
-          vim.lsp.handlers['$/progress'](nil, msg, ctx)
+        if code ~= 0 then
+          require('tap.utils').logger.warn(
+            '[copilot.lua] failed to find asdf node executable in ' .. home_dir
+          )
+          return nil
         end
-      )
+
+        local node_path = res[1]
+
+        require('tap.utils').logger.info(
+          '[copilot.lua] using asdf node executable ' .. node_path
+        )
+
+        return node_path
+      end
+
+      require('plenary.async').run(function()
+        local asdf_node_executable = get_asdf_node_executable()
+        if asdf_node_executable == nil then
+          return
+        end
+
+        require('copilot').setup {
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+          -- Set copilot to alway use asdf global node version
+          copilot_node_command = asdf_node_executable,
+        }
+        require('copilot_cmp').setup()
+
+        local progress_kind_map = {
+          InProgress = 'begin',
+          Normal = 'end',
+          Warning = 'report',
+          [''] = 'report',
+        }
+
+        -- Register for notifications of request status
+        require('copilot.api').register_status_notification_handler(
+          function(status)
+            local client_id = require('copilot.client').id
+            if client_id == nil then
+              return
+            end
+
+            local msg = {
+              token = 'copilot',
+              value = {
+                title = 'copilot',
+                kind = progress_kind_map[status.status],
+                message = status.message,
+              },
+            }
+            local ctx = { client_id = client_id }
+
+            require('tap.utils').logger.info(
+              string.format(
+                '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+                vim.inspect(msg),
+                vim.inspect(ctx)
+              )
+            )
+
+            -- Dispatch request status to fidget.nvim
+            vim.lsp.handlers['$/progress'](nil, msg, ctx)
+          end
+        )
+      end)
     end,
   },
 }
