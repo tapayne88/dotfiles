@@ -52,14 +52,12 @@
   manyFiles = true
 
 [alias]
-  a = "!f() { if [ -n \"$*\" ]; then git add $*; else git add-fzf; fi }; f"
-  add-fzf = "!f() { FILES=$(git status --short | grep -E \"^.[^ ]\" | fzf --bind='?:toggle-preview' --multi --height 15 --preview \"[ {1} = '??' ] && bat -- '{2..}' || (git diff -- {2..} | delta --features fzf)\" | sed -e 's/^.. \"\\?//' -e 's/\"$//'); [ -n \"$FILES\" ] && git add \"$FILES\" || git add --update \"$FILES\"; }; f"
+  a = forgit add
   st = status
   cm = commit
   cma = commit --amend
   cmae = commit --amend --no-edit
-  co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git checkout-fzf; fi }; f"
-  checkout-fzf = "!f() { BRANCH=$(git branch --sort=-committerdate | grep -v "^*"  | tr -d '[:blank:]' | fzf --bind='?:toggle-preview' --height 15 --preview \"git show {1} | delta --features fzf\"); [ -n \"$BRANCH\" ] && git checkout-command \"$BRANCH\"; }; f"
+  co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git forgit checkout_branch; fi }; f"
   checkout-command = checkout --ignore-other-worktrees
   pl = pull
   ft = fetch
@@ -68,9 +66,9 @@
   cp = cherry-pick
   rb = rebase
   ru = reset --hard @{u}
-  rs = "!f() { if [ -n \"$*\" ]; then git reset $*; else git reset-fzf; fi }; f"
-  reset-fzf = "!f() { FILES=$(git status --short | grep -E \"^[^ \\?]\" | fzf --bind='?:toggle-preview' --multi --height 15 --preview \"git diff HEAD -- '{2..}' | delta --features fzf\" | sed -e 's/^.. \"\\?//' -e 's/\"$//'); [ -n \"$FILES\" ] && git reset HEAD -- \"$FILES\"; }; f"
+  rs = "!f() { if [ -n \"$*\" ]; then git reset $*; else git forgit reset_head; fi }; f"
   inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit --fixup=$HASH $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
+  fixup = forgit fixup
   ps = push
   psf = push --force-with-lease
   psu = push -u
@@ -81,14 +79,14 @@
   dt = difftool
   review = difftool @{u}
   grp = grep -I -n
-  l = "!f() { git log --pretty=better-oneline --color=always "$*" | fzf --bind='?:toggle-preview' --ansi --preview \"git show $(echo {1} | tr -d '[:space:]') | delta --features fzf\"; }; f"
+  l = forgit log
   lb = l origin/master..
   lu = l @{u}
   lg = log --pretty=summary --date='format:%Y-%m-%d %H:%M'
   lgb = lg origin/master..
   lgu = lg @{u}
   tree = log --pretty=better-oneline --all --graph
-  prune-local = "!git branch -vv | grep -nE 'origin/.*: gone' | awk '{print $2}' | xargs git branch -D"
+  prune-local = "!f() { DANGLING_BRANCHES=$(git branch -vv | grep -E 'origin/.*: gone'); echo \"Local branches missing corresponding branch on origin:\n$DANGLING_BRANCHES\n\nRemove the above branches? (y/n)\"; read -r answer < /dev/tty; [ \"$answer\" = \"y\" ] && echo \"$DANGLING_BRANCHES\" | awk '{ print $2 }' | xargs git branch -D; }; f"
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
   which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1 \"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
