@@ -458,7 +458,7 @@ return {
       require('tap.utils').augroup('TapPersistence', {
         {
           events = { 'FileType' },
-          pattern = { 'gitcommit' },
+          pattern = { 'gitcommit', 'gitrebase' },
           callback = function()
             -- If there is only one buffer open then it's probably a commit
             -- message instance (which we don't want to save as the directories
