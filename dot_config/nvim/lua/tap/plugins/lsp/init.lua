@@ -167,13 +167,20 @@ return {
         end
 
         -- Formatting
-        require('tap.utils').nnoremap('<leader>tf', toggle_format, {
+        require('tap.utils').keymap('n', '<leader>tf', toggle_format, {
           buffer = bufnr,
           desc = '[LSP] Toggle formatting on save',
         })
-        require('tap.utils').nnoremap(
+        require('tap.utils').keymap(
+          'n',
           '<space>f',
-          '<cmd>Format<CR>',
+          vim.cmd.Format,
+          { buffer = bufnr, desc = '[LSP] Run formatting' }
+        )
+        require('tap.utils').keymap(
+          'v',
+          '<space>f',
+          vim.cmd.FormatInRange,
           { buffer = bufnr, desc = '[LSP] Run formatting' }
         )
       end)
