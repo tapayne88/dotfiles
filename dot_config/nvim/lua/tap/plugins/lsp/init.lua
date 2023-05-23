@@ -133,7 +133,12 @@ return {
     'tapayne88/lsp-format.nvim',
     lazy = true,
     config = function()
-      require('lsp-format').setup {}
+      require('lsp-format').setup {
+        exclude = {
+          'lua_ls', -- use stylua with null-ls for lua
+          'tsserver',
+        },
+      }
 
       local function toggle_format()
         local filetype = vim.bo.filetype
@@ -155,11 +160,6 @@ return {
           )
         end
       end
-
-      local disabled_formatters = {
-        'lua_ls', -- use stylua with null-ls for lua
-        'tsserver',
-      }
 
       local format = function(options)
         -- Don't do disabled checking, here we're forcing formatting
@@ -190,9 +190,7 @@ return {
       end
 
       require('tap.utils.lsp').on_attach(function(c, bufnr)
-        if not vim.tbl_contains(disabled_formatters, c.name) then
-          require('lsp-format').on_attach(c)
-        end
+        require('lsp-format').on_attach(c)
 
         -- Commands
         vim.api.nvim_buf_create_user_command(bufnr, 'Format', format, {
