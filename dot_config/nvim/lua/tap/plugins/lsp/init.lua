@@ -168,7 +168,7 @@ return {
           return
         end
 
-        local clients = vim.tbl_values(vim.lsp.buf_get_clients())
+        local clients = vim.tbl_values(vim.lsp.get_active_clients())
         require('lsp-format').trigger_format(clients, options or {})
       end
 
@@ -184,7 +184,7 @@ return {
 
         local clients = vim.tbl_filter(function(client)
           return client.supports_method 'textDocument/rangeFormatting'
-        end, vim.lsp.buf_get_clients())
+        end, vim.lsp.get_active_clients())
 
         require('lsp-format').trigger_format(clients, options)
       end
