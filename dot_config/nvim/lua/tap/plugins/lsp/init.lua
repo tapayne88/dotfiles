@@ -6,7 +6,7 @@ return {
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
-      'lukas-reineke/lsp-format.nvim',
+      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
@@ -42,7 +42,7 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      'lukas-reineke/lsp-format.nvim',
+      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
@@ -128,7 +128,9 @@ return {
 
   -- async formatting
   {
-    'lukas-reineke/lsp-format.nvim',
+    -- Fork of upstream with merged PR
+    -- https://github.com/lukas-reineke/lsp-format.nvim/pull/65
+    'tapayne88/lsp-format.nvim',
     lazy = true,
     config = function()
       require('lsp-format').setup {}
