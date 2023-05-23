@@ -161,9 +161,37 @@ return {
         'tsserver',
       }
 
-      require('tap.utils.lsp').on_attach(function(client, bufnr)
-        if not vim.tbl_contains(disabled_formatters, client.name) then
-          require('lsp-format').on_attach(client)
+      local format = function(options)
+        -- Don't do disabled checking, here we're forcing formatting
+        ---@diagnostic disable-next-line: undefined-field
+        if vim.b.format_saving then
+          return
+        end
+
+        local clients = vim.tbl_values(vim.lsp.buf_get_clients())
+        require('lsp-format').trigger_format(clients, options or {})
+      end
+
+      local format_in_range = function(options)
+        -- Don't do disabled checking, here we're forcing formatting
+        ---@diagnostic disable-next-line: undefined-field
+        if vim.b.format_saving then
+          return
+        end
+
+        options = options or {}
+        options.in_range = true
+
+        local clients = vim.tbl_filter(function(client)
+          return client.supports_method 'textDocument/rangeFormatting'
+        end, vim.lsp.buf_get_clients())
+
+        require('lsp-format').trigger_format(clients, options)
+      end
+
+      require('tap.utils.lsp').on_attach(function(c, bufnr)
+        if not vim.tbl_contains(disabled_formatters, c.name) then
+          require('lsp-format').on_attach(c)
         end
 
         -- Formatting
@@ -174,14 +202,14 @@ return {
         require('tap.utils').keymap(
           'n',
           '<space>f',
-          vim.cmd.Format,
+          format,
           { buffer = bufnr, desc = '[LSP] Run formatting' }
         )
         require('tap.utils').keymap(
           'v',
           '<space>f',
-          vim.cmd.FormatInRange,
-          { buffer = bufnr, desc = '[LSP] Run formatting' }
+          format_in_range,
+          { buffer = bufnr, desc = '[LSP] Run formatting in range' }
         )
       end)
     end,
