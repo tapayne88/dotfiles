@@ -194,7 +194,27 @@ return {
           require('lsp-format').on_attach(c)
         end
 
-        -- Formatting
+        -- Commands
+        vim.api.nvim_buf_create_user_command(bufnr, 'Format', format, {
+          nargs = '*',
+          bar = true,
+          force = true,
+          desc = '[LSP] Run formatter for range',
+        })
+        vim.api.nvim_buf_create_user_command(
+          bufnr,
+          'FormatInRange',
+          format_in_range,
+          {
+            range = true,
+            nargs = '*',
+            bar = true,
+            force = true,
+            desc = '[LSP] Run formatter',
+          }
+        )
+
+        -- Keymaps
         require('tap.utils').keymap('n', '<leader>tf', toggle_format, {
           buffer = bufnr,
           desc = '[LSP] Toggle formatting on save',
@@ -203,13 +223,13 @@ return {
           'n',
           '<space>f',
           format,
-          { buffer = bufnr, desc = '[LSP] Run formatting' }
+          { buffer = bufnr, desc = '[LSP] Run formatter' }
         )
         require('tap.utils').keymap(
           'v',
           '<space>f',
           format_in_range,
-          { buffer = bufnr, desc = '[LSP] Run formatting in range' }
+          { buffer = bufnr, desc = '[LSP] Run formatter for range' }
         )
       end)
     end,
