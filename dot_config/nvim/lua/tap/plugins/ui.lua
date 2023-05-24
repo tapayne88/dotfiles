@@ -98,6 +98,7 @@ return {
           'lazy',
           'mason',
           'neo-tree',
+          'oil_preview',
           'terminal',
           'Trouble',
           require('tap.utils').dap_filetypes,
@@ -112,9 +113,12 @@ return {
 
   {
     'petertriho/nvim-scrollbar',
-    init = function()
-      require('scrollbar').setup {}
-    end,
+    opts = {
+      excluded_filetypes = {
+        '',
+        'oil_preview',
+      },
+    },
   },
 
   {
