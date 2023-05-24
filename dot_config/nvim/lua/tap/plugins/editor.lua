@@ -206,87 +206,20 @@ return {
     end,
   },
 
-  -- file explorer
+  -- Neovim file explorer: edit your filesystem like a buffer
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    cmd = 'Neotree',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'MunifTanjim/nui.nvim',
-    },
+    'stevearc/oil.nvim',
+    -- don't lazy load so it works when opening directories with `nvim .`
+    lazy = false,
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
-      require('tap.utils').nnoremap(
-        '<leader>ex',
-        ':Neotree toggle current<CR>',
-        { desc = 'Open neotree at current file' }
+      require('tap.utils').keymap(
+        'n',
+        '-',
+        require('oil').open,
+        { desc = 'Open parent directory' }
       )
-    end,
-    config = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
-
-      require('neo-tree').setup {
-        enable_diagnostics = false,
-        window = {
-          position = 'current',
-          mappings = {
-            ['w'] = 'open',
-            ['s'] = 'open_split',
-            ['v'] = 'open_vsplit',
-          },
-        },
-        default_component_configs = {
-          icon = {
-            folder_empty = '󰜌',
-            folder_empty_open = '󰜌',
-          },
-          git_status = {
-            symbols = {
-              -- Change type
-              added = '',
-              modified = '',
-              deleted = '',
-              renamed = '󰁕',
-              -- Status type
-              untracked = '',
-              ignored = '',
-              unstaged = '󰄱',
-              staged = '',
-              conflict = '',
-            },
-          },
-        },
-        document_symbols = {
-          kinds = {
-            File = { icon = '󰈙', hl = 'Tag' },
-            Namespace = { icon = '󰌗', hl = 'Include' },
-            Package = { icon = '󰏖', hl = 'Label' },
-            Class = { icon = '󰌗', hl = 'Include' },
-            Property = { icon = '󰆧', hl = '@property' },
-            Enum = { icon = '󰒻', hl = '@number' },
-            Function = { icon = '󰊕', hl = 'Function' },
-            String = { icon = '󰀬', hl = 'String' },
-            Number = { icon = '󰎠', hl = 'Number' },
-            Array = { icon = '󰅪', hl = 'Type' },
-            Object = { icon = '󰅩', hl = 'Type' },
-            Key = { icon = '󰌋', hl = '' },
-            Struct = { icon = '󰌗', hl = 'Type' },
-            Operator = { icon = '󰆕', hl = 'Operator' },
-            TypeParameter = { icon = '󰊄', hl = 'Type' },
-            StaticMethod = { icon = '󰠄 ', hl = 'Function' },
-          },
-        },
-        filesystem = {
-          bind_to_cwd = false,
-        },
-      }
-
-      require('tap.utils').apply_user_highlights('Neotree', function(highlight)
-        highlight('NeoTreeDimText', { link = 'Comment' })
-        highlight('NeoTreeGitConflict', { link = 'Warnings' })
-        highlight('NeoTreeGitUntracked', { link = 'NvimTreeGitNew' })
-      end)
     end,
   },
 
