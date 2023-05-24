@@ -6,7 +6,7 @@ return {
     dependencies = {
       'b0o/schemastore.nvim', -- jsonls schemas
       'folke/neodev.nvim', -- lua-dev setup
-      'lukas-reineke/lsp-format.nvim',
+      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
@@ -42,7 +42,7 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      'lukas-reineke/lsp-format.nvim',
+      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
@@ -128,10 +128,17 @@ return {
 
   -- async formatting
   {
-    'lukas-reineke/lsp-format.nvim',
+    -- My own fork lukas-reineke/lsp-format.nvim
+    -- Has a number of changes like range formatting
+    'tapayne88/lsp-format.nvim',
     lazy = true,
     config = function()
-      require('lsp-format').setup {}
+      require('lsp-format').setup {
+        exclude = {
+          'lua_ls', -- use stylua with null-ls for lua
+          'tsserver',
+        },
+      }
 
       local function toggle_format()
         local filetype = vim.bo.filetype
@@ -154,25 +161,73 @@ return {
         end
       end
 
-      local disabled_formatters = {
-        'lua_ls', -- use stylua with null-ls for lua
-        'tsserver',
-      }
-
-      require('tap.utils.lsp').on_attach(function(client, bufnr)
-        if not vim.tbl_contains(disabled_formatters, client.name) then
-          require('lsp-format').on_attach(client)
+      local format = function(options)
+        -- Don't do disabled checking, here we're forcing formatting
+        ---@diagnostic disable-next-line: undefined-field
+        if vim.b.format_saving then
+          return
         end
 
-        -- Formatting
-        require('tap.utils').nnoremap('<leader>tf', toggle_format, {
+        local clients = vim.tbl_values(vim.lsp.get_active_clients())
+        require('lsp-format').trigger_format(clients, options or {})
+      end
+
+      local format_in_range = function(options)
+        -- Don't do disabled checking, here we're forcing formatting
+        ---@diagnostic disable-next-line: undefined-field
+        if vim.b.format_saving then
+          return
+        end
+
+        options = options or {}
+        options.in_range = true
+
+        local clients = vim.tbl_filter(function(client)
+          return client.supports_method 'textDocument/rangeFormatting'
+        end, vim.lsp.get_active_clients())
+
+        require('lsp-format').trigger_format(clients, options)
+      end
+
+      require('tap.utils.lsp').on_attach(function(c, bufnr)
+        require('lsp-format').on_attach(c)
+
+        -- Commands
+        vim.api.nvim_buf_create_user_command(bufnr, 'Format', format, {
+          nargs = '*',
+          bar = true,
+          force = true,
+          desc = '[LSP] Run formatter',
+        })
+        vim.api.nvim_buf_create_user_command(
+          bufnr,
+          'FormatInRange',
+          format_in_range,
+          {
+            range = true,
+            nargs = '*',
+            bar = true,
+            force = true,
+            desc = '[LSP] Run formatter for range',
+          }
+        )
+
+        -- Keymaps
+        require('tap.utils').keymap('n', '<leader>tf', toggle_format, {
           buffer = bufnr,
           desc = '[LSP] Toggle formatting on save',
         })
-        require('tap.utils').nnoremap(
+        require('tap.utils').keymap(
+          'n',
           '<space>f',
-          '<cmd>Format<CR>',
-          { buffer = bufnr, desc = '[LSP] Run formatting' }
+          format,
+          { buffer = bufnr, desc = '[LSP] Run formatter' }
+        )
+        require('tap.utils').keymap(
+          'v',
+          '<space>f',
+          format_in_range,
+          { buffer = bufnr, desc = '[LSP] Run formatter for range' }
         )
       end)
     end,
