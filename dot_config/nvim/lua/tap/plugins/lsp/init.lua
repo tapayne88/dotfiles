@@ -197,7 +197,7 @@ return {
           nargs = '*',
           bar = true,
           force = true,
-          desc = '[LSP] Run formatter for range',
+          desc = '[LSP] Run formatter',
         })
         vim.api.nvim_buf_create_user_command(
           bufnr,
@@ -208,7 +208,7 @@ return {
             nargs = '*',
             bar = true,
             force = true,
-            desc = '[LSP] Run formatter',
+            desc = '[LSP] Run formatter for range',
           }
         )
 
