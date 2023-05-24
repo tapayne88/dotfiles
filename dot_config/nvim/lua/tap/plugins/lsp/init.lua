@@ -128,8 +128,8 @@ return {
 
   -- async formatting
   {
-    -- Fork of upstream with merged PR
-    -- https://github.com/lukas-reineke/lsp-format.nvim/pull/65
+    -- My own fork lukas-reineke/lsp-format.nvim
+    -- Has a number of changes like range formatting
     'tapayne88/lsp-format.nvim',
     lazy = true,
     config = function()
