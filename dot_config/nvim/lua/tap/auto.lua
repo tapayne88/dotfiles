@@ -44,7 +44,15 @@ augroup('TapColorColumn', {
     events = { 'FileType' },
     pattern = { '*' },
     callback = function()
-      local ft_excluded_colorcolumn = { 'qf', 'Trouble', 'TelescopeResults' }
+      local ft_excluded_colorcolumn = {
+        'fugitive',
+        'git',
+        'mason',
+        'oil',
+        'qf',
+        'Trouble',
+        'TelescopeResults',
+      }
 
       if vim.tbl_contains(ft_excluded_colorcolumn, vim.bo.filetype) then
         vim.opt_local.colorcolumn = ''

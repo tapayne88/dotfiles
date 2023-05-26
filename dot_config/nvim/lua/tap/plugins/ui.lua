@@ -116,6 +116,8 @@ return {
     opts = {
       excluded_filetypes = {
         '',
+        'lazy',
+        'mason',
         'oil_preview',
       },
     },
