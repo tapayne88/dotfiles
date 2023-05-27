@@ -211,7 +211,10 @@ return {
     'stevearc/oil.nvim',
     -- don't lazy load so it works when opening directories with `nvim .`
     lazy = false,
-    opts = {},
+    opts = { columns = {
+      'icon',
+      'permissions',
+    } },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
       require('tap.utils').keymap(
