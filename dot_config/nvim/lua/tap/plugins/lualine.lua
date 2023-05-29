@@ -341,8 +341,15 @@ return {
         winbar = {
           lualine_a = {
             {
-              literal ' 󰆧 ',
-              cond = conditions.is_navic_available,
+              function()
+                if vim.bo.filetype == 'oil' then
+                  return '󰙅'
+                end
+                if conditions.is_navic_available() then
+                  return '󰆧'
+                end
+                return ''
+              end,
             },
           },
           lualine_b = {},
