@@ -233,6 +233,7 @@ return {
     end,
   },
 
+  -- virtual text in bottom right to show server activity
   {
     'j-hui/fidget.nvim',
     lazy = true,
@@ -255,6 +256,16 @@ return {
           highlight('FidgetTask', { link = 'Comment' })
         end
       )
+    end,
+  },
+
+  -- panel to view the logs from your LSP servers.
+  {
+    'mhanberg/output-panel.nvim',
+    event = 'VeryLazy',
+    -- opts = {},
+    config = function()
+      require('output_panel').setup()
     end,
   },
 }

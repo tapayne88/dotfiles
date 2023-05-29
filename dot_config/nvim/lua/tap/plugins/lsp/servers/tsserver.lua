@@ -75,6 +75,9 @@ function M.setup()
     ),
     handlers = {
       ['window/logMessage'] = function(_, result, header)
+        -- Call any global handlers like output-panel.nvim
+        pcall(vim.lsp.handlers['window/logMessage'], _, result, header)
+
         if result == nil or result.message == nil then
           return
         end

@@ -340,6 +340,7 @@ return {
               'fugitive',
               'gitcommit',
               'neo-tree',
+              'outputpanel',
               'packer',
               'qf',
               'Trouble',
