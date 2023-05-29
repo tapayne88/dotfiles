@@ -302,7 +302,22 @@ return {
 
       local winbar_y = {
         modified,
-        { 'filename', file_status = false },
+        {
+          'filename',
+          file_status = false,
+          path = 0,
+          cond = function()
+            return vim.bo.filetype ~= 'oil'
+          end,
+        },
+        {
+          'filename',
+          file_status = false,
+          path = 1,
+          cond = function()
+            return vim.bo.filetype == 'oil'
+          end,
+        },
       }
       local filetype_icon_only = {
         filetype,
