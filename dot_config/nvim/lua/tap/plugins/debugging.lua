@@ -7,7 +7,7 @@ return {
     lazy = true,
     init = function()
       vim.api.nvim_create_user_command('DapUi', function()
-        require('dapui').toggle()
+        require('dapui').toggle { reset = true }
       end, { desc = 'Toggle Dap UI' })
     end,
     opts = {

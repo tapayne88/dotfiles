@@ -45,6 +45,7 @@ augroup('TapColorColumn', {
     pattern = { '*' },
     callback = function()
       local ft_excluded_colorcolumn = {
+        'dap-repl',
         'fugitive',
         'git',
         'mason',
