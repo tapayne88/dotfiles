@@ -42,4 +42,30 @@ function M.read_file(path)
   return data
 end
 
+---Attempt to get the global asdf executable path of a tool
+---@param tool_name string tool name
+---@return string|nil
+M.get_asdf_global_executable = function(tool_name)
+  local home_dir = vim.fn.getenv 'HOME'
+
+  local res, code =
+    M.get_os_command_output_async({ 'asdf', 'which', tool_name }, home_dir)
+
+  if code ~= 0 then
+    require('tap.utils').logger.warn(
+      '[get_asdf_global_executable] failed to find asdf node executable in '
+        .. home_dir
+    )
+    return nil
+  end
+
+  local node_path = res[1]
+
+  require('tap.utils').logger.info(
+    '[get_asdf_global_executable] using asdf node executable ' .. node_path
+  )
+
+  return node_path
+end
+
 return M

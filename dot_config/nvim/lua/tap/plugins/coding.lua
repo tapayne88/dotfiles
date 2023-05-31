@@ -440,33 +440,9 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     config = function()
-      local get_asdf_node_executable = function()
-        local home_dir = vim.fn.getenv 'HOME'
-
-        local res, code =
-          require('tap.utils.async').get_os_command_output_async(
-            { 'asdf', 'which', 'node' },
-            home_dir
-          )
-
-        if code ~= 0 then
-          require('tap.utils').logger.warn(
-            '[copilot.lua] failed to find asdf node executable in ' .. home_dir
-          )
-          return nil
-        end
-
-        local node_path = res[1]
-
-        require('tap.utils').logger.info(
-          '[copilot.lua] using asdf node executable ' .. node_path
-        )
-
-        return node_path
-      end
-
       require('plenary.async').run(function()
-        local asdf_node_executable = get_asdf_node_executable()
+        local asdf_node_executable =
+          require('tap.utils.async').get_asdf_global_executable 'node'
         if asdf_node_executable == nil then
           return
         end
