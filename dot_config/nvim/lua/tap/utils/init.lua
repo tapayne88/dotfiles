@@ -316,27 +316,6 @@ function M.test_visible_buffers(test_fn)
   return false
 end
 
----Read file contents
----@param path string
----@return unknown
-function M.read_file(path)
-  local a = require 'plenary.async'
-
-  local err_open, fd = a.uv.fs_open(path, 'r', 438)
-  assert(not err_open, err_open)
-
-  local err_stat, stat = a.uv.fs_fstat(fd)
-  assert(not err_stat, err_stat)
-
-  local err_read, data = a.uv.fs_read(fd, stat.size, 0)
-  assert(not err_read, err_read)
-
-  local err_close = a.uv.fs_close(fd)
-  assert(not err_close, err_close)
-
-  return data
-end
-
 -- Map of DAP buffer filetypes
 M.dap_filetypes = {
   'dap-repl',

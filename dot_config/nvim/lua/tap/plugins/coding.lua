@@ -274,7 +274,7 @@ return {
               .. '/'
               .. package_json_filename
             local package_json_content =
-              require('tap.utils').read_file(package_json_filepath)
+              require('tap.utils.async').read_file(package_json_filepath)
 
             local package_json = vim.json.decode(package_json_content)
 
