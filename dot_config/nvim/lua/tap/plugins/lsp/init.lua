@@ -48,54 +48,67 @@ return {
       'williamboman/mason.nvim',
     },
     config = function()
-      local null_ls = require 'null-ls'
-      local path = require 'mason-core.path'
-      local lsp_utils = require 'tap.utils.lsp'
+      require('plenary.async').run(function()
+        local null_ls = require 'null-ls'
+        local path = require 'mason-core.path'
+        local lsp_utils = require 'tap.utils.lsp'
 
-      lsp_utils.ensure_installed {
-        'hadolint',
-        'markdownlint',
-        'prettierd',
-        'stylua',
-      }
+        local asdf_nodejs_global_version =
+          require('tap.utils.async').get_asdf_global_version 'nodejs'
 
-      null_ls.setup(lsp_utils.merge_with_default_config {
-        debug = lsp_utils.lsp_debug_enabled(),
-        sources = {
-          ------------------
-          -- Code Actions --
-          ------------------
-          null_ls.builtins.code_actions.shellcheck,
+        lsp_utils.ensure_installed {
+          'hadolint',
+          'markdownlint',
+          'prettierd',
+          'stylua',
+        }
 
-          -----------------
-          -- Diagnostics --
-          -----------------
-          null_ls.builtins.diagnostics.hadolint,
-          null_ls.builtins.diagnostics.markdownlint.with {
-            command = path.bin_prefix 'markdownlint',
-            extra_args = {
-              '--config',
-              vim.fn.stdpath 'config' .. '/markdownlint.json',
+        vim.schedule(function()
+          null_ls.setup(lsp_utils.merge_with_default_config {
+            debug = lsp_utils.lsp_debug_enabled(),
+            sources = {
+              ------------------
+              -- Code Actions --
+              ------------------
+              null_ls.builtins.code_actions.shellcheck,
+
+              -----------------
+              -- Diagnostics --
+              -----------------
+              null_ls.builtins.diagnostics.hadolint,
+              null_ls.builtins.diagnostics.markdownlint.with {
+                command = path.bin_prefix 'markdownlint',
+                extra_args = {
+                  '--config',
+                  vim.fn.stdpath 'config' .. '/markdownlint.json',
+                },
+              },
+              null_ls.builtins.diagnostics.shellcheck,
+
+              ----------------
+              -- Formatting --
+              ----------------
+              null_ls.builtins.formatting.prettierd.with {
+                command = path.bin_prefix 'prettierd',
+                env = {
+                  ASDF_NODEJS_VERSION = asdf_nodejs_global_version,
+                },
+                -- cwd = function()
+                --   return vim.fn.expand '$HOME'
+                -- end,
+              },
+              null_ls.builtins.formatting.stylua.with {
+                command = path.bin_prefix 'stylua',
+              },
+
+              -----------
+              -- Hover --
+              -----------
+              null_ls.builtins.hover.dictionary,
             },
-          },
-          null_ls.builtins.diagnostics.shellcheck,
-
-          ----------------
-          -- Formatting --
-          ----------------
-          null_ls.builtins.formatting.prettierd.with {
-            command = path.bin_prefix 'prettierd',
-          },
-          null_ls.builtins.formatting.stylua.with {
-            command = path.bin_prefix 'stylua',
-          },
-
-          -----------
-          -- Hover --
-          -----------
-          null_ls.builtins.hover.dictionary,
-        },
-      })
+          })
+        end)
+      end)
     end,
   },
 

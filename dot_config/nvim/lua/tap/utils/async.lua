@@ -68,4 +68,21 @@ M.get_asdf_global_executable = function(tool_name)
   return node_path
 end
 
+---Attempt to get the global asdf version of a tool
+---@param tool_name string tool name
+---@return string
+M.get_asdf_global_version = function(tool_name)
+  local tool_versions_raw = M.read_file(os.getenv 'HOME' .. '/.tool-versions')
+  local tool_versions_parsed = vim.split(tool_versions_raw, '\n')
+
+  for _, line in ipairs(tool_versions_parsed) do
+    local tool_version = vim.split(line, ' ')
+    if tool_version[1] == tool_name then
+      return tool_version[2]
+    end
+  end
+
+  return ''
+end
+
 return M
