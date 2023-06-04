@@ -179,6 +179,13 @@ window:
   # The value `0.0` is completely transparent and `1.0` is opaque.
   opacity: 0.99
 
+  # Make `Option` key behave as `Alt` (macOS only):
+  #   - OnlyLeft
+  #   - OnlyRight
+  #   - Both
+  #   - None (default)
+  option_as_alt: OnlyLeft
+
 scrolling:
   # Maximum number of lines in the scrollback buffer.
   # Specifying '0' will disable scrolling.
@@ -368,9 +375,6 @@ shell:
 # Setting this option to `true` makes Alacritty use the legacy WinPTY backend,
 # even if the ConPTY backend is available.
 #winpty_backend: false
-
-# Send ESC (\x1b) before characters when alt is pressed.
-alt_send_esc: true
 
 #mouse:
   # Click settings
