@@ -96,15 +96,6 @@ return {
           )
           keymap(
             'n',
-            '<leader>hp',
-            gs.preview_hunk,
-            { desc = '[Git] Preview hunk' }
-          )
-          keymap('n', '<leader>hb', function()
-            gs.blame_line { full = true }
-          end, { desc = '[Git] Blame line' })
-          keymap(
-            'n',
             '<leader>tb',
             gs.toggle_current_line_blame,
             { desc = '[Git] Blame current line virtual text' }
@@ -585,5 +576,36 @@ return {
     event = { 'BufEnter' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
+  },
+
+  {
+    'tanvirtin/vgit.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    init = function()
+      require('tap.utils').keymap('n', '<leader>hp', function()
+        return require('vgit').buffer_hunk_preview()
+      end, { desc = '[Git] Preview hunk' })
+      require('tap.utils').keymap('n', '<leader>hb', function()
+        return require('vgit').buffer_blame_preview()
+      end, { desc = '[Git] Blame line' })
+    end,
+    opts = {
+      settings = {
+        live_blame = {
+          enabled = false,
+        },
+        live_gutter = {
+          enabled = true,
+        },
+        authorship_code_lens = {
+          enabled = false,
+        },
+        scene = {
+          diff_preference = 'split',
+        },
+      },
+    },
   },
 }
