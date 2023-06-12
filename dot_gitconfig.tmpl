@@ -86,7 +86,7 @@
   lgb = lg origin/master..
   lgu = lg @{u}
   tree = log --pretty=better-oneline --all --graph
-  prune-local = "!f() { DANGLING_BRANCHES=$(git branch -vv | grep -E 'origin/.*: gone'); echo \"Local branches missing corresponding branch on origin:\n$DANGLING_BRANCHES\n\nRemove the above branches? (y/n)\"; read -r answer < /dev/tty; [ \"$answer\" = \"y\" ] && echo \"$DANGLING_BRANCHES\" | awk '{ print $2 }' | xargs git branch -D; }; f"
+  prune-local = "!f() { DANGLING_BRANCHES=$(git branch -vv | grep -E 'origin/.*: gone'); echo \"Local branches missing corresponding branch on origin:\n$DANGLING_BRANCHES\n\nRemove the above branches? (y/n)\"; read -r answer < /dev/tty; [ \"$answer\" = \"y\" ] && echo \"$DANGLING_BRANCHES\" | awk '{ print $1 }' | xargs git branch -D; }; f"
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
   which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1 \"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
