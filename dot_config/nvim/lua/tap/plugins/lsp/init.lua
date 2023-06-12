@@ -250,6 +250,7 @@ return {
   {
     'j-hui/fidget.nvim',
     lazy = true,
+    tag = 'legacy',
     opts = function()
       return {
         text = {
