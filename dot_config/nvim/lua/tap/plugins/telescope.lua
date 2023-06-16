@@ -218,8 +218,22 @@ return {
         local action_state = require 'telescope.actions.state'
         local entry = action_state.get_selected_entry()
 
+        -- Needs to happend before splitting for some reason
         actions.close(prompt_bufnr)
-        require('focus').split_nicely(entry.filename)
+
+        local filename = entry.path or entry.filename
+        if not filename then
+          require('telescope.utils').notify('tap.actions.focus.split_nicely', {
+            msg = 'Could not determine filename',
+            level = 'WARN',
+          })
+          return
+        end
+
+        filename =
+          require('plenary.path'):new(filename):normalize(vim.loop.cwd())
+
+        require('focus').split_nicely(filename)
       end,
     }
 
