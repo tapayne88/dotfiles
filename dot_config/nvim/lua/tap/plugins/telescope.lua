@@ -213,6 +213,16 @@ return {
       )
     end
 
+    local focus = require('telescope.actions.mt').transform_mod {
+      split_nicely = function(prompt_bufnr)
+        local action_state = require 'telescope.actions.state'
+        local entry = action_state.get_selected_entry()
+
+        actions.close(prompt_bufnr)
+        require('focus').split_nicely(entry.filename)
+      end,
+    }
+
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
@@ -220,6 +230,8 @@ return {
         layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
         mappings = {
           i = {
+            -- Split nicely, inital
+            ['<c-v>'] = focus.split_nicely,
             -- Allow selection splitting
             ['<c-s>'] = actions.select_horizontal,
             -- Cycle through history
