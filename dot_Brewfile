@@ -1,3 +1,4 @@
+# vim set:ft=brewfile
 tap "homebrew/cask-fonts"
 
 brew "dark-mode"
