@@ -598,7 +598,7 @@ return {
           enabled = false,
         },
         live_gutter = {
-          enabled = true,
+          enabled = false,
         },
         authorship_code_lens = {
           enabled = false,
