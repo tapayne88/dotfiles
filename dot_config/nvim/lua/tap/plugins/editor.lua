@@ -421,6 +421,7 @@ return {
       local excluded_filetypes = {
         'fugitive', -- git status with fugitive (causes errors when restored)
         'git', -- git push / fetch with fugitive and pushed into buffer with ctrl-d
+        'gitcommit', -- git commit messages
       }
 
       require('persistence').setup {
@@ -441,7 +442,7 @@ return {
                     vim.api.nvim_buf_get_name(buf_hndl)
                   )
                 )
-                vim.api.nvim_buf_delete(buf_hndl, {})
+                vim.api.nvim_buf_delete(buf_hndl, { force = true })
               end
             end
           end
