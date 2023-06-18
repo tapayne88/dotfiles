@@ -12,6 +12,7 @@ return {
       dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'beauwilliams/focus.nvim',
   },
   cmd = 'Telescope',
   init = function()
@@ -240,8 +241,17 @@ return {
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
+        theme = 'center',
+        sorting_strategy = 'ascending',
         layout_strategy = 'flex', -- let telescope figure out what to do given the space
-        layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
+        layout_config = {
+          horizontal = {
+            prompt_position = 'top',
+            preview_width = 0.5,
+          },
+          height = { padding = 5 },
+          preview_cutoff = 20,
+        },
         mappings = {
           i = {
             -- Split nicely, inital
@@ -340,14 +350,14 @@ return {
       hl('TelescopeSelection', { fg = p.text, bg = p.surface1 })
       hl('TelescopeMultiSelection', { fg = p.text, bg = p.surface2 })
 
-      hl('TelescopeTitle', { fg = p.crust, bg = p.green })
+      hl('TelescopeTitle', { link = 'comment' })
 
       hl('TelescopePromptBorder', { fg = p.surface0, bg = p.surface0 })
       hl('TelescopePromptTitle', { fg = p.crust, bg = p.mauve })
       hl('TelescopePromptNormal', { fg = p.flamingo, bg = p.surface0 })
 
-      hl('TelescopePreviewBorder', { fg = p.mantle, bg = p.mantle })
-      hl('TelescopePreviewTitle', { fg = p.crust, bg = p.red })
+      hl('TelescopePreviewBorder', { fg = p.crust, bg = p.crust })
+      hl('TelescopePreviewNormal', { fg = p.crust, bg = p.crust })
 
       hl('TelescopeResultsBorder', { fg = p.mantle, bg = p.mantle })
       hl('TelescopeResultsNormal', { bg = p.mantle })
