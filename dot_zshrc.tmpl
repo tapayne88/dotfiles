@@ -129,7 +129,10 @@ antigen apply
 sourceOPSession
 
 # Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
-prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
+prepend_path "$HOME/.local/bin" "$HOME/.npm-packages/bin" "$HOME/.gem/ruby/2.7.0/bin"
+
+# Export NODE_PATH to ensure global packages are source
+export NODE_PATH="$HOME/.npm-packages/lib/node_modules"
 
 # forgit config
 # configure checkout_branch to sort by most recent commit

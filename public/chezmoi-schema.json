@@ -8,7 +8,7 @@
       "properties": {
         "ostype": {
           "type": "string",
-          "enum": ["macOS", "crostini", "wsl"],
+          "enum": ["macOS", "crostini", "wsl", "nixos"],
           "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
         },
         "email": {

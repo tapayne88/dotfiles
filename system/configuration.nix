@@ -81,9 +81,13 @@
       imports = [
         ../dot_config/nixpkgs/modules/home.nix
         ../dot_config/nixpkgs/modules/linux.nix
+        /home/tpayne/.config/nixpkgs/modules/neovim.nix
       ];
 
+      home.stateVersion = "22.11";
+
       home.packages = with pkgs; [
+	nix-index
         # Neovim dependencies
         fd # telescope-file-browser
         gnumake # neovim treesitter
@@ -94,13 +98,6 @@
         unstable.kitty
         (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       ];
-
-      programs.neovim = {
-        enable = true;
-        viAlias = true;
-        withNodeJs = true;
-        package = pkgs.unstable.neovim-unwrapped;
-      };
     };
 
   # List packages installed in system profile. To search, run:
