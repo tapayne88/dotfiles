@@ -242,11 +242,9 @@ return {
       defaults = {
         prompt_prefix = '❯ ',
         theme = 'center',
-        sorting_strategy = 'ascending',
         layout_strategy = 'flex', -- let telescope figure out what to do given the space
         layout_config = {
           horizontal = {
-            prompt_position = 'top',
             preview_width = 0.5,
           },
           height = { padding = 5 },
