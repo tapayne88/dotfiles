@@ -12,6 +12,7 @@ return {
       dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'beauwilliams/focus.nvim',
   },
   cmd = 'Telescope',
   init = function()
@@ -213,13 +214,46 @@ return {
       )
     end
 
+    local focus = require('telescope.actions.mt').transform_mod {
+      split_nicely = function(prompt_bufnr)
+        local action_state = require 'telescope.actions.state'
+        local entry = action_state.get_selected_entry()
+
+        -- Needs to happend before splitting for some reason
+        actions.close(prompt_bufnr)
+
+        local filename = entry.path or entry.filename
+        if not filename then
+          require('telescope.utils').notify('tap.actions.focus.split_nicely', {
+            msg = 'Could not determine filename',
+            level = 'WARN',
+          })
+          return
+        end
+
+        filename =
+          require('plenary.path'):new(filename):normalize(vim.loop.cwd())
+
+        require('focus').split_nicely(filename)
+      end,
+    }
+
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
+        theme = 'center',
         layout_strategy = 'flex', -- let telescope figure out what to do given the space
-        layout_config = { height = { padding = 5 }, preview_cutoff = 20 },
+        layout_config = {
+          horizontal = {
+            preview_width = 0.5,
+          },
+          height = { padding = 5 },
+          preview_cutoff = 20,
+        },
         mappings = {
           i = {
+            -- Split nicely, inital
+            ['<c-v>'] = focus.split_nicely,
             -- Allow selection splitting
             ['<c-s>'] = actions.select_horizontal,
             -- Cycle through history
@@ -314,14 +348,14 @@ return {
       hl('TelescopeSelection', { fg = p.text, bg = p.surface1 })
       hl('TelescopeMultiSelection', { fg = p.text, bg = p.surface2 })
 
-      hl('TelescopeTitle', { fg = p.crust, bg = p.green })
+      hl('TelescopeTitle', { link = 'comment' })
 
       hl('TelescopePromptBorder', { fg = p.surface0, bg = p.surface0 })
       hl('TelescopePromptTitle', { fg = p.crust, bg = p.mauve })
       hl('TelescopePromptNormal', { fg = p.flamingo, bg = p.surface0 })
 
-      hl('TelescopePreviewBorder', { fg = p.mantle, bg = p.mantle })
-      hl('TelescopePreviewTitle', { fg = p.crust, bg = p.red })
+      hl('TelescopePreviewBorder', { fg = p.crust, bg = p.crust })
+      hl('TelescopePreviewNormal', { fg = p.crust, bg = p.crust })
 
       hl('TelescopeResultsBorder', { fg = p.mantle, bg = p.mantle })
       hl('TelescopeResultsNormal', { bg = p.mantle })
