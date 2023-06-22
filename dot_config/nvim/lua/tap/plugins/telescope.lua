@@ -355,7 +355,7 @@ return {
       hl('TelescopePromptNormal', { fg = p.flamingo, bg = p.surface0 })
 
       hl('TelescopePreviewBorder', { fg = p.crust, bg = p.crust })
-      hl('TelescopePreviewNormal', { fg = p.crust, bg = p.crust })
+      hl('TelescopePreviewNormal', { fg = p.text, bg = p.crust })
 
       hl('TelescopeResultsBorder', { fg = p.mantle, bg = p.mantle })
       hl('TelescopeResultsNormal', { bg = p.mantle })
