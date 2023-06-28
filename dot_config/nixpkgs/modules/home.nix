@@ -25,7 +25,7 @@
     htop # pretty top
     inetutils # network utils, like traceroute, etc.
     jq # json cli processor
-    kubectx # nicer interaction with k8s cli
+    kubie # even nicer interaction with k8s cli with multiple configs
     mosh # better ssh
     ncdu # disk usage tool
     netcat # netcat implementaion
