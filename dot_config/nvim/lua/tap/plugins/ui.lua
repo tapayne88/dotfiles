@@ -119,6 +119,7 @@ return {
         'lazy',
         'mason',
         'oil_preview',
+        'TelescopePrompt',
       },
     },
   },
