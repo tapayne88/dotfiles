@@ -129,6 +129,14 @@ M.cnoremap = make_mapper('c', { noremap = true, silent = false })
 ---Friendly named wrapper around vim.api.nvim_set_hl
 ---@type Utils.highlight
 function M.highlight(name, opts)
+  -- Handle catppuccin style syntax
+  if opts.style then
+    for _, style in ipairs(opts.style) do
+      opts[style] = true
+    end
+  end
+  opts.style = nil
+
   local global_namespace = 0
   vim.api.nvim_set_hl(global_namespace, name, opts)
 end
@@ -225,7 +233,7 @@ end
 
 --- Load custom highlights at the appropriate time
 ---@param name string
----@param callback fun(p1: Utils.highlight, p2: table): nil
+---@param callback fun(p1: Utils.highlight, p2: table, p3: table): nil
 ---@param _opts {force: boolean}|nil
 ---@return nil
 function M.apply_user_highlights(name, callback, _opts)
@@ -241,17 +249,23 @@ function M.apply_user_highlights(name, callback, _opts)
     return
   end
 
+  local cb = function()
+    callback(
+      M.highlight,
+      get_catppuccin_palette(),
+      require('catppuccin').options
+    )
+  end
+
   M.augroup(augroup_name, {
     {
       events = { 'VimEnter', 'ColorScheme' },
       pattern = { '*' },
-      callback = function()
-        callback(M.highlight, get_catppuccin_palette())
-      end,
+      callback = cb,
     },
   })
 
-  callback(M.highlight, get_catppuccin_palette())
+  cb()
 end
 
 function M.run(fns)

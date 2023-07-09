@@ -434,42 +434,56 @@ return {
       },
     },
     init = function()
-      require('tap.utils').apply_user_highlights('Navic', function(hl, palette)
-        local bg = palette.mantle
+      require('tap.utils').apply_user_highlights('Navic', function(hl, C, O)
+        local background = C.mantle
 
         -- Set Navic highlights manually to ensure the bg value updates when the
         -- colorscheme changes
         --
         -- Copy of Navic highlights from
         -- https://github.com/catppuccin/nvim/blob/fa9a4465672fa81c06b23634c0f04f6a5d622211/lua/catppuccin/groups/integrations/navic.lua
-        hl('NavicIconsFile', { fg = palette.blue, bg = bg })
-        hl('NavicIconsModule', { fg = palette.blue, bg = bg })
-        hl('NavicIconsNamespace', { fg = palette.blue, bg = bg })
-        hl('NavicIconsPackage', { fg = palette.blue, bg = bg })
-        hl('NavicIconsClass', { fg = palette.yellow, bg = bg })
-        hl('NavicIconsMethod', { fg = palette.blue, bg = bg })
-        hl('NavicIconsProperty', { fg = palette.green, bg = bg })
-        hl('NavicIconsField', { fg = palette.green, bg = bg })
-        hl('NavicIconsConstructor', { fg = palette.blue, bg = bg })
-        hl('NavicIconsEnum', { fg = palette.green, bg = bg })
-        hl('NavicIconsInterface', { fg = palette.yellow, bg = bg })
-        hl('NavicIconsFunction', { fg = palette.blue, bg = bg })
-        hl('NavicIconsVariable', { fg = palette.flamingo, bg = bg })
-        hl('NavicIconsConstant', { fg = palette.peach, bg = bg })
-        hl('NavicIconsString', { fg = palette.green, bg = bg })
-        hl('NavicIconsNumber', { fg = palette.peach, bg = bg })
-        hl('NavicIconsBoolean', { fg = palette.peach, bg = bg })
-        hl('NavicIconsArray', { fg = palette.peach, bg = bg })
-        hl('NavicIconsObject', { fg = palette.peach, bg = bg })
-        hl('NavicIconsKey', { fg = palette.pink, bg = bg })
-        hl('NavicIconsNull', { fg = palette.peach, bg = bg })
-        hl('NavicIconsEnumMember', { fg = palette.red, bg = bg })
-        hl('NavicIconsStruct', { fg = palette.blue, bg = bg })
-        hl('NavicIconsEvent', { fg = palette.blue, bg = bg })
-        hl('NavicIconsOperator', { fg = palette.sky, bg = bg })
-        hl('NavicIconsTypeParameter', { fg = palette.blue, bg = bg })
-        hl('NavicText', { fg = palette.teal, bg = bg })
-        hl('NavicSeparator', { fg = palette.text, bg = bg })
+        local highlights = {
+          NavicIconsFile = { fg = C.blue, bg = background },
+          NavicIconsModule = { fg = C.blue, bg = background },
+          NavicIconsNamespace = { fg = C.blue, bg = background },
+          NavicIconsPackage = { fg = C.blue, bg = background },
+          NavicIconsClass = { fg = C.yellow, bg = background },
+          NavicIconsMethod = { fg = C.blue, bg = background },
+          NavicIconsProperty = { fg = C.green, bg = background },
+          NavicIconsField = { fg = C.green, bg = background },
+          NavicIconsConstructor = { fg = C.blue, bg = background },
+          NavicIconsEnum = { fg = C.green, bg = background },
+          NavicIconsInterface = { fg = C.yellow, bg = background },
+          NavicIconsFunction = { fg = C.blue, bg = background },
+          NavicIconsVariable = { fg = C.flamingo, bg = background },
+          NavicIconsConstant = { fg = C.peach, bg = background },
+          NavicIconsString = {
+            fg = C.green,
+            style = O.styles.strings,
+            bg = background,
+          },
+          NavicIconsNumber = { fg = C.peach, bg = background },
+          NavicIconsBoolean = { fg = C.peach, bg = background },
+          NavicIconsArray = { fg = C.peach, bg = background },
+          NavicIconsObject = { fg = C.peach, bg = background },
+          NavicIconsKey = {
+            fg = C.pink,
+            style = O.styles.keywords,
+            bg = background,
+          },
+          NavicIconsNull = { fg = C.peach, bg = background },
+          NavicIconsEnumMember = { fg = C.red, bg = background },
+          NavicIconsStruct = { fg = C.blue, bg = background },
+          NavicIconsEvent = { fg = C.blue, bg = background },
+          NavicIconsOperator = { fg = C.sky, bg = background },
+          NavicIconsTypeParameter = { fg = C.blue, bg = background },
+          NavicText = { fg = C.sapphire, bg = background },
+          NavicSeparator = { fg = C.text, bg = background },
+        }
+
+        for group, colors in pairs(highlights) do
+          hl(group, colors)
+        end
       end)
       require('tap.utils.lsp').on_attach(function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
