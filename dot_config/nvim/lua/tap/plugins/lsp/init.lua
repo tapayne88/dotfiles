@@ -11,6 +11,7 @@ return {
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
+      'pmizio/typescript-tools.nvim',
     },
     config = function()
       if require('tap.utils.lsp').lsp_debug_enabled() then
@@ -150,6 +151,7 @@ return {
         exclude = {
           'lua_ls', -- use stylua with null-ls for lua
           'tsserver',
+          'typescript-tools',
         },
       }
 
