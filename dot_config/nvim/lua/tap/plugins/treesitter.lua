@@ -22,6 +22,7 @@ return {
           'jsdoc',
           'json',
           'json5',
+          'jsonnet',
           'kotlin',
           'lua',
           'make',
