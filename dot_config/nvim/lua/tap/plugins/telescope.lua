@@ -12,7 +12,6 @@ return {
       dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    'beauwilliams/focus.nvim',
   },
   cmd = 'Telescope',
   init = function()
@@ -214,30 +213,6 @@ return {
       )
     end
 
-    local focus = require('telescope.actions.mt').transform_mod {
-      split_nicely = function(prompt_bufnr)
-        local action_state = require 'telescope.actions.state'
-        local entry = action_state.get_selected_entry()
-
-        -- Needs to happend before splitting for some reason
-        actions.close(prompt_bufnr)
-
-        local filename = entry.path or entry.filename
-        if not filename then
-          require('telescope.utils').notify('tap.actions.focus.split_nicely', {
-            msg = 'Could not determine filename',
-            level = 'WARN',
-          })
-          return
-        end
-
-        filename =
-          require('plenary.path'):new(filename):normalize(vim.loop.cwd())
-
-        require('focus').split_nicely(filename)
-      end,
-    }
-
     require('telescope').setup {
       defaults = {
         prompt_prefix = '❯ ',
@@ -252,8 +227,6 @@ return {
         },
         mappings = {
           i = {
-            -- Split nicely, inital
-            ['<c-v>'] = focus.split_nicely,
             -- Allow selection splitting
             ['<c-s>'] = actions.select_horizontal,
             -- Cycle through history
