@@ -57,10 +57,7 @@ stty -ixon
 KEYTIMEOUT=1
 
 # fzf defaults
-# TODO: Fix this properly!
-#{{- if ne "macOS" .ostype }}
 export FZF_TMUX_OPTS="-d 40%"
-#{{- end }}
 
 export FZF_CTRL_T_OPTS="\
   --preview 'bat --style=numbers --color=always {} | head -500'
