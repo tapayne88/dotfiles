@@ -3,7 +3,7 @@
     "$schema": "https://aka.ms/terminal-profiles-schema",
     "actions": [],
     "alwaysShowTabs": true,
-    "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+    "defaultProfile": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
     "profiles": 
     {
         "defaults": 
@@ -20,7 +20,7 @@
         [
             {
                 "closeOnExit": "graceful",
-                "experimental.retroTerminalEffect": false,
+                "commandline": "C:\\WINDOWS\\system32\\wsl.exe --distribution Debian --exec {{ .chezmoi.homeDir }}/.nix-profile/bin/tmux",
                 "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
                 "hidden": false,
                 "historySize": 0,
@@ -303,6 +303,7 @@
             "yellow": "#EBCB8B"
         }
     ],
+    "theme": "Catppuccin Frappe",
     "themes": 
     [
         {
