@@ -102,9 +102,12 @@ bind '=' select-layout
 # See: https://github.com/christoomey/vim-tmux-navigator
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
   | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+is_fzf="ps -o state= -o comm= -t '#{pane_tty}' \
+  | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?fzf$'"
 
-# Shortcut for jumping into scroll-mode when not in vim
-bind-key -n 'C-y' if-shell "$is_vim" 'send-keys C-y' 'copy-mode'
+# Shortcut for jumping into scroll-mode when not in vim. Also allow C-y for fzf
+# to allow easy copying of commit hashes from forgit
+bind-key -n 'C-y' if-shell "$is_vim || $is_fzf" 'send-keys C-y' 'copy-mode'
 
 bind-key -n 'C-h' if-shell "$is_vim" \
   'send-keys C-h' { if -F '#{pane_at_left}' '' 'select-pane -L' }
