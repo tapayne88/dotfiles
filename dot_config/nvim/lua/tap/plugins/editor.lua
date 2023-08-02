@@ -331,16 +331,39 @@ return {
   {
     'beauwilliams/focus.nvim',
     config = function()
+      local ignore_filetypes = vim.tbl_flatten {
+        '',
+        'diff',
+        'fugitive',
+        'git',
+        'undotree',
+        require('tap.utils').dap_filetypes,
+      }
+      local ignore_buftypes = {}
+
+      require('tap.utils').augroup('FocusDisable', {
+        {
+          events = { 'WinEnter' },
+          callback = function(_)
+            if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
+              vim.b.focus_disable = true
+            end
+          end,
+          desc = 'Disable focus autoresize for BufType',
+        },
+        {
+          events = { 'FileType' },
+          callback = function(_)
+            if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
+              vim.b.focus_disable = true
+            end
+          end,
+          desc = 'Disable focus autoresize for FileType',
+        },
+      })
+
       require('focus').setup {
         signcolumn = false,
-        excluded_filetypes = vim.tbl_flatten {
-          '',
-          'diff',
-          'fugitive',
-          'git',
-          'undotree',
-          require('tap.utils').dap_filetypes,
-        },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
         desc = '[Focus] Toggle window focusing',
