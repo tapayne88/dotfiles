@@ -66,6 +66,11 @@ vim.filetype.add {
         ~= nil
       local ext = path:match '.*%.(%w+)%.tmpl$'
 
+      -- Abort if we're in a telescope prompt
+      if vim.bo.filetype == 'TelescopePrompt' then
+        return
+      end
+
       if is_chezmoi_source_dir and ext ~= nil then
         vim.bo.filetype = ext
       else

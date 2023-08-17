@@ -363,7 +363,10 @@ return {
       })
 
       require('focus').setup {
-        signcolumn = false,
+        ui = {
+          cursorline = false, -- this messes with TelescopePrompt's bg colour
+          signcolumn = false,
+        },
       }
       require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
         desc = '[Focus] Toggle window focusing',
