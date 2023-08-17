@@ -114,11 +114,18 @@ return {
   {
     'petertriho/nvim-scrollbar',
     opts = {
+      hide_if_all_visible = true, -- Hides everything if all lines are visible
       excluded_filetypes = {
+        -- Default config
+        'cmp_docs',
+        'cmp_menu',
+        'noice',
+        'prompt',
+        'TelescopePrompt',
+
         'lazy',
         'mason',
         'oil_preview',
-        'TelescopePrompt',
       },
     },
   },
