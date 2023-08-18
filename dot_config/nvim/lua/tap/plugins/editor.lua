@@ -346,7 +346,7 @@ return {
           events = { 'WinEnter' },
           callback = function(_)
             if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-              vim.b.focus_disable = true
+              vim.w.focus_disable = true
             end
           end,
           desc = 'Disable focus autoresize for BufType',
@@ -355,7 +355,7 @@ return {
           events = { 'FileType' },
           callback = function(_)
             if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-              vim.b.focus_disable = true
+              vim.w.focus_disable = true
             end
           end,
           desc = 'Disable focus autoresize for FileType',
