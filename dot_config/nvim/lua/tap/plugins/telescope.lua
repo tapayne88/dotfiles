@@ -73,7 +73,7 @@ return {
     -- Files --
     -----------
     nnoremap('<leader>ff', function()
-      require('telescope.builtin').find_files { hidden = true }
+      require('telescope.builtin').find_files { hidden = true, no_ignore = true }
     end, { desc = 'Fuzzy file finder' })
     nnoremap('<leader>fb', function()
       require('telescope').extensions.file_browser.file_browser {
