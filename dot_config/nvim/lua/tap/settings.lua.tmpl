@@ -83,6 +83,9 @@ vim.filetype.add {
   filename = {
     ['Tiltfile'] = 'python',
   },
+  pattern = {
+    ['Jenkinsfile.*'] = 'groovy',
+  },
 }
 
 -- {{- if eq "crostini" .ostype }}
