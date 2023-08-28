@@ -58,6 +58,7 @@
   cma = commit --amend
   cmae = commit --amend --no-edit
   co = "!f() { if [ -n \"$*\" ]; then git checkout-command $*; else git forgit checkout_branch; fi }; f"
+  cor = "!f() { FORGIT_CHECKOUT_BRANCH_BRANCH_GIT_OPTS='--sort=-committerdate --remote' FORGIT_CHECKOUT_BRANCH_FZF_OPTS='--header-lines=0' git forgit checkout_branch; }; f"
   checkout-command = checkout --ignore-other-worktrees
   pl = pull
   ft = fetch
