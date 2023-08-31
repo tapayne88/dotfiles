@@ -59,6 +59,34 @@ return {
     },
   }, -- Adds unix commands like ':Move' etc.
 
+  -- Added so I can find/replace the following in a single :%S/foo/bar/g
+  --  foo -> bar
+  --  Foo -> Bar
+  --  FOO -> BAR
+  {
+    { 'tpope/vim-abolish', dependencies = { 'smjonas/live-command.nvim' } },
+    {
+      'smjonas/live-command.nvim',
+      -- TODO: Revert this back to opts when live_command is fixed
+      config = function()
+        require('live-command').setup {
+          defaults = {
+            enable_highlighting = true,
+            inline_highlighting = true,
+            hl_groups = {
+              insertion = 'Search',
+              deletion = 'Search',
+              change = 'Search',
+            },
+          },
+          commands = {
+            S = { cmd = 'Subvert' }, -- must be defined before we import vim-abolish
+          },
+        }
+      end,
+    },
+  },
+
   -- Syntax not supported by treesitter
   { 'plasticboy/vim-markdown', ft = 'markdown' },
   -- Markdown previewing commands
