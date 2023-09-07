@@ -346,7 +346,7 @@ return {
           events = { 'WinEnter' },
           callback = function(_)
             if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-              vim.w.focus_disable = true
+              require('focus').focus_disable_window()
             end
           end,
           desc = 'Disable focus autoresize for BufType',
@@ -355,7 +355,8 @@ return {
           events = { 'FileType' },
           callback = function(_)
             if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-              vim.w.focus_disable = true
+              -- TODO: Figure out why this doesn't work for undotree
+              require('focus').focus_disable_window()
             end
           end,
           desc = 'Disable focus autoresize for FileType',
