@@ -1,3 +1,4 @@
+-- vim:ft=lua
 -- Number of lines from vertical edge to start scrolling
 vim.opt.scrolloff = 4
 
@@ -60,23 +61,31 @@ vim.opt.tabstop = 4
 
 vim.filetype.add {
   extension = {
+    -- TODO: Fix the below, it doesn't work... tmpl files force telescope panes
+    -- to detect filetypes as the extension which messes with colorcolumn, etc.
+    -- Going to swap to just using vim modeline to set filetype however this
+    -- mean I lose syntax highlighting in telescope previews.
+    --
     -- Special handling for chezmoi files (templates, etc.)
-    ['tmpl'] = function(path)
-      local is_chezmoi_source_dir = path:match('^' .. vim.g.chezmoi_source_dir)
-        ~= nil
-      local ext = path:match '.*%.(%w+)%.tmpl$'
+    -- ['tmpl'] = function(path)
+    --   local is_chezmoi_source_dir = path:match('^' .. vim.g.chezmoi_source_dir)
+    --     ~= nil
+    --   local ext = path:match '.*%.(%w+)%.tmpl$'
 
-      -- Abort if we're in a telescope prompt
-      if vim.bo.filetype == 'TelescopePrompt' then
-        return
-      end
+    --   -- Abort if we're in a telescope prompt
+    --   if
+    --     vim.bo.filetype == 'TelescopePrompt'
+    --     or vim.bo.filetype == 'TelescopeResults'
+    --   then
+    --     return
+    --   end
 
-      if is_chezmoi_source_dir and ext ~= nil then
-        vim.bo.filetype = ext
-      else
-        vim.bo.filetype = 'template'
-      end
-    end,
+    --   if is_chezmoi_source_dir and ext ~= nil then
+    --     vim.bo.filetype = ext
+    --   else
+    --     vim.bo.filetype = 'template'
+    --   end
+    -- end,
     ['tiltfile'] = 'python',
     ['tfvars'] = 'terraform',
   },
