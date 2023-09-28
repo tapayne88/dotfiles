@@ -1,0 +1,11 @@
+# vim:ft=sshconfig
+AddKeysToAgent yes
+
+Host pi
+  user pi
+  hostname raspberrypi.{{ .tailscale_name }}
+
+Host truenas
+  user root
+  hostname truenas-scale.{{ .tailscale_name }}
+  IdentityFile ~/.ssh/truenas

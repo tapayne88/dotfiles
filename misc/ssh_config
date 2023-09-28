@@ -1,5 +1,0 @@
-AddKeysToAgent yes
-
-Host pi
-  user pi
-  hostname 100.112.81.93 # tailscale service IP

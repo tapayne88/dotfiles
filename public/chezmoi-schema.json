@@ -49,6 +49,11 @@
         "github_enterprise_host": {
           "type": "string",
           "description": "Host of github enterprise"
+        },
+        "tailscale_name": {
+            "type": "string",
+            "description": "Tailscale name used for TLD when resolving hostanmes, see https://login.tailscale.com/admin/dns"
+          }
         }
       },
       "additionalProperties": false,
@@ -58,7 +63,8 @@
         "terminal_font",
         "terminal_font_size",
         "features",
-        "github_enterprise_host"
+        "github_enterprise_host",
+        "tailscale_name"
       ]
     }
   }
