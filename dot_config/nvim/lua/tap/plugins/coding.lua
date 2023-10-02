@@ -440,6 +440,11 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     config = function()
+      local disabled_directories = {
+        -- disable for work directories
+        '/git/work/',
+      }
+
       require('plenary.async').run(function()
         local asdf_node_executable =
           require('tap.utils.async').get_asdf_global_executable 'node'
@@ -450,6 +455,19 @@ return {
         require('copilot').setup {
           suggestion = { enabled = false },
           panel = { enabled = false },
+          filetypes = {
+            ['*'] = function()
+              local fully_qualified_filename = vim.api.nvim_buf_get_name(0)
+
+              for _, directory in ipairs(disabled_directories) do
+                if string.match(fully_qualified_filename, directory) then
+                  return false
+                end
+              end
+
+              return true
+            end,
+          },
           -- Set copilot to alway use asdf global node version
           copilot_node_command = asdf_node_executable,
         }
