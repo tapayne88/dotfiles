@@ -78,7 +78,7 @@ function eval_command {
   eval "$1"
 }
 
-HOME_MANAGER_HOME=$XDG_CONFIG_HOME/nixpkgs
+HOME_MANAGER_HOME=$XDG_CONFIG_HOME/home-manager
 
 ############
 # commands #
