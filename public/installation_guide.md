@@ -145,3 +145,13 @@ fc-list | grep JetBrains
 ### Windows
 
 Double-click each of the font files in the [fonts directory](../dot_local/share/fonts). As of Nerd font v3 there are no Windows specific font files, each font should support all systems.
+
+## 9. Misc
+
+`bat` doesn't bundle the Catppuccin theme so the theme files that are part of this repo need adding to the bat theme cache.
+
+```bash
+bat cache --build
+```
+
+See the [docs](https://github.com/catppuccin/bat#adding-the-themes)
