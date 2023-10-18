@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+count=1
+while "$@"; do echo "Finished run $count"; ((count++));  done
+
+echo "------------------------"
+echo "Failed on attempt $count"
