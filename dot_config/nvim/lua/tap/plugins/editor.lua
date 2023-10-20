@@ -337,6 +337,7 @@ return {
         'diff',
         'fugitive',
         'git',
+        'Trouble',
         'undotree',
         require('tap.utils').dap_filetypes,
       }
