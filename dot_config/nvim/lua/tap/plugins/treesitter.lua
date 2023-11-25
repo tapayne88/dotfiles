@@ -5,11 +5,16 @@ return {
     event = 'BufReadPost',
     build = ':TSUpdate',
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        config = function()
+          -- skip backwards compatibility routines and speed up loading
+          vim.g.skip_ts_context_commentstring_module = true
+        end,
+      },
     },
     config = function()
       require('nvim-treesitter.configs').setup {
-        context_commentstring = { enable = true },
         ensure_installed = {
           'bash',
           'c',
