@@ -10,7 +10,6 @@ cask "hot"
 cask "keepingyouawake"
 cask "kitty"
 cask "moom"
-cask "mouse-fix"
 cask "raycast"
 cask "rectangle"
 
