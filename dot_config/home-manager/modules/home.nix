@@ -15,7 +15,7 @@
     delta # better git diffs
     dig # dns lookup
     duf # pretty alternative to df
-    exa # ls replacement
+    eza # ls replacement
     fd # faster more user friendly find
     fpp # facebook picker
     fzf # fuzzy-finder
