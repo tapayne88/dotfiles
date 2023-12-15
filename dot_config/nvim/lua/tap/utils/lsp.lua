@@ -37,6 +37,7 @@ end
 ---@return nil
 local function on_attach(_, bufnr)
   local nnoremap = require('tap.utils').nnoremap
+  local keymap = require('tap.utils').keymap
 
   -- Mappings.
   local with_opts = function(desc)
@@ -79,6 +80,12 @@ local function on_attach(_, bufnr)
     '<cmd>lua vim.lsp.buf.type_definition()<CR>',
     with_opts 'Go to type definition'
   )
+
+  if vim.lsp.inlay_hint then
+    keymap('n', '<leader>ih', function()
+      vim.lsp.inlay_hint(0, nil)
+    end, with_opts 'Toggle Inlay Hints')
+  end
 end
 
 -- Async function to find npm executable path
