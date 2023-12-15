@@ -2,7 +2,7 @@
   description = "Home-manager configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     # TODO: Fix this (don't forget the overlay)
@@ -11,7 +11,7 @@
     nixgl.url = "github:guibou/nixGL";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -22,6 +22,9 @@
         unstable = import inputs.nixpkgs-unstable {
           system = prev.system;
           config.allowUnfree = true;
+          config.permittedInsecurePackages = [
+            "electron-25.9.0" # crostini - obsidian
+          ];
         };
       };
       system_pkgs = system: import inputs.nixpkgs {
@@ -52,7 +55,7 @@
               home = {
                 username = "tapayne88";
                 homeDirectory = "/home/tapayne88";
-                stateVersion = "23.05";
+                stateVersion = "23.11";
               };
             }
           ];
@@ -73,7 +76,7 @@
               home = {
                 username = "tom.payne";
                 homeDirectory = "/Users/tom.payne";
-                stateVersion = "23.05";
+                stateVersion = "23.11";
               };
             }
           ];
@@ -93,7 +96,7 @@
               home = {
                 username = "tpayne";
                 homeDirectory = "/home/tpayne";
-                stateVersion = "23.05";
+                stateVersion = "23.11";
               };
             }
           ];

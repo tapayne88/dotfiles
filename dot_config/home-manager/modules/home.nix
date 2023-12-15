@@ -15,7 +15,7 @@
     delta # better git diffs
     dig # dns lookup
     duf # pretty alternative to df
-    exa # ls replacement
+    eza # ls replacement
     fd # faster more user friendly find
     fpp # facebook picker
     fzf # fuzzy-finder
@@ -33,8 +33,8 @@
     netcat # netcat implementaion
     nodejs # nodejs...
     poppler_utils # pdf utils - pdfunite to combine pdfs
-    python3 # python38
-    python38Packages.pip # pip for python38
+    python3 # python311
+    python311Packages.pip # pip for python311
     ripgrep # rg searching
     silver-searcher # ag searching
     neofetch # pretty print of system info
