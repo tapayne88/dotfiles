@@ -22,6 +22,9 @@
         unstable = import inputs.nixpkgs-unstable {
           system = prev.system;
           config.allowUnfree = true;
+          config.permittedInsecurePackages = [
+            "electron-25.9.0" # crostini - obsidian
+          ];
         };
       };
       system_pkgs = system: import inputs.nixpkgs {
