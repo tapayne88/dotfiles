@@ -2,10 +2,27 @@ local M = {}
 
 M.ensure_installed = { 'jdtls' }
 
+---@param receipt table
+---@return string | nil
+local get_launcher_jar = function(receipt)
+  if receipt._value == nil then
+    return nil
+  end
+
+  local share_files = receipt._value.links.share
+
+  for key, value in pairs(share_files) do
+    if string.match(key, 'org.eclipse.equinox.launcher_') then
+      print(key, value)
+      return value
+    end
+  end
+  return nil
+end
+
 function M.setup()
   local jdtls = require('mason-registry').get_package 'jdtls'
-  -- local jdtls_version = jdtls:get_receipt()._value.share.links
-  local jdtls_version = '1.6.600.v20231106-1826'
+  local jdtls_launcher = get_launcher_jar(jdtls:get_receipt())
   local os_name = string.lower(vim.loop.os_uname().sysname)
   local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
@@ -24,10 +41,7 @@ function M.setup()
       '--add-opens',
       'java.base/java.lang=ALL-UNNAMED',
       '-jar',
-      jdtls:get_install_path()
-        .. '/plugins/org.eclipse.equinox.launcher_'
-        .. jdtls_version
-        .. '.jar',
+      jdtls:get_install_path() .. '/' .. jdtls_launcher,
       '-configuration',
       jdtls:get_install_path() .. '/config_' .. os_name,
       '-data',
