@@ -1,4 +1,4 @@
 nodejs 20.10.0
 yarn 1.22.19
 pnpm 8.12.1
-java system
+java openjdk-17
