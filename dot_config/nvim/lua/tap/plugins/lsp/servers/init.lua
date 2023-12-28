@@ -1,6 +1,7 @@
 return {
   require 'tap.plugins.lsp.servers.bashls',
   require 'tap.plugins.lsp.servers.eslint',
+  require 'tap.plugins.lsp.servers.jdtls',
   require 'tap.plugins.lsp.servers.jsonls',
   require 'tap.plugins.lsp.servers.jsonnet',
   require 'tap.plugins.lsp.servers.lua_ls',

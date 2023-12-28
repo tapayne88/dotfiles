@@ -11,6 +11,7 @@ return {
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
+      'mfussenegger/nvim-jdtls',
     },
     config = function()
       if require('tap.utils.lsp').lsp_debug_enabled() then
