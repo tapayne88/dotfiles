@@ -2,6 +2,18 @@ local M = {}
 
 M.ensure_installed = { 'jdtls' }
 
+--- Get config filename for OS
+---@return string | nil
+local get_os_config_filename = function()
+  if vim.fn.has 'mac' == 1 then
+    return 'config_mac'
+  elseif vim.fn.has 'unix' == 1 then
+    return 'config_linux'
+  elseif vim.fn.has 'win32' == 1 then
+    return 'config_win'
+  end
+end
+
 --- Get eclipse jdtls launcher jar from mason install receipt
 ---@param receipt table
 ---@return string | nil
@@ -24,7 +36,7 @@ end
 function M.setup()
   local jdtls = require('mason-registry').get_package 'jdtls'
   local jdtls_launcher = get_launcher_jar(jdtls:get_receipt())
-  local os_name = string.lower(vim.loop.os_uname().sysname)
+  local config_name = get_os_config_filename()
   local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
   require('jdtls').start_or_attach {
@@ -44,7 +56,7 @@ function M.setup()
       '-jar',
       jdtls:get_install_path() .. '/' .. jdtls_launcher,
       '-configuration',
-      jdtls:get_install_path() .. '/config_' .. os_name,
+      jdtls:get_install_path() .. '/' .. config_name,
       '-data',
       vim.fn.stdpath 'cache' .. '/jdtls/workspace-root/' .. project_name,
     },
