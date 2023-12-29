@@ -2,18 +2,19 @@ local M = {}
 
 M.ensure_installed = { 'jdtls' }
 
+--- Get eclipse jdtls launcher jar from mason install receipt
 ---@param receipt table
 ---@return string | nil
 local get_launcher_jar = function(receipt)
-  if receipt._value == nil then
-    return nil
-  end
+  assert(type(receipt) == 'table')
+  assert(type(receipt._value) == 'table')
+  assert(type(receipt._value.links) == 'table')
+  assert(type(receipt._value.links.share) == 'table')
 
   local share_files = receipt._value.links.share
 
-  for key, value in pairs(share_files) do
-    if string.match(key, 'org.eclipse.equinox.launcher_') then
-      print(key, value)
+  for _, value in pairs(share_files) do
+    if string.match(value, 'org.eclipse.equinox.launcher_') then
       return value
     end
   end
