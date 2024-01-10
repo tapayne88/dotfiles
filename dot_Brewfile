@@ -20,5 +20,6 @@ cask "rectangle"
 mas "Hidden Bar", id: 1452453066
 mas "MenuBar Stats", id: 714196447
 mas "Microsoft Remote Desktop", id: 1295203466
+mas "rcmd", id: 1596283165
 mas "Tailscale", id: 1475387142
 mas "Todoist", id: 585829637
