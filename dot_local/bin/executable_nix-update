@@ -99,7 +99,7 @@ function command_prune {
 function command_update {
   eval_command "nix-channel --update"
   eval_command "nix-env -u"
-  eval_command "nix flake update $HOME_MANAGER_HOME"
+  eval_command "nix flake update --flake $HOME_MANAGER_HOME"
   eval_command "home-manager switch"
 
   # If has tty attached (not being piped)
