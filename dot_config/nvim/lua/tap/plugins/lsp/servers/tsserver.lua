@@ -40,6 +40,18 @@ end
 
 local M = { get_tsc_version = get_tsc_version }
 
+--------------------------------------------------------------------------------
+--
+-- MacOS:
+-- I've had some recurring issues with tsserver not observing file changes in
+-- dependencies.
+-- I _think_ this is because of a low file descriptor limit on macOS resulting
+-- in watchman failing to find dependent files.
+--
+-- The solution was to up the file descriptor limit as per the watchman docs.
+-- https://facebook.github.io/watchman/docs/install#macos-file-descriptor-limits
+--
+--------------------------------------------------------------------------------
 M.ensure_installed = { 'tsserver' }
 
 local handleLogFile = function(message)
