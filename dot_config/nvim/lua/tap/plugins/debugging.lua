@@ -68,44 +68,36 @@ return {
         require('dap').toggle_breakpoint()
       end, { desc = 'Toggle breakpoint' })
 
-      local vim_ui_input_async = require('plenary.async').wrap(vim.ui.input, 2)
-
       local breakpoint_condition_msg = 'Breakpoint condition: '
       local log_point_msg = 'Log point message (interpolate with {foo}): '
 
       vim.api.nvim_create_user_command('DapConditionalBreakpoint', function()
-        require('plenary.async').run(function()
-          local cond = vim_ui_input_async { prompt = breakpoint_condition_msg }
+        vim.ui.input({ prompt = breakpoint_condition_msg }, function(cond)
           if cond == nil then
             return
           end
-
           require('dap').set_breakpoint(cond)
         end)
       end, { desc = 'Set conditional breakpoint' })
       vim.api.nvim_create_user_command('DapLogPoint', function()
-        require('plenary.async').run(function()
-          local msg = vim_ui_input_async { prompt = log_point_msg }
+        vim.ui.input({ prompt = log_point_msg }, function(msg)
           if msg == nil then
             return
           end
-
           require('dap').set_breakpoint(nil, nil, msg)
         end)
       end, { desc = 'Set log point' })
       vim.api.nvim_create_user_command('DapConditionalLogPoint', function()
-        require('plenary.async').run(function()
-          local cond = vim_ui_input_async { prompt = breakpoint_condition_msg }
+        vim.ui.input({ prompt = breakpoint_condition_msg }, function(cond)
           if cond == nil then
             return
           end
-
-          local msg = vim_ui_input_async { prompt = log_point_msg }
-          if msg == nil then
-            return
-          end
-
-          require('dap').set_breakpoint(cond, nil, msg)
+          vim.ui.input({ prompt = log_point_msg }, function(msg)
+            if msg == nil then
+              return
+            end
+            require('dap').set_breakpoint(cond, nil, msg)
+          end)
         end)
       end, { desc = 'Set conditional log point' })
     end,
