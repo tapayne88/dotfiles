@@ -5,6 +5,13 @@ return {
     local lsp_symbol = require('tap.utils.lsp').symbol
     local nnoremap = require('tap.utils').nnoremap
 
+    local virtual_lines_curr = 1
+    local virtual_lines = {
+      { only_current_line = true },
+      true,
+      false,
+    }
+
     require('lsp_lines').setup()
 
     -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
@@ -13,7 +20,8 @@ return {
     vim.diagnostic.config {
       underline = true,
       update_in_insert = false,
-      virtual_text = false,
+      virtual_text = true,
+      virtual_lines = virtual_lines[virtual_lines_curr],
       signs = {
         -- Make priority higher than vim-signify
         priority = 100,
@@ -40,11 +48,20 @@ return {
       '<cmd>lua vim.diagnostic.setloclist()<CR>',
       { desc = 'Open buffer diagnostics in local list' }
     )
-    nnoremap(
-      '<leader>d',
-      require('lsp_lines').toggle,
-      { desc = 'Toggle diagnostic lines' }
-    )
+    nnoremap('<leader>dl', function()
+      virtual_lines_curr = virtual_lines_curr < #virtual_lines
+          and virtual_lines_curr + 1
+        or 1
+      vim.diagnostic.config {
+        virtual_lines = virtual_lines[virtual_lines_curr],
+      }
+    end, { desc = 'Toggle diagnostic lines' })
+
+    nnoremap('<leader>dt', function()
+      vim.diagnostic.config {
+        virtual_text = not vim.diagnostic.config().virtual_text,
+      }
+    end, { desc = 'Toggle diagnostic text' })
 
     -- float = false, CursorHold will show diagnostic
     nnoremap('[d', function()
