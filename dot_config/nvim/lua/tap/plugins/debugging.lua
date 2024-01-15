@@ -24,6 +24,7 @@ return {
     lazy = true,
     dependencies = {
       'microsoft/vscode-js-debug',
+      tag = 'v1.85.0',
       build = table.concat({
         'npm install --legacy-peer-deps',
         'npx gulp vsDebugServerBundle',
