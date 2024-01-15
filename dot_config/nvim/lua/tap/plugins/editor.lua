@@ -328,55 +328,6 @@ return {
     },
   },
 
-  -- Window resizing on focus
-  {
-    'beauwilliams/focus.nvim',
-    config = function()
-      local ignore_filetypes = vim.tbl_flatten {
-        '',
-        'diff',
-        'fugitive',
-        'git',
-        'Trouble',
-        'undotree',
-        require('tap.utils').dap_filetypes,
-      }
-      local ignore_buftypes = {}
-
-      require('tap.utils').augroup('FocusDisable', {
-        {
-          events = { 'WinEnter' },
-          callback = function(_)
-            if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-              require('focus').focus_disable_window()
-            end
-          end,
-          desc = 'Disable focus autoresize for BufType',
-        },
-        {
-          events = { 'FileType' },
-          callback = function(_)
-            if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-              -- TODO: Figure out why this doesn't work for undotree
-              require('focus').focus_disable_window()
-            end
-          end,
-          desc = 'Disable focus autoresize for FileType',
-        },
-      })
-
-      require('focus').setup {
-        ui = {
-          cursorline = false, -- this messes with TelescopePrompt's bg colour
-          signcolumn = false,
-        },
-      }
-      require('tap.utils').keymap('n', '<leader>ft', ':FocusToggle<CR>', {
-        desc = '[Focus] Toggle window focusing',
-      })
-    end,
-  },
-
   -- Toggle zoom in / out individual windows
   { 'dhruvasagar/vim-zoom', keys = '<C-w>m' },
 
