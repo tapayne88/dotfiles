@@ -1,6 +1,11 @@
 return {
-  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  -- TODO: Push fixes upstream
+  -- 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  'tapayne88/lsp_lines.nvim',
   event = 'BufReadPre',
+  dependencies = {
+    'luozhiya/lsp-virtual-improved.nvim',
+  },
   config = function()
     local lsp_symbol = require('tap.utils.lsp').symbol
     local nnoremap = require('tap.utils').nnoremap
@@ -11,8 +16,17 @@ return {
       true,
       false,
     }
+    local virtual_improved_curr = 1
+    local virtual_improved = {
+      {
+        current_line = 'hide',
+      },
+      true,
+      false,
+    }
 
     require('lsp_lines').setup()
+    require('lsp-virtual-improved').setup()
 
     -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
     local border_window_style = 'rounded'
@@ -20,7 +34,8 @@ return {
     vim.diagnostic.config {
       underline = true,
       update_in_insert = false,
-      virtual_text = true,
+      virtual_text = false,
+      virtual_improved = virtual_improved[virtual_improved_curr],
       virtual_lines = virtual_lines[virtual_lines_curr],
       signs = {
         -- Make priority higher than vim-signify
@@ -58,8 +73,11 @@ return {
     end, { desc = 'Toggle diagnostic lines' })
 
     nnoremap('<leader>dt', function()
+      virtual_improved_curr = virtual_improved_curr < #virtual_improved
+          and virtual_improved_curr + 1
+        or 1
       vim.diagnostic.config {
-        virtual_text = not vim.diagnostic.config().virtual_text,
+        virtual_improved = virtual_improved[virtual_improved_curr],
       }
     end, { desc = 'Toggle diagnostic text' })
 
