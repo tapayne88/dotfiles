@@ -25,7 +25,11 @@ return {
       false,
     }
 
-    require('lsp_lines').setup()
+    require('lsp_lines').setup {
+      only_current_line = {
+        events = { 'CursorHold', 'DiagnosticChanged' },
+      },
+    }
     require('lsp-virtual-improved').setup()
 
     -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
