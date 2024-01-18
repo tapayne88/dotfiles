@@ -51,6 +51,10 @@ local M = { get_tsc_version = get_tsc_version }
 -- The solution was to up the file descriptor limit as per the watchman docs.
 -- https://facebook.github.io/watchman/docs/install#macos-file-descriptor-limits
 --
+-- Update: increasing the file descriptor limit caused some very adverse affects
+-- like system crashes. Instead I've installed watchman via homebrew and it
+-- seems to be working better.
+--
 --------------------------------------------------------------------------------
 M.ensure_installed = { 'tsserver' }
 
