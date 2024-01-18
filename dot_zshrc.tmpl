@@ -138,6 +138,14 @@ export FORGIT_CHECKOUT_BRANCH_BRANCH_GIT_OPTS='--sort=-committerdate'
 # append `git-forgit` to path
 export PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
 
+# PNPM global install path
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+
 # Need to run this after oh-my-zsh lib/completion as it resets it
 # for the benefit of macOS
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
