@@ -6,6 +6,10 @@ return {
     build = ':TSUpdate',
     dependencies = {
       {
+        'nvim-treesitter/nvim-treesitter-context',
+        opts = true,
+      },
+      {
         'JoosepAlviste/nvim-ts-context-commentstring',
         config = function()
           -- skip backwards compatibility routines and speed up loading
