@@ -6,7 +6,7 @@ return {
       require('legendary').setup {}
 
       require('tap.utils').nnoremap('<leader>k', function()
-        require('legendary').find 'keymaps'
+        require('legendary').find {}
       end, {
         desc = 'Legendary keymaps',
       })
