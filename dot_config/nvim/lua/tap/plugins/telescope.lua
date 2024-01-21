@@ -12,6 +12,7 @@ return {
       dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'natecraddock/telescope-zf-native.nvim',
   },
   cmd = 'Telescope',
   init = function()
@@ -27,6 +28,7 @@ return {
     end, { desc = 'Give me Telescope!' })
     nnoremap('<leader>l', function()
       require('telescope.builtin').buffers {
+        sorter = require('telescope').extensions['zf-native'].native_zf_scorer(),
         sort_lastused = true,
         sort_mru = true,
         show_all_buffers = true,
@@ -289,8 +291,20 @@ return {
         fzf = {
           fuzzy = true,
           override_generic_sorter = true,
-          override_file_sorter = true,
+          override_file_sorter = false,
           case_mode = 'smart_case',
+        },
+        ['zf-native'] = {
+          file = {
+            enable = true,
+            highlight_results = true,
+            match_filename = true,
+          },
+          generic = {
+            enable = false,
+            highlight_results = true,
+            match_filename = false,
+          },
         },
         live_grep_args = {
           auto_quoting = true,
@@ -309,6 +323,7 @@ return {
     require('telescope').load_extension 'smart_history'
     require('telescope').load_extension 'fzf'
     require('telescope').load_extension 'notify'
+    require('telescope').load_extension 'zf-native'
 
     vim.opt.grepprg =
       table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
