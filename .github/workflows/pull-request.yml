@@ -42,8 +42,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Checkout neovim lua types
+        uses: actions/checkout@v4
+        with:
+          repository: folke/neodev.nvim
+          path: neodev
+
       - uses: mrcjkb/lua-typecheck-action@v0.1.1
         with:
           directories: |
-            dot_config/nvim/lua
+            neodev/types/stable
+            main/dot_config/nvim/lua
