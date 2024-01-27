@@ -55,6 +55,6 @@ jobs:
 
       - uses: mrcjkb/lua-typecheck-action@v0.1.1
         with:
+          configpath: "main/.luarc.json"
           directories: |
-            neodev/types/stable
             main/dot_config/nvim/lua
