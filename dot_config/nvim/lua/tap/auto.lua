@@ -51,6 +51,7 @@ augroup('TapColorColumn', {
         'mason',
         'oil',
         'qf',
+        'rgflow',
         'Trouble',
         'TelescopeResults',
       }
