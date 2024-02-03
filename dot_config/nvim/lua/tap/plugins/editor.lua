@@ -152,10 +152,10 @@ return {
       nnoremap('<leader>gw', ':Gwrite<CR>', { desc = 'Git write' })
       nnoremap('<leader>gl', ':Gclog<CR>', { desc = 'Git log' })
       nnoremap('<leader>go', ':Git checkout<Space>', { desc = 'Git checkout' })
-      nnoremap('<leader>gp', ':GBrowse<CR>', { desc = 'Git browse file' })
+      nnoremap('<leader>gp', ':GBrowse!<CR>', { desc = 'Git browse file' })
       xnoremap(
         '<leader>gp',
-        ":'<,'>GBrowse<CR>",
+        ":'<,'>GBrowse!<CR>",
         { desc = 'Git browse visual selection' }
       )
     end,
