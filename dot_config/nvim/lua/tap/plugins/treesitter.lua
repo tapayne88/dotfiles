@@ -2,9 +2,6 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    -- Pin while waiting on solution / workaround for nix issue
-    -- https://github.com/NixOS/nixpkgs/issues/282927
-    tag = 'v0.9.2',
     event = 'BufReadPost',
     build = ':TSUpdate',
     dependencies = {
