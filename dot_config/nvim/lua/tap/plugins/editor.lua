@@ -203,7 +203,7 @@ return {
     -- don't lazy load so it works when opening directories with `nvim .`
     lazy = false,
     opts = {
-      default_file_explorer = false, -- TODO: Figure out why this breaks :GBrowse when true
+      default_file_explorer = true,
       columns = {
         'icon',
         'permissions',
