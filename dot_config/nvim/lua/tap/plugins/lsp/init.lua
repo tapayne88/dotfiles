@@ -46,6 +46,7 @@ return {
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
+      'gbprod/none-ls-shellcheck.nvim',
     },
     config = function()
       require('plenary.async').run(function()
@@ -63,15 +64,13 @@ return {
           'stylua',
         }
 
+        require('null-ls').register(require 'none-ls-shellcheck.diagnostics')
+        require('null-ls').register(require 'none-ls-shellcheck.code_actions')
+
         vim.schedule(function()
           null_ls.setup(lsp_utils.merge_with_default_config {
             debug = lsp_utils.lsp_debug_enabled(),
             sources = {
-              ------------------
-              -- Code Actions --
-              ------------------
-              null_ls.builtins.code_actions.shellcheck,
-
               -----------------
               -- Diagnostics --
               -----------------
@@ -83,7 +82,6 @@ return {
                   vim.fn.stdpath 'config' .. '/markdownlint.json',
                 },
               },
-              null_ls.builtins.diagnostics.shellcheck,
 
               ----------------
               -- Formatting --
