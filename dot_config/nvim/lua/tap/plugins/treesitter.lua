@@ -27,6 +27,7 @@ return {
           'graphql',
           'groovy',
           'html',
+          'hurl',
           'java',
           'javascript',
           'jsdoc',

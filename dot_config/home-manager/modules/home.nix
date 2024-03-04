@@ -24,6 +24,7 @@
     gnupg # gnu pretty good privacy
     gti # alias for git, with a gti
     htop # pretty top
+    hurl # HTTP requests runner
     inetutils # network utils, like traceroute, etc.
     iperf # Tool to measure IP bandwidth using UDP or TCP
     jq # json cli processor
