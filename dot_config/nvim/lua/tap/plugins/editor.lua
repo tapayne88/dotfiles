@@ -572,6 +572,8 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
+    -- TODO: Remove pinning when Blame line bug fixed
+    commit = 'b94967a0fff2b14a637cdf618ec7335739dc8f89',
     init = function()
       require('tap.utils').keymap('n', '<leader>hp', function()
         return require('vgit').buffer_hunk_preview()
