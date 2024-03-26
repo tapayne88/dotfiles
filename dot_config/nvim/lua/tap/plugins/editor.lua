@@ -639,6 +639,17 @@ return {
     'jellydn/hurl.nvim',
     dependencies = { 'MunifTanjim/nui.nvim' },
     ft = 'hurl',
+    init = function()
+      require('tap.utils').augroup('hurl.nvim', {
+        {
+          events = { 'BufRead', 'BufNewFile' },
+          pattern = { '*.hurl' },
+          callback = function()
+            vim.opt_local.filetype = 'hurl'
+          end,
+        },
+      })
+    end,
     opts = {
       -- Show debugging info
       debug = false,
