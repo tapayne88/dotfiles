@@ -74,7 +74,7 @@
   inject = "!f() { set -e; HASH=`git show $1 --pretty=format:\"%H\" -q`; shift; git commit --fixup=$HASH $*; [ -n \"$(git diff-files)\" ] && git stash && DIRTY=1; git rebase $HASH^^ -i --rebase-merges --autosquash; [ -n \"$DIRTY\" ] && git stash pop;}; f"
   fixup = forgit fixup
   ps = push
-  psf = push --force-with-lease
+  psf = push --force-with-lease --force-if-includes
   psu = push -u
   br = branch --sort=-committerdate
   df = diff
