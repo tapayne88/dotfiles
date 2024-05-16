@@ -7,6 +7,7 @@ brew "node"
 # MacOS installed through homebrew as needs to be in /usr/local/bin for some reason
 # https://github.com/facebook/watchman/issues/923#issuecomment-1506301844
 brew "watchman"
+cask "amethyst"
 cask "eqmac"
 cask "font-jetbrains-mono-nerd-font"
 cask "hot"
