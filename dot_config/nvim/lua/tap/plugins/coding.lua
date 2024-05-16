@@ -1,6 +1,18 @@
 return {
   -- Adds 'gc' & 'gcc' commands for commenting lines
-  'tpope/vim-commentary',
+  {
+    'tpope/vim-commentary',
+    init = function()
+      -- Hurl file support
+      require('tap.utils').augroup('JenkinsfileLinter', {
+        {
+          events = { 'FileType' },
+          pattern = { 'hurl' },
+          command = 'setlocal commentstring=#\\ %s',
+        },
+      })
+    end,
+  },
 
   -- Validate jenkinsfiles against server
   {
