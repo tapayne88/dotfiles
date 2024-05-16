@@ -8,4 +8,4 @@
 
 [alias]
   ps-j5s = "!f() { branch=$(git rev-parse --abbrev-ref HEAD); git ps origin HEAD:${branch}-j5s-build; }; f"
-  psf-j5s = "!f() { branch=$(git rev-parse --abbrev-ref HEAD); git psf origin HEAD:${branch}-j5s-build; }; f"
+  psf-j5s = "!f() { branch=$(git rev-parse --abbrev-ref HEAD); git ps --force-with-lease origin HEAD:${branch}-j5s-build; }; f"
