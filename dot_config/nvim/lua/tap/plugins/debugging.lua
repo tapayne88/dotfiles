@@ -102,6 +102,35 @@ return {
           end)
         end)
       end, { desc = 'Set conditional log point' })
+
+      local keymap = require('tap.utils').keymap
+
+      keymap('n', '<space>b', function()
+        require('dap').toggle_breakpoint()
+      end, { desc = '[DAP] Set breakpoint' })
+
+      keymap('n', '<space>?', function()
+        require('dapui').eval(nil, { enter = true })
+      end, { desc = '[DAP] Eval var under cursor' })
+
+      keymap('n', '<space>c', function()
+        return require('dap').continue()
+      end, { desc = '[DAP] Continue' })
+      keymap('n', '<space>i', function()
+        return require('dap').step_into()
+      end, { desc = '[DAP] Step into' })
+      keymap('n', '<space>o', function()
+        return require('dap').step_over()
+      end, { desc = '[DAP] Step over' })
+      keymap('n', '<space>u', function()
+        return require('dap').step_out()
+      end, { desc = '[DAP] Step out' })
+      keymap('n', '<space>p', function()
+        return require('dap').step_back()
+      end, { desc = '[DAP] Step back' })
+      keymap('n', '<space>r', function()
+        return require('dap').restart()
+      end, { desc = '[DAP] Restart' })
     end,
     config = function()
       vim.fn.sign_define('DapBreakpoint', {
