@@ -2,7 +2,7 @@ return {
   {
     'rcarriga/nvim-dap-ui',
     dependencies = {
-      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
     },
     lazy = true,
     init = function()
@@ -60,6 +60,7 @@ return {
     lazy = true,
     dependencies = {
       'mxsdev/nvim-dap-vscode-js',
+      'rcarriga/nvim-dap-ui',
       { 'theHamsta/nvim-dap-virtual-text', config = true },
       'hrsh7th/nvim-cmp',
       'rcarriga/cmp-dap',
@@ -142,6 +143,13 @@ return {
           },
         }
       )
+
+      require('dap').listeners.before.attach.dapui_config = function()
+        require('dapui').open()
+      end
+      require('dap').listeners.before.launch.dapui_config = function()
+        require('dapui').open()
+      end
     end,
   },
 }
