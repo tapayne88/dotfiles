@@ -5,6 +5,10 @@ local key_name = function(client_id)
 end
 
 local set_tsc_version = function(client_id, version)
+  if version == nil then
+    return
+  end
+
   if vim.g.tsc_version == nil then
     vim.g.tsc_version = {}
   end
@@ -12,12 +16,10 @@ local set_tsc_version = function(client_id, version)
   local client_key = key_name(client_id)
 
   if vim.g.tsc_version[client_key] == nil then
-    if version ~= nil then
-      -- Very convoluted way to update global map
-      local tsc_version = vim.g.tsc_version
-      tsc_version[client_key] = version
-      vim.g.tsc_version = tsc_version
-    end
+    -- Very convoluted way to update global map
+    local tsc_version = vim.g.tsc_version
+    tsc_version[client_key] = version
+    vim.g.tsc_version = tsc_version
   end
 end
 
@@ -70,13 +72,6 @@ local handleLogFile = function(message)
   end
 end
 
-local handleTscVersion = function(message, header)
-  local version =
-    message:match 'Using Typescript version %(.*%)? (%d+%.%d+%.%d+)'
-
-  set_tsc_version(header.client_id, version)
-end
-
 function M.setup()
   require('lspconfig').tsserver.setup(lsp_utils.merge_with_default_config {
     init_options = vim.tbl_deep_extend(
@@ -109,7 +104,16 @@ function M.setup()
         end
 
         handleLogFile(result.message)
-        handleTscVersion(result.message, header)
+      end,
+      ['$/typescriptVersion'] = function(_, result, header)
+        -- Call any global handlers like output-panel.nvim
+        pcall(vim.lsp.handlers['$/typescriptVersion'], _, result, header)
+
+        if result == nil then
+          return
+        end
+
+        set_tsc_version(header.client_id, result.version)
       end,
     },
   })
