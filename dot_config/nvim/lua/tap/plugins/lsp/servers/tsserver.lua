@@ -83,6 +83,16 @@ function M.setup()
       'force',
       require('lspconfig.server_configurations.tsserver').default_config.init_options,
       {
+        preferences = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
         tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
       },
       lsp_utils.lsp_debug_enabled()
