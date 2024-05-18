@@ -14,6 +14,7 @@ function M.setup()
         -- neovim can't persist these settings so just gets annoying
         ['runtime.version'] = 'LuaJIT',
         ['workspace.checkThirdParty'] = false,
+        ['hint.enable'] = true,
       },
     },
   })

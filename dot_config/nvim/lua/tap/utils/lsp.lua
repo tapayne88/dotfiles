@@ -83,7 +83,8 @@ local function on_attach(_, bufnr)
 
   if vim.lsp.inlay_hint then
     keymap('n', '<leader>ih', function()
-      vim.lsp.inlay_hint(0, nil)
+      local new_state = not vim.lsp.inlay_hint.is_enabled { bufnr = 0 }
+      vim.lsp.inlay_hint.enable(new_state, { bufnr = 0 })
     end, with_opts 'Toggle Inlay Hints')
   end
 end
