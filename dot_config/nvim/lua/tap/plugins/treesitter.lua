@@ -9,6 +9,11 @@ return {
         'nvim-treesitter/nvim-treesitter-context',
         opts = true,
       },
+      {
+        'folke/ts-comments.nvim',
+        opts = {},
+        event = 'VeryLazy',
+      },
     },
     config = function()
       require('nvim-treesitter.configs').setup {
