@@ -171,12 +171,12 @@ return {
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
-    event = { 'BufReadPre', 'BufNewFile' },
+    event = { 'VeryLazy' },
     dependencies = {
       'kevinhwang91/promise-async',
       'nvim-treesitter/nvim-treesitter',
     },
-    config = function()
+    init = function()
       vim.opt.foldcolumn = '1'
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
@@ -184,7 +184,8 @@ return {
 
       vim.opt.fillchars:append 'foldopen:'
       vim.opt.fillchars:append 'foldclose:'
-
+    end,
+    config = function()
       -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
       require('tap.utils').keymap('n', 'zR', require('ufo').openAllFolds)
       require('tap.utils').keymap('n', 'zM', require('ufo').closeAllFolds)
@@ -455,7 +456,7 @@ return {
       require('statuscol').setup {
         relculright = true,
         segments = {
-          { text = { builtin.foldfunc } },
+          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
           {
             sign = { name = { 'Diagnostic' }, maxwidth = 1 },
             click = 'v:lua.ScSa',
