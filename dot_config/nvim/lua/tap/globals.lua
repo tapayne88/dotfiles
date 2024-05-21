@@ -15,7 +15,7 @@ end
 
 --- Check if neovim version is nightly
 function tap.neovim_nightly()
-  local nightly = '0.9'
+  local nightly = '0.11'
   local version = vim.version()
 
   if version == nil then

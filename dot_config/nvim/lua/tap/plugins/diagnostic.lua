@@ -48,7 +48,7 @@ return {
       severity_sort = true,
       float = {
         show_header = false,
-        source = 'always',
+        source = true,
         border = border_window_style,
       },
     }
