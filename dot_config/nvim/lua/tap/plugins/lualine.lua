@@ -335,17 +335,20 @@ return {
           section_separators = section_separators,
           globalstatus = true,
           disabled_filetypes = {
-            winbar = vim.tbl_flatten {
-              'alpha',
-              'fugitive',
-              'gitcommit',
-              'neo-tree',
-              'outputpanel',
-              'packer',
-              'qf',
-              'Trouble',
-              require('tap.utils').dap_filetypes,
-            },
+            winbar = vim
+              .iter({
+                'alpha',
+                'fugitive',
+                'gitcommit',
+                'neo-tree',
+                'outputpanel',
+                'packer',
+                'qf',
+                'Trouble',
+                require('tap.utils').dap_filetypes,
+              })
+              :flatten()
+              :totable(),
           },
         },
         sections = sections,

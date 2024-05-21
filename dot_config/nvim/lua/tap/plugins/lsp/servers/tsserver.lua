@@ -24,20 +24,21 @@ local set_tsc_version = function(client_id, version)
 end
 
 local get_tsc_version = function()
-  if vim.g.tsc_version ~= nil then
-    local tsc_versions = vim.tbl_map(function(client)
-      return vim.g.tsc_version[key_name(client.id)]
-    end, lsp_utils.get_lsp_clients())
-
-    local valid_versions = vim.tbl_filter(function(version)
-      return version ~= nil
-    end, tsc_versions)
-
-    if #valid_versions > 0 then
-      return valid_versions[1]
-    end
+  if vim.g.tsc_version == nil then
+    return nil
   end
-  return nil
+
+  local tsc_versions = vim.tbl_map(function(client)
+    return vim.g.tsc_version[key_name(client.id)]
+  end, lsp_utils.get_lsp_clients())
+
+  local valid_versions = vim.tbl_filter(function(version)
+    return version ~= nil
+  end, tsc_versions)
+
+  if #valid_versions > 0 then
+    return valid_versions[1]
+  end
 end
 
 local M = { get_tsc_version = get_tsc_version }

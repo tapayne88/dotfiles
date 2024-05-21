@@ -48,13 +48,16 @@ M.regex_escape = M.escape '()|' --- Escape regex characters
 ---@return string[]
 function M.command_with_pattern(cmd, pattern)
   return pattern == nil and cmd
-    or vim.tbl_flatten {
-      cmd,
-      {
-        '--testNamePattern',
-        string.format('"%s"', M.regex_escape(escape_terminal_keys(pattern))),
-      },
-    }
+    or vim
+      .iter({
+        cmd,
+        {
+          '--testNamePattern',
+          string.format('"%s"', M.regex_escape(escape_terminal_keys(pattern))),
+        },
+      })
+      :flatten()
+      :totable()
 end
 
 --- Convert command table to string
@@ -163,9 +166,12 @@ function M.close_all_test_windows()
 
   M.logger.debug('test buffers', test_buffers)
 
-  local wins_with_bufs = vim.tbl_flatten(vim.tbl_map(function(bufnr)
-    return vim.fn.win_findbuf(bufnr)
-  end, test_buffers))
+  local wins_with_bufs = vim
+    .iter(vim.tbl_map(function(bufnr)
+      return vim.fn.win_findbuf(bufnr)
+    end, test_buffers))
+    :flatten()
+    :totable()
 
   -- close all open splits
   vim.tbl_map(function(win)

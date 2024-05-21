@@ -91,17 +91,20 @@ return {
     },
     config = function(_, opts)
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = vim.tbl_flatten {
-          'alpha',
-          'help',
-          'lazy',
-          'mason',
-          'neo-tree',
-          'oil_preview',
-          'terminal',
-          'Trouble',
-          require('tap.utils').dap_filetypes,
-        },
+        pattern = vim
+          .iter({
+            'alpha',
+            'help',
+            'lazy',
+            'mason',
+            'neo-tree',
+            'oil_preview',
+            'terminal',
+            'Trouble',
+            require('tap.utils').dap_filetypes,
+          })
+          :flatten()
+          :totable(),
         callback = function()
           vim.b.miniindentscope_disable = true
         end,

@@ -144,7 +144,7 @@ end
 -- Get active LSP clients for buffer
 ---@return table[]
 function M.get_lsp_clients()
-  return vim.lsp.get_active_clients { bufnr = vim.api.nvim_get_current_buf() }
+  return vim.lsp.get_clients { bufnr = vim.api.nvim_get_current_buf() }
 end
 
 --- Install package at version

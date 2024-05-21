@@ -24,9 +24,12 @@ return {
 
       local servers = require 'tap.plugins.lsp.servers'
 
-      local ensure_installed = vim.tbl_flatten(vim.tbl_map(function(server)
-        return server.ensure_installed
-      end, servers))
+      local ensure_installed = vim
+        .iter(vim.tbl_map(function(server)
+          return server.ensure_installed
+        end, servers))
+        :flatten()
+        :totable()
 
       require('mason-lspconfig').setup {
         ensure_installed = ensure_installed,
@@ -179,7 +182,7 @@ return {
           return
         end
 
-        local clients = vim.tbl_values(vim.lsp.get_active_clients())
+        local clients = vim.tbl_values(vim.lsp.get_clients())
         require('lsp-format').trigger_format(clients, options or {})
       end
 
@@ -195,7 +198,7 @@ return {
 
         local clients = vim.tbl_filter(function(client)
           return client.supports_method 'textDocument/rangeFormatting'
-        end, vim.lsp.get_active_clients())
+        end, vim.lsp.get_clients())
 
         require('lsp-format').trigger_format(clients, options)
       end
