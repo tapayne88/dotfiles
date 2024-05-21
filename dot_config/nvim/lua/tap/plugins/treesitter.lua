@@ -9,13 +9,6 @@ return {
         'nvim-treesitter/nvim-treesitter-context',
         opts = true,
       },
-      {
-        'JoosepAlviste/nvim-ts-context-commentstring',
-        config = function()
-          -- skip backwards compatibility routines and speed up loading
-          vim.g.skip_ts_context_commentstring_module = true
-        end,
-      },
     },
     config = function()
       require('nvim-treesitter.configs').setup {
@@ -75,19 +68,7 @@ return {
           end,
         },
         matchup = { enable = true },
-        playground = {
-          enable = true,
-          disable = {},
-          updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-          persist_queries = false, -- Whether the query persists across vim sessions
-        },
       }
     end,
-  },
-
-  -- playground for illustrating the AST treesitter builds
-  {
-    'nvim-treesitter/playground',
-    cmd = { 'TSPlayground', 'TSPlaygroundToggle' },
   },
 }
