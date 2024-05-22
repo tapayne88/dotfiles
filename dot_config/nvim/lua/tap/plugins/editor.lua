@@ -417,7 +417,7 @@ return {
               if
                 vim.tbl_contains(
                   excluded_filetypes,
-                  vim.api.nvim_buf_get_option_value(buf_hndl, 'filetype')
+                  vim.api.nvim_get_option_value('filetype', { buf = buf_hndl })
                 )
               then
                 require('tap.utils').logger.info(

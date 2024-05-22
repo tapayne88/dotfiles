@@ -10,7 +10,7 @@ augroup('TapWinResize', {
     callback = function()
       local is_dap_ui_running = test_visible_buffers(function(window_info)
         local buffer_filetype =
-          vim.api.nvim_buf_get_option_value(window_info.bufnr, 'filetype')
+          vim.api.nvim_get_option_value('filetype', { buf = window_info.bufnr })
         return vim.tbl_contains(
           require('tap.utils').dap_filetypes,
           buffer_filetype
