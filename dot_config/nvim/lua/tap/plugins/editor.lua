@@ -687,4 +687,16 @@ return {
       { '<leader>h', ':HurlRunner<CR>', desc = 'Hurl Runner', mode = 'v' },
     },
   },
+
+  {
+    'm4xshen/hardtime.nvim',
+    event = 'BufReadPost',
+    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+    opts = { max_count = 5, disable_mouse = false },
+  },
+
+  {
+    'LunarVim/bigfile.nvim',
+    event = 'BufReadPre',
+  },
 }
