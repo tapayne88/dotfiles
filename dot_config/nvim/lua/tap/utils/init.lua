@@ -294,25 +294,44 @@ function M.root_pattern(patterns)
   return find_root
 end
 
-local max_size = math.pow(1024, 2) / 2 -- 500KB
-local min_file_lines = 10
+---@param bufnr number
+---@return integer|nil size in bytes if buffer is valid, nil otherwise
+local get_buf_size = function(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  local ok, stat = pcall(function()
+    return vim.loop.fs_stat(vim.api.nvim_buf_get_name(bufnr))
+  end)
+
+  if not (ok and stat) then
+    return
+  end
+
+  return stat.size
+end
+
+---@param bufnr number
+---@return integer|nil line_count number of lines in the buffer if valid, nil otherwise
+local function get_buf_line_count(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  local ok, line_count = pcall(function()
+    return vim.api.nvim_buf_line_count(bufnr)
+  end)
+  if not (ok and line_count) then
+    return
+  end
+  return line_count
+end
+
+local max_bytes_per_line = 5000
+
 ---Determine if file looks to be minifed. Criteria is a large file with few lines
----@param filepath string
+---@param bufnr number
 ---@return boolean
-function M.check_file_minified(filepath)
-  local ok, stat = pcall(vim.loop.fs_stat, filepath)
+function M.check_file_minified(bufnr)
+  local filesize = get_buf_size(bufnr) or 0
+  local line_count = get_buf_line_count(bufnr) or 0
 
-  if not ok or not stat then
-    return false
-  end
-
-  if stat.size > max_size then
-    local path = require('plenary.path'):new(filepath)
-    local head_lines = vim.split(path:head(min_file_lines), '[\r]?\n')
-    local fewer_than_min_lines = #head_lines ~= min_file_lines
-    return fewer_than_min_lines
-  end
-  return false
+  return filesize / line_count > max_bytes_per_line
 end
 
 ---Test visible buffers with passed function
