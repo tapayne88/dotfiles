@@ -308,9 +308,9 @@ function M.check_file_minified(filepath)
 
   if stat.size > max_size then
     local path = require('plenary.path'):new(filepath)
-    local lines = vim.split(path:head(min_file_lines), '[\r]?\n')
-    local is_file_minified = lines ~= min_file_lines
-    return is_file_minified
+    local head_lines = vim.split(path:head(min_file_lines), '[\r]?\n')
+    local fewer_than_min_lines = #head_lines ~= min_file_lines
+    return fewer_than_min_lines
   end
   return false
 end
