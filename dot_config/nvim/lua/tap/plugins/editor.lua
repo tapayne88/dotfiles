@@ -696,7 +696,23 @@ return {
   },
 
   {
-    'LunarVim/bigfile.nvim',
+    'tapayne88/bigfile.nvim',
+    branch = 'byte-filesize',
     event = 'BufReadPre',
+    opts = {
+      pattern = function(bufnr, filesize)
+        local file_contents = vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
+        local file_length = #file_contents
+        local filetype = vim.filetype.match { buf = bufnr }
+        if filesize / file_length > 5000 and filetype == 'javascript' then
+          vim.notify(
+            'Suspected minified file, disabling features',
+            vim.log.levels.INFO,
+            { title = 'bigfile.nvim' }
+          )
+          return true
+        end
+      end,
+    },
   },
 }
