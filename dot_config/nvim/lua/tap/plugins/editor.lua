@@ -701,7 +701,14 @@ return {
     event = 'BufReadPre',
     opts = {
       pattern = function(bufnr, filesize)
-        local file_contents = vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
+        local ok, file_contents = pcall(function()
+          return vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
+        end)
+
+        if not ok then
+          return
+        end
+
         local file_length = #file_contents
         local filetype = vim.filetype.match { buf = bufnr }
         if filesize / file_length > 5000 and filetype == 'javascript' then
