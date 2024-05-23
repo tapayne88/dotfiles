@@ -700,6 +700,8 @@ return {
     branch = 'byte-filesize',
     event = 'BufReadPre',
     opts = {
+      filesize = 100 * 1024, -- 100KiB
+      filesize_unit = 'bytes',
       pattern = function(bufnr, filesize)
         local ok, file_contents = pcall(function()
           return vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
