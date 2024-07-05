@@ -30,7 +30,11 @@ augroup('TapWinResize', {
 
 -- Save and load vim views - remembers scroll position & folds
 augroup('TapMkViews', {
-  { events = { 'BufWinLeave' }, pattern = { '*.*' }, command = 'mkview' },
+  {
+    events = { 'BufWinLeave' },
+    pattern = { '*.*' },
+    command = 'silent! mkview',
+  },
   {
     events = { 'BufWinEnter' },
     pattern = { '*.*' },
