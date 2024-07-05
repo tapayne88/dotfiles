@@ -700,7 +700,7 @@ return {
     branch = 'byte-filesize',
     event = 'BufReadPre',
     opts = {
-      filesize = 100 * 1024, -- 100KiB
+      filesize = 2 * math.pow(1024, 2), -- 2MiB
       filesize_unit = 'bytes',
       pattern = function(bufnr, filesize)
         local ok, file_contents = pcall(function()
