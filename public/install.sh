@@ -80,7 +80,7 @@ NIX_HOME_BOOTSTRAP="{ config, pkgs, ... }:
   home = {
     username = \"$(whoami)\";
     homeDirectory = \"$INSTALL_LOCATION\";
-    stateVersion = \"23.11\";
+    stateVersion = \"24.05\";
   };
 
   # Basic packages to setup the rest
