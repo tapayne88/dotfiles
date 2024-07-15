@@ -70,9 +70,10 @@ function M.keymap(_modes, lhs, rhs, _opts)
   local description = opts.desc and opts.desc or 'Missing description'
   opts.desc = nil
 
-  require('which-key').register {
-    [lhs] = {
-      description,
+  require('which-key').add {
+    {
+      lhs,
+      desc = description,
       mode = modes,
       noremap = opts.noremap,
       silent = opts.silent,
