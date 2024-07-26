@@ -692,7 +692,43 @@ return {
     'm4xshen/hardtime.nvim',
     event = 'BufReadPost',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    opts = { max_count = 5, disable_mouse = false },
+    opts = function()
+      return {
+        max_count = 10,
+        disable_mouse = false,
+        disabled_filetypes = vim
+          .iter({
+            require('hardtime.config').config.disabled_filetypes,
+            'dbout',
+            'dbui',
+          })
+          :flatten()
+          :totable(),
+      }
+    end,
+    init = function()
+      vim.api.nvim_create_user_command('HardtimeToggle', function()
+        local ht = require 'hardtime'
+
+        if ht.is_plugin_enabled then
+          ht.disable()
+          require('precognition').hide()
+        else
+          ht.enable()
+          require('precognition').show()
+        end
+      end, { desc = 'Toggle hardtime and precognition' })
+    end,
+  },
+
+  {
+    'tris203/precognition.nvim',
+    event = 'VeryLazy',
+    opts = {
+      startVisible = true,
+      showBlankVirtLine = true,
+      highlightColor = { link = 'Comment' },
+    },
   },
 
   {
