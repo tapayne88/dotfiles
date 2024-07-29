@@ -1,0 +1,20 @@
+" Settings
+set hlsearch
+set incsearch 
+set number 
+set relativenumber
+set ignorecase
+set smartcase
+
+let mapleader = ","
+
+" Plugins
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+
+" Keymaps
+map <leader>gf <Action>(GotoFile)
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+map <C-J> <C-W>j
+map <C-H> <C-W>h
