@@ -100,7 +100,7 @@ return {
             'neo-tree',
             'oil_preview',
             'terminal',
-            'Trouble',
+            'trouble',
             require('tap.utils').dap_filetypes,
           })
           :flatten()

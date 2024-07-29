@@ -344,7 +344,7 @@ return {
                 'outputpanel',
                 'packer',
                 'qf',
-                'Trouble',
+                'trouble',
                 require('tap.utils').dap_filetypes,
               })
               :flatten()
