@@ -4,8 +4,29 @@ return {
     'neovim/nvim-lspconfig', -- LSP server config
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua', -- only load on lua files
+        opts = {
+          library = {
+            vim.g.chezmoi_source_dir .. '/dot_config/nvim/lua',
+            -- Load luvit types when the `vim.uv` word is found
+            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
+      { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
+      { -- optional completion source for require statements and module annotations
+        'hrsh7th/nvim-cmp',
+        opts = function(_, opts)
+          opts.sources = opts.sources or {}
+          table.insert(opts.sources, {
+            name = 'lazydev',
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          })
+        end,
+      },
       'b0o/schemastore.nvim', -- jsonls schemas
-      'folke/neodev.nvim', -- lua-dev setup
       'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
