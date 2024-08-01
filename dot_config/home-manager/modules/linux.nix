@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     gcc # neovim - building nvim-treesitter parsers
     gnumake # neovim treesitter
+    ncdu # disk usage tool
     nq # linux queue utility
     unzip # wsl doesn't include unzip
 

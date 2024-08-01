@@ -29,7 +29,6 @@
     jq # json cli processor
     kubie # even nicer interaction with k8s cli with multiple configs
     mosh # better ssh
-    ncdu # disk usage tool
     netcat # netcat implementaion
     nodejs # nodejs...
     poppler_utils # pdf utils - pdfunite to combine pdfs
