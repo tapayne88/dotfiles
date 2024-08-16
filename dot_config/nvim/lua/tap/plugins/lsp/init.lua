@@ -32,6 +32,7 @@ return {
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
+      'saecki/live-rename.nvim',
     },
     config = function()
       if require('tap.utils.lsp').lsp_debug_enabled() then

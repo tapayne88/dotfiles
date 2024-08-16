@@ -53,11 +53,7 @@ local function on_attach(_, bufnr)
     '<cmd>lua vim.lsp.buf.code_action()<CR>',
     with_opts 'Show code actions'
   )
-  nnoremap(
-    '<leader>rn',
-    '<cmd>lua vim.lsp.buf.rename()<CR>',
-    with_opts 'Rename'
-  )
+  nnoremap('<leader>rn', require('live-rename').rename, with_opts 'Rename')
 
   -- other mappings, not sure about these
   nnoremap(
