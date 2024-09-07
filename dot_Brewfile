@@ -1,6 +1,4 @@
 # vim set:ft=brewfile
-tap "homebrew/cask-fonts"
-
 brew "dark-mode"
 brew "mas"
 brew "node"
@@ -14,7 +12,6 @@ cask "hot"
 cask "keepingyouawake"
 cask "keycastr"
 cask "kitty"
-cask "moom"
 cask "raycast"
 cask "rectangle"
 
