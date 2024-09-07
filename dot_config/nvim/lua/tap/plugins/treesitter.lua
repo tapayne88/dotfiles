@@ -42,6 +42,7 @@ return {
           'rust',
           'scala',
           'scss',
+          'sql',
           'terraform',
           'tsx',
           'typescript',

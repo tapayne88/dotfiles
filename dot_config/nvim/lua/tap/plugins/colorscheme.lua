@@ -10,15 +10,14 @@ return {
     require('catppuccin').setup {
       integrations = {
         cmp = true,
-        dap = {
-          enabled = true,
-          enable_ui = true,
-        },
+        dap = true,
+        dap_ui = true,
         gitsigns = true,
         illuminate = true,
         lsp_trouble = true,
         mason = true,
         neotree = true,
+        neotest = true,
         native_lsp = {
           enabled = true,
           virtual_text = {
