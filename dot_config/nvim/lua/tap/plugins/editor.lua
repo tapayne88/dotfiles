@@ -800,4 +800,43 @@ return {
       require('mini.ai').setup()
     end,
   },
+
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    init = function()
+      vim.keymap.set('n', '<leader>a', function()
+        require('harpoon'):list():add()
+      end)
+      vim.keymap.set('n', '<M-l>', function()
+        local harpoon = require 'harpoon'
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+
+      vim.keymap.set('n', '<M-h>', function()
+        require('harpoon'):list():select(1)
+      end)
+      vim.keymap.set('n', '<M-y>', function()
+        require('harpoon'):list():select(2)
+      end)
+      vim.keymap.set('n', '<M-n>', function()
+        require('harpoon'):list():select(3)
+      end)
+      vim.keymap.set('n', '<M-m>', function()
+        require('harpoon'):list():select(4)
+      end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set('n', '<C-S-P>', function()
+        require('harpoon'):list():prev()
+      end)
+      vim.keymap.set('n', '<C-S-N>', function()
+        require('harpoon'):list():next()
+      end)
+    end,
+    setup = function()
+      require('harpoon'):setup()
+    end,
+  },
 }

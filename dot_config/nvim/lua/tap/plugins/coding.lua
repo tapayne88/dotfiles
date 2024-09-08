@@ -151,6 +151,7 @@ return {
 
   {
     'David-Kunz/jester',
+    enabled = false,
     lazy = true,
     dependencies = {
       'mfussenegger/nvim-dap',
@@ -508,6 +509,34 @@ return {
           end
         )
       end)
+    end,
+  },
+
+  {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-neotest/neotest-jest',
+      'marilari88/neotest-vitest',
+    },
+    config = function()
+      require('neotest').setup {
+        adapters = {
+          require 'neotest-jest' {
+            env = { CI = true },
+            cwd = require('tap.utils').root_pattern 'package.json',
+          },
+          require 'neotest-vitest' {
+            cwd = require('tap.utils').root_pattern 'package.json',
+          },
+        },
+        discovery = {
+          enabled = false,
+        },
+      }
     end,
   },
 }
