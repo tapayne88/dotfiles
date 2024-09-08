@@ -26,7 +26,7 @@ function prepend_path {
 }
 
 # executable search path (last to first order)
-prepend_path "/usr/local/bin" "/usr/local/sbin"
+prepend_path "/opt/homebrew/bin" "/usr/local/bin" "/usr/local/sbin"
 
 # Setup DEFAULT_USER for the theme
 USER=`whoami`
