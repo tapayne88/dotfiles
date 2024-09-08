@@ -6,5 +6,5 @@ return {
   require 'tap.plugins.lsp.servers.jsonnet',
   require 'tap.plugins.lsp.servers.lua_ls',
   require 'tap.plugins.lsp.servers.terraformls',
-  require 'tap.plugins.lsp.servers.tsserver',
+  require 'tap.plugins.lsp.servers.ts_ls',
 }
