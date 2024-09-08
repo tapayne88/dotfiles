@@ -14,6 +14,7 @@ cask "keycastr"
 cask "kitty"
 cask "raycast"
 cask "rectangle"
+cask "xbar"
 
 # mas seems a little flakey and can sometime not realise it's installed an app
 # This means every time the bundle is installed it'll try install the app,
