@@ -86,6 +86,7 @@ return {
           'hadolint',
           'markdownlint',
           'prettierd',
+          'sqlfluff',
           'stylua',
         }
 
@@ -107,6 +108,10 @@ return {
                   vim.fn.stdpath 'config' .. '/markdownlint.json',
                 },
               },
+              null_ls.builtins.diagnostics.sqlfluff.with {
+                extra_args = { '--dialect', 'mysql' },
+                filetypes = { 'mysql', 'sql' },
+              },
 
               ----------------
               -- Formatting --
@@ -120,6 +125,10 @@ return {
                 --   return vim.fn.expand '$HOME'
                 -- end,
               },
+              null_ls.builtins.formatting.sqlfluff.with {
+                extra_args = { '--dialect', 'mysql' },
+                filetypes = { 'mysql', 'sql' },
+              },
               null_ls.builtins.formatting.stylua.with {
                 command = path.bin_prefix 'stylua',
               },
@@ -131,7 +140,7 @@ return {
             },
           })
         end)
-      end)
+      end, require('tap.utils').noop)
     end,
   },
 

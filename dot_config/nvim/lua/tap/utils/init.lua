@@ -360,4 +360,7 @@ M.dap_filetypes = {
   'dapui_watches',
 }
 
+-- Noop function for when it's required
+M.noop = function() end
+
 return M
