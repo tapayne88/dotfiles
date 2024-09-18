@@ -59,7 +59,7 @@ local M = { get_tsc_version = get_tsc_version }
 -- seems to be working better.
 --
 --------------------------------------------------------------------------------
-M.ensure_installed = { 'tsserver' }
+M.ensure_installed = { 'ts_ls' }
 
 local handleLogFile = function(message)
   local file_location = message:match 'Log file: (.*)'
