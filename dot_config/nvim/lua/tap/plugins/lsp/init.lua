@@ -181,7 +181,7 @@ return {
       require('lsp-format').setup {
         exclude = {
           'lua_ls', -- use stylua with null-ls for lua
-          'tsserver',
+          'ts_ls',
         },
       }
 
