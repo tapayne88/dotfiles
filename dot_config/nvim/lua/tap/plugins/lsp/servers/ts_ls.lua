@@ -77,7 +77,7 @@ function M.setup()
   require('lspconfig').ts_ls.setup(lsp_utils.merge_with_default_config {
     init_options = vim.tbl_deep_extend(
       'force',
-      require('lspconfig.server_configurations.ts_ls').default_config.init_options,
+      require('lspconfig.configs.ts_ls').default_config.init_options,
       {
         preferences = {
           includeInlayParameterNameHints = 'all',
