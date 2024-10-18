@@ -35,6 +35,8 @@ return {
           'kotlin',
           'lua',
           'make',
+          'markdown',
+          'markdown_inline',
           'nix',
           'php',
           'phpdoc',

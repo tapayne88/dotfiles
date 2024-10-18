@@ -87,8 +87,6 @@ return {
     },
   },
 
-  -- Syntax not supported by treesitter
-  { 'plasticboy/vim-markdown', ft = 'markdown' },
   -- Markdown previewing commands
   {
     'iamcco/markdown-preview.nvim',
