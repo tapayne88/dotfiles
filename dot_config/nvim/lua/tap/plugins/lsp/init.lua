@@ -180,6 +180,7 @@ return {
     config = function()
       require('lsp-format').setup {
         exclude = {
+          'cucumber_language_server',
           'lua_ls', -- use stylua with null-ls for lua
           'ts_ls',
         },
