@@ -67,19 +67,21 @@ return {
     { 'tpope/vim-abolish', dependencies = { 'smjonas/live-command.nvim' } },
     {
       'smjonas/live-command.nvim',
-      opts = {
-        enable_highlighting = true,
-        inline_highlighting = true,
-        hl_groups = {
-          insertion = 'Search',
-          deletion = 'Search',
-          change = 'Search',
-        },
-        commands = {
-          S = { cmd = 'Subvert' }, -- must be defined before we import vim-abolish
-          Norm = { cmd = 'norm' },
-        },
-      },
+      config = function()
+        require('live-command').setup {
+          enable_highlighting = true,
+          inline_highlighting = true,
+          hl_groups = {
+            insertion = 'Search',
+            deletion = 'Search',
+            change = 'Search',
+          },
+          commands = {
+            S = { cmd = 'Subvert' }, -- must be defined before we import vim-abolish
+            Norm = { cmd = 'norm' },
+          },
+        }
+      end,
     },
   },
 
