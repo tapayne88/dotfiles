@@ -73,6 +73,8 @@ return {
         },
 
         formatting = {
+          expandable_indicator = true,
+          fields = { 'abbr', 'kind', 'menu' },
           format = require('lspkind').cmp_format {
             mode = 'symbol_text',
             symbol_map = {
@@ -199,7 +201,7 @@ return {
         for script_name, script_paths in pairs(script_name_map) do
           if token == script_name then
             for _, script in ipairs(script_paths) do
-              if vim.loop.fs_stat(cwd .. '/' .. script.executable) ~= nil then
+              if vim.uv.fs_stat(cwd .. '/' .. script.executable) ~= nil then
                 return script
               end
             end
@@ -353,18 +355,21 @@ return {
               return
             end
 
-            local runtime_args = vim.tbl_flatten {
-              '--inspect-brk',
-              script_tokens.script,
-              script_tokens.command,
-              script_tokens.flags,
-              '--runInBand',
-              '--no-coverage',
-              '--no-cache',
-              '--watchAll=false',
-              additional_runtime_args,
-              script_tokens.args,
-            }
+            local runtime_args = vim
+              .iter({
+                '--inspect-brk',
+                script_tokens.script,
+                script_tokens.command,
+                script_tokens.flags,
+                '--runInBand',
+                '--no-coverage',
+                '--no-cache',
+                '--watchAll=false',
+                additional_runtime_args,
+                script_tokens.args,
+              })
+              :flatten()
+              :totable()
 
             require('tap.utils').logger.info(
               '[jester] Running jester.' .. jester_fn,
@@ -395,7 +400,7 @@ return {
                 },
               }
             end)
-          end)
+          end, require('tap.utils').noop)
         end
       end
 
@@ -507,7 +512,7 @@ return {
             vim.lsp.handlers['$/progress'](nil, msg, ctx)
           end
         )
-      end)
+      end, require('tap.utils').noop)
     end,
   },
 }
