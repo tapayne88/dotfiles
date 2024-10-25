@@ -213,6 +213,7 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
     },
+    ft = { 'markdown', 'norg', 'rmd', 'org' },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
