@@ -13,7 +13,6 @@ return {
     local virtual_lines_curr = 1
     local virtual_lines = {
       { only_current_line = true },
-      true,
       false,
     }
     local virtual_improved_curr = 1
@@ -21,7 +20,6 @@ return {
       {
         current_line = 'hide',
       },
-      true,
       false,
     }
 
@@ -67,23 +65,26 @@ return {
       '<cmd>lua vim.diagnostic.setloclist()<CR>',
       { desc = 'Open buffer diagnostics in local list' }
     )
-    nnoremap('<leader>dl', function()
-      virtual_lines_curr = virtual_lines_curr < #virtual_lines
-          and virtual_lines_curr + 1
-        or 1
-      vim.diagnostic.config {
-        virtual_lines = virtual_lines[virtual_lines_curr],
-      }
-    end, { desc = 'Toggle diagnostic lines' })
-
     nnoremap('<leader>dt', function()
       virtual_improved_curr = virtual_improved_curr < #virtual_improved
           and virtual_improved_curr + 1
         or 1
+      local new_virtual_improved = virtual_improved[virtual_improved_curr]
+
+      virtual_lines_curr = virtual_lines_curr < #virtual_lines
+          and virtual_lines_curr + 1
+        or 1
+      local new_virtual_lines = virtual_lines[virtual_lines_curr]
+
       vim.diagnostic.config {
-        virtual_improved = virtual_improved[virtual_improved_curr],
+        virtual_improved = new_virtual_improved,
+        virtual_lines = new_virtual_lines,
       }
-    end, { desc = 'Toggle diagnostic text' })
+
+      local msg = new_virtual_lines == false and 'Hide diagnostic output'
+        or 'Show diagnostic output'
+      vim.notify(msg, vim.log.levels.INFO, { title = 'Diagnostic' })
+    end, { desc = 'Toggle diagnostic display' })
 
     -- float = false, CursorHold will show diagnostic
     nnoremap('[d', function()
