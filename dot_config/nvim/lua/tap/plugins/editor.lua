@@ -1,18 +1,4 @@
 return {
-  -- Searchable keymaps
-  {
-    'mrjones2014/legendary.nvim',
-    config = function()
-      require('legendary').setup {}
-
-      require('tap.utils').nnoremap('<leader>k', function()
-        require('legendary').find {}
-      end, {
-        desc = 'Legendary keymaps',
-      })
-    end,
-  },
-
   -- Discover keymaps
   {
     'folke/which-key.nvim',

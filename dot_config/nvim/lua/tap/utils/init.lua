@@ -67,28 +67,7 @@ function M.keymap(_modes, lhs, rhs, _opts)
   local modes = type(_modes) == 'string' and { _modes } or _modes
   local opts = _opts ~= nil and _opts or {}
 
-  local description = opts.desc and opts.desc or 'Missing description'
-  opts.desc = nil
-
-  require('which-key').add {
-    {
-      lhs,
-      desc = description,
-      mode = modes,
-      noremap = opts.noremap,
-      silent = opts.silent,
-      buffer = opts.buffer,
-      nowait = opts.nowait,
-    },
-  }
-
-  require('legendary').keymap {
-    lhs,
-    rhs,
-    description = description,
-    mode = modes,
-    opts = opts,
-  }
+  vim.keymap.set(modes, lhs, rhs, opts)
 end
 
 ---create a mapping function factory
