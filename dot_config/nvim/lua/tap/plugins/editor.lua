@@ -11,8 +11,6 @@ return {
     event = 'BufReadPre',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
-      local keymap = require('tap.utils').keymap
-
       require('gitsigns').setup {
         trouble = true,
         preview_config = {
@@ -27,7 +25,7 @@ return {
           local gs = package.loaded.gitsigns
 
           -- Navigation
-          keymap('n', ']h', function()
+          vim.keymap.set('n', ']h', function()
             if vim.wo.diff then
               return ']h'
             end
@@ -37,7 +35,7 @@ return {
             return '<Ignore>'
           end, { expr = true, desc = '[Git] Next hunk' })
 
-          keymap('n', '[h', function()
+          vim.keymap.set('n', '[h', function()
             if vim.wo.diff then
               return '[h'
             end
@@ -48,47 +46,21 @@ return {
           end, { expr = true, desc = '[Git] Previous hunk' })
 
           -- Actions
-          keymap(
-            { 'n', 'v' },
-            '<leader>hs',
-            ':Gitsigns stage_hunk<CR>',
-            { desc = '[Git] Stage hunk' }
-          )
-          keymap(
-            { 'n', 'v' },
-            '<leader>hr',
-            ':Gitsigns reset_hunk<CR>',
-            { desc = '[Git] Reset hunk' }
-          )
-          keymap(
-            'n',
-            '<leader>hS',
-            gs.stage_buffer,
-            { desc = '[Git] Stage buffer' }
-          )
-          keymap(
-            'n',
-            '<leader>hu',
-            gs.undo_stage_hunk,
-            { desc = '[Git] Undo staged hunk' }
-          )
-          keymap(
-            'n',
-            '<leader>hR',
-            gs.reset_buffer,
-            { desc = '[Git] Reset buffer' }
-          )
-          keymap(
-            'n',
-            '<leader>tb',
-            gs.toggle_current_line_blame,
-            { desc = '[Git] Blame current line virtual text' }
-          )
-          keymap('n', '<leader>hd', gs.diffthis, { desc = '[Git] Diff this' })
-          keymap('n', '<leader>hD', function()
+          -- stylua: ignore start
+          vim.keymap.set({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>', { desc = '[Git] Stage hunk' })
+          vim.keymap.set({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = '[Git] Reset hunk' })
+
+          vim.keymap.set('n', '<leader>hS', gs.stage_buffer,              { desc = '[Git] Stage buffer' })
+          vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk,           { desc = '[Git] Undo staged hunk' })
+          vim.keymap.set('n', '<leader>hR', gs.reset_buffer,              { desc = '[Git] Reset buffer' })
+          vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, { desc = '[Git] Blame current line virtual text' })
+          vim.keymap.set('n', '<leader>hd', gs.diffthis,                  { desc = '[Git] Diff this' })
+          -- stylua: ignore end
+
+          vim.keymap.set('n', '<leader>hD', function()
             gs.diffthis '~'
           end, { desc = '[Git] Diff this' })
-          keymap(
+          vim.keymap.set(
             'n',
             '<leader>td',
             gs.toggle_deleted,
@@ -96,7 +68,7 @@ return {
           )
 
           -- Text object
-          keymap({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+          vim.keymap.set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
         end,
       }
     end,
@@ -123,25 +95,20 @@ return {
       'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
     },
     init = function()
-      local nnoremap = require('tap.utils').nnoremap
-      local xnoremap = require('tap.utils').xnoremap
-
-      nnoremap('<leader>ga', ':Git add %:p<CR><CR>', { desc = 'Git add file' })
-      nnoremap('<leader>gs', ':Git<CR>', { desc = 'Git status' })
-      nnoremap('<leader>gc', ':Git commit -v -q<CR>', { desc = 'Git commit' })
-      nnoremap('<leader>gt', ':Git commit -v -q %:p<CR>')
-      nnoremap('<leader>gd', ':Gvdiffsplit<CR>', { desc = 'Git diff' })
-      nnoremap('<leader>ge', ':Gedit<CR>')
-      nnoremap('<leader>gr', ':Gread<CR>', { desc = 'Git read' })
-      nnoremap('<leader>gw', ':Gwrite<CR>', { desc = 'Git write' })
-      nnoremap('<leader>gl', ':Gclog<CR>', { desc = 'Git log' })
-      nnoremap('<leader>go', ':Git checkout<Space>', { desc = 'Git checkout' })
-      nnoremap('<leader>gp', ':GBrowse!<CR>', { desc = 'Git browse file' })
-      xnoremap(
-        '<leader>gp',
-        ":'<,'>GBrowse!<CR>",
-        { desc = 'Git browse visual selection' }
-      )
+      -- stylua: ignore start
+      vim.keymap.set('n', '<leader>ga', ':Git add %:p<CR><CR>',       { desc = 'Git add file' })
+      vim.keymap.set('n', '<leader>gs', ':Git<CR>',                   { desc = 'Git status' })
+      vim.keymap.set('n', '<leader>gc', ':Git commit -v -q<CR>',      { desc = 'Git commit' })
+      vim.keymap.set('n', '<leader>gt', ':Git commit -v -q %:p<CR>')
+      vim.keymap.set('n', '<leader>gd', ':Gvdiffsplit<CR>',           { desc = 'Git diff' })
+      vim.keymap.set('n', '<leader>ge', ':Gedit<CR>')
+      vim.keymap.set('n', '<leader>gr', ':Gread<CR>',                 { desc = 'Git read' })
+      vim.keymap.set('n', '<leader>gw', ':Gwrite<CR>',                { desc = 'Git write' })
+      vim.keymap.set('n', '<leader>gl', ':Gclog<CR>',                 { desc = 'Git log' })
+      vim.keymap.set('n', '<leader>go', ':Git checkout<Space>',       { desc = 'Git checkout' })
+      vim.keymap.set('n', '<leader>gp', ':GBrowse!<CR>',              { desc = 'Git browse file' })
+      vim.keymap.set('x', '<leader>gp', ":'<,'>GBrowse!<CR>",         { desc = 'Git browse visual selection' })
+      -- stylua: ignore end
     end,
     config = function()
       vim.g.fugitive_dynamic_colors = 0
@@ -171,8 +138,8 @@ return {
     end,
     config = function()
       -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-      require('tap.utils').keymap('n', 'zR', require('ufo').openAllFolds)
-      require('tap.utils').keymap('n', 'zM', require('ufo').closeAllFolds)
+      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 
       require('ufo').setup {
         provider_selector = function()
@@ -218,7 +185,7 @@ return {
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
-      require('tap.utils').keymap(
+      vim.keymap.set(
         'n',
         '-',
         require('oil').open,
@@ -232,17 +199,14 @@ return {
     'RRethy/vim-illuminate',
     event = 'BufReadPost',
     opts = { delay = 200 },
+    init = function()
+      -- stylua: ignore start
+      vim.keymap.set('n', ']]', function() require('illuminate').goto_next_reference(false) end, { desc = 'Next Reference' })
+      vim.keymap.set('n', '[[', function() require('illuminate').goto_prev_reference(false) end, { desc = 'Prev Reference' })
+      -- stylua: ignore end
+    end,
     config = function(_, opts)
       require('illuminate').configure(opts)
-
-      local nnoremap = require('tap.utils').nnoremap
-
-      nnoremap(']]', function()
-        require('illuminate').goto_next_reference(false)
-      end, { desc = 'Next Reference' })
-      nnoremap('[[', function()
-        require('illuminate').goto_prev_reference(false)
-      end, { desc = 'Prev Reference' })
     end,
     keys = {
       ']]',
@@ -256,8 +220,6 @@ return {
     cmd = 'ToggleTerm',
     keys = { '<leader>tt' },
     config = function()
-      local tmap = require('tap.utils').tmap
-
       require('toggleterm').setup {
         open_mapping = [[<leader>tt]],
         insert_mappings = false,
@@ -265,10 +227,10 @@ return {
       }
 
       -- Utilise tmux.nvim's bindings for changing windows
-      tmap('<C-h>', [[<C-\><C-n><C-h>]])
-      tmap('<C-j>', [[<C-\><C-n><C-j>]])
-      tmap('<C-k>', [[<C-\><C-n><C-k>]])
-      tmap('<C-l>', [[<C-\><C-n><C-l>]])
+      vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-h>]])
+      vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-j>]])
+      vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-k>]])
+      vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-l>]])
     end,
   },
 
@@ -278,38 +240,14 @@ return {
     dependencies = 'nvim-tree/nvim-web-devicons',
     cmd = { 'TroubleToggle', 'Trouble' },
     init = function()
-      local nnoremap = require('tap.utils').nnoremap
-
-      nnoremap(
-        '<leader>xx',
-        '<cmd>TroubleToggle<cr>',
-        { desc = '[Trouble] Toggle list' }
-      )
-      nnoremap(
-        '<leader>xw',
-        '<cmd>Trouble workspace_diagnostics<cr>',
-        { desc = '[Trouble] LSP workspace diagnostics' }
-      )
-      nnoremap(
-        '<leader>xd',
-        '<cmd>Trouble document_diagnostics<cr>',
-        { desc = '[Trouble] LSP document diagnostics' }
-      )
-      nnoremap(
-        '<leader>xq',
-        '<cmd>Trouble quickfix<cr>',
-        { desc = '[Trouble] Quickfix list' }
-      )
-      nnoremap(
-        '<leader>xl',
-        '<cmd>Trouble loclist<cr>',
-        { desc = '[Trouble] Location list' }
-      )
-      nnoremap(
-        'gR',
-        '<cmd>Trouble lsp_references<cr>',
-        { desc = '[Trouble] LSP references' }
-      )
+      -- stylua: ignore start
+      vim.keymap.set('n', '<leader>xx', '<cmd>TroubleToggle<cr>',                 { desc = '[Trouble] Toggle list' })
+      vim.keymap.set('n', '<leader>xw', '<cmd>Trouble workspace_diagnostics<cr>', { desc = '[Trouble] LSP workspace diagnostics' })
+      vim.keymap.set('n', '<leader>xd', '<cmd>Trouble document_diagnostics<cr>',  { desc = '[Trouble] LSP document diagnostics' })
+      vim.keymap.set('n', '<leader>xq', '<cmd>Trouble quickfix<cr>',              { desc = '[Trouble] Quickfix list' })
+      vim.keymap.set('n', '<leader>xl', '<cmd>Trouble loclist<cr>',               { desc = '[Trouble] Location list' })
+      vim.keymap.set('n', 'gR', '<cmd>Trouble lsp_references<cr>',                { desc = '[Trouble] LSP references' })
+      -- stylua: ignore end
     end,
     opts = {
       use_diagnostic_signs = true,
@@ -341,28 +279,14 @@ return {
     event = 'BufReadPost',
     config = true,
     init = function()
-      local keymap = require('tap.utils').keymap
+      -- stylua: ignore start
+      vim.keymap.set('n', ']t', require('todo-comments').jump_next, { desc = 'Next todo comment' })
+      vim.keymap.set('n', '[t', require('todo-comments').jump_prev, { desc = 'Previous todo comment' })
 
-      keymap('n', ']t', function()
-        require('todo-comments').jump_next()
-      end, { desc = 'Next todo comment' })
-      keymap('n', '[t', function()
-        require('todo-comments').jump_prev()
-      end, { desc = 'Previous todo comment' })
-
-      keymap(
-        'n',
-        '<leader>xt',
-        '<cmd>TodoTrouble<cr>',
-        { desc = 'Todo (Trouble)' }
-      )
-      keymap(
-        'n',
-        '<leader>xT',
-        '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>',
-        { desc = 'Todo/Fix/Fixme (Trouble)' }
-      )
-      keymap('n', '<leader>st', '<cmd>TodoTelescope<cr>', { desc = 'Todo' })
+      vim.keymap.set('n', '<leader>xt', '<cmd>TodoTrouble<cr>',                         { desc = 'Todo (Trouble)' })
+      vim.keymap.set('n', '<leader>xT', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', { desc = 'Todo/Fix/Fixme (Trouble)' })
+      vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>',                       { desc = 'Todo' })
+      -- stylua: ignore start
     end,
   },
 
@@ -422,7 +346,7 @@ return {
   {
     'mbbill/undotree',
     config = function()
-      require('tap.utils').keymap(
+      vim.keymap.set(
         'n',
         '<leader>u',
         vim.cmd.UndotreeToggle,
@@ -463,12 +387,10 @@ return {
     'lewis6991/hover.nvim',
     lazy = true,
     init = function()
-      require('tap.utils').keymap('n', 'K', function()
-        return require('hover').hover()
-      end, { desc = 'hover.nvim' })
-      require('tap.utils').keymap('n', 'gK', function()
-        return require('hover').hover_select()
-      end, { desc = 'hover.nvim (select)' })
+      --stylua: ignore start
+      vim.keymap.set('n', 'K', require('hover').hover,          { desc = 'hover.nvim' })
+      vim.keymap.set('n', 'gK', require('hover').hover_select,  { desc = 'hover.nvim (select)' })
+      --stylua: ignore end
     end,
     config = function()
       require('hover').setup {
@@ -560,12 +482,10 @@ return {
     -- TODO: Remove pinning when Blame line bug fixed
     commit = 'b94967a0fff2b14a637cdf618ec7335739dc8f89',
     init = function()
-      require('tap.utils').keymap('n', '<leader>hp', function()
-        return require('vgit').buffer_hunk_preview()
-      end, { desc = '[Git] Preview hunk' })
-      require('tap.utils').keymap('n', '<leader>hb', function()
-        return require('vgit').buffer_blame_preview()
-      end, { desc = '[Git] Blame line' })
+      -- stylua: ignore start
+      vim.keymap.set('n', '<leader>hp', require('vgit').buffer_hunk_preview,  { desc = '[Git] Preview hunk' })
+      vim.keymap.set('n', '<leader>hb', require('vgit').buffer_blame_preview, { desc = '[Git] Blame line' })
+      -- stylua: ignore end
     end,
     opts = {
       settings = {

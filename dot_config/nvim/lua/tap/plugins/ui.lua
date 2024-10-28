@@ -3,8 +3,6 @@ return {
   {
     'rcarriga/nvim-notify',
     config = function()
-      local nnoremap = require('tap.utils').nnoremap
-
       local debug_enabled = require('tap.utils').debug_enabled()
         or require('tap.utils.lsp').lsp_debug_enabled()
 
@@ -21,7 +19,8 @@ return {
         level = debug_enabled and vim.log.levels.DEBUG or vim.log.levels.INFO,
       }
 
-      nnoremap(
+      vim.keymap.set(
+        'n',
         '<leader>nc',
         ":lua require('notify').dismiss()<CR>",
         { desc = 'Clear notifications' }
@@ -44,41 +43,39 @@ return {
         return vim.ui.input(...)
       end
     end,
-    config = function()
-      require('dressing').setup {
-        input = {
-          -- Default prompt string
-          default_prompt = '❯ ',
-          -- When true, <Esc> will close the modal
-          insert_only = true,
-          -- These are passed to nvim_open_win
-          relative = 'cursor',
-          border = 'rounded',
-          -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
-          prefer_width = 40,
-          max_width = nil,
-          min_width = 20,
-          win_options = {
-            -- Window transparency (0-100)
-            winblend = 0,
-            -- Change default highlight groups (see :help winhl)
-            winhighlight = '',
-          },
-          -- see :help dressing_get_config
-          get_config = nil,
+    opts = {
+      input = {
+        -- Default prompt string
+        default_prompt = '❯ ',
+        -- When true, <Esc> will close the modal
+        insert_only = true,
+        -- These are passed to nvim_open_win
+        relative = 'cursor',
+        border = 'rounded',
+        -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+        prefer_width = 40,
+        max_width = nil,
+        min_width = 20,
+        win_options = {
+          -- Window transparency (0-100)
+          winblend = 0,
+          -- Change default highlight groups (see :help winhl)
+          winhighlight = '',
         },
-        select = {
-          -- Priority list of preferred vim.select implementations
-          backend = { 'telescope' },
-          -- Options for telescope selector
-          telescope = require('telescope.themes').get_dropdown(),
-          -- Used to override format_item. See :help dressing-format
-          format_item_override = {},
-          -- see :help dressing_get_config
-          get_config = nil,
-        },
-      }
-    end,
+        -- see :help dressing_get_config
+        get_config = nil,
+      },
+      select = {
+        -- Priority list of preferred vim.select implementations
+        backend = { 'telescope' },
+        -- Options for telescope selector
+        telescope = require('telescope.themes').get_dropdown(),
+        -- Used to override format_item. See :help dressing-format
+        format_item_override = {},
+        -- see :help dressing_get_config
+        get_config = nil,
+      },
+    },
   },
 
   -- active indent guide and indent text objects
@@ -89,7 +86,7 @@ return {
       symbol = '│',
       options = { try_as_border = true },
     },
-    config = function(_, opts)
+    init = function()
       vim.api.nvim_create_autocmd('FileType', {
         pattern = vim
           .iter({
@@ -109,7 +106,6 @@ return {
           vim.b.miniindentscope_disable = true
         end,
       })
-      require('mini.indentscope').setup(opts)
     end,
   },
 
@@ -176,8 +172,6 @@ return {
       return dashboard
     end,
     config = function(_, dashboard)
-      -- vim.b.miniindentscope_disable = true
-
       -- close Lazy and re-open when the dashboard is ready
       if vim.o.filetype == 'lazy' then
         vim.cmd.close()
@@ -197,6 +191,8 @@ return {
           local stats = require('lazy').stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
           dashboard.section.footer.val = '⚡ Neovim loaded '
+            .. stats.loaded
+            .. '/'
             .. stats.count
             .. ' plugins in '
             .. ms
