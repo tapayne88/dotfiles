@@ -16,17 +16,16 @@ return {
   },
   cmd = 'Telescope',
   init = function()
-    local nnoremap = require('tap.utils').nnoremap
-    local vnoremap = require('tap.utils').vnoremap
     local root_pattern = require('tap.utils').root_pattern
 
     --------------
     -- Internal --
     --------------
-    nnoremap('<leader>ts', function()
+    vim.keymap.set('n', '<leader>ts', function()
       require('telescope.builtin').builtin { include_extensions = true }
     end, { desc = 'Give me Telescope!' })
-    nnoremap('<leader>l', function()
+
+    vim.keymap.set('n', '<leader>l', function()
       require('telescope.builtin').buffers {
         sorter = require('telescope').extensions['zf-native'].native_zf_scorer(),
         sort_lastused = true,
@@ -35,29 +34,22 @@ return {
         selection_strategy = 'closest',
       }
     end, { desc = 'List buffers' })
-    nnoremap('<leader>gh', function()
-      require('telescope.builtin').help_tags()
-    end, { desc = 'Help tags' })
-    nnoremap('<leader>ch', function()
-      require('telescope.builtin').command_history()
-    end, { desc = 'Command history' })
-    nnoremap('<leader>tp', function()
-      require('telescope.builtin').pickers()
-    end, { desc = 'Past telescope pickers with state' })
-    nnoremap('<leader>p', function()
-      require('telescope.builtin').commands()
-    end, { desc = 'Neovim commands' })
+
+    -- stylua: ignore start
+    vim.keymap.set('n', '<leader>gh', require('telescope.builtin').help_tags,       { desc = 'Help tags' })
+    vim.keymap.set('n', '<leader>ch', require('telescope.builtin').command_history, { desc = 'Command history' })
+    vim.keymap.set('n', '<leader>tp', require('telescope.builtin').pickers,         { desc = 'Past telescope pickers with state' })
+    vim.keymap.set('n', '<leader>p',  require('telescope.builtin').commands,        { desc = 'Neovim commands' })
+    vim.keymap.set('n', '<leader>k',  require('telescope.builtin').keymaps,         { desc = 'Search keymaps' })
+    -- stylua: ignore end
 
     ---------
     -- Git --
     ---------
-    nnoremap('<leader>gf', function()
+    vim.keymap.set('n', '<leader>gf', function()
       require('telescope.builtin').git_files { use_git_root = false }
     end, { desc = 'Git files relative to pwd' })
-    nnoremap('<leader>gF', function()
-      require('telescope.builtin').git_files()
-    end, { desc = 'All git files' })
-    nnoremap('<leader>rf', function()
+    vim.keymap.set('n', '<leader>rf', function()
       local root = require('plenary.path'):new(
         root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h')
       )
@@ -67,26 +59,28 @@ return {
         prompt_title = root:make_relative(vim.loop.cwd()),
       }
     end, { desc = 'Git files relative to current file' })
-    nnoremap('<leader>gb', function()
-      require('telescope.builtin').git_branches()
-    end, { desc = 'Git branches' })
+
+    -- stylua: ignore start
+    vim.keymap.set('n', '<leader>gF', require('telescope.builtin').git_files,     { desc = 'All git files' })
+    vim.keymap.set('n', '<leader>gb', require('telescope.builtin').git_branches,  { desc = 'Git branches' })
+    -- stylua: ignore end
 
     -----------
     -- Files --
     -----------
-    nnoremap('<leader>ff', function()
-      require('telescope.builtin').find_files { hidden = true, no_ignore = true }
+    vim.keymap.set('n', '<leader>ff', function()
+      require('telescope.builtin').find_files { hidden = true }
     end, { desc = 'Fuzzy file finder' })
-    nnoremap('<leader>fb', function()
+    vim.keymap.set('n', '<leader>fb', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand '%:p:h',
         hidden = true,
       }
     end, { desc = 'File browser at current file' })
-    nnoremap('<leader>fB', function()
+    vim.keymap.set('n', '<leader>fB', function()
       require('telescope').extensions.file_browser.file_browser { hidden = true }
     end, { desc = 'File browser at pwd' })
-    nnoremap('<leader>fh', function()
+    vim.keymap.set('n', '<leader>fh', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = '~',
         hidden = true,
@@ -117,17 +111,17 @@ return {
       layout_strategy = 'vertical',
       path_display = { 'shorten', shorten = 2 },
     }
-    nnoremap('<leader>fg', function()
+    vim.keymap.set('n', '<leader>fg', function()
       require('telescope').extensions.live_grep_args.live_grep_args(search_opts)
     end, { desc = 'Search with ripgrep' })
-    nnoremap('<leader>fw', function()
+    vim.keymap.set('n', '<leader>fw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = vim.fn.expand '<cword>',
         })
       )
     end, { desc = 'Search current word with ripgrep' })
-    vnoremap('<leader>fw', function()
+    vim.keymap.set('v', '<leader>fw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = getVisualSelection(),
@@ -136,16 +130,10 @@ return {
     end, { desc = 'Search current visual selection with ripgrep' })
 
     require('tap.utils.lsp').on_attach(function(_, bufnr)
-      require('tap.utils').nnoremap(
-        'gD',
-        '<cmd>Telescope lsp_definitions<CR>',
-        { buffer = bufnr, desc = '[LSP] Go to definition' }
-      )
-      require('tap.utils').nnoremap(
-        'gr',
-        '<cmd>Telescope lsp_references<CR>',
-        { buffer = bufnr, desc = '[LSP] Get references' }
-      )
+      -- stylua: ignore start
+      vim.keymap.set('n', 'gD', '<cmd>Telescope lsp_definitions<CR>', { buffer = bufnr, desc = '[LSP] Go to definition' })
+      vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<CR>',  { buffer = bufnr, desc = '[LSP] Get references' })
+      -- stylua: ignore end
     end)
 
     vim.api.nvim_create_user_command('Fw', function(args)
