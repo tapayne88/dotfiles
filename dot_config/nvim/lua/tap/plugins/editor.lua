@@ -8,8 +8,8 @@ return {
   -- + & - in column for changed lines
   {
     'lewis6991/gitsigns.nvim',
-    event = 'BufReadPre',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    event = 'BufReadPost',
+    dependencies = { 'nvim-lua/plenary.nvim', 'petertriho/nvim-scrollbar' },
     config = function()
       require('gitsigns').setup {
         trouble = true,
@@ -71,6 +71,7 @@ return {
           vim.keymap.set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
         end,
       }
+      require('scrollbar.handlers.gitsigns').setup()
     end,
   },
 

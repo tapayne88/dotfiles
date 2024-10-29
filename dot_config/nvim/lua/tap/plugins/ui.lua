@@ -81,7 +81,7 @@ return {
   -- active indent guide and indent text objects
   {
     'echasnovski/mini.indentscope',
-    event = 'BufReadPre',
+    event = 'BufReadPost',
     opts = {
       symbol = '│',
       options = { try_as_border = true },
@@ -111,6 +111,7 @@ return {
 
   {
     'petertriho/nvim-scrollbar',
+    event = 'BufReadPost',
     opts = {
       hide_if_all_visible = true, -- Hides everything if all lines are visible
       excluded_filetypes = {
