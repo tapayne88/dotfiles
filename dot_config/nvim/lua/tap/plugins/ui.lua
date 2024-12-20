@@ -147,27 +147,17 @@ return {
       }
 
       dashboard.section.buttons.val = {
-        dashboard.button(
-          'p',
-          ' ' .. ' Restore last session',
-          ':lua require("persistence").load()<CR>'
-        ),
-        dashboard.button(
-          'r',
-          '󰄉 ' .. ' Recent files',
-          ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'
-        ),
-        dashboard.button(
-          'n',
-          ' ' .. ' New file',
-          ':ene <BAR> startinsert <CR>'
-        ),
-        dashboard.button('f', ' ' .. ' Find file', ':norm ,ff <CR>'),
-        dashboard.button('g', '󰊢 ' .. ' Git file', ':norm ,gf <CR>'),
-        dashboard.button('s', ' ' .. ' Find text', ':norm ,fg <CR>'),
-        dashboard.button('l', '󰒲 ' .. ' Lazy', ':Lazy<CR>'),
-        dashboard.button('m', '◍ ' .. ' Mason', ':Mason<CR>'),
-        dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
+        -- stylua: ignore start
+        dashboard.button('p', ' ' .. ' Restore last session',  ':lua require("persistence").load()<CR>'),
+        dashboard.button('r', '󰄉 ' .. ' Recent files',          ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'),
+        dashboard.button('n', ' ' .. ' New file',              ':ene <BAR> startinsert <CR>'),
+        dashboard.button('f', ' ' .. ' Find file',             ':norm ,ff <CR>'),
+        dashboard.button('g', '󰊢 ' .. ' Git file',              ':norm ,gf <CR>'),
+        dashboard.button('s', ' ' .. ' Find text',             ':norm ,fg <CR>'),
+        dashboard.button('l', '󰒲 ' .. ' Lazy',                  ':Lazy<CR>'),
+        dashboard.button('m', '◍ ' .. ' Mason',                 ':Mason<CR>'),
+        dashboard.button('q', ' ' .. ' Quit',                  ':qa<CR>'),
+        -- stylua: ignore end
       }
 
       return dashboard

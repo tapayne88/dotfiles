@@ -1,6 +1,7 @@
 -- Seemless vim <-> tmux navigation
 return {
   'aserowy/tmux.nvim',
+  event = 'VeryLazy',
   config = function()
     local augroup = require('tap.utils').augroup
 
