@@ -1,10 +1,7 @@
 -- statusline in lua
 return {
   {
-    -- TODO: Revert to nvim-lualine/lualine.nvim when upstream neovim issue is
-    -- resolved - https://github.com/neovim/neovim/issues/19464
-    'tapayne88/lualine.nvim',
-    branch = 'suppress-winbar-no-room-error',
+    'nvim-lualine/lualine.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
