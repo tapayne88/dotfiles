@@ -25,6 +25,7 @@ return {
     { "<leader>gc", ":Git commit -v -q<CR>", desc = "Git commit" },
     { "<leader>gd", ":Gvdiffsplit<CR>",      desc = "Git diff" } ,
     { "<leader>go", ":Git checkout<Space>",  desc = "Git checkout" },
+    { "<leader>gr", ":Gread<CR>",            desc = "Git read" },
     -- stylua: ignore end
   },
   config = function()
