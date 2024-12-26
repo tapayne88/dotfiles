@@ -22,6 +22,7 @@ return {
   -- Auto completion plugin for nvim
   {
     'hrsh7th/nvim-cmp',
+    version = false,
     event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
@@ -63,14 +64,14 @@ return {
           end,
         },
 
-        sources = {
-          { name = 'copilot' },
+        sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'path' },
-          { name = 'buffer' },
           { name = 'luasnip' },
           { name = 'spell' },
-        },
+        }, {
+          { name = 'buffer' },
+        }),
 
         formatting = {
           expandable_indicator = true,
@@ -79,7 +80,7 @@ return {
             mode = 'symbol_text',
             symbol_map = {
               -- Additional icons
-              Copilot = '',
+              Copilot = '',
             },
           },
         },
@@ -130,9 +131,6 @@ return {
     event = 'BufReadPost',
     opts = true,
   },
-
-  -- Interactive neovim scratchpad for lua
-  { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } },
 
   {
     'zbirenbaum/copilot.lua',
