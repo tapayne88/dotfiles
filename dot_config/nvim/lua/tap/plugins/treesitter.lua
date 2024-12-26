@@ -7,7 +7,16 @@ return {
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-context',
-        opts = true,
+        opts = { multiline_threshold = 3 },
+        keys = {
+          {
+            '[c',
+            function()
+              require('treesitter-context').go_to_context(vim.v.count1)
+            end,
+            desc = 'Jump to context',
+          },
+        },
       },
       {
         'folke/ts-comments.nvim',
