@@ -25,7 +25,7 @@ return {
       require('telescope.builtin').builtin { include_extensions = true }
     end, { desc = 'Give me Telescope!' })
 
-    vim.keymap.set('n', '<leader>l', function()
+    vim.keymap.set('n', '<leader>,', function()
       require('telescope.builtin').buffers {
         sorter = require('telescope').extensions['zf-native'].native_zf_scorer(),
         sort_lastused = true,
@@ -36,20 +36,20 @@ return {
     end, { desc = 'List buffers' })
 
     -- stylua: ignore start
-    vim.keymap.set('n', '<leader>gh', require('telescope.builtin').help_tags,       { desc = 'Help tags' })
-    vim.keymap.set('n', '<leader>ch', require('telescope.builtin').command_history, { desc = 'Command history' })
-    vim.keymap.set('n', '<leader>tp', require('telescope.builtin').pickers,         { desc = 'Past telescope pickers with state' })
-    vim.keymap.set('n', '<leader>p',  require('telescope.builtin').commands,        { desc = 'Neovim commands' })
-    vim.keymap.set('n', '<leader>k',  require('telescope.builtin').keymaps,         { desc = 'Search keymaps' })
+    vim.keymap.set('n', '<leader>gh', '<cmd>Telescope help_tags<CR>',       { desc = 'Help tags' })
+    vim.keymap.set('n', '<leader>:', '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
+    vim.keymap.set('n', '<leader>p',  '<cmd>Telescope commands<CR>',        { desc = 'Neovim commands' })
+    vim.keymap.set('n', '<leader>k',  '<cmd>Telescope keymaps<CR>',         { desc = 'Search keymaps' })
     -- stylua: ignore end
 
     ---------
     -- Git --
     ---------
-    vim.keymap.set('n', '<leader>gf', function()
+    vim.keymap.set('n', '<leader>fg', function()
       require('telescope.builtin').git_files { use_git_root = false }
-    end, { desc = 'Git files relative to pwd' })
-    vim.keymap.set('n', '<leader>rf', function()
+    end, { desc = 'Git files (cwd)' })
+
+    vim.keymap.set('n', '<leader>fr', function()
       local root = require('plenary.path'):new(
         root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h')
       )
@@ -58,11 +58,11 @@ return {
         cwd = root.filename,
         prompt_title = root:make_relative(vim.loop.cwd()),
       }
-    end, { desc = 'Git files relative to current file' })
+    end, { desc = 'Git files (monorepo workspace)' })
 
     -- stylua: ignore start
-    vim.keymap.set('n', '<leader>gF', require('telescope.builtin').git_files,     { desc = 'All git files' })
-    vim.keymap.set('n', '<leader>gb', require('telescope.builtin').git_branches,  { desc = 'Git branches' })
+    vim.keymap.set('n', '<leader>fG', '<cmd>Telescope git_files<CR>',     { desc = 'Git files (Root)' })
+    vim.keymap.set('n', '<leader>gB', '<cmd>Telescope git_branches<CR>',  { desc = 'Git branches' })
     -- stylua: ignore end
 
     -----------
@@ -70,22 +70,22 @@ return {
     -----------
     vim.keymap.set('n', '<leader>ff', function()
       require('telescope.builtin').find_files { hidden = true }
-    end, { desc = 'Fuzzy file finder' })
+    end, { desc = 'Find files (cwd)' })
     vim.keymap.set('n', '<leader>fb', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand '%:p:h',
         hidden = true,
       }
-    end, { desc = 'File browser at current file' })
+    end, { desc = 'File browser (current file)' })
     vim.keymap.set('n', '<leader>fB', function()
       require('telescope').extensions.file_browser.file_browser { hidden = true }
-    end, { desc = 'File browser at pwd' })
-    vim.keymap.set('n', '<leader>fh', function()
+    end, { desc = 'File browser (cwd)' })
+    vim.keymap.set('n', '<leader>fH', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = '~',
         hidden = true,
       }
-    end, { desc = 'File browser at $HOME' })
+    end, { desc = 'File browser ($HOME)' })
 
     ------------
     -- Search --
@@ -111,23 +111,26 @@ return {
       layout_strategy = 'vertical',
       path_display = { 'shorten', shorten = 2 },
     }
-    vim.keymap.set('n', '<leader>fg', function()
+
+    vim.keymap.set('n', '<leader>/', function()
       require('telescope').extensions.live_grep_args.live_grep_args(search_opts)
-    end, { desc = 'Search with ripgrep' })
-    vim.keymap.set('n', '<leader>fw', function()
+    end, { desc = 'Grep (Root)' })
+
+    vim.keymap.set('n', '<leader>sw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = vim.fn.expand '<cword>',
         })
       )
-    end, { desc = 'Search current word with ripgrep' })
-    vim.keymap.set('v', '<leader>fw', function()
+    end, { desc = 'Search word' })
+
+    vim.keymap.set('v', '<leader>sw', function()
       require('telescope').extensions.live_grep_args.live_grep_args(
         vim.tbl_extend('error', search_opts, {
           default_text = getVisualSelection(),
         })
       )
-    end, { desc = 'Search current visual selection with ripgrep' })
+    end, { desc = 'Search word' })
 
     require('tap.utils.lsp').on_attach(function(_, bufnr)
       -- stylua: ignore start
@@ -135,26 +138,6 @@ return {
       vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<CR>',  { buffer = bufnr, desc = '[LSP] Get references' })
       -- stylua: ignore end
     end)
-
-    vim.api.nvim_create_user_command('Fw', function(args)
-      local word = table.remove(args, 1)
-      local search_dirs = args
-
-      local search_args = #search_dirs > 0 and { search_dirs = search_dirs }
-        or {}
-
-      require('telescope.builtin').grep_string(
-        vim.tbl_extend('error', search_args, {
-          search = word,
-          prompt_title = string.format('Grep: %s', word),
-          use_regex = true,
-        })
-      )
-    end, {
-      desc = 'Search for a word in a list of directories',
-      nargs = '+',
-      complete = 'dir',
-    })
   end,
   config = function()
     local actions = require 'telescope.actions'
@@ -208,13 +191,6 @@ return {
         prompt_prefix = '❯ ',
         theme = 'center',
         layout_strategy = 'flex', -- let telescope figure out what to do given the space
-        layout_config = {
-          horizontal = {
-            preview_width = 0.5,
-          },
-          height = { padding = 5 },
-          preview_cutoff = 20,
-        },
         mappings = {
           i = {
             -- Allow selection splitting
