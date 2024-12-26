@@ -532,24 +532,16 @@ return {
         },
       },
     },
-    keys = {
-      -- Run API request
-      { '<leader>A', '<cmd>HurlRunner<CR>', desc = 'Run All requests' },
-      { '<leader>a', '<cmd>HurlRunnerAt<CR>', desc = 'Run Api request' },
-      {
-        '<leader>te',
-        '<cmd>HurlRunnerToEntry<CR>',
-        desc = 'Run Api request to entry',
-      },
-      { '<leader>tm', '<cmd>HurlToggleMode<CR>', desc = 'Hurl Toggle Mode' },
-      {
-        '<leader>tv',
-        '<cmd>HurlVerbose<CR>',
-        desc = 'Run Api in verbose mode',
-      },
-      -- Run Hurl request in visual mode
-      { '<leader>h', ':HurlRunner<CR>', desc = 'Hurl Runner', mode = 'v' },
-    },
+    config = function()
+      -- stylua: ignore start
+      vim.keymap.set('n', '<leader>hA', '<cmd>HurlRunner<CR>',        { desc = '[hurl] Run all requests' })
+      vim.keymap.set('n', '<leader>ha', '<cmd>HurlRunnerAt<CR>',      { desc = '[hurl] Run API request' })
+      vim.keymap.set('n', '<leader>ht', '<cmd>HurlRunnerToEntry<CR>', { desc = '[hurl] Run API request to entry' })
+      vim.keymap.set('n', '<leader>tm', '<cmd>HurlToggleMode<CR>',    { desc = '[hurl] Hurl Toggle Mode' })
+      vim.keymap.set('n', '<leader>tv', '<cmd>HurlVerbose<CR>',       { desc = '[hurl] Run API in verbose mode' })
+      vim.keymap.set('v', '<leader>h',  '<cmd>HurlRunner<CR>',        { desc = '[hurl] Run' })
+      -- stylua: ignore end
+    end,
   },
 
   {
@@ -588,6 +580,7 @@ return {
 
   {
     'tris203/precognition.nvim',
+    enabled = false,
     event = 'VeryLazy',
     opts = {
       startVisible = true,
