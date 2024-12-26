@@ -194,7 +194,7 @@ return {
         lualine_x = {
           {
             function()
-              return ''
+              return ''
             end,
             separator = {
               left = section_separators.right,
@@ -262,7 +262,7 @@ return {
               return { fg = hi_attrs.bg }
             end,
           },
-          { '%l:%c', icon = '' },
+          { '%l:%c', icon = '' },
         },
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
@@ -302,18 +302,6 @@ return {
         {
           'filename',
           file_status = false,
-          path = 0,
-          cond = function()
-            return vim.bo.filetype ~= 'oil'
-          end,
-        },
-        {
-          'filename',
-          file_status = false,
-          path = 1,
-          cond = function()
-            return vim.bo.filetype == 'oil'
-          end,
         },
       }
       local filetype_icon_only = {
