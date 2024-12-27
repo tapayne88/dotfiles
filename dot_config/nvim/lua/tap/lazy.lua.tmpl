@@ -1,3 +1,4 @@
+-- vim:ft=lua
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -15,5 +16,8 @@ vim.g.mapleader = ','
 vim.g.maplocalleader = '\\'
 
 return require('lazy').setup('tap.plugins', {
-  concurrency = 10,
+  dev = {
+    ---@type string | fun(plugin: LazyPlugin): string
+    path = '{{ .neovim_dev_plugin_dir }}',
+  },
 })
