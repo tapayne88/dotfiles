@@ -37,7 +37,7 @@ return {
 
     -- stylua: ignore start
     vim.keymap.set('n', '<leader>gh', '<cmd>Telescope help_tags<CR>',       { desc = 'Help tags' })
-    vim.keymap.set('n', '<leader>:', '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
+    vim.keymap.set('n', '<leader>:',  '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
     vim.keymap.set('n', '<leader>p',  '<cmd>Telescope commands<CR>',        { desc = 'Neovim commands' })
     vim.keymap.set('n', '<leader>k',  '<cmd>Telescope keymaps<CR>',         { desc = 'Search keymaps' })
     -- stylua: ignore end
