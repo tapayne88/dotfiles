@@ -2,7 +2,7 @@ return {
   -- TODO: Push fixes upstream
   -- 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
   'tapayne88/lsp_lines.nvim',
-  event = 'BufReadPre',
+  event = 'BufReadPost',
   dependencies = {
     'luozhiya/lsp-virtual-improved.nvim',
   },

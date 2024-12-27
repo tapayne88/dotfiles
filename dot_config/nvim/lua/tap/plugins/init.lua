@@ -2,7 +2,8 @@ return {
   'nvim-lua/plenary.nvim', -- everything needs plenary
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
 
-  'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
+  -- Complementary pairs of mappings for common actions
+  { 'tpope/vim-unimpaired', event = 'VeryLazy' },
   {
     'psliwka/vim-dirtytalk',
     build = ':DirtytalkUpdate',
@@ -18,7 +19,7 @@ return {
     },
   },
 
-  { 'tpope/vim-sleuth', event = 'BufReadPre' }, -- Detect indentation
+  { 'tpope/vim-sleuth', event = 'BufReadPost' }, -- Detect indentation
 
   { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
   {
@@ -67,19 +68,21 @@ return {
     { 'tpope/vim-abolish', dependencies = { 'smjonas/live-command.nvim' } },
     {
       'smjonas/live-command.nvim',
-      opts = {
-        enable_highlighting = true,
-        inline_highlighting = true,
-        hl_groups = {
-          insertion = 'Search',
-          deletion = 'Search',
-          change = 'Search',
-        },
-        commands = {
-          S = { cmd = 'Subvert' }, -- must be defined before we import vim-abolish
-          Norm = { cmd = 'norm' },
-        },
-      },
+      config = function()
+        require('live-command').setup {
+          enable_highlighting = true,
+          inline_highlighting = true,
+          hl_groups = {
+            insertion = 'Search',
+            deletion = 'Search',
+            change = 'Search',
+          },
+          commands = {
+            S = { cmd = 'Subvert' }, -- must be defined before we import vim-abolish
+            Norm = { cmd = 'norm' },
+          },
+        }
+      end,
     },
   },
 

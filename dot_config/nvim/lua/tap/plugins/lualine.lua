@@ -1,10 +1,8 @@
 -- statusline in lua
 return {
   {
-    -- TODO: Revert to nvim-lualine/lualine.nvim when upstream neovim issue is
-    -- resolved - https://github.com/neovim/neovim/issues/19464
-    'tapayne88/lualine.nvim',
-    branch = 'suppress-winbar-no-room-error',
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
@@ -113,6 +111,21 @@ return {
         return false
       end
 
+      local function project_name()
+        local get = function()
+          local name =
+            require('tap.utils').root_pattern { '.git' }(vim.loop.cwd())
+          return vim.fs.basename(name)
+        end
+
+        return {
+          get,
+          cond = function()
+            return type(get()) == 'string'
+          end,
+        }
+      end
+
       local section_separators = { left = '', right = '' }
 
       local diagnostic_section = function(cfg)
@@ -197,7 +210,7 @@ return {
         lualine_x = {
           {
             function()
-              return ''
+              return ''
             end,
             separator = {
               left = section_separators.right,
@@ -265,7 +278,7 @@ return {
               return { fg = hi_attrs.bg }
             end,
           },
-          { '%l:%c', icon = '' },
+          { '%l:%c', icon = '' },
         },
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
@@ -301,23 +314,7 @@ return {
       )
 
       local winbar_y = {
-        modified,
-        {
-          'filename',
-          file_status = false,
-          path = 0,
-          cond = function()
-            return vim.bo.filetype ~= 'oil'
-          end,
-        },
-        {
-          'filename',
-          file_status = false,
-          path = 1,
-          cond = function()
-            return vim.bo.filetype == 'oil'
-          end,
-        },
+        project_name(),
       }
       local filetype_icon_only = {
         filetype,
@@ -367,7 +364,7 @@ return {
                 if conditions.is_navic_available() then
                   return '󰆧'
                 end
-                return ''
+                return ''
               end,
             },
           },
@@ -387,7 +384,7 @@ return {
           },
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { filetype_icon_only },
+          lualine_z = { literal ' ' },
         },
         inactive_winbar = {
           lualine_a = {},
@@ -395,7 +392,7 @@ return {
           lualine_c = {},
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { filetype_icon_only },
+          lualine_z = { literal ' ' },
         },
       }
     end,

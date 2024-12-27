@@ -310,9 +310,6 @@ return {
   {
     'mhanberg/output-panel.nvim',
     event = 'VeryLazy',
-    -- opts = {},
-    config = function()
-      require('output_panel').setup()
-    end,
+    opts = true,
   },
 }

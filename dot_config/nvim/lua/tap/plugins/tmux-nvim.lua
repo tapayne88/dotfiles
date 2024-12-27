@@ -1,9 +1,9 @@
 -- Seemless vim <-> tmux navigation
 return {
   'aserowy/tmux.nvim',
+  event = 'VeryLazy',
   config = function()
     local augroup = require('tap.utils').augroup
-    local nnoremap = require('tap.utils').nnoremap
 
     require('tmux').setup {
       copy_sync = {
@@ -30,26 +30,12 @@ return {
         events = { 'Filetype' },
         pattern = { 'netrw' },
         callback = function()
-          nnoremap(
-            '<C-h>',
-            require('tmux').move_left,
-            { buffer = 0, desc = 'Swap to split left' }
-          )
-          nnoremap(
-            '<C-j>',
-            require('tmux').move_bottom,
-            { buffer = 0, desc = 'Swap to split below' }
-          )
-          nnoremap(
-            '<C-k>',
-            require('tmux').move_top,
-            { buffer = 0, desc = 'Swap to split above' }
-          )
-          nnoremap(
-            '<C-l>',
-            require('tmux').move_right,
-            { buffer = 0, desc = 'Swap to split right' }
-          )
+          -- stylua: ignore start
+          vim.keymap.set('n', '<C-h>', require('tmux').move_left,   { buffer = 0, desc = 'Swap to split left' })
+          vim.keymap.set('n', '<C-j>', require('tmux').move_bottom, { buffer = 0, desc = 'Swap to split below' })
+          vim.keymap.set('n', '<C-k>', require('tmux').move_top,    { buffer = 0, desc = 'Swap to split above' })
+          vim.keymap.set('n', '<C-l>', require('tmux').move_right,  { buffer = 0, desc = 'Swap to split right' })
+          -- stylua: ignore end
         end,
       },
     })

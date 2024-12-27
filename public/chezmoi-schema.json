@@ -53,6 +53,10 @@
         "tailscale_name": {
           "type": "string",
           "description": "Tailscale name used for TLD when resolving hostanmes, see https://login.tailscale.com/admin/dns"
+        },
+        "neovim_dev_plugin_dir": {
+          "type": "string",
+          "description": "Directory of development neovim plugins"
         }
       },
       "additionalProperties": false,
