@@ -123,7 +123,7 @@ return {
   -- Smarter folding
   {
     'kevinhwang91/nvim-ufo',
-    event = { 'VeryLazy' },
+    event = 'BufReadPost',
     dependencies = {
       'kevinhwang91/promise-async',
       'nvim-treesitter/nvim-treesitter',
@@ -354,6 +354,7 @@ return {
 
   {
     'luukvbaal/statuscol.nvim',
+    event = 'VeryLazy',
     config = function()
       local builtin = require 'statuscol.builtin'
       require('statuscol').setup {
@@ -382,15 +383,20 @@ return {
     'lewis6991/hover.nvim',
     lazy = true,
     init = function()
+      ---@diagnostic disable: missing-parameter
       --stylua: ignore start
-      vim.keymap.set('n', 'K', require('hover').hover,          { desc = 'hover.nvim' })
-      vim.keymap.set('n', 'gK', require('hover').hover_select,  { desc = 'hover.nvim (select)' })
+      vim.keymap.set('n', 'K',      function() require('hover').hover() end,                  { desc = 'hover.nvim' })
+      vim.keymap.set('n', 'gK',     function() require('hover').hover_select() end,           { desc = 'hover.nvim (select)' })
+      vim.keymap.set("n", "<C-p>",  function() require("hover").hover_switch("previous") end, { desc = "hover.nvim (previous source)" })
+      vim.keymap.set("n", "<C-n>",  function() require("hover").hover_switch("next") end,     { desc = "hover.nvim (next source)" })
       --stylua: ignore end
+      ---@diagnostic enable: missing-parameter
     end,
     config = function()
       require('hover').setup {
         init = function()
           require 'hover.providers.lsp'
+          require 'hover.providers.diagnostic'
           require 'hover.providers.man'
           require 'hover.providers.dictionary'
         end,
@@ -474,12 +480,10 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    -- TODO: Remove pinning when Blame line bug fixed
-    commit = 'b94967a0fff2b14a637cdf618ec7335739dc8f89',
     init = function()
       -- stylua: ignore start
-      vim.keymap.set('n', '<leader>hp', require('vgit').buffer_hunk_preview,  { desc = '[Git] Preview hunk' })
-      vim.keymap.set('n', '<leader>hb', require('vgit').buffer_blame_preview, { desc = '[Git] Blame line' })
+      vim.keymap.set('n', '<leader>hp', function() require('vgit').buffer_hunk_preview() end,  { desc = '[Git] Preview hunk' })
+      vim.keymap.set('n', '<leader>hb', function() require('vgit').buffer_blame_preview() end, { desc = '[Git] Blame line' })
       -- stylua: ignore end
     end,
     opts = {
@@ -536,9 +540,6 @@ return {
       -- stylua: ignore start
       vim.keymap.set('n', '<leader>hA', '<cmd>HurlRunner<CR>',        { desc = '[hurl] Run all requests' })
       vim.keymap.set('n', '<leader>ha', '<cmd>HurlRunnerAt<CR>',      { desc = '[hurl] Run API request' })
-      vim.keymap.set('n', '<leader>ht', '<cmd>HurlRunnerToEntry<CR>', { desc = '[hurl] Run API request to entry' })
-      vim.keymap.set('n', '<leader>tm', '<cmd>HurlToggleMode<CR>',    { desc = '[hurl] Hurl Toggle Mode' })
-      vim.keymap.set('n', '<leader>tv', '<cmd>HurlVerbose<CR>',       { desc = '[hurl] Run API in verbose mode' })
       vim.keymap.set('v', '<leader>h',  '<cmd>HurlRunner<CR>',        { desc = '[hurl] Run' })
       -- stylua: ignore end
     end,
@@ -581,7 +582,7 @@ return {
   {
     'tris203/precognition.nvim',
     enabled = false,
-    event = 'VeryLazy',
+    event = 'BufReadPost',
     opts = {
       startVisible = true,
       showBlankVirtLine = true,
