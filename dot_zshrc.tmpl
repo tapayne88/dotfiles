@@ -57,6 +57,11 @@ export LANG=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 #{{- end }}
 
+if [ $TERM = 'xterm-ghostty' ]; then
+  # Autostart tmux
+  export ZSH_TMUX_AUTOSTART=true
+fi
+
 # Disables scroll lock shortcut (Ctrl+s)
 stty -ixon
 KEYTIMEOUT=1
