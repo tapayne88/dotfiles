@@ -335,6 +335,7 @@ return {
             winbar = vim
               .iter({
                 'alpha',
+                'dbout',
                 'fugitive',
                 'gitcommit',
                 'neo-tree',
