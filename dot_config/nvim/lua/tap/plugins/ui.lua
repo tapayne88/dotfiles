@@ -146,8 +146,8 @@ return {
         '',
       }
 
+      -- stylua: ignore start
       dashboard.section.buttons.val = {
-        -- stylua: ignore start
         dashboard.button('p', ' ' .. ' Restore last session',  ':lua require("persistence").load()<CR>'),
         dashboard.button('r', '󰄉 ' .. ' Recent files',          ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'),
         dashboard.button('n', ' ' .. ' New file',              ':ene <BAR> startinsert <CR>'),
@@ -157,8 +157,8 @@ return {
         dashboard.button('l', '󰒲 ' .. ' Lazy',                  ':Lazy<CR>'),
         dashboard.button('m', '◍ ' .. ' Mason',                 ':Mason<CR>'),
         dashboard.button('q', ' ' .. ' Quit',                  ':qa<CR>'),
-        -- stylua: ignore end
       }
+      -- stylua: ignore end
 
       return dashboard
     end,

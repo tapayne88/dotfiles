@@ -1,12 +1,12 @@
 -- Seemless vim <-> tmux navigation
 return {
-  "aserowy/tmux.nvim",
-  event = "VeryLazy",
+  'aserowy/tmux.nvim',
+  event = 'VeryLazy',
   keys = {
-    { "<c-h>", [[<cmd>lua require("tmux").resize_left()<cr>]] },
-    { "<c-j>", [[<cmd>lua require("tmux").resize_down()<cr>]] },
-    { "<c-k>", [[<cmd>lua require("tmux").resize_up()<cr>]] },
-    { "<c-l>", [[<cmd>lua require("tmux").resize_right()<cr>]] },
+    { '<c-h>', [[<cmd>lua require("tmux").resize_left()<cr>]] },
+    { '<c-j>', [[<cmd>lua require("tmux").resize_down()<cr>]] },
+    { '<c-k>', [[<cmd>lua require("tmux").resize_up()<cr>]] },
+    { '<c-l>', [[<cmd>lua require("tmux").resize_right()<cr>]] },
   },
   opts = {
     copy_sync = {
