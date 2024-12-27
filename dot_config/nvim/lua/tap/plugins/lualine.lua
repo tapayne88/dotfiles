@@ -2,6 +2,7 @@
 return {
   {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
@@ -108,6 +109,21 @@ return {
           return is_zoomed
         end
         return false
+      end
+
+      local function project_name()
+        local get = function()
+          local name =
+            require('tap.utils').root_pattern { '.git' }(vim.loop.cwd())
+          return vim.fs.basename(name)
+        end
+
+        return {
+          get,
+          cond = function()
+            return type(get()) == 'string'
+          end,
+        }
       end
 
       local section_separators = { left = '', right = '' }
@@ -298,11 +314,7 @@ return {
       )
 
       local winbar_y = {
-        modified,
-        {
-          'filename',
-          file_status = false,
-        },
+        project_name(),
       }
       local filetype_icon_only = {
         filetype,
@@ -352,7 +364,7 @@ return {
                 if conditions.is_navic_available() then
                   return '󰆧'
                 end
-                return ''
+                return ''
               end,
             },
           },
@@ -372,7 +384,7 @@ return {
           },
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { filetype_icon_only },
+          lualine_z = { literal ' ' },
         },
         inactive_winbar = {
           lualine_a = {},
@@ -380,7 +392,7 @@ return {
           lualine_c = {},
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { filetype_icon_only },
+          lualine_z = { literal ' ' },
         },
       }
     end,
