@@ -153,8 +153,7 @@ return {
   -- Neovim file explorer: edit your filesystem like a buffer
   {
     'stevearc/oil.nvim',
-    -- don't lazy load so it works when opening directories with `nvim .`
-    lazy = false,
+    event = 'VeryLazy',
     opts = {
       default_file_explorer = true,
       columns = {
