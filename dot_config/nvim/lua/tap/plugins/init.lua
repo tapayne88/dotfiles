@@ -2,7 +2,8 @@ return {
   'nvim-lua/plenary.nvim', -- everything needs plenary
   'lervag/file-line', -- Handle filenames with line numbers i.e. :20
 
-  'tpope/vim-unimpaired', -- Complementary pairs of mappings for common actions
+  -- Complementary pairs of mappings for common actions
+  { 'tpope/vim-unimpaired', event = 'VeryLazy' },
   {
     'psliwka/vim-dirtytalk',
     build = ':DirtytalkUpdate',
@@ -18,7 +19,7 @@ return {
     },
   },
 
-  { 'tpope/vim-sleuth', event = 'BufReadPre' }, -- Detect indentation
+  { 'tpope/vim-sleuth', event = 'BufReadPost' }, -- Detect indentation
 
   { 'tpope/vim-characterize', keys = 'ga' }, -- Adds 'ga' command to show character code
   {
