@@ -65,7 +65,11 @@ return {
   --  Foo -> Bar
   --  FOO -> BAR
   {
-    { 'tpope/vim-abolish', dependencies = { 'smjonas/live-command.nvim' } },
+    {
+      'tpope/vim-abolish',
+      cmd = { 'Abolish', 'Subvert', 'S' },
+      dependencies = { 'smjonas/live-command.nvim' },
+    },
     {
       'smjonas/live-command.nvim',
       config = function()

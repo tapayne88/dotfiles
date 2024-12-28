@@ -12,7 +12,7 @@ return {
       dependencies = { 'kkharji/sqlite.lua' },
     },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    'natecraddock/telescope-zf-native.nvim',
+    { 'natecraddock/telescope-zf-native.nvim', lazy = true },
   },
   cmd = 'Telescope',
   init = function()
