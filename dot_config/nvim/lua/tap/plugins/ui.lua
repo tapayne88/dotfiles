@@ -90,12 +90,12 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = vim
           .iter({
-            'alpha',
             'help',
             'lazy',
             'mason',
             'neo-tree',
             'oil_preview',
+            'snacks_dashboard',
             'terminal',
             'trouble',
             require('tap.utils').dap_filetypes,
@@ -130,68 +130,34 @@ return {
   },
 
   {
-    'goolord/alpha-nvim',
-    event = 'VimEnter',
-    opts = function()
-      local dashboard = require 'alpha.themes.dashboard'
-      dashboard.section.header.val = {
-        '',
-        '',
-        '███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗',
-        '████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║',
-        '██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║',
-        '██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║',
-        '██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║',
-        '╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝',
-        '',
-      }
-
-      -- stylua: ignore start
-      dashboard.section.buttons.val = {
-        dashboard.button('p', ' ' .. ' Restore last session',  ':lua require("persistence").load()<CR>'),
-        dashboard.button('r', '󰄉 ' .. ' Recent files',          ':lua require("telescope.builtin").oldfiles{ cwd_only = true }<CR>'),
-        dashboard.button('n', ' ' .. ' New file',              ':ene <BAR> startinsert <CR>'),
-        dashboard.button('f', ' ' .. ' Find file',             ':norm ,ff <CR>'),
-        dashboard.button('g', '󰊢 ' .. ' Git file',              ':norm ,gf <CR>'),
-        dashboard.button('s', ' ' .. ' Find text',             ':norm ,fg <CR>'),
-        dashboard.button('l', '󰒲 ' .. ' Lazy',                  ':Lazy<CR>'),
-        dashboard.button('m', '◍ ' .. ' Mason',                 ':Mason<CR>'),
-        dashboard.button('q', ' ' .. ' Quit',                  ':qa<CR>'),
-      }
-      -- stylua: ignore end
-
-      return dashboard
-    end,
-    config = function(_, dashboard)
-      -- close Lazy and re-open when the dashboard is ready
-      if vim.o.filetype == 'lazy' then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd('User', {
-          pattern = 'AlphaReady',
-          callback = function()
-            require('lazy').show()
-          end,
-        })
-      end
-
-      require('alpha').setup(dashboard.opts)
-
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'LazyVimStarted',
-        callback = function()
-          local stats = require('lazy').stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = '⚡ Neovim loaded '
-            .. stats.loaded
-            .. '/'
-            .. stats.count
-            .. ' plugins in '
-            .. ms
-            .. 'ms'
-          pcall(vim.cmd.AlphaRedraw)
-        end,
-      })
-    end,
+    'folke/snacks.nvim',
+    opts = {
+      dashboard = {
+        preset = {
+          header = [[
+          ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗          
+          ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║          
+          ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║          
+          ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║          
+          ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║          
+          ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝          
+   ]],
+          -- stylua: ignore start
+          ---@type snacks.dashboard.Item[]
+          keys = {
+            { icon = ' ', key = 'f', desc = 'Find File',       action = ':norm ,ff' },
+            { icon = ' ', key = 'n', desc = 'New File',        action = ':ene | startinsert' },
+            { icon = ' ', key = 'g', desc = 'Find Text',       action = ':norm ,/' },
+            { icon = ' ', key = 'r', desc = 'Recent Files',    action = ':lua require("telescope.builtin").oldfiles{ cwd_only = true }' },
+            { icon = ' ', key = 's', desc = 'Restore Session', action = ':lua require("persistence").load()' },
+            { icon = '󰒲 ', key = 'l', desc = 'Lazy',            action = ':Lazy' },
+            { icon = '◍ ', key = 'm', desc = 'Mason',           action = ':Mason' },
+            { icon = ' ', key = 'q', desc = 'Quit',            action = ':qa' },
+          },
+          -- stylua: ignore end
+        },
+      },
+    },
   },
 
   {

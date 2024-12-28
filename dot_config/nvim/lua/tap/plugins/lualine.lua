@@ -334,7 +334,6 @@ return {
           disabled_filetypes = {
             winbar = vim
               .iter({
-                'alpha',
                 'dbout',
                 'fugitive',
                 'gitcommit',
@@ -342,6 +341,7 @@ return {
                 'outputpanel',
                 'packer',
                 'qf',
+                'snacks_dashboard',
                 'trouble',
                 require('tap.utils').dap_filetypes,
               })
