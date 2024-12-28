@@ -51,7 +51,7 @@
     zsh # shell
 
     # Unstable Packages
-    unstable._1password # 1password version is quite old - unstable is much newer
+    unstable._1password-cli # 1password version is quite old - unstable is much newer
     unstable.git # newest git!
     unstable.git-town # Generic, high-level git support for git-flow workflows
     unstable.hurl # HTTP requests runner
