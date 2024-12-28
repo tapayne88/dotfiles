@@ -13,7 +13,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 
 " Keymaps
-map <leader>gf <Action>(GotoFile)
+map <leader>fg <Action>(GotoFile)
 map <C-K> <C-W>k
 map <C-L> <C-W>l
 map <C-J> <C-W>j
@@ -23,7 +23,7 @@ nmap <leader>rn <Action>(RenameElement)
 nmap <leader>gr <Action>(ChangesView.Revert)
 nmap <leader>gp <Action>(Github.Open.In.Browser)
 
-nmap <leader>l <Action>(RecentFiles)
+nmap <leader>, <Action>(RecentFiles)
 
 " Diagnostic
 nmap ]d <Action>(GotoNextError)
