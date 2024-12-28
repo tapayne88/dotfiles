@@ -6,10 +6,8 @@ vim.keymap.set('n', 'k', 'gk', { desc = 'Jump up one wrapped line' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Shift selected text left' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Shift selected text right' })
 
--- stylua: ignore start
-vim.keymap.set('v', 'J',  ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
-vim.keymap.set('v', 'K',  ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
--- stylua: ignore end
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
 
 vim.keymap.set('v', '//', "y/\\V<C-R>=escape(@\",'/')<CR><CR>", { desc = 'Search for current visual selection' })
 
@@ -86,9 +84,7 @@ end
 -- Movement
 -- Automatically save movements larger than 5 lines to the jumplist
 -- Use Ctrl-o/Ctrl-i to navigate backwards and forwards through the jumplist
--- stylua: ignore start
 vim.keymap.set('n', 'j', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'", { expr = true })
 vim.keymap.set('n', 'k', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'", { expr = true })
--- stylua: ignore end
 
 vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Keep the yanked text when pasting in visual mode' })

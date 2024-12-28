@@ -46,10 +46,10 @@ return {
           end, { expr = true, desc = '[Git] Previous hunk' })
 
           -- Actions
-          -- stylua: ignore start
           vim.keymap.set({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>', { desc = '[Git] Stage hunk' })
           vim.keymap.set({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = '[Git] Reset hunk' })
 
+          -- stylua: ignore start
           vim.keymap.set('n', '<leader>hS', gs.stage_buffer,              { desc = '[Git] Stage buffer' })
           vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk,           { desc = '[Git] Undo staged hunk' })
           vim.keymap.set('n', '<leader>hR', gs.reset_buffer,              { desc = '[Git] Reset buffer' })
@@ -263,10 +263,10 @@ return {
     event = 'BufReadPost',
     config = true,
     init = function()
-      -- stylua: ignore start
       vim.keymap.set('n', ']t', require('todo-comments').jump_next, { desc = 'Next todo comment' })
       vim.keymap.set('n', '[t', require('todo-comments').jump_prev, { desc = 'Previous todo comment' })
 
+      -- stylua: ignore start
       vim.keymap.set('n', '<leader>xt', '<cmd>TodoTrouble<cr>',                         { desc = 'Todo (Trouble)' })
       vim.keymap.set('n', '<leader>xT', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', { desc = 'Todo/Fix/Fixme (Trouble)' })
       vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>',                       { desc = 'Todo' })
