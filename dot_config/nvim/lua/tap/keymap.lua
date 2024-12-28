@@ -1,77 +1,53 @@
-local nnoremap = require('tap.utils').nnoremap
-local nmap = require('tap.utils').nmap
-local vnoremap = require('tap.utils').vnoremap
-local tnoremap = require('tap.utils').tnoremap
-local xnoremap = require('tap.utils').xnoremap
 local termcodes = require('tap.utils').termcodes
-local keymap = require('tap.utils').keymap
 
-nnoremap('j', 'gj', { desc = 'Jump down one wrapped line' })
-nnoremap('k', 'gk', { desc = 'Jump up one wrapped line' })
+vim.keymap.set('n', 'j', 'gj', { desc = 'Jump down one wrapped line' })
+vim.keymap.set('n', 'k', 'gk', { desc = 'Jump up one wrapped line' })
 
-vnoremap('<', '<gv', { desc = 'Shift selected text left' })
-vnoremap('>', '>gv', { desc = 'Shift selected text right' })
+vim.keymap.set('v', '<', '<gv', { desc = 'Shift selected text left' })
+vim.keymap.set('v', '>', '>gv', { desc = 'Shift selected text right' })
 
-vnoremap('J', ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
-vnoremap('K', ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
+-- stylua: ignore start
+vim.keymap.set('v', 'J',  ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
+vim.keymap.set('v', 'K',  ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
+-- stylua: ignore end
 
-vnoremap(
+vim.keymap.set(
+  'v',
   '//',
   "y/\\V<C-R>=escape(@\",'/')<CR><CR>",
   { desc = 'Search for current visual selection' }
 )
 
-nnoremap('<c-q>', ':copen<CR>', { desc = 'Open quickfix list' })
-nnoremap('<LocalLeader>q', ':lopen<CR>', { desc = 'Open local list' })
+-- stylua: ignore start
+vim.keymap.set('n', '<c-q>',          ':copen<CR>', { desc = 'Open quickfix list' })
+vim.keymap.set('n', '<LocalLeader>q', ':lopen<CR>', { desc = 'Open local list' })
+-- stylua: ignore end
 
-nnoremap(
+vim.keymap.set(
+  'n',
   '<leader>fp',
   ':echo @% | let @*=expand("%")<CR>',
   { desc = 'Print and copy to system clipboard the filepath' }
 )
-vnoremap(
+vim.keymap.set(
+  'v',
   '<leader>fp',
   ':<C-U>echo fnamemodify(expand("%"), ":~:.") . ":" . line(".") | let @*=fnamemodify(expand("%"), ":~:.") . ":" . line(".")<CR>',
   {
     desc = 'Print and copy to system clipboard filepath with line number',
   }
 )
-nnoremap(
+vim.keymap.set(
+  'n',
   '<leader>cm',
   ':!chezmoi apply -v<CR>',
   { desc = 'Apply chezmoi changes' }
 )
 
-nnoremap(
-  '<leader>evv',
-  ':vsplit ' .. vim.g.chezmoi_source_dir .. '/dot_config/nvim/init.lua<CR>',
-  { desc = 'Open nvim/init.lua in vertical split' }
-)
-nnoremap(
-  '<leader>ev',
-  ':split ' .. vim.g.chezmoi_source_dir .. '/dot_config/nvim/init.lua<CR>',
-  { desc = 'Open nvim/init.lua in split' }
-)
-nnoremap('<leader>sv', function()
-  require('plenary.reload').reload_module('tap', true)
-  vim.cmd ':source $MYVIMRC'
-  vim.notify(
-    "Cleared 'tap.*' module cache and reloaded " .. vim.env.MYVIMRC,
-    vim.log.levels.INFO,
-    { title = 'Re-source init.vim' }
-  )
-end, { desc = 'Source nvim/init.vim' })
-
-tnoremap(
-  '<Esc>',
-  [[<C-\><C-n>]],
-  { desc = 'Escape terminal insert mode with <Esc>' }
-)
-tnoremap(
-  '<A-[>',
-  '<Esc>',
-  { desc = 'Alternate mapping to send esc to terminal' }
-)
+-- stylua: ignore start
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]],  { desc = 'Escape terminal insert mode with <Esc>' })
+vim.keymap.set('t', '<A-[>', '<Esc>',         { desc = 'Alternate mapping to send esc to terminal' })
+-- stylua: ignore end
 
 -- Multiple Cursors
 -- http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
@@ -81,37 +57,30 @@ tnoremap(
 -- 2. Or, visually make a selection;
 -- 3. Hit cn, type the new word, then go back to Normal mode;
 -- 4. Hit `.` n-1 times, where n is the number of replacements.
-nnoremap('cn', '*``cgn', { desc = 'Multiple cursors' })
-xnoremap('cn', [[g:mc . "``cgn"]], { expr = true, desc = 'Multiple cursors' })
-
-nnoremap('cN', '*``cgN', { desc = 'Multiple cursors (backwards)' })
-xnoremap(
-  'cN',
-  [[g:mc . "``cgN"]],
-  { expr = true, desc = 'Multiple cursors (backwards)' }
-)
+-- stylua: ignore start
+vim.keymap.set('n', 'cn', '*``cgn',           { desc = 'Multiple cursors' })
+vim.keymap.set('x', 'cn', [[g:mc . "``cgn"]], { expr = true, desc = 'Multiple cursors' })
+vim.keymap.set('n', 'cN', '*``cgN',           { desc = 'Multiple cursors (backwards)' })
+vim.keymap.set('x', 'cN', [[g:mc . "``cgN"]], { expr = true, desc = 'Multiple cursors (backwards)' })
+-- stylua: ignore end
 
 -- 1. Position the cursor over a word; alternatively, make a selection.
 -- 2. Hit cq to start recording the macro.
 -- 3. Once you are done with the macro, go back to normal mode.
 -- 4. Hit Enter to repeat the macro over search matches.
-nnoremap(
-  'cq',
-  [[:lua tap.mappings.setup_mc()<CR>*``qz]],
-  { desc = 'Multiple cursors: Macros' }
-)
-xnoremap(
-  'cq',
-  [[":\<C-u>lua tap.mappings.setup_mc()\<CR>gv" . g:mc . "``qz"]],
-  { expr = true, desc = 'Multiple cursors: Macros' }
-)
+-- stylua: ignore start
+vim.keymap.set('n', 'cq', [[:lua tap.mappings.setup_mc()<CR>*``qz]],                        { desc = 'Multiple cursors: Macros' })
+vim.keymap.set('x', 'cq', [[":\<C-u>lua tap.mappings.setup_mc()\<CR>gv" . g:mc . "``qz"]],  { expr = true, desc = 'Multiple cursors: Macros' })
+-- stylua: ignore end
 
-nnoremap(
+vim.keymap.set(
+  'n',
   'cQ',
   [[:lua tap.mappings.setup_mc()<CR>#``qz]],
   { desc = 'Multiple cursors: Macros (backwards)' }
 )
-xnoremap(
+vim.keymap.set(
+  'x',
   'cQ',
   [[":\<C-u>lua tap.mappings.setup_CR()\<CR>gv" . substitute(g:mc, '/', '?', 'g') . "``qz"]],
   { expr = true, desc = 'Multiple cursors: Macros (backwards)' }
@@ -121,27 +90,23 @@ xnoremap(
 vim.g.mc = termcodes [[y/\V<C-r>=escape(@", '/')<CR><CR>]]
 
 function tap.mappings.setup_mc()
-  nmap(
+  vim.keymap.set(
+    'n',
     '<Enter>',
-    [[:nnoremap <lt>Enter> n@z<CR>q:<C-u>let @z=strpart(@z,0,strlen(@z)-1)<CR>n@z]]
+    [[:nnoremap <lt>Enter> n@z<CR>q:<C-u>let @z=strpart(@z,0,strlen(@z)-1)<CR>n@z]],
+    { remap = true }
   )
 end
 
 -- Movement
 -- Automatically save movements larger than 5 lines to the jumplist
 -- Use Ctrl-o/Ctrl-i to navigate backwards and forwards through the jumplist
-nnoremap(
-  'j',
-  "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'",
-  { expr = true }
-)
-nnoremap(
-  'k',
-  "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'",
-  { expr = true }
-)
+-- stylua: ignore start
+vim.keymap.set('n', 'j', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'", { expr = true })
+vim.keymap.set('n', 'k', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'", { expr = true })
+-- stylua: ignore end
 
-keymap(
+vim.keymap.set(
   'v',
   '<leader>p',
   [["_dP]],
