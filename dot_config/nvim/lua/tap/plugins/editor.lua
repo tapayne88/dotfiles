@@ -339,14 +339,16 @@ return {
 
   {
     'mbbill/undotree',
-    config = function()
+    cmd = 'UndotreeToggle',
+    init = function()
       vim.keymap.set(
         'n',
         '<leader>u',
         vim.cmd.UndotreeToggle,
         { desc = 'Toggle undo tree' }
       )
-
+    end,
+    config = function()
       vim.opt.undofile = true
     end,
   },
@@ -476,6 +478,7 @@ return {
 
   {
     'tanvirtin/vgit.nvim',
+    lazy = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
@@ -659,6 +662,7 @@ return {
   {
     'echasnovski/mini.nvim',
     version = false,
+    event = 'BufReadPost',
     config = function()
       require('mini.ai').setup()
     end,
