@@ -9,20 +9,13 @@ augroup('TapWinResize', {
     pattern = { '*' },
     callback = function()
       local is_dap_ui_running = test_visible_buffers(function(window_info)
-        local buffer_filetype =
-          vim.api.nvim_get_option_value('filetype', { buf = window_info.bufnr })
-        return vim.tbl_contains(
-          require('tap.utils').dap_filetypes,
-          buffer_filetype
-        )
+        local buffer_filetype = vim.api.nvim_get_option_value('filetype', { buf = window_info.bufnr })
+        return vim.tbl_contains(require('tap.utils').dap_filetypes, buffer_filetype)
       end)
 
       -- Don't attempt to resize if we're running dap-ui
       if not is_dap_ui_running then
-        vim.api.nvim_exec2(
-          'execute "normal! ' .. termcodes '<c-w>' .. '="',
-          { output = false }
-        )
+        vim.api.nvim_exec2('execute "normal! ' .. termcodes '<c-w>' .. '="', { output = false })
       end
     end,
   },

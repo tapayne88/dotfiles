@@ -39,10 +39,7 @@ local get_test_expression = function(node, buf)
 
   local child_test_node = find_in_children(node, function(child_node)
     return child_node:type() == 'identifier'
-      and vim.tbl_contains(
-        target_text,
-        vim.treesitter.get_node_text(child_node, buf)
-      )
+      and vim.tbl_contains(target_text, vim.treesitter.get_node_text(child_node, buf))
   end, 1)
 
   return child_test_node ~= nil and node or nil
@@ -76,11 +73,7 @@ local get_test_nodes_from_cursor = function(buf, cursor)
   local line = cursor[1] - 1
   local col = cursor[2]
 
-  local parser = vim.treesitter.get_parser(
-    buf,
-    require('nvim-treesitter.parsers').ft_to_lang(vim.bo.filetype),
-    {}
-  )
+  local parser = vim.treesitter.get_parser(buf, require('nvim-treesitter.parsers').ft_to_lang(vim.bo.filetype), {})
   local ret
   parser:for_each_tree(function(tree)
     if ret then
@@ -107,10 +100,7 @@ local get_pattern_from_test_nodes = function(nodes, buf)
     end, 3)
 
     if str_node == nil then
-      utils.notify(
-        "couldn't find child string of test node",
-        vim.log.levels.WARN
-      )
+      utils.notify("couldn't find child string of test node", vim.log.levels.WARN)
       return ''
     end
 

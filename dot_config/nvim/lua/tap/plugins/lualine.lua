@@ -21,12 +21,10 @@ return {
         end,
         is_navic_available = function()
           -- navic is lazy and loaded only when an LSP supports the correct capabilities
-          return package.loaded['nvim-navic']
-            and require('nvim-navic').is_available()
+          return package.loaded['nvim-navic'] and require('nvim-navic').is_available()
         end,
         is_copilot_available = function()
-          return package.loaded['copilot']
-            and require('copilot.client').buf_is_attached()
+          return package.loaded['copilot'] and require('copilot.client').buf_is_attached()
         end,
       }
 
@@ -76,8 +74,7 @@ return {
         return empty_draw(self, ...)
       end
 
-      local diagnostic_empty =
-        require('lualine.components.diagnostics'):extend()
+      local diagnostic_empty = require('lualine.components.diagnostics'):extend()
       function diagnostic_empty:draw(...)
         return empty_draw(self, ...)
       end
@@ -90,12 +87,9 @@ return {
       end
 
       local function tscVersion()
-        local tsc_version = require_plugin(
-          'tap.plugins.lsp.servers.tsserver',
-          function(tsserver)
-            return tsserver.get_tsc_version()
-          end
-        )
+        local tsc_version = require_plugin('tap.plugins.lsp.servers.tsserver', function(tsserver)
+          return tsserver.get_tsc_version()
+        end)
 
         return tsc_version and string.format('v%s', tsc_version) or ''
       end
@@ -113,8 +107,7 @@ return {
 
       local function project_name()
         local get = function()
-          local name =
-            require('tap.utils').root_pattern { '.git' }(vim.loop.cwd())
+          local name = require('tap.utils').root_pattern { '.git' }(vim.loop.cwd())
           return vim.fs.basename(name)
         end
 
@@ -141,12 +134,7 @@ return {
           fmt = function(status)
             if tonumber(status, 10) > 0 then
               -- stitch the icon onto the count
-              return string.format(
-                '%s%s%s',
-                cfg.pad_left and ' ' or '',
-                cfg.symbol,
-                status
-              )
+              return string.format('%s%s%s', cfg.pad_left and ' ' or '', cfg.symbol, status)
             end
 
             -- Count is 0 so don't return content
@@ -283,35 +271,32 @@ return {
         lualine_z = { { '%p%%', cond = conditions.is_wide_window } },
       }
 
-      require('tap.utils').apply_user_highlights(
-        'Lualine',
-        function(highlight, palette)
-          highlight('LualineDiagnosticError', {
-            bg = highlight_group_attrs('DiagnosticError').fg,
-            fg = palette.mantle,
-          })
-          highlight('LualineDiagnosticWarn', {
-            bg = highlight_group_attrs('DiagnosticWarn').fg,
-            fg = palette.mantle,
-          })
-          highlight('LualineDiagnosticHint', {
-            bg = highlight_group_attrs('DiagnosticHint').fg,
-            fg = palette.mantle,
-          })
-          highlight('LualineDiagnosticInfo', {
-            bg = highlight_group_attrs('DiagnosticInfo').fg,
-            fg = palette.mantle,
-          })
-          highlight('LualineDiagnosticOk', {
-            bg = highlight_group_attrs('DiagnosticOk').fg,
-            fg = palette.mantle,
-          })
-          highlight('LualineCopilot', {
-            bg = palette.lavender,
-            fg = palette.mantle,
-          })
-        end
-      )
+      require('tap.utils').apply_user_highlights('Lualine', function(highlight, palette)
+        highlight('LualineDiagnosticError', {
+          bg = highlight_group_attrs('DiagnosticError').fg,
+          fg = palette.mantle,
+        })
+        highlight('LualineDiagnosticWarn', {
+          bg = highlight_group_attrs('DiagnosticWarn').fg,
+          fg = palette.mantle,
+        })
+        highlight('LualineDiagnosticHint', {
+          bg = highlight_group_attrs('DiagnosticHint').fg,
+          fg = palette.mantle,
+        })
+        highlight('LualineDiagnosticInfo', {
+          bg = highlight_group_attrs('DiagnosticInfo').fg,
+          fg = palette.mantle,
+        })
+        highlight('LualineDiagnosticOk', {
+          bg = highlight_group_attrs('DiagnosticOk').fg,
+          fg = palette.mantle,
+        })
+        highlight('LualineCopilot', {
+          bg = palette.lavender,
+          fg = palette.mantle,
+        })
+      end)
 
       local winbar_y = {
         project_name(),
@@ -350,11 +335,7 @@ return {
           },
         },
         sections = sections,
-        inactive_sections = vim.tbl_deep_extend(
-          'force',
-          sections,
-          { lualine_a = {}, lualine_x = {} }
-        ),
+        inactive_sections = vim.tbl_deep_extend('force', sections, { lualine_a = {}, lualine_x = {} }),
         winbar = {
           lualine_a = {
             {

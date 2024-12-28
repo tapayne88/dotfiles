@@ -6,17 +6,10 @@ vim.keymap.set('n', 'k', 'gk', { desc = 'Jump up one wrapped line' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Shift selected text left' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Shift selected text right' })
 
--- stylua: ignore start
-vim.keymap.set('v', 'J',  ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
-vim.keymap.set('v', 'K',  ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
--- stylua: ignore end
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected text down' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected text up' })
 
-vim.keymap.set(
-  'v',
-  '//',
-  "y/\\V<C-R>=escape(@\",'/')<CR><CR>",
-  { desc = 'Search for current visual selection' }
-)
+vim.keymap.set('v', '//', "y/\\V<C-R>=escape(@\",'/')<CR><CR>", { desc = 'Search for current visual selection' })
 
 -- stylua: ignore start
 vim.keymap.set('n', '<c-q>',          ':copen<CR>', { desc = 'Open quickfix list' })
@@ -37,12 +30,7 @@ vim.keymap.set(
     desc = 'Print and copy to system clipboard filepath with line number',
   }
 )
-vim.keymap.set(
-  'n',
-  '<leader>cm',
-  ':!chezmoi apply -v<CR>',
-  { desc = 'Apply chezmoi changes' }
-)
+vim.keymap.set('n', '<leader>cm', ':!chezmoi apply -v<CR>', { desc = 'Apply chezmoi changes' })
 
 -- stylua: ignore start
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]],  { desc = 'Escape terminal insert mode with <Esc>' })
@@ -73,12 +61,7 @@ vim.keymap.set('n', 'cq', [[:lua tap.mappings.setup_mc()<CR>*``qz]],            
 vim.keymap.set('x', 'cq', [[":\<C-u>lua tap.mappings.setup_mc()\<CR>gv" . g:mc . "``qz"]],  { expr = true, desc = 'Multiple cursors: Macros' })
 -- stylua: ignore end
 
-vim.keymap.set(
-  'n',
-  'cQ',
-  [[:lua tap.mappings.setup_mc()<CR>#``qz]],
-  { desc = 'Multiple cursors: Macros (backwards)' }
-)
+vim.keymap.set('n', 'cQ', [[:lua tap.mappings.setup_mc()<CR>#``qz]], { desc = 'Multiple cursors: Macros (backwards)' })
 vim.keymap.set(
   'x',
   'cQ',
@@ -101,14 +84,7 @@ end
 -- Movement
 -- Automatically save movements larger than 5 lines to the jumplist
 -- Use Ctrl-o/Ctrl-i to navigate backwards and forwards through the jumplist
--- stylua: ignore start
 vim.keymap.set('n', 'j', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'", { expr = true })
 vim.keymap.set('n', 'k', "v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'", { expr = true })
--- stylua: ignore end
 
-vim.keymap.set(
-  'v',
-  '<leader>p',
-  [["_dP]],
-  { desc = 'Keep the yanked text when pasting in visual mode' }
-)
+vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Keep the yanked text when pasting in visual mode' })

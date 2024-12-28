@@ -60,20 +60,12 @@ return {
     nnoremap('<space>e', function()
       vim.diagnostic.open_float { scope = 'line' }
     end, { desc = 'Show line diagnostics' })
-    nnoremap(
-      '<space>q',
-      '<cmd>lua vim.diagnostic.setloclist()<CR>',
-      { desc = 'Open buffer diagnostics in local list' }
-    )
+    nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', { desc = 'Open buffer diagnostics in local list' })
     nnoremap('<leader>dt', function()
-      virtual_improved_curr = virtual_improved_curr < #virtual_improved
-          and virtual_improved_curr + 1
-        or 1
+      virtual_improved_curr = virtual_improved_curr < #virtual_improved and virtual_improved_curr + 1 or 1
       local new_virtual_improved = virtual_improved[virtual_improved_curr]
 
-      virtual_lines_curr = virtual_lines_curr < #virtual_lines
-          and virtual_lines_curr + 1
-        or 1
+      virtual_lines_curr = virtual_lines_curr < #virtual_lines and virtual_lines_curr + 1 or 1
       local new_virtual_lines = virtual_lines[virtual_lines_curr]
 
       vim.diagnostic.config {
@@ -81,8 +73,7 @@ return {
         virtual_lines = new_virtual_lines,
       }
 
-      local msg = new_virtual_lines == false and 'Hide diagnostic output'
-        or 'Show diagnostic output'
+      local msg = new_virtual_lines == false and 'Hide diagnostic output' or 'Show diagnostic output'
       vim.notify(msg, vim.log.levels.INFO, { title = 'Diagnostic' })
     end, { desc = 'Toggle diagnostic display' })
 

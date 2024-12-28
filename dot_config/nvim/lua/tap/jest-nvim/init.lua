@@ -31,8 +31,7 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
   else
     -- open new split on right
     vim.cmd 'vertical new'
-    local command =
-      utils.get_command_string(utils.command_with_pattern(cmd, pattern))
+    local command = utils.get_command_string(utils.command_with_pattern(cmd, pattern))
 
     utils.logger.debug('creating term buffer with command `' .. command .. '`')
 
@@ -46,8 +45,7 @@ local jest_test = function(buf_name, cmd, cwd, pattern)
   end)
 end
 
-local file_pattern =
-  utils.regex_escape '((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$'
+local file_pattern = utils.regex_escape '((__tests__|spec)/.*|(spec|test))\\.(js|jsx|coffee|ts|tsx)$'
 
 --- Run jest test
 ---@param pattern? string|nil
@@ -60,10 +58,7 @@ local run_test = function(pattern)
   utils.logger.debug('test_root', test_root)
 
   if test_root == nil then
-    utils.notify(
-      "couldn't find test root for " .. file_path,
-      vim.log.levels.WARN
-    )
+    utils.notify("couldn't find test root for " .. file_path, vim.log.levels.WARN)
     return
   end
 

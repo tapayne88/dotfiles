@@ -46,10 +46,10 @@ return {
           end, { expr = true, desc = '[Git] Previous hunk' })
 
           -- Actions
-          -- stylua: ignore start
           vim.keymap.set({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>', { desc = '[Git] Stage hunk' })
           vim.keymap.set({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = '[Git] Reset hunk' })
 
+          -- stylua: ignore start
           vim.keymap.set('n', '<leader>hS', gs.stage_buffer,              { desc = '[Git] Stage buffer' })
           vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk,           { desc = '[Git] Undo staged hunk' })
           vim.keymap.set('n', '<leader>hR', gs.reset_buffer,              { desc = '[Git] Reset buffer' })
@@ -60,12 +60,7 @@ return {
           vim.keymap.set('n', '<leader>hD', function()
             gs.diffthis '~'
           end, { desc = '[Git] Diff this' })
-          vim.keymap.set(
-            'n',
-            '<leader>td',
-            gs.toggle_deleted,
-            { desc = '[Git] Diff this against default branch' }
-          )
+          vim.keymap.set('n', '<leader>td', gs.toggle_deleted, { desc = '[Git] Diff this against default branch' })
 
           -- Text object
           vim.keymap.set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
@@ -185,12 +180,7 @@ return {
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
-      vim.keymap.set(
-        'n',
-        '-',
-        require('oil').open,
-        { desc = 'Open parent directory' }
-      )
+      vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
     end,
   },
 
@@ -273,10 +263,10 @@ return {
     event = 'BufReadPost',
     config = true,
     init = function()
-      -- stylua: ignore start
       vim.keymap.set('n', ']t', require('todo-comments').jump_next, { desc = 'Next todo comment' })
       vim.keymap.set('n', '[t', require('todo-comments').jump_prev, { desc = 'Previous todo comment' })
 
+      -- stylua: ignore start
       vim.keymap.set('n', '<leader>xt', '<cmd>TodoTrouble<cr>',                         { desc = 'Todo (Trouble)' })
       vim.keymap.set('n', '<leader>xT', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', { desc = 'Todo/Fix/Fixme (Trouble)' })
       vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>',                       { desc = 'Todo' })
@@ -317,10 +307,7 @@ return {
             -- Filter for loaded buffers
             if vim.api.nvim_buf_is_loaded(buf_hndl) then
               if
-                vim.tbl_contains(
-                  excluded_filetypes,
-                  vim.api.nvim_get_option_value('filetype', { buf = buf_hndl })
-                )
+                vim.tbl_contains(excluded_filetypes, vim.api.nvim_get_option_value('filetype', { buf = buf_hndl }))
               then
                 require('tap.utils').logger.info(
                   string.format(
@@ -341,12 +328,7 @@ return {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
     init = function()
-      vim.keymap.set(
-        'n',
-        '<leader>u',
-        vim.cmd.UndotreeToggle,
-        { desc = 'Toggle undo tree' }
-      )
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle undo tree' })
     end,
     config = function()
       vim.opt.undofile = true
@@ -447,18 +429,10 @@ return {
 
         if colorizer.is_buffer_attached(0) then
           colorizer.detach_from_buffer(0)
-          vim.notify(
-            'Disabled colorizing for buffer',
-            vim.log.levels.INFO,
-            { title = 'Colorizer' }
-          )
+          vim.notify('Disabled colorizing for buffer', vim.log.levels.INFO, { title = 'Colorizer' })
         else
           colorizer.attach_to_buffer(0, opts)
-          vim.notify(
-            'Enabled colorizing for buffer',
-            vim.log.levels.INFO,
-            { title = 'Colorizer' }
-          )
+          vim.notify('Enabled colorizing for buffer', vim.log.levels.INFO, { title = 'Colorizer' })
         end
       end, { desc = 'Toggle colorizer' })
     end,
@@ -611,11 +585,7 @@ return {
         local file_length = #file_contents
         local filetype = vim.filetype.match { buf = bufnr }
         if filesize / file_length > 5000 and filetype == 'javascript' then
-          vim.notify(
-            'Suspected minified file, disabling features',
-            vim.log.levels.INFO,
-            { title = 'bigfile.nvim' }
-          )
+          vim.notify('Suspected minified file, disabling features', vim.log.levels.INFO, { title = 'bigfile.nvim' })
           return true
         end
       end,

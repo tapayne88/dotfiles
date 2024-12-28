@@ -65,36 +65,25 @@ local handleLogFile = function(message)
   local file_location = message:match 'Log file: (.*)'
 
   if file_location then
-    vim.notify(
-      'Log file: ' .. file_location,
-      vim.log.levels.DEBUG,
-      { title = 'tsserver' }
-    )
+    vim.notify('Log file: ' .. file_location, vim.log.levels.DEBUG, { title = 'tsserver' })
   end
 end
 
 function M.setup()
   require('lspconfig').ts_ls.setup(lsp_utils.merge_with_default_config {
-    init_options = vim.tbl_deep_extend(
-      'force',
-      require('lspconfig.configs.ts_ls').default_config.init_options,
-      {
-        preferences = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-        tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
+    init_options = vim.tbl_deep_extend('force', require('lspconfig.configs.ts_ls').default_config.init_options, {
+      preferences = {
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
       },
-      lsp_utils.lsp_debug_enabled()
-          and { tsserver = { logVerbosity = 'verbose' } }
-        or {}
-    ),
+      tsserver = { logDirectory = vim.env.XDG_CACHE_HOME .. '/nvim/tsserver' },
+    }, lsp_utils.lsp_debug_enabled() and { tsserver = { logVerbosity = 'verbose' } } or {}),
     handlers = {
       ['window/logMessage'] = function(_, result, header)
         -- Call any global handlers like output-panel.nvim

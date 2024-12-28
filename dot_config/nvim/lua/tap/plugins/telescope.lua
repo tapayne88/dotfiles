@@ -50,9 +50,7 @@ return {
     end, { desc = 'Git files (cwd)' })
 
     vim.keymap.set('n', '<leader>fr', function()
-      local root = require('plenary.path'):new(
-        root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h')
-      )
+      local root = require('plenary.path'):new(root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h'))
       require('telescope.builtin').git_files {
         use_git_root = false,
         cwd = root.filename,
@@ -117,19 +115,15 @@ return {
     end, { desc = 'Grep (Root)' })
 
     vim.keymap.set('n', '<leader>sw', function()
-      require('telescope').extensions.live_grep_args.live_grep_args(
-        vim.tbl_extend('error', search_opts, {
-          default_text = vim.fn.expand '<cword>',
-        })
-      )
+      require('telescope').extensions.live_grep_args.live_grep_args(vim.tbl_extend('error', search_opts, {
+        default_text = vim.fn.expand '<cword>',
+      }))
     end, { desc = 'Search word' })
 
     vim.keymap.set('v', '<leader>sw', function()
-      require('telescope').extensions.live_grep_args.live_grep_args(
-        vim.tbl_extend('error', search_opts, {
-          default_text = getVisualSelection(),
-        })
-      )
+      require('telescope').extensions.live_grep_args.live_grep_args(vim.tbl_extend('error', search_opts, {
+        default_text = getVisualSelection(),
+      }))
     end, { desc = 'Search word' })
 
     require('tap.utils.lsp').on_attach(function(_, bufnr)
@@ -165,24 +159,16 @@ return {
 
       filepath = vim.fn.expand(filepath)
 
-      local is_file_minified =
-        require('tap.utils').check_file_minified(filepath)
+      local is_file_minified = require('tap.utils').check_file_minified(filepath)
 
       if is_file_minified then
-        require('tap.utils').logger.info(
-          'disabled treesitter in telescope preview for ',
-          filepath
-        )
+        require('tap.utils').logger.info('disabled treesitter in telescope preview for ', filepath)
       end
 
       require('telescope.previewers').buffer_previewer_maker(
         filepath,
         bufnr,
-        vim.tbl_deep_extend(
-          'force',
-          opts,
-          { preview = { treesitter = not is_file_minified } }
-        )
+        vim.tbl_deep_extend('force', opts, { preview = { treesitter = not is_file_minified } })
       )
     end
 
@@ -201,9 +187,7 @@ return {
             -- Allow refining of telescope results
             ['<c-f>'] = actions.to_fuzzy_refine,
             ['<c-t>'] = function(...)
-              return require('trouble.providers.telescope').open_with_trouble(
-                ...
-              )
+              return require('trouble.providers.telescope').open_with_trouble(...)
             end,
 
             ['<c-y>'] = yank_selected_entry,
@@ -218,9 +202,7 @@ return {
             ['<Up>'] = actions.cycle_history_prev,
             ['<Down>'] = actions.cycle_history_next,
             ['<c-t>'] = function(...)
-              return require('trouble.providers.telescope').open_with_trouble(
-                ...
-              )
+              return require('trouble.providers.telescope').open_with_trouble(...)
             end,
 
             ['<c-y>'] = yank_selected_entry,
@@ -289,8 +271,7 @@ return {
     require('telescope').load_extension 'notify'
     require('telescope').load_extension 'zf-native'
 
-    vim.opt.grepprg =
-      table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
+    vim.opt.grepprg = table.concat(require('telescope.config').values.vimgrep_arguments, ' ')
 
     -- Setup borderless telescope layout
     require('tap.utils').apply_user_highlights('Telescope', function(hl, p)
