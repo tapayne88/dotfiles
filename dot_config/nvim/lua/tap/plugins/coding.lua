@@ -98,9 +98,7 @@ return {
               ' ',
             },
             max_height = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
-            max_width = math.floor(
-              (WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))
-            ),
+            max_width = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
             winhighlight = 'Normal:ColorColumn,FloatBorder:ColorColumn,CursorLine:PmenuSel,Search:None',
           },
         },
@@ -148,8 +146,7 @@ return {
       }
 
       require('plenary.async').run(function()
-        local asdf_node_executable =
-          require('tap.utils.async').get_asdf_global_executable 'node'
+        local asdf_node_executable = require('tap.utils.async').get_asdf_global_executable 'node'
         if asdf_node_executable == nil then
           return
         end
@@ -183,35 +180,33 @@ return {
         }
 
         -- Register for notifications of request status
-        require('copilot.api').register_status_notification_handler(
-          function(status)
-            local client_id = require('copilot.client').id
-            if client_id == nil then
-              return
-            end
-
-            local msg = {
-              token = 'copilot',
-              value = {
-                title = 'copilot',
-                kind = progress_kind_map[status.status],
-                message = status.message,
-              },
-            }
-            local ctx = { client_id = client_id }
-
-            require('tap.utils').logger.info(
-              string.format(
-                '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
-                vim.inspect(msg),
-                vim.inspect(ctx)
-              )
-            )
-
-            -- Dispatch request status to fidget.nvim
-            vim.lsp.handlers['$/progress'](nil, msg, ctx)
+        require('copilot.api').register_status_notification_handler(function(status)
+          local client_id = require('copilot.client').id
+          if client_id == nil then
+            return
           end
-        )
+
+          local msg = {
+            token = 'copilot',
+            value = {
+              title = 'copilot',
+              kind = progress_kind_map[status.status],
+              message = status.message,
+            },
+          }
+          local ctx = { client_id = client_id }
+
+          require('tap.utils').logger.info(
+            string.format(
+              '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+              vim.inspect(msg),
+              vim.inspect(ctx)
+            )
+          )
+
+          -- Dispatch request status to fidget.nvim
+          vim.lsp.handlers['$/progress'](nil, msg, ctx)
+        end)
       end, require('tap.utils').noop)
     end,
   },

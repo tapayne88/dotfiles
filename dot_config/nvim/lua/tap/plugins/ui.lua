@@ -3,8 +3,7 @@ return {
   {
     'rcarriga/nvim-notify',
     config = function()
-      local debug_enabled = require('tap.utils').debug_enabled()
-        or require('tap.utils.lsp').lsp_debug_enabled()
+      local debug_enabled = require('tap.utils').debug_enabled() or require('tap.utils.lsp').lsp_debug_enabled()
 
       vim.notify = require 'notify'
 
@@ -19,12 +18,7 @@ return {
         level = debug_enabled and vim.log.levels.DEBUG or vim.log.levels.INFO,
       }
 
-      vim.keymap.set(
-        'n',
-        '<leader>nc',
-        ":lua require('notify').dismiss()<CR>",
-        { desc = 'Clear notifications' }
-      )
+      vim.keymap.set('n', '<leader>nc', ":lua require('notify').dismiss()<CR>", { desc = 'Clear notifications' })
     end,
   },
 

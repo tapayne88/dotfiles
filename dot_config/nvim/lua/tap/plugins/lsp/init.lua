@@ -37,11 +37,7 @@ return {
     config = function()
       if require('tap.utils.lsp').lsp_debug_enabled() then
         vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
-        vim.notify(
-          'LSP debug log: ' .. vim.lsp.get_log_path(),
-          vim.log.levels.DEBUG,
-          { title = 'lspconfig' }
-        )
+        vim.notify('LSP debug log: ' .. vim.lsp.get_log_path(), vim.log.levels.DEBUG, { title = 'lspconfig' })
       end
 
       local servers = require 'tap.plugins.lsp.servers'
@@ -79,8 +75,7 @@ return {
         local path = require 'mason-core.path'
         local lsp_utils = require 'tap.utils.lsp'
 
-        local asdf_nodejs_global_version =
-          require('tap.utils.async').get_asdf_global_version 'nodejs'
+        local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
 
         lsp_utils.ensure_installed {
           'hadolint',
@@ -192,18 +187,10 @@ return {
 
         if disabled then
           require('lsp-format').enable { args = filetype }
-          vim.notify(
-            'enabled formatting for ' .. filetype,
-            vim.log.levels.INFO,
-            { title = 'LSP Utils' }
-          )
+          vim.notify('enabled formatting for ' .. filetype, vim.log.levels.INFO, { title = 'LSP Utils' })
         else
           require('lsp-format').disable { args = filetype }
-          vim.notify(
-            'disabled formatting for ' .. filetype,
-            vim.log.levels.WARN,
-            { title = 'LSP Utils' }
-          )
+          vim.notify('disabled formatting for ' .. filetype, vim.log.levels.WARN, { title = 'LSP Utils' })
         end
       end
 
@@ -245,30 +232,20 @@ return {
           force = true,
           desc = '[LSP] Run formatter',
         })
-        vim.api.nvim_buf_create_user_command(
-          bufnr,
-          'FormatInRange',
-          format_in_range,
-          {
-            range = true,
-            nargs = '*',
-            bar = true,
-            force = true,
-            desc = '[LSP] Run formatter for range',
-          }
-        )
+        vim.api.nvim_buf_create_user_command(bufnr, 'FormatInRange', format_in_range, {
+          range = true,
+          nargs = '*',
+          bar = true,
+          force = true,
+          desc = '[LSP] Run formatter for range',
+        })
 
         -- Keymaps
         require('tap.utils').keymap('n', '<leader>tf', toggle_format, {
           buffer = bufnr,
           desc = '[LSP] Toggle formatting on save',
         })
-        require('tap.utils').keymap(
-          'n',
-          '<space>f',
-          format,
-          { buffer = bufnr, desc = '[LSP] Run formatter' }
-        )
+        require('tap.utils').keymap('n', '<space>f', format, { buffer = bufnr, desc = '[LSP] Run formatter' })
         require('tap.utils').keymap(
           'v',
           '<space>f',
@@ -296,13 +273,10 @@ return {
       }
     end,
     init = function()
-      require('tap.utils').apply_user_highlights(
-        'FidgetNvim',
-        function(highlight)
-          highlight('FidgetTitle', { link = 'Title' })
-          highlight('FidgetTask', { link = 'Comment' })
-        end
-      )
+      require('tap.utils').apply_user_highlights('FidgetNvim', function(highlight)
+        highlight('FidgetTitle', { link = 'Title' })
+        highlight('FidgetTask', { link = 'Comment' })
+      end)
     end,
   },
 

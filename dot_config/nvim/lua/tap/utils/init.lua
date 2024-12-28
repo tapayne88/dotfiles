@@ -78,8 +78,7 @@ local function make_mapper(mode, o)
   local parent_opts = vim.deepcopy(o)
 
   return function(lhs, rhs, _opts)
-    local opts =
-      vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
+    local opts = vim.tbl_extend('keep', _opts and vim.deepcopy(_opts) or {}, parent_opts)
 
     M.keymap(mode, lhs, rhs, opts)
   end
@@ -156,10 +155,7 @@ function M.augroup(name, commands)
     local events = cmd.events
     cmd.events = nil
 
-    vim.api.nvim_create_autocmd(
-      events,
-      vim.tbl_extend('error', cmd, { group = group_id })
-    )
+    vim.api.nvim_create_autocmd(events, vim.tbl_extend('error', cmd, { group = group_id }))
   end
 end
 
@@ -198,17 +194,13 @@ function M.require_plugin(name, callback)
 end
 
 local has_augroup = function(name)
-  local augroups = ' '
-    .. vim.api.nvim_exec2('augroup', { output = true }).output
-    .. ' '
+  local augroups = ' ' .. vim.api.nvim_exec2('augroup', { output = true }).output .. ' '
 
   return augroups:match('%s' .. name .. '%s') ~= nil
 end
 
 local get_catppuccin_palette = function()
-  return require('catppuccin.palettes').get_palette(
-    require('catppuccin').flavour
-  )
+  return require('catppuccin.palettes').get_palette(require('catppuccin').flavour)
 end
 
 --- Load custom highlights at the appropriate time
@@ -230,11 +222,7 @@ function M.apply_user_highlights(name, callback, _opts)
   end
 
   local cb = function()
-    callback(
-      M.highlight,
-      get_catppuccin_palette(),
-      require('catppuccin').options
-    )
+    callback(M.highlight, get_catppuccin_palette(), require('catppuccin').options)
   end
 
   M.augroup(augroup_name, {

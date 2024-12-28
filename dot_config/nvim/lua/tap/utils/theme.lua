@@ -1,5 +1,4 @@
-local get_os_command_output_async =
-  require('tap.utils.async').get_os_command_output_async
+local get_os_command_output_async = require('tap.utils.async').get_os_command_output_async
 local a = require 'plenary.async'
 local fwatch = require 'fwatch'
 
@@ -8,10 +7,7 @@ local M = {}
 function M.get_term_theme()
   local res, code = get_os_command_output_async({ 'term-theme', 'echo' }, nil)
   if code ~= 0 then
-    vim.notify(
-      'Failed running `term-theme echo`, ensure `term-theme` has been set',
-      vim.log.levels.ERROR
-    )
+    vim.notify('Failed running `term-theme echo`, ensure `term-theme` has been set', vim.log.levels.ERROR)
     return 'dark'
   end
   return res[1]

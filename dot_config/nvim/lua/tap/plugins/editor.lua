@@ -60,12 +60,7 @@ return {
           vim.keymap.set('n', '<leader>hD', function()
             gs.diffthis '~'
           end, { desc = '[Git] Diff this' })
-          vim.keymap.set(
-            'n',
-            '<leader>td',
-            gs.toggle_deleted,
-            { desc = '[Git] Diff this against default branch' }
-          )
+          vim.keymap.set('n', '<leader>td', gs.toggle_deleted, { desc = '[Git] Diff this against default branch' })
 
           -- Text object
           vim.keymap.set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
@@ -185,12 +180,7 @@ return {
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
-      vim.keymap.set(
-        'n',
-        '-',
-        require('oil').open,
-        { desc = 'Open parent directory' }
-      )
+      vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
     end,
   },
 
@@ -317,10 +307,7 @@ return {
             -- Filter for loaded buffers
             if vim.api.nvim_buf_is_loaded(buf_hndl) then
               if
-                vim.tbl_contains(
-                  excluded_filetypes,
-                  vim.api.nvim_get_option_value('filetype', { buf = buf_hndl })
-                )
+                vim.tbl_contains(excluded_filetypes, vim.api.nvim_get_option_value('filetype', { buf = buf_hndl }))
               then
                 require('tap.utils').logger.info(
                   string.format(
@@ -341,12 +328,7 @@ return {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
     init = function()
-      vim.keymap.set(
-        'n',
-        '<leader>u',
-        vim.cmd.UndotreeToggle,
-        { desc = 'Toggle undo tree' }
-      )
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle undo tree' })
     end,
     config = function()
       vim.opt.undofile = true
@@ -447,18 +429,10 @@ return {
 
         if colorizer.is_buffer_attached(0) then
           colorizer.detach_from_buffer(0)
-          vim.notify(
-            'Disabled colorizing for buffer',
-            vim.log.levels.INFO,
-            { title = 'Colorizer' }
-          )
+          vim.notify('Disabled colorizing for buffer', vim.log.levels.INFO, { title = 'Colorizer' })
         else
           colorizer.attach_to_buffer(0, opts)
-          vim.notify(
-            'Enabled colorizing for buffer',
-            vim.log.levels.INFO,
-            { title = 'Colorizer' }
-          )
+          vim.notify('Enabled colorizing for buffer', vim.log.levels.INFO, { title = 'Colorizer' })
         end
       end, { desc = 'Toggle colorizer' })
     end,
@@ -611,11 +585,7 @@ return {
         local file_length = #file_contents
         local filetype = vim.filetype.match { buf = bufnr }
         if filesize / file_length > 5000 and filetype == 'javascript' then
-          vim.notify(
-            'Suspected minified file, disabling features',
-            vim.log.levels.INFO,
-            { title = 'bigfile.nvim' }
-          )
+          vim.notify('Suspected minified file, disabling features', vim.log.levels.INFO, { title = 'bigfile.nvim' })
           return true
         end
       end,

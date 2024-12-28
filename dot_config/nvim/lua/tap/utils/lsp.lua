@@ -43,39 +43,19 @@ local function on_attach(_, bufnr)
   local with_opts = function(desc)
     return { buffer = bufnr, desc = '[LSP] ' .. desc }
   end
-  nnoremap(
-    'gi',
-    '<cmd>lua vim.lsp.buf.implementation()<CR>',
-    with_opts 'Go to implementation'
-  )
-  nnoremap(
-    '<leader>ac',
-    '<cmd>lua vim.lsp.buf.code_action()<CR>',
-    with_opts 'Show code actions'
-  )
+  nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', with_opts 'Go to implementation')
+  nnoremap('<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', with_opts 'Show code actions')
   nnoremap('<leader>rn', require('live-rename').rename, with_opts 'Rename')
 
   -- other mappings, not sure about these
-  nnoremap(
-    '<space>wa',
-    '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>',
-    with_opts 'Add workspace folder'
-  )
-  nnoremap(
-    '<space>wr',
-    '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>',
-    with_opts 'Remove workspace folder'
-  )
+  nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', with_opts 'Add workspace folder')
+  nnoremap('<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', with_opts 'Remove workspace folder')
   nnoremap(
     '<space>wl',
     '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
     with_opts 'List workspace folders'
   )
-  nnoremap(
-    '<space>D',
-    '<cmd>lua vim.lsp.buf.type_definition()<CR>',
-    with_opts 'Go to type definition'
-  )
+  nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', with_opts 'Go to type definition')
 
   if vim.lsp.inlay_hint then
     keymap('n', '<leader>ih', function()
@@ -89,10 +69,7 @@ end
 ---@param cmd string
 ---@return string[]|nil
 function M.get_bin_path(cmd)
-  local result, code = require('tap.utils.async').get_os_command_output_async(
-    { 'yarn', 'bin', cmd },
-    nil
-  )
+  local result, code = require('tap.utils.async').get_os_command_output_async({ 'yarn', 'bin', cmd }, nil)
 
   if code ~= 0 then
     vim.notify('`yarn bin ' .. cmd .. '` failed', vim.log.levels.ERROR)
@@ -118,12 +95,9 @@ function M.merge_with_default_config(config)
     -- set cmd_cwd to mason install_root_dir to ensure node version consistency
     cmd_cwd = mason_settings.current.install_root_dir,
     handlers = {
-      ['textDocument/signatureHelp'] = vim.lsp.with(
-        vim.lsp.handlers.signature_help,
-        {
-          border = border_window_style,
-        }
-      ),
+      ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = border_window_style,
+      }),
       ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = border_window_style,
       }),
@@ -150,17 +124,9 @@ end
 local function do_install(p, version)
   local notify_opts = { title = 'mason.nvim' }
   if version ~= nil then
-    vim.notify(
-      string.format('%s: updating to %s', p.name, version),
-      vim.log.levels.INFO,
-      notify_opts
-    )
+    vim.notify(string.format('%s: updating to %s', p.name, version), vim.log.levels.INFO, notify_opts)
   else
-    vim.notify(
-      string.format('%s: installing', p.name),
-      vim.log.levels.INFO,
-      notify_opts
-    )
+    vim.notify(string.format('%s: installing', p.name), vim.log.levels.INFO, notify_opts)
   end
   p:on('install:success', function()
     vim.notify(
@@ -170,11 +136,7 @@ local function do_install(p, version)
     )
   end)
   p:on('install:failed', function()
-    vim.notify(
-      string.format('%s: failed to install', p.name),
-      vim.log.levels.ERROR,
-      notify_opts
-    )
+    vim.notify(string.format('%s: failed to install', p.name), vim.log.levels.ERROR, notify_opts)
   end)
   p:install { version = version }
 end
