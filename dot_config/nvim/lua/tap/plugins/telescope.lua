@@ -16,8 +16,6 @@ return {
   },
   cmd = 'Telescope',
   init = function()
-    local root_pattern = require('tap.utils').root_pattern
-
     --------------
     -- Internal --
     --------------
@@ -49,12 +47,22 @@ return {
       require('telescope.builtin').git_files { use_git_root = false }
     end, { desc = 'Git files (cwd)' })
 
-    vim.keymap.set('n', '<leader>fr', function()
-      local root = require('plenary.path'):new(root_pattern { 'package.json', '\\.git' }(vim.fn.expand '%:p:h'))
+    vim.keymap.set('n', '<leader>fw', function()
+      local root = require('tap.utils').root_pattern { 'package.json', '.git' }(vim.fn.expand '%:p:h')
+      local root_path = require('plenary.path'):new(root)
+
+      if not root_path:exists() then
+        vim.notify('Failed to find workspace root', vim.log.levels.WARN, { title = 'telescope' })
+        return
+      end
+
+      local cwd = vim.loop.cwd()
+      local title = root_path:normalize() == '.' and vim.fs.basename(cwd) or root_path:make_relative(cwd)
+
       require('telescope.builtin').git_files {
         use_git_root = false,
-        cwd = root.filename,
-        prompt_title = root:make_relative(vim.loop.cwd()),
+        cwd = root_path.filename,
+        prompt_title = title,
       }
     end, { desc = 'Git files (monorepo workspace)' })
 
@@ -69,21 +77,26 @@ return {
     vim.keymap.set('n', '<leader>ff', function()
       require('telescope.builtin').find_files { hidden = true }
     end, { desc = 'Find files (cwd)' })
+
     vim.keymap.set('n', '<leader>fb', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = vim.fn.expand '%:p:h',
         hidden = true,
       }
     end, { desc = 'File browser (current file)' })
+
     vim.keymap.set('n', '<leader>fB', function()
       require('telescope').extensions.file_browser.file_browser { hidden = true }
     end, { desc = 'File browser (cwd)' })
+
     vim.keymap.set('n', '<leader>fH', function()
       require('telescope').extensions.file_browser.file_browser {
         cwd = '~',
         hidden = true,
       }
     end, { desc = 'File browser ($HOME)' })
+
+    vim.keymap.set('n', '<leader>fr', '<cmd>Telescope oldfiles<CR>', { desc = 'Recent files (Root)' })
 
     ------------
     -- Search --

@@ -243,23 +243,7 @@ function M.run(fns)
 end
 
 function M.root_pattern(patterns)
-  local function find_root(start)
-    if start == '/' then
-      return nil
-    end
-    local res = require('plenary.scandir').scan_dir(
-      start,
-      { search_pattern = patterns, hidden = true, add_dirs = true, depth = 1 }
-    )
-    if #res == 0 then
-      local new = start .. '/../'
-      return find_root(vim.loop.fs_realpath(new))
-    else
-      return start
-    end
-  end
-
-  return find_root
+  return require('lspconfig.util').root_pattern(patterns)
 end
 
 ---@param bufnr number
