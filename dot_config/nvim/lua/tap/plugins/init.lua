@@ -108,4 +108,6 @@ return {
       vim.g.startuptime_tries = 10
     end,
   },
+
+  { 'stevearc/profile.nvim', lazy = true },
 }
