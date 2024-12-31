@@ -1,3 +1,40 @@
+---@param config {type?:string, args?:string[]|fun():string[]?}
+local function get_args(config)
+  local args = type(config.args) == 'function' and (config.args() or {}) or config.args or {} --[[@as string[] | string ]]
+  local args_str = type(args) == 'table' and table.concat(args, ' ') or args --[[@as string]]
+
+  config = vim.deepcopy(config)
+  ---@cast args string[]
+  config.args = function()
+    local new_args = vim.fn.expand(vim.fn.input('Run with args: ', args_str)) --[[@as string]]
+    if config.type and config.type == 'java' then
+      ---@diagnostic disable-next-line: return-type-mismatch
+      return new_args
+    end
+    return require('dap.utils').splitstr(new_args)
+  end
+  return config
+end
+
+local function with_input(prompt, action)
+  return function(prev)
+    vim.ui.input({ prompt = prompt }, function(resp)
+      if resp == nil then
+        vim.notify('input required', vim.log.levels.WARN, { title = 'dap' })
+        return
+      end
+      if prev then
+        return action(vim.fn.extend({ prev }, { resp }))
+      else
+        return action(resp)
+      end
+    end)
+  end
+end
+
+local breakpoint_condition_msg = 'Breakpoint condition: '
+local log_point_msg = 'Log point message (interpolate with {foo}): '
+
 return {
   {
     'rcarriga/nvim-dap-ui',
@@ -10,6 +47,13 @@ return {
         require('dapui').toggle { reset = true }
       end, { desc = 'Toggle Dap UI' })
     end,
+
+    -- stylua: ignore
+    keys = {
+      { "<leader>du", function() require("dapui").toggle({ }) end,  desc = "Dap UI" },
+      { "<leader>de", function() require("dapui").eval() end,       desc = "Eval", mode = {"n", "v"} },
+    },
+
     opts = {
       icons = {
         collapsed = '',
@@ -58,73 +102,53 @@ return {
       'hrsh7th/nvim-cmp',
       'rcarriga/cmp-dap',
     },
+
+    -- stylua: ignore
+    keys = {
+      { "<leader>dB", function() with_input(breakpoint_condition_msg, require("dap").set_breakpoint)() end, desc = "Breakpoint Condition" },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+      { "<leader>dc", function() require("dap").continue() end, desc = "Run/Continue" },
+      { "<leader>da", function() require("dap").continue({ before = get_args }) end, desc = "Run with Args" },
+      { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+      { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
+      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
+      { "<leader>dj", function() require("dap").down() end, desc = "Down" },
+      { "<leader>dk", function() require("dap").up() end, desc = "Up" },
+      { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<leader>dP", function() require("dap").pause() end, desc = "Pause" },
+      { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+      { "<leader>ds", function() require("dap").session() end, desc = "Session" },
+      { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
+      { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+    },
+
     init = function()
       vim.api.nvim_create_user_command('DapToggleBreakpoint', function()
         require('dap').toggle_breakpoint()
       end, { desc = 'Toggle breakpoint' })
 
-      local breakpoint_condition_msg = 'Breakpoint condition: '
-      local log_point_msg = 'Log point message (interpolate with {foo}): '
-
       vim.api.nvim_create_user_command('DapConditionalBreakpoint', function()
-        vim.ui.input({ prompt = breakpoint_condition_msg }, function(cond)
-          if cond == nil then
-            return
-          end
-          require('dap').set_breakpoint(cond)
-        end)
+        with_input(breakpoint_condition_msg, require('dap').set_breakpoint)()
       end, { desc = 'Set conditional breakpoint' })
+
       vim.api.nvim_create_user_command('DapLogPoint', function()
-        vim.ui.input({ prompt = log_point_msg }, function(msg)
-          if msg == nil then
-            return
-          end
-          require('dap').set_breakpoint(nil, nil, msg)
-        end)
+        with_input(log_point_msg, function(resp)
+          return require('dap').set_breakpoint(nil, nil, resp)
+        end)()
       end, { desc = 'Set log point' })
+
       vim.api.nvim_create_user_command('DapConditionalLogPoint', function()
-        vim.ui.input({ prompt = breakpoint_condition_msg }, function(cond)
-          if cond == nil then
-            return
-          end
-          vim.ui.input({ prompt = log_point_msg }, function(msg)
-            if msg == nil then
-              return
-            end
-            require('dap').set_breakpoint(cond, nil, msg)
+        with_input(
+          breakpoint_condition_msg,
+          with_input(log_point_msg, function(args)
+            return require('dap').set_breakpoint(args[1], nil, args[2])
           end)
-        end)
+        )()
       end, { desc = 'Set conditional log point' })
-
-      local keymap = require('tap.utils').keymap
-
-      keymap('n', '<space>b', function()
-        require('dap').toggle_breakpoint()
-      end, { desc = '[DAP] Set breakpoint' })
-
-      keymap('n', '<space>?', function()
-        require('dapui').eval(nil, { enter = true })
-      end, { desc = '[DAP] Eval var under cursor' })
-
-      keymap('n', '<space>c', function()
-        return require('dap').continue()
-      end, { desc = '[DAP] Continue' })
-      keymap('n', '<space>i', function()
-        return require('dap').step_into()
-      end, { desc = '[DAP] Step into' })
-      keymap('n', '<space>o', function()
-        return require('dap').step_over()
-      end, { desc = '[DAP] Step over' })
-      keymap('n', '<space>u', function()
-        return require('dap').step_out()
-      end, { desc = '[DAP] Step out' })
-      keymap('n', '<space>p', function()
-        return require('dap').step_back()
-      end, { desc = '[DAP] Step back' })
-      keymap('n', '<space>r', function()
-        return require('dap').restart()
-      end, { desc = '[DAP] Restart' })
     end,
+
     config = function()
       vim.fn.sign_define('DapBreakpoint', {
         text = '',
