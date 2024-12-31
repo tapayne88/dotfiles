@@ -61,7 +61,7 @@ return {
       vim.diagnostic.open_float { scope = 'line' }
     end, { desc = 'Show line diagnostics' })
     nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', { desc = 'Open buffer diagnostics in local list' })
-    nnoremap('<leader>dt', function()
+    nnoremap('<leader>dd', function()
       virtual_improved_curr = virtual_improved_curr < #virtual_improved and virtual_improved_curr + 1 or 1
       local new_virtual_improved = virtual_improved[virtual_improved_curr]
 
