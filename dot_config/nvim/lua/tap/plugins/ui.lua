@@ -171,12 +171,15 @@ return {
         ---@param ctx {buf: number, ft:string}
         setup = function(ctx)
           vim.cmd [[NoMatchParen]]
-          vim.cmd [[UfoDetach]]
           Snacks.util.wo(0, { foldmethod = 'manual', statuscolumn = '', conceallevel = 0 })
           vim.b.minianimate_disable = true
           vim.schedule(function()
             vim.bo[ctx.buf].syntax = ctx.ft
           end)
+
+          -- Customisations
+          vim.cmd [[UfoDetach]]
+          require('cmp').setup { enabled = false }
         end,
       },
     },
