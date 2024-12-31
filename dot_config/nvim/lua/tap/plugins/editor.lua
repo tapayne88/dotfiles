@@ -225,12 +225,12 @@ return {
     cmd = { 'TroubleToggle', 'Trouble' },
     init = function()
       -- stylua: ignore start
-      vim.keymap.set('n', '<leader>xx', '<cmd>TroubleToggle<cr>',                 { desc = '[Trouble] Toggle list' })
-      vim.keymap.set('n', '<leader>xw', '<cmd>Trouble workspace_diagnostics<cr>', { desc = '[Trouble] LSP workspace diagnostics' })
-      vim.keymap.set('n', '<leader>xd', '<cmd>Trouble document_diagnostics<cr>',  { desc = '[Trouble] LSP document diagnostics' })
-      vim.keymap.set('n', '<leader>xq', '<cmd>Trouble quickfix<cr>',              { desc = '[Trouble] Quickfix list' })
-      vim.keymap.set('n', '<leader>xl', '<cmd>Trouble loclist<cr>',               { desc = '[Trouble] Location list' })
-      vim.keymap.set('n', 'gR', '<cmd>Trouble lsp_references<cr>',                { desc = '[Trouble] LSP references' })
+      vim.keymap.set('n', '<leader>xx', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',           { desc = '[Trouble] Buffer diagnostics' })
+      vim.keymap.set('n', '<leader>xX', '<cmd>Trouble diagnostics toggle<cr>',                        { desc = '[Trouble] Diagnostics' })
+      vim.keymap.set('n', '<leader>cl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', { desc = '[Trouble] LSP Definitions / references / ...' })
+      vim.keymap.set('n', '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                            { desc = '[Trouble] Location list' })
+      vim.keymap.set('n', '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                             { desc = '[Trouble] Quickfix list' })
+      vim.keymap.set('n', 'gR',         '<cmd>Trouble lsp_references focus=true<cr>',                 { desc = '[Trouble] LSP references' })
       -- stylua: ignore end
     end,
     opts = {
