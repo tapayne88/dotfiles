@@ -96,7 +96,11 @@ return {
       }
     end, { desc = 'File browser ($HOME)' })
 
-    vim.keymap.set('n', '<leader>fr', '<cmd>Telescope oldfiles<CR>', { desc = 'Recent files (Root)' })
+    vim.keymap.set('n', '<leader>fr', function()
+      require('telescope.builtin').oldfiles {
+        cwd = vim.loop.cwd(),
+      }
+    end, { desc = 'Recent files (Root)' })
 
     ------------
     -- Search --
