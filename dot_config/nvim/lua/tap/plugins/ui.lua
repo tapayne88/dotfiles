@@ -5,7 +5,18 @@ return {
     config = function()
       local debug_enabled = require('tap.utils').debug_enabled() or require('tap.utils.lsp').lsp_debug_enabled()
 
-      vim.notify = require 'notify'
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.notify = function(msg, lvl, opts)
+        local options = vim.tbl_extend('force', {
+          on_open = function(win)
+            local buf = vim.api.nvim_win_get_buf(win)
+            vim.api.nvim_set_option_value('filetype', 'markdown', { buf = buf })
+            require('render-markdown').enable()
+          end,
+        }, opts or {})
+
+        return require 'notify'(msg, lvl, options)
+      end
 
       require('notify').setup {
         icons = {
