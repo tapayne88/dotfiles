@@ -127,6 +127,7 @@ return {
 
   {
     'folke/snacks.nvim',
+    priority = 1000,
     opts = {
       dashboard = {
         preset = {
@@ -153,6 +154,7 @@ return {
           -- stylua: ignore end
         },
       },
+      bigfile = { enabled = true },
     },
   },
 

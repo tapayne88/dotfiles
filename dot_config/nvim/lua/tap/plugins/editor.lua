@@ -563,32 +563,6 @@ return {
     },
   },
 
-  {
-    'tapayne88/bigfile.nvim',
-    branch = 'byte-filesize',
-    event = 'BufReadPre',
-    opts = {
-      filesize = 2 * math.pow(1024, 2), -- 2MiB
-      filesize_unit = 'bytes',
-      pattern = function(bufnr, filesize)
-        local ok, file_contents = pcall(function()
-          return vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
-        end)
-
-        if not ok then
-          return
-        end
-
-        local file_length = #file_contents
-        local filetype = vim.filetype.match { buf = bufnr }
-        if filesize / file_length > 5000 and filetype == 'javascript' then
-          vim.notify('Suspected minified file, disabling features', vim.log.levels.INFO, { title = 'bigfile.nvim' })
-          return true
-        end
-      end,
-    },
-  },
-
   -- SQL Plugins
   {
     'kristijanhusak/vim-dadbod-ui',
