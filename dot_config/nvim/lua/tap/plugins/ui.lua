@@ -154,7 +154,20 @@ return {
           -- stylua: ignore end
         },
       },
-      bigfile = { enabled = true },
+      bigfile = {
+        enabled = true,
+        -- Enable or disable features when big file detected
+        ---@param ctx {buf: number, ft:string}
+        setup = function(ctx)
+          vim.cmd [[NoMatchParen]]
+          vim.cmd [[UfoDetach]]
+          Snacks.util.wo(0, { foldmethod = 'manual', statuscolumn = '', conceallevel = 0 })
+          vim.b.minianimate_disable = true
+          vim.schedule(function()
+            vim.bo[ctx.buf].syntax = ctx.ft
+          end)
+        end,
+      },
     },
   },
 
