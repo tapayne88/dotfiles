@@ -7,6 +7,7 @@
 # MacOS only files
 {{- if ne "macOS" .ostype }}
 .Brewfile
+.config/aerospace
 .config/zsh/functions/brew.zsh
 {{- end }}
 
