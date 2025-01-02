@@ -224,4 +224,17 @@ return {
       close = { enable = false },
     },
   },
+
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    event = 'VeryLazy',
+    opts = {
+      options = {
+        mode = 'tabs',
+        auto_toggle_bufferline = false,
+      },
+    },
+  },
 }
