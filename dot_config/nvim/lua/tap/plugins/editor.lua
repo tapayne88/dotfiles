@@ -589,6 +589,9 @@ return {
       vim.g.db_ui_show_database_icon = true
       vim.g.db_ui_tmp_query_location = data_path .. '/dadbod_ui/tmp'
       vim.g.db_ui_use_nerd_fonts = true
+
+      -- Use <leader>S to execute query
+      vim.g.db_ui_execute_on_save = false
     end,
     config = function()
       require('cmp').setup.filetype({ 'sql' }, {
