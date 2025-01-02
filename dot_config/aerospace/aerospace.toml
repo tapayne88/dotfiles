@@ -189,3 +189,11 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+alt-shift-space = ['''exec-and-forget osascript -e '
+if (application "Spotify" is running) then
+	tell application "Spotify"
+		playpause
+	end tell
+end if'
+''', 'mode main']
