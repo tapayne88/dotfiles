@@ -1,4 +1,9 @@
 # vim set:ft=brewfile
+tap "FelixKratz/formulae"
+cask "font-hack-nerd-font" # font for sketchybar
+brew "borders" # macos focus border 
+brew "sketchybar"
+
 brew "dark-mode"
 brew "mas"
 brew "node"
