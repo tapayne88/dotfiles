@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# check-vpn-connected
+#
+# Determines if the Global Protect VPN is connected. The detection method uses
+# a comparison of the client's configured IP addresses and the active network
+# interface addresses.
+#
+# - If VPN is connected, the script exits with code 0.
+#
+# - If VPN is NOT connected, the script exits with code 1.
+#
+# Arguments:
+#
+#   -v | --verbose  Prints out a message to STDERR if not connected.
+#   -d | --debug    Prints debugging info. Implies --verbose.
+#
+# shellcheck disable=SC2155
+#   (see https://github.com/koalaman/shellcheck/wiki)
+#
+
+main() {
+  local verbose=0;
+  local debug=0;
+  local ipv4AddressRegex="(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --verbose|-v)
+        # Verbose output.
+        verbose=1;
+        ;;
+
+      --debug|-d)
+        # Debug output; implies verbose.
+        debug=1;
+        verbose=1;
+    esac;
+    shift;
+  done;
+
+  # Get the active interface addresses.
+  # shellcheck disable=SC2207
+  # IPv6 support would require filtering on 'inet6' and an IPv6 regex.
+  local interfaceIPs=($(/sbin/ifconfig -a -u inet | grep -F "inet" | grep -oE "${ipv4AddressRegex}"));
+  if [[ "${debug}" -ne 0 ]]; then
+    >&2 echo "Interface Addresses: ${interfaceIPs[*]}";
+  fi;
+
+  # Read Global Protect client configuration, return the listed IPv4 addresses.
+  # IPv6 support would require filtering on 'PreferredIPv6_' and an IPv6 regex.
+  IFS=$'\n' read -d '' -r -a vpnIPs < <( \
+    defaults read /Library/Preferences/com.paloaltonetworks.GlobalProtect.settings.plist | \
+    grep -F "PreferredIP_" | \
+    grep -oE "${ipv4AddressRegex}" \
+  );
+  if [[ "${debug}" -ne 0 ]]; then
+    >&2 echo "VPN IPs: ${vpnIPs[*]}";
+  fi;
+
+  # If one of the interface IPs matches one of the VPN IPs then the VPN is connected.
+  # printf converts the bash array into a pipe-delimited list and XXXX is a never-match last element.
+  if grep -qE "($(printf '%s|' "${interfaceIPs[@]}")XXXX)" <<< "${vpnIPs[@]}"; then
+    exit 0;
+  else
+    if [[ "${verbose}" -ne 0 ]]; then
+      >&2 echo "$(tput setaf 208)Active VPN connection required!$(tput op)";
+    fi;
+
+    exit 1;
+  fi;
+}
+
+main "$@";
