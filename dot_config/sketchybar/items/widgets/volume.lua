@@ -10,7 +10,7 @@ local volume_percent = sbar.add('item', 'widgets.volume1', {
   label = {
     string = '??%',
     padding_left = -1,
-    font = { family = settings.font.numbers },
+    font = { family = settings.font },
   },
 })
 
