@@ -8,6 +8,7 @@
 {{- if ne "macOS" .ostype }}
 .Brewfile
 .config/aerospace
+.config/sketchybar
 .config/zsh/functions/brew.zsh
 {{- end }}
 
