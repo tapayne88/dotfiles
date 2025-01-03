@@ -183,6 +183,9 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# works but has limited functionality with workspace-to-monitor-force-assignment
+alt-shift-o = ['move-workspace-to-monitor --wrap-around next', 'mode main']
+
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
