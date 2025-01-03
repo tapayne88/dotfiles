@@ -2,8 +2,6 @@ local colors = require 'colors'
 local settings = require 'settings'
 local app_icons = require 'helpers.app_icons'
 
-local item_order = ''
-
 sbar.exec('aerospace list-workspaces --all', function(spaces)
   for space_name in spaces:gmatch '[^\r\n]+' do
     local space = sbar.add('item', 'space.' .. space_name, {
@@ -27,12 +25,6 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
         height = 26,
         border_color = colors.bg1,
       },
-    })
-
-    -- Padding space
-    local space_padding = sbar.add('item', 'space.padding.' .. space_name, {
-      script = '',
-      width = settings.group_paddings,
     })
 
     space:subscribe('aerospace_workspace_change', function(env)
@@ -62,8 +54,5 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
         end)
       end)
     end)
-
-    item_order = item_order .. ' ' .. space.name .. ' ' .. space_padding.name
   end
-  sbar.exec('sketchybar --reorder apple ' .. item_order .. ' front_app')
 end)
