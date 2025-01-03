@@ -1,5 +1,4 @@
 local colors = require 'colors'
-local icons = require 'icons'
 local settings = require 'settings'
 local app_icons = require 'helpers.app_icons'
 
@@ -9,19 +8,16 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
   for space_name in spaces:gmatch '[^\r\n]+' do
     local space = sbar.add('item', 'space.' .. space_name, {
       icon = {
-        font = { family = settings.font.numbers },
+        font = { family = settings.font },
         string = string.sub(space_name, 3),
-        padding_left = 7,
-        padding_right = 3,
         color = colors.white,
         highlight_color = colors.red,
       },
       label = {
-        padding_right = 12,
+        padding_right = 18,
         color = colors.grey,
         highlight_color = colors.white,
         font = 'sketchybar-app-font:Regular:16.0',
-        y_offset = -1,
       },
       padding_right = 1,
       padding_left = 1,
@@ -54,7 +50,6 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
 
     space:subscribe('space_windows_change', function()
       sbar.exec('aerospace list-windows --format %{app-name} --workspace ' .. space_name, function(windows)
-        print(windows)
         local icon_line = ''
         for app in windows:gmatch '[^\r\n]+' do
           local lookup = app_icons[app]
