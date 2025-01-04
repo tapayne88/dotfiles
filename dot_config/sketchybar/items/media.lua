@@ -104,19 +104,19 @@ media_cover:subscribe('media_change', function(env)
   end
 end)
 
-media_cover:subscribe('mouse.entered', function(env)
+media_cover:subscribe('mouse.entered', function()
   interrupt = interrupt + 1
   animate_detail(true)
 end)
 
-media_cover:subscribe('mouse.exited', function(env)
+media_cover:subscribe('mouse.exited', function()
   animate_detail(false)
 end)
 
-media_cover:subscribe('mouse.clicked', function(env)
+media_cover:subscribe('mouse.clicked', function()
   media_cover:set { popup = { drawing = 'toggle' } }
 end)
 
-media_title:subscribe('mouse.exited.global', function(env)
+media_title:subscribe('mouse.exited.global', function()
   media_cover:set { popup = { drawing = false } }
 end)
