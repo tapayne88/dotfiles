@@ -11,7 +11,7 @@ local wifi = sbar.add('item', 'widgets.wifi', {
     },
     color = colors.bg1,
     padding_left = 8,
-    padding_right = 6,
+    padding_right = 8,
   },
   label = { padding_left = 0, padding_right = 0 },
   update_freq = 180,
