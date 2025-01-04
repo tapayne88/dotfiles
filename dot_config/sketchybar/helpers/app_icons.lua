@@ -153,7 +153,7 @@ return {
   ['MAMP PRO'] = ':mamp:',
   ['Maps'] = ':maps:',
   ['Google Maps'] = ':maps:',
-  ['Ghostty'] = ':terminal:',
+  ['Ghostty'] = ':ghostty:',
   ['Marta'] = ':marta:',
   ['Matlab'] = ':matlab:',
   ['Mattermost'] = ':mattermost:',
