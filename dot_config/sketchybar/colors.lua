@@ -31,21 +31,21 @@ local palette = {
 return {
   palette = palette,
 
-  grey = 0xff949cbb,
-  black = 0xff232634,
-  white = 0xffc6d0f5,
+  grey = palette.text,
+  black = palette.mantle,
+  white = palette.text,
   transparent = 0x00000000,
 
+  bg1 = palette.mantle,
+  bg2 = palette.base,
+
   bar = {
-    bg = 0xff1e1e2e,
-    border = 0xff292c3c,
+    bg = palette.crust,
   },
+
   popup = {
-    bg = 0xff737994,
-    border = 0xff7f8490,
+    bg = palette.overlay_0,
   },
-  bg1 = 0xff292c3c,
-  bg2 = 0xff303446,
 
   with_alpha = function(color, alpha)
     if alpha > 1.0 or alpha < 0.0 then
