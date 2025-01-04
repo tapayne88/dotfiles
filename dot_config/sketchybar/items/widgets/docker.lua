@@ -6,14 +6,18 @@ local docker = sbar.add('item', 'widgets.docker', {
   icon = {
     font = 'sketchybar-app-font:Regular:16.0',
     y_offset = 1,
+    padding_left = 9,
+    padding_right = 6,
+    drawing = false,
   },
-  label = { padding_left = 0, padding_right = 0 },
+  label = { drawing = false },
+  background = { color = colors.bg1, border_width = 0 },
   update_freq = 180,
-  drawing = false,
+  width = 0,
 })
 
-local function update_docker_status()
-  sbar.exec('ps aux | grep -v grep | grep -c -i docker', function(docker_pid)
+docker:subscribe({ 'routine' }, function()
+  sbar.exec('ps aux | grep -v grep | grep -c Docker', function(docker_pid)
     local drawing = false
 
     if docker_pid ~= '0' then
@@ -23,10 +27,9 @@ local function update_docker_status()
     docker:set {
       icon = {
         string = app_icons['Docker Desktop'],
+        drawing = drawing,
       },
-      drawing = drawing,
+      width = 'dynamic',
     }
   end)
-end
-
-update_docker_status()
+end)
