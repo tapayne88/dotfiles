@@ -53,7 +53,7 @@ sbar.add('item', 'widgets.volume.padding', {
 local volume_slider = sbar.add('slider', popup_width, {
   position = 'popup.' .. volume_bracket.name,
   slider = {
-    highlight_color = colors.blue,
+    highlight_color = colors.palette.blue,
     background = {
       height = 6,
       corner_radius = 3,

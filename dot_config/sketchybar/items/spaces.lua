@@ -9,7 +9,7 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
         font = { family = settings.font },
         string = string.sub(space_name, 3),
         color = colors.white,
-        highlight_color = colors.red,
+        highlight_color = colors.palette.red,
       },
       label = {
         padding_right = 18,
