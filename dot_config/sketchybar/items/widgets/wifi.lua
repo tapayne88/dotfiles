@@ -28,11 +28,11 @@ local function update_vpn_status()
       local is_vpn = exit_code == 0
 
       if is_vpn then
-        color = colors.green
+        color = colors.palette.green
         icon = icons.wifi.vpn
         drawing = true
       elseif ip_address ~= '' then
-        color = colors.blue
+        color = colors.palette.blue
         icon = icons.wifi.connected
         drawing = true
       else
