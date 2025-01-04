@@ -1,5 +1,6 @@
 local settings = require 'settings'
 local colors = require 'colors'
+local icons = require 'icons'
 
 local wifi = sbar.add('item', 'widgets.wifi', {
   position = 'right',
@@ -28,15 +29,16 @@ local function update_vpn_status()
 
       if is_vpn then
         color = colors.green
-        icon = '󱚿'
+        icon = icons.wifi.vpn
         drawing = true
       elseif ip_address ~= '' then
         color = colors.blue
-        icon = '󰖩'
+        icon = icons.wifi.connected
         drawing = true
       else
         color = colors.white
         icon = '󰖪'
+        icon = icons.wifi.disconnected
         drawing = true
       end
 
