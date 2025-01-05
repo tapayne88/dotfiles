@@ -45,7 +45,6 @@
     unixtools.watch # run command periodically
     vim # vim
     wget # fetch things from urls
-    wttrbar # module for showing the weather
     xsv # fast CSV toolkit
     yarn # JS package manager
     yq # yaml cli processor (needs jq)
@@ -60,5 +59,6 @@
     unstable.nerdfix # fix for nerd fonts
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
+    unstable.wttrbar # module for showing the weather
   ];
 }

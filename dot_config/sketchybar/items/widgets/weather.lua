@@ -13,7 +13,7 @@ weather.icon = sbar.add('item', 'weather.icon', {
     padding_right = -10,
   },
   position = 'right',
-  y_offset = 10,
+  y_offset = 8,
 })
 
 weather.temp = sbar.add('item', 'weather.temp', {
@@ -34,7 +34,7 @@ weather.temp = sbar.add('item', 'weather.temp', {
   drawing = false,
   update_freq = 900,
   position = 'right',
-  y_offset = -10,
+  y_offset = -8,
 })
 
 weather.details = sbar.add('item', 'weather.details', {
@@ -64,7 +64,7 @@ weather.temp:subscribe({ 'routine', 'forced', 'system_woke', 'weather_update' },
   weather.temp:set { popup = { drawing = false } }
 
   -- Fetch events from calendar
-  sbar.exec(os.getenv 'HOME' .. '/.nix-profile/bin/wttrbar --location York', function(forecast)
+  sbar.exec(os.getenv 'HOME' .. '/.nix-profile/bin/wttrbar --location York --mph --nerd', function(forecast)
     -- Extract icon and temperature
     for i, value in ipairs(STR_SPLIT(forecast.text)) do
       -- first part of response is icon
