@@ -17,12 +17,8 @@ local docker = sbar.add('item', 'widgets.docker', {
 })
 
 docker:subscribe({ 'routine' }, function()
-  sbar.exec('ps aux | grep -v grep | grep -c Docker', function(docker_pid)
-    local drawing = false
-
-    if docker_pid ~= '0' then
-      drawing = true
-    end
+  sbar.exec('ps aux | grep -v grep | grep -c "Docker Desktop"', function(docker_proc_count)
+    local drawing = TRIM(docker_proc_count) ~= '0'
 
     docker:set {
       icon = {

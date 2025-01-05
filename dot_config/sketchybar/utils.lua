@@ -28,6 +28,10 @@ STR_SPLIT = function(inputstr, sep)
   return t
 end
 
+TRIM = function(str)
+  return str:gsub('%s+', '')
+end
+
 PRINT_TABLE = function(t)
   for key, value in pairs(t) do
     if type(value) == 'table' then
