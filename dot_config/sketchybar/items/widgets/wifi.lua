@@ -12,8 +12,9 @@ local wifi = sbar.add('item', 'widgets.wifi', {
     color = colors.bg1,
     padding_left = 8,
     padding_right = 8,
-    drawing = false,
   },
+  drawing = false,
+  updates = true,
   label = { drawing = false },
   update_freq = 180,
 })
@@ -41,11 +42,11 @@ wifi:subscribe({ 'routine', 'wifi_change' }, function()
       wifi:set {
         icon = {
           string = icon,
-          drawing = true,
         },
         background = {
           color = color,
         },
+        drawing = true,
       }
     end)
   end)

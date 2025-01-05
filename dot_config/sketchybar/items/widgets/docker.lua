@@ -8,12 +8,12 @@ local docker = sbar.add('item', 'widgets.docker', {
     y_offset = 1,
     padding_left = 9,
     padding_right = 6,
-    drawing = false,
   },
   label = { drawing = false },
   background = { color = colors.bg1, border_width = 0 },
   update_freq = 180,
-  width = 0,
+  drawing = false,
+  updates = true,
 })
 
 docker:subscribe({ 'routine' }, function()
@@ -27,9 +27,8 @@ docker:subscribe({ 'routine' }, function()
     docker:set {
       icon = {
         string = app_icons['Docker Desktop'],
-        drawing = drawing,
       },
-      width = 'dynamic',
+      drawing = drawing,
     }
   end)
 end)
