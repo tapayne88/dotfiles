@@ -11,7 +11,6 @@ local wifi = sbar.add('item', 'widgets.wifi', {
     },
     color = colors.bg1,
     padding_left = 8,
-    padding_right = 8,
   },
   drawing = false,
   updates = true,
@@ -24,24 +23,29 @@ wifi:subscribe({ 'routine', 'wifi_change' }, function()
     sbar.exec(os.getenv 'HOME' .. '/.local/bin/check-vpn-connected', function(_, exit_code)
       local color
       local icon
+      local padding_right
 
       local is_vpn = exit_code == 0
 
       if is_vpn then
         color = colors.palette.green
         icon = icons.wifi.vpn
+        padding_right = 10
       elseif ip_address ~= '' then
         color = colors.palette.blue
         icon = icons.wifi.connected
+        padding_right = 9
       else
         color = colors.white
         icon = '󰖪'
         icon = icons.wifi.disconnected
+        padding_right = 9
       end
 
       wifi:set {
         icon = {
           string = icon,
+          padding_right = padding_right,
         },
         background = {
           color = color,
