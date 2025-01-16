@@ -68,6 +68,13 @@ outer.right      = 10
 9 = ['built-in.*', 'main']	# email
 10 = ['built-in.*', 'main']	# chat / IM
 
+alt-b = 'workspace 1'	# browser
+alt-t = 'workspace 2'	# terminal
+alt-m = 'workspace 7'	# music
+alt-d = 'workspace 8'	# todo list
+alt-e = 'workspace 9'	# email
+alt-c = 'workspace 10'	# chat / IM
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -141,6 +148,21 @@ alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 10'
+
+# Alternative mappings
+alt-b = 'workspace 1'	# browser
+alt-t = 'workspace 2'	# terminal
+alt-m = 'workspace 7'	# music
+alt-d = 'workspace 8'	# todo list
+alt-e = 'workspace 9'	# email
+alt-c = 'workspace 10'	# chat / IM
+
+alt-shift-b = 'move-node-to-workspace 1'
+alt-shift-t = 'move-node-to-workspace 2'
+alt-shift-m = 'move-node-to-workspace 7'
+alt-shift-d = 'move-node-to-workspace 8'
+alt-shift-e = 'move-node-to-workspace 9'
+alt-shift-c = 'move-node-to-workspace 10'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
