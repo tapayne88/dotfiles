@@ -59,5 +59,6 @@
     unstable.nerdfix # fix for nerd fonts
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
+    unstable.wttrbar # module for showing the weather
   ];
 }

@@ -1,4 +1,11 @@
 # vim set:ft=brewfile
+tap "FelixKratz/formulae"
+cask "font-hack-nerd-font" # font for sketchybar
+cask "sf-symbols" # apple's own nerdfont icons
+brew "lua" # required for sketchybar lua plugins
+brew "borders" # macos focus border 
+brew "sketchybar"
+
 brew "dark-mode"
 brew "mas"
 brew "node"
