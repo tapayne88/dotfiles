@@ -94,6 +94,22 @@
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
   which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1 \"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
+  # Git town aliases
+  append = town append
+  compress = town compress
+  contribute = town contribute
+  diff-parent = town diff-parent
+  hack = town hack
+  delete = town delete
+  observe = town observe
+  park = town park
+  prepend = town prepend
+  propose = town propose
+  rename = town rename
+  repo = town repo
+  set-parent = town set-parent
+  ship = town ship
+  sync = town sync
 
 [diff]
   renameLimit = 5000
