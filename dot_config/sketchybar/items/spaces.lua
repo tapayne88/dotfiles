@@ -2,7 +2,7 @@ local colors = require 'colors'
 local settings = require 'settings'
 local app_icons = require 'helpers.app_icons'
 
-sbar.exec('aerospace list-workspaces --all', function(spaces)
+sbar.exec('aerospace list-workspaces --all | grep -v "^alt-"', function(spaces)
   for space_name in spaces:gmatch '[^\r\n]+' do
     local space = sbar.add('item', 'space.' .. space_name, {
       icon = {
@@ -41,18 +41,22 @@ sbar.exec('aerospace list-workspaces --all', function(spaces)
     end)
 
     space:subscribe('space_windows_change', function()
-      sbar.exec('aerospace list-windows --format %{app-name} --workspace ' .. space_name, function(windows)
-        local icon_line = ''
-        for app in windows:gmatch '[^\r\n]+' do
-          local lookup = app_icons[app]
-          local icon = ((lookup == nil) and app_icons['default'] or lookup)
-          icon_line = icon_line .. ' ' .. icon
-        end
+      sbar.exec(
+        'aerospace list-windows --format %{app-name}:%{window-title} --workspace ' .. space_name .. ' | grep -v ":$"',
+        function(windows)
+          local icon_line = ''
+          for app in windows:gmatch '[^\r\n]+' do
+            local app_name = STR_SPLIT(app, ':')
+            local lookup = app_icons[app_name[1]]
+            local icon = ((lookup == nil) and app_icons['Default'] or lookup)
+            icon_line = icon_line .. ' ' .. icon
+          end
 
-        sbar.animate('tanh', 10, function()
-          space:set { label = icon_line }
-        end)
-      end)
+          sbar.animate('tanh', 10, function()
+            space:set { label = icon_line }
+          end)
+        end
+      )
     end)
   end
 end)
