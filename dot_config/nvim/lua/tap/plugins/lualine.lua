@@ -69,8 +69,9 @@ return {
 
       local function project_name()
         local get = function()
-          local name = require('tap.utils').root_pattern { '.git' }(vim.loop.cwd())
-          return vim.fs.basename(name)
+          local filepath = require('plenary.path'):new(vim.fn.expand '%s'):make_relative(vim.loop.cwd())
+          local dirname = vim.fs.basename(vim.loop.cwd())
+          return dirname .. '/' .. filepath
         end
 
         return {
