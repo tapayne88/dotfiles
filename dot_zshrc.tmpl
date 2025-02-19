@@ -100,6 +100,9 @@ export FORGIT_NO_ALIASES=true
 # Setup ls colors
 eval `dircolors $HOME/.dir_colors`
 
+# Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
+prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
+
 source ~/.nix-profile/share/antigen/antigen.zsh
 
 # patches required for modules
@@ -134,9 +137,6 @@ antigen bundle $ZSH_HOME/functions
 antigen apply
 
 sourceOPSession
-
-# Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
-prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
 
 # forgit config
 # configure checkout_branch to sort by most recent commit
