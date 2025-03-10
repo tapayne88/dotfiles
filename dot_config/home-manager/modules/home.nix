@@ -32,8 +32,9 @@
     netcat # netcat implementaion
     nodejs # nodejs...
     poppler_utils # pdf utils - pdfunite to combine pdfs
-    python3 # python311
-    python311Packages.pip # pip for python311
+    python3 # python312
+    python312Packages.pip # pip for python312
+    python312Packages.setuptools # setuptools for python312
     ripgrep # rg searching
     silver-searcher # ag searching
     neofetch # pretty print of system info
