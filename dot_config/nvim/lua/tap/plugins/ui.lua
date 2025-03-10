@@ -231,9 +231,42 @@ return {
     dependencies = 'nvim-tree/nvim-web-devicons',
     event = 'VeryLazy',
     opts = {
+      ---@type bufferline.Options
       options = {
         mode = 'tabs',
         auto_toggle_bufferline = false,
+        name_formatter = function(buf)
+          -- buf contains:
+          -- name                | str        | the basename of the active file
+          -- path                | str        | the full path of the active file
+          -- bufnr               | int        | the number of the active buffer
+          -- buffers (tabs only) | table(int) | the numbers of the buffers in the tab
+          -- tabnr (tabs only)   | int        | the "handle" of the tab, can be converted to its ordinal number using: `vim.api.nvim_tabpage_get_number(buf.tabnr)`
+
+          local filetype = vim.bo[buf.bufnr].filetype
+
+          if filetype == 'fugitive' then
+            return 'fugitive'
+          end
+
+          if string.find(buf.path, '/dadbod_ui/') or vim.tbl_contains({ 'dbui', 'dbout' }, filetype) then
+            return 'DBUI'
+          end
+
+          return buf.name
+        end,
+        get_element_icon = function(element)
+          local filetype = element.filetype
+
+          if filetype == 'fugitive' then
+            filetype = 'git'
+          elseif string.find(element.path, '/dadbod_ui/') or vim.tbl_contains({ 'dbui', 'dbout' }, filetype) then
+            filetype = 'sql'
+          end
+
+          local icon, hl = require('nvim-web-devicons').get_icon_by_filetype(filetype, { default = false })
+          return icon, hl
+        end,
       },
     },
   },
