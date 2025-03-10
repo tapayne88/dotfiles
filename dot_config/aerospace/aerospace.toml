@@ -68,8 +68,9 @@ outer.top        = [{ monitor."built-in" = 15 }, 45]
 outer.right      = 10
 
 [workspace-to-monitor-force-assignment]
-1 = ['dell.*', 'main']	# browser
+1 = 'main'	# browser
 2 = 'main'	# terminal
+6 = ['built-in.*', 'main']	# other
 7 = ['built-in.*', 'main']	# music
 8 = ['built-in.*', 'main']	# todo list
 9 = ['built-in.*', 'main']	# email
