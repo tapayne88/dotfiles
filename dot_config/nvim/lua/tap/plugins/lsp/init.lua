@@ -155,10 +155,8 @@ return {
           vim.b.disable_autoformat = false
         elseif vim.b.disable_autoformat then
           vim.b.disable_autoformat = false
-          vim.notify('enabled formatting for buffer', vim.log.levels.INFO, { title = 'Formatter' })
         else
           vim.b.disable_autoformat = true
-          vim.notify('disabled formatting for buffer', vim.log.levels.WARN, { title = 'Formatter' })
         end
       end
 

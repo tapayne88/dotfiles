@@ -162,6 +162,19 @@ return {
         lualine_x = {
           {
             function()
+              return '󱪘'
+            end,
+            separator = {
+              left = section_separators.right,
+              right = section_separators.left,
+            },
+            color = 'LualineDiagnosticWarn',
+            cond = function()
+              return vim.g.disable_autoformat or vim.b.disable_autoformat
+            end,
+          },
+          {
+            function()
               return ''
             end,
             separator = {
