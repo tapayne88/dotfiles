@@ -114,104 +114,102 @@ return {
 
   -- async formatting
   {
-    {
-      'stevearc/conform.nvim',
-      dependencies = {
-        'williamboman/mason.nvim',
-      },
-      init = function()
-        local lsp_utils = require 'tap.utils.lsp'
+    'stevearc/conform.nvim',
+    dependencies = {
+      'williamboman/mason.nvim',
+    },
+    init = function()
+      local lsp_utils = require 'tap.utils.lsp'
 
-        lsp_utils.ensure_installed {
+      lsp_utils.ensure_installed {
+        'prettierd',
+        'sqlfluff',
+        'stylua',
+      }
+
+      vim.api.nvim_create_user_command('FormatDisable', function(args)
+        if args.bang then
+          -- FormatDisable! will disable formatting just for this buffer
+          vim.b.disable_autoformat = true
+        else
+          vim.g.disable_autoformat = true
+        end
+      end, {
+        desc = '[Format] Disable autoformat-on-save',
+        bang = true,
+      })
+      vim.api.nvim_create_user_command('FormatEnable', function()
+        vim.b.disable_autoformat = false
+        vim.g.disable_autoformat = false
+      end, {
+        desc = '[Format] Re-enable autoformat-on-save',
+      })
+
+      local function toggle_format()
+        local disabled = vim.b.disable_autoformat
+
+        if disabled then
+          vim.b.disable_autoformat = false
+          vim.notify('enabled formatting for buffer', vim.log.levels.INFO, { title = 'Formatter' })
+        else
+          vim.b.disable_autoformat = true
+          vim.notify('disabled formatting for buffer', vim.log.levels.WARN, { title = 'Formatter' })
+        end
+      end
+
+      vim.keymap.set('n', '<leader>tf', toggle_format, {
+        desc = '[Format] Toggle formatting on save',
+      })
+      vim.keymap.set({ 'n', 'v' }, '<space>f', require('conform').format, { desc = '[Format] Run formatter' })
+    end,
+
+    config = function()
+      require('plenary.async').run(function()
+        local js_ts_formatters = {
           'prettierd',
-          'sqlfluff',
-          'stylua',
+          'prettier',
+          stop_after_first = true,
         }
 
-        vim.api.nvim_create_user_command('FormatDisable', function(args)
-          if args.bang then
-            -- FormatDisable! will disable formatting just for this buffer
-            vim.b.disable_autoformat = true
-          else
-            vim.g.disable_autoformat = true
-          end
-        end, {
-          desc = '[Format] Disable autoformat-on-save',
-          bang = true,
-        })
-        vim.api.nvim_create_user_command('FormatEnable', function()
-          vim.b.disable_autoformat = false
-          vim.g.disable_autoformat = false
-        end, {
-          desc = '[Format] Re-enable autoformat-on-save',
-        })
+        local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
 
-        local function toggle_format()
-          local disabled = vim.b.disable_autoformat
+        vim.schedule(function()
+          require('conform').setup {
+            formatters = {
+              sqlfluff = {
+                args = { 'format', '--dialect', 'mysql', '-' },
+                cwd = require('conform.util').root_file { '.editorconfig', 'package.json' },
+              },
+              prettierd = {
+                env = {
+                  ASDF_NODEJS_VERSION = asdf_nodejs_global_version,
+                },
+              },
+            },
 
-          if disabled then
-            vim.b.disable_autoformat = false
-            vim.notify('enabled formatting for buffer', vim.log.levels.INFO, { title = 'Formatter' })
-          else
-            vim.b.disable_autoformat = true
-            vim.notify('disabled formatting for buffer', vim.log.levels.WARN, { title = 'Formatter' })
-          end
-        end
+            formatters_by_ft = {
+              javascript = js_ts_formatters,
+              javascriptreact = js_ts_formatters,
+              lua = { 'stylua' },
+              mysql = { 'sqlfluff' },
+              sql = { 'sqlfluff' },
+              typescript = js_ts_formatters,
+              typescriptreact = js_ts_formatters,
+            },
 
-        vim.keymap.set('n', '<leader>tf', toggle_format, {
-          desc = '[Format] Toggle formatting on save',
-        })
-        vim.keymap.set({ 'n', 'v' }, '<space>f', require('conform').format, { desc = '[Format] Run formatter' })
-      end,
-
-      config = function()
-        require('plenary.async').run(function()
-          local js_ts_formatters = {
-            'prettierd',
-            'prettier',
-            stop_after_first = true,
+            format_after_save = function(bufnr)
+              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                return
+              end
+              return {
+                async = true,
+                lsp_format = 'fallback',
+              }
+            end,
           }
-
-          local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
-
-          vim.schedule(function()
-            require('conform').setup {
-              formatters = {
-                sqlfluff = {
-                  args = { 'format', '--dialect', 'mysql', '-' },
-                  cwd = require('conform.util').root_file { '.editorconfig', 'package.json' },
-                },
-                prettierd = {
-                  env = {
-                    ASDF_NODEJS_VERSION = asdf_nodejs_global_version,
-                  },
-                },
-              },
-
-              formatters_by_ft = {
-                javascript = js_ts_formatters,
-                javascriptreact = js_ts_formatters,
-                lua = { 'stylua' },
-                mysql = { 'sqlfluff' },
-                sql = { 'sqlfluff' },
-                typescript = js_ts_formatters,
-                typescriptreact = js_ts_formatters,
-              },
-
-              format_after_save = function(bufnr)
-                if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-                  return
-                end
-                return {
-                  async = true,
-                  lsp_format = 'fallback',
-                }
-              end,
-            }
-          end)
-        end, require('tap.utils').noop)
-      end,
-    },
+        end)
+      end, require('tap.utils').noop)
+    end,
   },
 
   {
