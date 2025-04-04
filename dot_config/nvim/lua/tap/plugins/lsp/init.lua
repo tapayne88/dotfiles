@@ -27,7 +27,6 @@ return {
         end,
       },
       'b0o/schemastore.nvim', -- jsonls schemas
-      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
@@ -64,79 +63,52 @@ return {
     'nvimtools/none-ls.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      'tapayne88/lsp-format.nvim',
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
       'williamboman/mason.nvim',
       'gbprod/none-ls-shellcheck.nvim',
     },
     config = function()
-      require('plenary.async').run(function()
-        local null_ls = require 'null-ls'
-        local path = require 'mason-core.path'
-        local lsp_utils = require 'tap.utils.lsp'
+      local null_ls = require 'null-ls'
+      local path = require 'mason-core.path'
+      local lsp_utils = require 'tap.utils.lsp'
 
-        local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
+      lsp_utils.ensure_installed {
+        'hadolint',
+        'markdownlint',
+        'prettierd',
+        'sqlfluff',
+        'stylua',
+      }
 
-        lsp_utils.ensure_installed {
-          'hadolint',
-          'markdownlint',
-          'prettierd',
-          'sqlfluff',
-          'stylua',
-        }
+      require('null-ls').register(require 'none-ls-shellcheck.diagnostics')
+      require('null-ls').register(require 'none-ls-shellcheck.code_actions')
 
-        require('null-ls').register(require 'none-ls-shellcheck.diagnostics')
-        require('null-ls').register(require 'none-ls-shellcheck.code_actions')
-
-        vim.schedule(function()
-          null_ls.setup(lsp_utils.merge_with_default_config {
-            debug = lsp_utils.lsp_debug_enabled(),
-            sources = {
-              -----------------
-              -- Diagnostics --
-              -----------------
-              null_ls.builtins.diagnostics.hadolint,
-              null_ls.builtins.diagnostics.markdownlint.with {
-                command = path.bin_prefix 'markdownlint',
-                extra_args = {
-                  '--config',
-                  vim.fn.stdpath 'config' .. '/markdownlint.json',
-                },
-              },
-              null_ls.builtins.diagnostics.sqlfluff.with {
-                extra_args = { '--dialect', 'mysql' },
-                filetypes = { 'mysql', 'sql' },
-              },
-
-              ----------------
-              -- Formatting --
-              ----------------
-              null_ls.builtins.formatting.prettierd.with {
-                command = path.bin_prefix 'prettierd',
-                env = {
-                  ASDF_NODEJS_VERSION = asdf_nodejs_global_version,
-                },
-                -- cwd = function()
-                --   return vim.fn.expand '$HOME'
-                -- end,
-              },
-              null_ls.builtins.formatting.sqlfluff.with {
-                extra_args = { '--dialect', 'mysql' },
-                filetypes = { 'mysql', 'sql' },
-              },
-              null_ls.builtins.formatting.stylua.with {
-                command = path.bin_prefix 'stylua',
-              },
-
-              -----------
-              -- Hover --
-              -----------
-              null_ls.builtins.hover.dictionary,
+      null_ls.setup(lsp_utils.merge_with_default_config {
+        debug = lsp_utils.lsp_debug_enabled(),
+        sources = {
+          -----------------
+          -- Diagnostics --
+          -----------------
+          null_ls.builtins.diagnostics.hadolint,
+          null_ls.builtins.diagnostics.markdownlint.with {
+            command = path.bin_prefix 'markdownlint',
+            extra_args = {
+              '--config',
+              vim.fn.stdpath 'config' .. '/markdownlint.json',
             },
-          })
-        end)
-      end, require('tap.utils').noop)
+          },
+          null_ls.builtins.diagnostics.sqlfluff.with {
+            extra_args = { '--dialect', 'mysql' },
+            filetypes = { 'mysql', 'sql' },
+          },
+
+          -----------
+          -- Hover --
+          -----------
+          null_ls.builtins.hover.dictionary,
+        },
+      })
     end,
   },
 
@@ -145,6 +117,14 @@ return {
     {
       'stevearc/conform.nvim',
       config = function()
+        local lsp_utils = require 'tap.utils.lsp'
+
+        lsp_utils.ensure_installed {
+          'prettierd',
+          'sqlfluff',
+          'stylua',
+        }
+
         require('plenary.async').run(function()
           local js_ts_formatters = {
             'prettierd',
@@ -193,10 +173,12 @@ return {
       end,
     },
   },
+
   {
     -- My own fork lukas-reineke/lsp-format.nvim
     -- Has a number of changes like range formatting
     'tapayne88/lsp-format.nvim',
+    enabled = false,
     lazy = true,
     config = function()
       require('lsp-format').setup {
