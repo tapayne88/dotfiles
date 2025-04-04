@@ -116,7 +116,10 @@ return {
   {
     {
       'stevearc/conform.nvim',
-      config = function()
+      dependencies = {
+        'williamboman/mason.nvim',
+      },
+      init = function()
         local lsp_utils = require 'tap.utils.lsp'
 
         lsp_utils.ensure_installed {
@@ -125,6 +128,28 @@ return {
           'stylua',
         }
 
+        vim.api.nvim_create_user_command('FormatDisable', function(args)
+          if args.bang then
+            -- FormatDisable! will disable formatting just for this buffer
+            vim.b.disable_autoformat = true
+          else
+            vim.g.disable_autoformat = true
+          end
+        end, {
+          desc = '[Format] Disable autoformat-on-save',
+          bang = true,
+        })
+        vim.api.nvim_create_user_command('FormatEnable', function()
+          vim.b.disable_autoformat = false
+          vim.g.disable_autoformat = false
+        end, {
+          desc = '[Format] Re-enable autoformat-on-save',
+        })
+
+        vim.keymap.set({ 'n', 'v' }, '<space>f', require('conform').format, { desc = '[Format] Run formatter' })
+      end,
+
+      config = function()
         require('plenary.async').run(function()
           local js_ts_formatters = {
             'prettierd',
@@ -132,13 +157,8 @@ return {
             stop_after_first = true,
           }
 
-          require('tap.utils.lsp').on_attach(function(_, bufnr)
-            require('tap.utils').keymap({ 'n', 'v' }, '<space>f', function()
-              require('conform').format { bufnr = bufnr }
-            end, { buffer = bufnr, desc = '[LSP] Run formatter' })
-          end)
-
           local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
+
           vim.schedule(function()
             require('conform').setup {
               formatters = {
@@ -163,10 +183,15 @@ return {
                 typescriptreact = js_ts_formatters,
               },
 
-              format_after_save = {
-                async = true,
-                lsp_format = 'fallback',
-              },
+              format_after_save = function(bufnr)
+                if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                  return
+                end
+                return {
+                  async = true,
+                  lsp_format = 'fallback',
+                }
+              end,
             }
           end)
         end, require('tap.utils').noop)
