@@ -142,6 +142,55 @@ return {
 
   -- async formatting
   {
+    {
+      'stevearc/conform.nvim',
+      opts = function()
+        local js_ts_formatters = {
+          'prettierd',
+          'prettier',
+          stop_after_first = true,
+        }
+
+        require('tap.utils.lsp').on_attach(function(_, bufnr)
+          require('tap.utils').keymap({ 'n', 'v' }, '<space>f', function()
+            require('conform').format { bufnr = bufnr }
+          end, { buffer = bufnr, desc = '[LSP] Run formatter' })
+        end)
+
+        -- local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
+        return {
+          formatters = {
+            sqlfluff = {
+              args = { 'format', '--dialect', 'mysql', '-' },
+              cwd = require('conform.util').root_file { '.editorconfig', 'package.json' },
+            },
+            prettierd = {
+              env = {
+                CWD = vim.fn.stdpath 'data',
+              },
+            },
+          },
+
+          formatters_by_ft = {
+            javascript = js_ts_formatters,
+            javascriptreact = js_ts_formatters,
+            lua = { 'stylua' },
+            mysql = { 'sqlfluff' },
+            sql = { 'sqlfluff' },
+            typescript = js_ts_formatters,
+            typescriptreact = js_ts_formatters,
+          },
+
+          format_after_save = {
+            -- timeout_ms = 500,
+            async = true,
+            lsp_format = 'fallback',
+          },
+        }
+      end,
+    },
+  },
+  {
     -- My own fork lukas-reineke/lsp-format.nvim
     -- Has a number of changes like range formatting
     'tapayne88/lsp-format.nvim',
