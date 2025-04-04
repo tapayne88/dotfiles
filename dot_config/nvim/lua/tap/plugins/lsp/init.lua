@@ -146,6 +146,21 @@ return {
           desc = '[Format] Re-enable autoformat-on-save',
         })
 
+        local function toggle_format()
+          local disabled = vim.b.disable_autoformat
+
+          if disabled then
+            vim.b.disable_autoformat = false
+            vim.notify('enabled formatting for buffer', vim.log.levels.INFO, { title = 'Formatter' })
+          else
+            vim.b.disable_autoformat = true
+            vim.notify('disabled formatting for buffer', vim.log.levels.WARN, { title = 'Formatter' })
+          end
+        end
+
+        vim.keymap.set('n', '<leader>tf', toggle_format, {
+          desc = '[Format] Toggle formatting on save',
+        })
         vim.keymap.set({ 'n', 'v' }, '<space>f', require('conform').format, { desc = '[Format] Run formatter' })
       end,
 
