@@ -115,6 +115,8 @@ return {
   -- async formatting
   {
     'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
     dependencies = {
       'williamboman/mason.nvim',
     },
@@ -160,7 +162,9 @@ return {
       vim.keymap.set('n', '<leader>tf', toggle_format, {
         desc = '[Format] Toggle formatting on save',
       })
-      vim.keymap.set({ 'n', 'v' }, '<space>f', require('conform').format, { desc = '[Format] Run formatter' })
+      vim.keymap.set({ 'n', 'v' }, '<space>f', function()
+        return require('conform').format()
+      end, { desc = '[Format] Run formatter' })
     end,
 
     config = function()
