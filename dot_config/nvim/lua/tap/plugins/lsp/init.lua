@@ -140,33 +140,6 @@ return {
     end,
   },
 
-  {
-    'rmagatti/goto-preview',
-    lazy = true,
-    config = function()
-      require('goto-preview').setup {
-        border = {
-          '↖',
-          '─',
-          '╮',
-          '│',
-          '╯',
-          '─',
-          '╰',
-          '│',
-        },
-      }
-
-      require('tap.utils.lsp').on_attach(function(_, bufnr)
-        require('tap.utils').nnoremap(
-          'gd',
-          '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
-          { buffer = bufnr, desc = '[LSP] Go to definition preview' }
-        )
-      end)
-    end,
-  },
-
   -- async formatting
   {
     -- My own fork lukas-reineke/lsp-format.nvim
@@ -252,6 +225,33 @@ return {
           '<space>f',
           format_in_range,
           { buffer = bufnr, desc = '[LSP] Run formatter for range' }
+        )
+      end)
+    end,
+  },
+
+  {
+    'rmagatti/goto-preview',
+    lazy = true,
+    config = function()
+      require('goto-preview').setup {
+        border = {
+          '↖',
+          '─',
+          '╮',
+          '│',
+          '╯',
+          '─',
+          '╰',
+          '│',
+        },
+      }
+
+      require('tap.utils.lsp').on_attach(function(_, bufnr)
+        require('tap.utils').nnoremap(
+          'gd',
+          '<cmd>lua require("goto-preview").goto_preview_definition()<CR>',
+          { buffer = bufnr, desc = '[LSP] Go to definition preview' }
         )
       end)
     end,
