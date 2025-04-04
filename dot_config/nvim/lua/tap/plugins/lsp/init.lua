@@ -150,7 +150,10 @@ return {
       })
 
       local function toggle_format()
-        if vim.b.disable_autoformat then
+        if vim.g.disable_autoformat then
+          vim.g.disable_autoformat = false
+          vim.b.disable_autoformat = false
+        elseif vim.b.disable_autoformat then
           vim.b.disable_autoformat = false
           vim.notify('enabled formatting for buffer', vim.log.levels.INFO, { title = 'Formatter' })
         else
