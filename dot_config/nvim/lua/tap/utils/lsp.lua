@@ -94,14 +94,6 @@ function M.merge_with_default_config(config)
     on_attach = on_attach,
     -- set cmd_cwd to mason install_root_dir to ensure node version consistency
     cmd_cwd = mason_settings.current.install_root_dir,
-    handlers = {
-      ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = border_window_style,
-      }),
-      ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border_window_style,
-      }),
-    },
     capabilities = vim.tbl_deep_extend(
       'force',
       vim.lsp.protocol.make_client_capabilities(),
