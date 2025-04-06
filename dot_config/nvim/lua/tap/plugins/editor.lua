@@ -230,7 +230,7 @@ return {
       vim.keymap.set('n', '<leader>cl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', { desc = '[Trouble] LSP Definitions / references / ...' })
       vim.keymap.set('n', '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                            { desc = '[Trouble] Location list' })
       vim.keymap.set('n', '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                             { desc = '[Trouble] Quickfix list' })
-      vim.keymap.set('n', 'gR',         '<cmd>Trouble lsp_references focus=true<cr>',                 { desc = '[Trouble] LSP references' })
+      vim.keymap.set('n', 'grr',        '<cmd>Trouble lsp_references focus=true<cr>',                 { desc = '[Trouble] LSP references' })
       -- stylua: ignore end
     end,
     opts = {

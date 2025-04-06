@@ -43,9 +43,7 @@ local function on_attach(_, bufnr)
   local with_opts = function(desc)
     return { buffer = bufnr, desc = '[LSP] ' .. desc }
   end
-  nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', with_opts 'Go to implementation')
-  nnoremap('<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', with_opts 'Show code actions')
-  nnoremap('<leader>rn', require('live-rename').rename, with_opts 'Rename')
+  nnoremap('grn', require('live-rename').rename, with_opts 'Rename')
 
   -- other mappings, not sure about these
   nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', with_opts 'Add workspace folder')
