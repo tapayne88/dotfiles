@@ -1,18 +1,13 @@
 return {
-  -- TODO: Push fixes upstream
-  -- 'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  'tapayne88/lsp_lines.nvim',
+  'luozhiya/lsp-virtual-improved.nvim',
   event = 'BufReadPost',
-  dependencies = {
-    'luozhiya/lsp-virtual-improved.nvim',
-  },
   config = function()
     local lsp_symbol = require('tap.utils.lsp').symbol
     local nnoremap = require('tap.utils').nnoremap
 
     local virtual_lines_curr = 1
     local virtual_lines = {
-      { only_current_line = true },
+      { current_line = true },
       false,
     }
     local virtual_improved_curr = 1
@@ -23,11 +18,6 @@ return {
       false,
     }
 
-    require('lsp_lines').setup {
-      only_current_line = {
-        events = { 'CursorHold', 'DiagnosticChanged' },
-      },
-    }
     require('lsp-virtual-improved').setup()
 
     -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
