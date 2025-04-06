@@ -1,3 +1,16 @@
+local diagnostic_toggle_map = {
+  virtual_text = {
+    {
+      current_line = 'hide',
+    },
+    false,
+  },
+  virtual_lines = {
+    { current_line = true },
+    false,
+  },
+}
+
 return {
   'luozhiya/lsp-virtual-improved.nvim',
   event = 'BufReadPost',
@@ -5,18 +18,7 @@ return {
     local lsp_symbol = require('tap.utils.lsp').symbol
     local nnoremap = require('tap.utils').nnoremap
 
-    local virtual_lines_curr = 1
-    local virtual_lines = {
-      { current_line = true },
-      false,
-    }
-    local virtual_improved_curr = 1
-    local virtual_improved = {
-      {
-        current_line = 'hide',
-      },
-      false,
-    }
+    local diagnostic_toggle_index = 1
 
     require('lsp-virtual-improved').setup()
 
@@ -27,8 +29,8 @@ return {
       underline = true,
       update_in_insert = false,
       virtual_text = false,
-      virtual_improved = virtual_improved[virtual_improved_curr],
-      virtual_lines = virtual_lines[virtual_lines_curr],
+      virtual_improved = diagnostic_toggle_map.virtual_text[diagnostic_toggle_index],
+      virtual_lines = diagnostic_toggle_map.virtual_lines[diagnostic_toggle_index],
       signs = {
         -- Make priority higher than vim-signify
         priority = 100,
@@ -52,18 +54,14 @@ return {
     end, { desc = 'Show line diagnostics' })
     nnoremap('<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', { desc = 'Open buffer diagnostics in local list' })
     nnoremap('<leader>dd', function()
-      virtual_improved_curr = virtual_improved_curr < #virtual_improved and virtual_improved_curr + 1 or 1
-      local new_virtual_improved = virtual_improved[virtual_improved_curr]
-
-      virtual_lines_curr = virtual_lines_curr < #virtual_lines and virtual_lines_curr + 1 or 1
-      local new_virtual_lines = virtual_lines[virtual_lines_curr]
+      diagnostic_toggle_index = diagnostic_toggle_index == 1 and 2 or 1
 
       vim.diagnostic.config {
-        virtual_improved = new_virtual_improved,
-        virtual_lines = new_virtual_lines,
+        virtual_improved = diagnostic_toggle_map.virtual_text[diagnostic_toggle_index],
+        virtual_lines = diagnostic_toggle_map.virtual_lines[diagnostic_toggle_index],
       }
 
-      local msg = new_virtual_lines == false and 'Hide diagnostic output' or 'Show diagnostic output'
+      local msg = diagnostic_toggle_index == 2 and 'Hide diagnostic output' or 'Show diagnostic output'
       vim.notify(msg, vim.log.levels.INFO, { title = 'Diagnostic' })
     end, { desc = 'Toggle diagnostic display' })
 
