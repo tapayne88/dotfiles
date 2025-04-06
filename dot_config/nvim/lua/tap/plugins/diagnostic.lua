@@ -65,14 +65,6 @@ return {
       vim.notify(msg, vim.log.levels.INFO, { title = 'Diagnostic' })
     end, { desc = 'Toggle diagnostic display' })
 
-    -- float = false, CursorHold will show diagnostic
-    nnoremap('[d', function()
-      vim.diagnostic.jump { count = -1, float = false }
-    end, { desc = 'Jump to previous diagnostic' })
-    nnoremap(']d', function()
-      vim.diagnostic.jump { count = 1, float = false }
-    end, { desc = 'Jump to next diagnostic' })
-
     -----------
     -- Signs --
     -----------
