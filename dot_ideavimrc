@@ -19,7 +19,7 @@ map <C-L> <C-W>l
 map <C-J> <C-W>j
 map <C-H> <C-W>h
 
-nmap <leader>rn <Action>(RenameElement)
+nmap grn <Action>(RenameElement)
 nmap <leader>gr <Action>(ChangesView.Revert)
 nmap <leader>gp <Action>(Github.Open.In.Browser)
 
