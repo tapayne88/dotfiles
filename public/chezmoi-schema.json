@@ -57,6 +57,10 @@
         "neovim_dev_plugin_dir": {
           "type": "string",
           "description": "Directory of development neovim plugins"
+        },
+        "asdf_nodejs_version": {
+          "type": "string",
+          "description": "Version of nodejs installed by asdf in my home directory"
         }
       },
       "additionalProperties": false,
@@ -67,7 +71,8 @@
         "terminal_font_size",
         "features",
         "github_enterprise_host",
-        "tailscale_name"
+        "tailscale_name",
+        "asdf_nodejs_version"
       ]
     }
   }
