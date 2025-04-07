@@ -1,3 +1,4 @@
+# vim:ft=yaml
 session_name: work
 windows:
   - window_name: dash-vis
@@ -27,7 +28,7 @@ windows:
       - clear
     panes:
       - shell_command:
-          - asdf shell nodejs system # uses node v8 which is too old for neovim
+          - export ASDF_NODEJS_VERSION={{ .asdf_nodejs_version }} # uses node v8 which is too old for neovim
         focus: true
       - "blank"
   - window_name: dotfiles
