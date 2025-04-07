@@ -27,7 +27,7 @@ windows:
       - clear
     panes:
       - shell_command:
-          - asdf shell nodejs system # uses node v8 which is too old for neovim
+          - asdf shell nodejs {{ .asdf_nodejs_version }} # uses node v8 which is too old for neovim
         focus: true
       - "blank"
   - window_name: dotfiles
