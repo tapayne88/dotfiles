@@ -168,52 +168,46 @@ return {
       end, { desc = '[Format] Run formatter' })
     end,
 
-    config = function()
-      require('plenary.async').run(function()
-        local js_ts_formatters = {
-          'prettierd',
-          'prettier',
-          stop_after_first = true,
-        }
+    opts = function()
+      local js_ts_formatters = {
+        'prettierd',
+        'prettier',
+        stop_after_first = true,
+      }
 
-        local asdf_nodejs_global_version = require('tap.utils.async').get_asdf_global_version 'nodejs'
-
-        vim.schedule(function()
-          require('conform').setup {
-            formatters = {
-              sqlfluff = {
-                args = { 'format', '--dialect', 'mysql', '-' },
-                cwd = require('conform.util').root_file { '.editorconfig', 'package.json' },
-              },
-              prettierd = {
-                env = {
-                  ASDF_NODEJS_VERSION = asdf_nodejs_global_version,
-                },
-              },
+      return {
+        formatters = {
+          sqlfluff = {
+            args = { 'format', '--dialect', 'mysql', '-' },
+            cwd = require('conform.util').root_file { '.editorconfig', 'package.json' },
+          },
+          prettierd = {
+            env = {
+              ASDF_NODEJS_VERSION = '{{ .asdf_nodejs_version }}',
             },
+          },
+        },
 
-            formatters_by_ft = {
-              javascript = js_ts_formatters,
-              javascriptreact = js_ts_formatters,
-              lua = { 'stylua' },
-              mysql = { 'sqlfluff' },
-              sql = { 'sqlfluff' },
-              typescript = js_ts_formatters,
-              typescriptreact = js_ts_formatters,
-            },
+        formatters_by_ft = {
+          javascript = js_ts_formatters,
+          javascriptreact = js_ts_formatters,
+          lua = { 'stylua' },
+          mysql = { 'sqlfluff' },
+          sql = { 'sqlfluff' },
+          typescript = js_ts_formatters,
+          typescriptreact = js_ts_formatters,
+        },
 
-            format_after_save = function(bufnr)
-              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-                return
-              end
-              return {
-                async = true,
-                lsp_format = 'fallback',
-              }
-            end,
+        format_after_save = function(bufnr)
+          if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+            return
+          end
+          return {
+            async = true,
+            lsp_format = 'fallback',
           }
-        end)
-      end, require('tap.utils').noop)
+        end,
+      }
     end,
   },
 
