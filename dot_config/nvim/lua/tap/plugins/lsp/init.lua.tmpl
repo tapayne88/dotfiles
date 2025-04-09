@@ -175,6 +175,9 @@ return {
         'prettier',
         stop_after_first = true,
       }
+      local structured_data_formatters = {
+        'prettierd',
+      }
 
       return {
         formatters = {
@@ -192,11 +195,14 @@ return {
         formatters_by_ft = {
           javascript = js_ts_formatters,
           javascriptreact = js_ts_formatters,
+          json = structured_data_formatters,
           lua = { 'stylua' },
+          markdown = structured_data_formatters,
           mysql = { 'sqlfluff' },
           sql = { 'sqlfluff' },
           typescript = js_ts_formatters,
           typescriptreact = js_ts_formatters,
+          yaml = structured_data_formatters,
         },
 
         format_after_save = function(bufnr)
