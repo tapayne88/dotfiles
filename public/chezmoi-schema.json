@@ -42,9 +42,14 @@
               "type": "boolean",
               "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)",
               "default": false
+            },
+            "neovim_copilot": {
+              "type": "boolean",
+              "description": "Enable copilot AI tooling",
+              "default": false
             }
           },
-          "required": ["neovim_nightly"]
+          "required": ["neovim_nightly", "neovim_copilot"]
         },
         "github_enterprise_host": {
           "type": "string",

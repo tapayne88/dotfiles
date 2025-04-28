@@ -133,7 +133,9 @@ return {
 
   {
     'zbirenbaum/copilot.lua',
+    -- {{- if not .features.neovim_copilot }}
     enabled = false,
+    -- {{- end }}
     cmd = 'Copilot',
     event = 'InsertEnter',
     dependencies = {
@@ -215,7 +217,9 @@ return {
   {
     'yetone/avante.nvim',
     event = 'VeryLazy',
+    -- {{- if not .features.neovim_copilot }}
     enabled = false,
+    -- {{- end }}
     version = false, -- Never set this value to "*"! Never!
     opts = {
       provider = 'copilot',
