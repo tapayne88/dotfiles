@@ -289,6 +289,9 @@ return {
           disabled_filetypes = {
             winbar = vim
               .iter({
+                'Avante',
+                'AvanteInput',
+                'AvanteSelectedFiles',
                 'dbout',
                 'fugitive',
                 'gitcommit',
