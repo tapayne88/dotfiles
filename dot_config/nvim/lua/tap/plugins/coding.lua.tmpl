@@ -259,6 +259,13 @@ return {
         ---@type render.md.UserConfig
         opts = {
           file_types = { 'markdown', 'Avante' },
+          overrides = {
+            buftype = {
+              nofile = {
+                win_options = { concealcursor = { rendered = 'nvic' } },
+              },
+            },
+          },
         },
         ft = { 'markdown', 'Avante' },
       },
