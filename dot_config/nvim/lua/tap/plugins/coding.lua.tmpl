@@ -143,10 +143,7 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     config = function()
-      local disabled_directories = {
-        -- disable for work directories
-        '/git/work/',
-      }
+      local disabled_directories = {}
 
       require('plenary.async').run(function()
         local asdf_node_executable = require('tap.utils.async').get_asdf_global_executable 'node'
