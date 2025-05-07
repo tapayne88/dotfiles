@@ -1,0 +1,11 @@
+[sqlfluff]
+dialect = mysql
+templater = placeholder
+exclude_rules = capitalisation.identifiers
+
+# [sqlfluff:rules:references.quoting]
+# force_quote_identifier = true
+# prefer_quoted_identifiers = true
+
+[sqlfluff:templater:placeholder]
+param_style = question_mark
