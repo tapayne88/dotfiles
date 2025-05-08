@@ -59,7 +59,7 @@ return {
         }
 
         -- Register for notifications of request status
-        require('copilot.api').register_status_notification_handler(function(status)
+        require('copilot.status').register_status_notification_handler(function(status)
           local client_id = require('copilot.client').id
           if client_id == nil then
             return
