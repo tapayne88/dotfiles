@@ -1,3 +1,18 @@
+-- All praise to this
+-- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
+local function getVisualSelection()
+  vim.cmd 'noau normal! "vy"'
+  local text = vim.fn.getreg 'v'
+  vim.fn.setreg('v', {})
+
+  text = string.gsub(text, '\n', '')
+  if #text > 0 then
+    return text
+  else
+    return ''
+  end
+end
+
 -- whizzy command-p launcher
 return {
   'nvim-telescope/telescope.nvim',
@@ -43,8 +58,8 @@ return {
     ---------
     -- Git --
     ---------
-    vim.keymap.set('n', '<leader>fg', function()
-      require('telescope.builtin').git_files { use_git_root = false }
+    vim.keymap.set({ 'n', 'v' }, '<leader>fg', function()
+      require('telescope.builtin').git_files { use_git_root = false, default_text = getVisualSelection() }
     end, { desc = 'Git files (cwd)' })
 
     vim.keymap.set('n', '<leader>fw', function()
@@ -105,21 +120,6 @@ return {
     ------------
     -- Search --
     ------------
-
-    -- All praise to this
-    -- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
-    local function getVisualSelection()
-      vim.cmd 'noau normal! "vy"'
-      local text = vim.fn.getreg 'v'
-      vim.fn.setreg('v', {})
-
-      text = string.gsub(text, '\n', '')
-      if #text > 0 then
-        return text
-      else
-        return ''
-      end
-    end
 
     local search_opts = {
       prompt_title = 'Ripgrep',
