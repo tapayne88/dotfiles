@@ -5,12 +5,5 @@ return {
   dependencies = {
     'williamboman/mason-lspconfig.nvim',
   },
-  config = function()
-    require('mason').setup {
-      registries = {
-        'github:mason-org/mason-registry',
-        'lua:tap.plugins.mason.registry',
-      },
-    }
-  end,
+  opts = {},
 }
