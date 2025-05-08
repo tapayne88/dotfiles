@@ -71,7 +71,6 @@ return {
     },
     config = function()
       local null_ls = require 'null-ls'
-      local path = require 'mason-core.path'
       local lsp_utils = require 'tap.utils.lsp'
 
       lsp_utils.ensure_installed {
@@ -93,7 +92,7 @@ return {
           -----------------
           null_ls.builtins.diagnostics.hadolint,
           null_ls.builtins.diagnostics.markdownlint.with {
-            command = path.bin_prefix 'markdownlint',
+            command = 'markdownlint',
             extra_args = {
               '--config',
               vim.fn.stdpath 'config' .. '/markdownlint.json',
