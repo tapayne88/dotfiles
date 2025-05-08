@@ -24,69 +24,64 @@ return {
     config = function()
       local disabled_directories = {}
 
-      require('plenary.async').run(function()
-        local asdf_node_executable = require('tap.utils.async').get_asdf_global_executable 'node'
-        if asdf_node_executable == nil then
+      require('copilot').setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+        filetypes = {
+          ['*'] = function()
+            local fully_qualified_filename = vim.api.nvim_buf_get_name(0)
+
+            for _, directory in ipairs(disabled_directories) do
+              if string.match(fully_qualified_filename, directory) then
+                return false
+              end
+            end
+
+            return true
+          end,
+        },
+        server_opts_overrides = {
+          -- Set copilot to alway use asdf global node version
+          ASDF_NODEJS_VERSION = '{{ .asdf_nodejs_version }}',
+        },
+      }
+      require('copilot_cmp').setup()
+
+      local progress_kind_map = {
+        InProgress = 'begin',
+        Normal = 'end',
+        Warning = 'report',
+        [''] = 'report',
+      }
+
+      -- Register for notifications of request status
+      require('copilot.status').register_status_notification_handler(function(status)
+        local client_id = require('copilot.client').id
+        if client_id == nil then
           return
         end
 
-        require('copilot').setup {
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-          filetypes = {
-            ['*'] = function()
-              local fully_qualified_filename = vim.api.nvim_buf_get_name(0)
-
-              for _, directory in ipairs(disabled_directories) do
-                if string.match(fully_qualified_filename, directory) then
-                  return false
-                end
-              end
-
-              return true
-            end,
+        local msg = {
+          token = 'copilot',
+          value = {
+            title = 'copilot',
+            kind = progress_kind_map[status.status],
+            message = status.message,
           },
-          -- Set copilot to alway use asdf global node version
-          copilot_node_command = asdf_node_executable,
         }
-        require('copilot_cmp').setup()
+        local ctx = { client_id = client_id }
 
-        local progress_kind_map = {
-          InProgress = 'begin',
-          Normal = 'end',
-          Warning = 'report',
-          [''] = 'report',
-        }
-
-        -- Register for notifications of request status
-        require('copilot.status').register_status_notification_handler(function(status)
-          local client_id = require('copilot.client').id
-          if client_id == nil then
-            return
-          end
-
-          local msg = {
-            token = 'copilot',
-            value = {
-              title = 'copilot',
-              kind = progress_kind_map[status.status],
-              message = status.message,
-            },
-          }
-          local ctx = { client_id = client_id }
-
-          require('tap.utils').logger.info(
-            string.format(
-              '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
-              vim.inspect(msg),
-              vim.inspect(ctx)
-            )
+        require('tap.utils').logger.info(
+          string.format(
+            '[copilot] dispatching to $/progress msg: `%s` and ctx: `%s`',
+            vim.inspect(msg),
+            vim.inspect(ctx)
           )
+        )
 
-          -- Dispatch request status to fidget.nvim
-          vim.lsp.handlers['$/progress'](nil, msg, ctx)
-        end)
-      end, require('tap.utils').noop)
+        -- Dispatch request status to fidget.nvim
+        vim.lsp.handlers['$/progress'](nil, msg, ctx)
+      end)
     end,
   },
 
