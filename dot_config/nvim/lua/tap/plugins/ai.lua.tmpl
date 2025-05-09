@@ -40,10 +40,8 @@ return {
             return true
           end,
         },
-        server_opts_overrides = {
-          -- Set copilot to alway use asdf global node version
-          ASDF_NODEJS_VERSION = '{{ .asdf_nodejs_version }}',
-        },
+        -- Set copilot to alway use asdf global node version
+        copilot_node_command = vim.fn.expand '$HOME' .. '/.asdf/installs/nodejs/{{ .asdf_nodejs_version }}/bin/node',
       }
       require('copilot_cmp').setup()
 
