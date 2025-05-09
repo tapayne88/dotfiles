@@ -23,6 +23,7 @@ cask "kitty"
 cask "nikitabobko/tap/aerospace"
 cask "raycast"
 cask "rectangle"
+cask "visual-studio-code"
 cask "xbar"
 
 # mas seems a little flakey and can sometime not realise it's installed an app
