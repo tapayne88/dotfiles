@@ -92,10 +92,24 @@ return {
     version = false, -- Never set this value to "*"! Never!
     opts = {
       provider = 'copilot',
+      system_prompt = function()
+        local hub = require('mcphub').get_hub_instance()
+        if hub == nil then
+          return
+        end
+
+        return hub:get_active_servers_prompt()
+      end,
+      custom_tools = function()
+        return {
+          require('mcphub.extensions.avante').mcp_tool(),
+        }
+      end,
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = 'make',
     dependencies = {
+      'ravitemer/mcphub.nvim',
       'nvim-treesitter/nvim-treesitter',
       'stevearc/dressing.nvim',
       'nvim-lua/plenary.nvim',
@@ -182,6 +196,27 @@ return {
           },
         },
         ft = markdown.ft,
+      },
+    },
+  },
+
+  {
+    'ravitemer/mcphub.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- Required for Job and HTTP requests
+    },
+    -- uncomment the following line to load hub lazily
+    --cmd = "MCPHub",  -- lazy load
+    -- build = 'npm install -g mcp-hub@latest', -- Installs required mcp-hub npm module
+    -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
+    build = 'bundled_build.lua', -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+    opts = {
+      use_bundled_binary = true,
+      auto_approve = true,
+      extensions = {
+        avante = {
+          make_slash_commands = true,
+        },
       },
     },
   },
