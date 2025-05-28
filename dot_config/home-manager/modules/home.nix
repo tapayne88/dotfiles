@@ -31,7 +31,6 @@
     kubie # even nicer interaction with k8s cli with multiple configs
     mosh # better ssh
     netcat # netcat implementaion
-    nodejs # nodejs...
     poppler_utils # pdf utils - pdfunite to combine pdfs
     python3 # python312
     python312Packages.pip # pip for python312
