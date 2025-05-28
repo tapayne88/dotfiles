@@ -26,6 +26,7 @@
     htop # pretty top
     inetutils # network utils, like traceroute, etc.
     iperf # Tool to measure IP bandwidth using UDP or TCP
+    just # Handy way to save and run project-specific commands
     jq # json cli processor
     kubie # even nicer interaction with k8s cli with multiple configs
     mosh # better ssh
