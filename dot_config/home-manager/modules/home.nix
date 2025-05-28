@@ -46,7 +46,7 @@
     unixtools.watch # run command periodically
     vim # vim
     wget # fetch things from urls
-    xsv # fast CSV toolkit
+    xan # fast CSV toolkit
     yarn # JS package manager
     yq # yaml cli processor (needs jq)
     zsh # shell
