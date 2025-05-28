@@ -26,19 +26,26 @@ return {
         is_copilot_available = function()
           return package.loaded['copilot'] and require('copilot.client').buf_is_attached()
         end,
+        is_valid_buftype = function()
+          return vim.bo.buftype ~= 'nofile'
+        end,
       }
 
-      local function literal(str)
-        local comp = require('lualine.component'):extend()
-        function comp:draw(default_highlight)
-          self.status = str or ''
-          self.applied_separator = ''
-          self:apply_highlights(default_highlight)
-          self:apply_section_separators()
-          return self.status
-        end
+      local function literal(strOrCfg)
+        local config = type(strOrCfg) == 'string' and { strOrCfg } or strOrCfg
 
-        return comp
+        return vim.tbl_extend(
+          'force',
+          {
+            padding = 0,
+          },
+          config,
+          {
+            function()
+              return config[1]
+            end,
+          }
+        )
       end
 
       local function modified()
@@ -77,7 +84,7 @@ return {
         return {
           get,
           cond = function()
-            return type(get()) == 'string'
+            return conditions.is_valid_buftype() and type(get()) == 'string'
           end,
         }
       end
@@ -237,8 +244,8 @@ return {
               return conditions.is_wide_window() and status .. ' ' or ''
             end,
           },
-          {
-            literal '┃',
+          literal {
+            '┃',
             color = function()
               local hi_attrs = highlight_group_attrs 'lualine_c_normal'
               return { fg = hi_attrs.bg }
@@ -280,6 +287,13 @@ return {
         project_name(),
       }
 
+      local winbar_z = {
+        literal {
+          ' ',
+          cond = conditions.is_valid_buftype,
+        },
+      }
+
       require('lualine').setup {
         options = {
           theme = 'catppuccin',
@@ -289,6 +303,9 @@ return {
           disabled_filetypes = {
             winbar = vim
               .iter({
+                'Avante',
+                'AvanteInput',
+                'AvanteSelectedFiles',
                 'dbout',
                 'fugitive',
                 'gitcommit',
@@ -336,7 +353,7 @@ return {
           },
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { literal ' ' },
+          lualine_z = winbar_z,
         },
         inactive_winbar = {
           lualine_a = {},
@@ -344,7 +361,7 @@ return {
           lualine_c = {},
           lualine_x = {},
           lualine_y = winbar_y,
-          lualine_z = { literal ' ' },
+          lualine_z = winbar_z,
         },
       }
     end,
