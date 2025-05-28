@@ -50,6 +50,10 @@
           "type": "string",
           "description": "Host of github enterprise"
         },
+        "github_auth_token": {
+          "type": "string",
+          "description": "Basic token from https://github.com/settings/personal-access-tokens. Required to avoid API rate limiting for things like nix"
+        },
         "tailscale_name": {
           "type": "string",
           "description": "Tailscale name used for TLD when resolving hostanmes, see https://login.tailscale.com/admin/dns"
@@ -71,6 +75,7 @@
         "terminal_font_size",
         "features",
         "github_enterprise_host",
+        "github_auth_token",
         "tailscale_name",
         "asdf_nodejs_version"
       ]
