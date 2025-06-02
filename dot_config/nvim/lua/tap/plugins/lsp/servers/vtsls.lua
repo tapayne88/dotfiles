@@ -3,6 +3,7 @@ local lsp_utils = require 'tap.utils.lsp'
 M.ensure_installed = { 'vtsls' }
 
 function M.setup()
+  require('lspconfig.configs').vtsls = require('vtsls').lspconfig
   require('lspconfig').vtsls.setup(lsp_utils.merge_with_default_config {
     settings = {
       complete_function_calls = true,
