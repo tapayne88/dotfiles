@@ -55,14 +55,6 @@ return {
         return ''
       end
 
-      local function tscVersion()
-        local tsc_version = require_plugin('tap.plugins.lsp.servers.tsserver', function(tsserver)
-          return tsserver.get_tsc_version()
-        end)
-
-        return tsc_version and string.format('v%s', tsc_version) or ''
-      end
-
       local function window_zoom_enabled()
         local ok, is_zoomed = pcall(function()
           return vim.fn['zoom#statusline']() == 'zoomed'
@@ -194,7 +186,6 @@ return {
             cond = conditions.is_copilot_available,
           },
           literal ' ',
-          { tscVersion, cond = conditions.is_wide_window },
           diagnostic_section {
             sections = { 'error' },
             color = 'LualineDiagnosticError',
