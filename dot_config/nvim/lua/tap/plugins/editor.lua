@@ -94,6 +94,16 @@ return {
       -- stylua: ignore start
       vim.keymap.set('n', '<leader>ga', ':Git add %:p<CR><CR>',       { desc = 'Git add file' })
       vim.keymap.set('n', '<leader>gs', ':Git<CR>',                   { desc = 'Git status' })
+      vim.keymap.set('n', '<leader>gf', ':Git fetch<CR>',             { desc = 'Git fetch' })
+      vim.keymap.set('n', '<leader>gp', function()
+        -- Run `:Git fetch` in the background
+        vim.cmd('Git fetch | :bd')
+
+        -- Run `:Git reset --hard @{upstream}` in the background
+        vim.cmd('Git reset --hard @{upstream} | :bd')
+
+        vim.notify('Git fetch and reset upstream completed!', vim.log.levels.INFO, { title = 'Fugitive' })
+      end, { desc = 'Git sync upstream' })
       vim.keymap.set('n', '<leader>gc', ':Git commit -v -q<CR>',      { desc = 'Git commit' })
       vim.keymap.set('n', '<leader>gt', ':Git commit -v -q %:p<CR>')
       vim.keymap.set('n', '<leader>gd', ':Gvdiffsplit<CR>',           { desc = 'Git diff' })
@@ -102,8 +112,8 @@ return {
       vim.keymap.set('n', '<leader>gw', ':Gwrite<CR>',                { desc = 'Git write' })
       vim.keymap.set('n', '<leader>gl', ':Gclog<CR>',                 { desc = 'Git log' })
       vim.keymap.set('n', '<leader>go', ':Git checkout<Space>',       { desc = 'Git checkout' })
-      vim.keymap.set('n', '<leader>gp', ':GBrowse!<CR>',              { desc = 'Git browse file' })
-      vim.keymap.set('x', '<leader>gp', ":'<,'>GBrowse!<CR>",         { desc = 'Git browse visual selection' })
+      vim.keymap.set('n', '<leader>gb', ':GBrowse!<CR>',              { desc = 'Git browse file' })
+      vim.keymap.set('x', '<leader>gb', ":'<,'>GBrowse!<CR>",         { desc = 'Git browse visual selection' })
       -- stylua: ignore end
     end,
     config = function()

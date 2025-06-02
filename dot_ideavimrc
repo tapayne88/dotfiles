@@ -21,7 +21,7 @@ map <C-H> <C-W>h
 
 nmap grn <Action>(RenameElement)
 nmap <leader>gr <Action>(ChangesView.Revert)
-nmap <leader>gp <Action>(Github.Open.In.Browser)
+nmap <leader>gb <Action>(Github.Open.In.Browser)
 
 nmap <leader>, <Action>(RecentFiles)
 
