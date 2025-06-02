@@ -1,5 +1,7 @@
 local lsp_utils = require 'tap.utils.lsp'
 
+local M = {}
+
 M.ensure_installed = { 'vtsls' }
 
 function M.setup()
