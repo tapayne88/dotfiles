@@ -5,6 +5,7 @@ return {
     event = 'BufReadPost',
     build = ':TSUpdate',
     dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
       {
         'nvim-treesitter/nvim-treesitter-context',
         opts = { multiline_threshold = 3 },
@@ -25,6 +26,7 @@ return {
       },
     },
     config = function()
+      ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
         ensure_installed = {
           'bash',
