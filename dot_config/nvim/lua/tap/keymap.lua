@@ -16,20 +16,6 @@ vim.keymap.set('n', '<c-q>',          ':copen<CR>', { desc = 'Open quickfix list
 vim.keymap.set('n', '<LocalLeader>q', ':lopen<CR>', { desc = 'Open local list' })
 -- stylua: ignore end
 
-vim.keymap.set(
-  'n',
-  '<leader>fp',
-  ':echo @% | let @*=expand("%")<CR>',
-  { desc = 'Print and copy to system clipboard the filepath' }
-)
-vim.keymap.set(
-  'v',
-  '<leader>fp',
-  ':<C-U>echo fnamemodify(expand("%"), ":~:.") . ":" . line(".") | let @*=fnamemodify(expand("%"), ":~:.") . ":" . line(".")<CR>',
-  {
-    desc = 'Print and copy to system clipboard filepath with line number',
-  }
-)
 vim.keymap.set('n', '<leader>cm', ':!chezmoi apply -v<CR>', { desc = 'Apply chezmoi changes' })
 
 -- stylua: ignore start

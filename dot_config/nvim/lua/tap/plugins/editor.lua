@@ -621,4 +621,33 @@ return {
       require('mini.ai').setup()
     end,
   },
+
+  {
+    'diegoulloao/nvim-file-location',
+    keys = {
+      {
+        '<leader>fp',
+        function()
+          require('nvim-file-location').copy_file_location('relative', false, false)
+          print(require('nvim-file-location').get_file_location('relative', false, false))
+        end,
+        mode = 'n',
+      },
+      {
+        '<leader>fp',
+        function()
+          require('nvim-file-location').copy_file_location('relative', true, false)
+          print(require('nvim-file-location').get_file_location('relative', true, false))
+        end,
+        mode = 'v',
+      },
+    },
+    config = {},
+    -- TODO: Add commands
+    -- init = function()
+    --   vim.api.nvim_create_user_command('CopyFilePathRelative', function() ... end)
+    --   vim.api.nvim_create_user_command('CopyFilePathAbsolute', function() ... end)
+    --   vim.api.nvim_create_user_command('CopyFilePathWorkspace', function() ... end)
+    -- end,
+  },
 }
