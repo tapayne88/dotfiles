@@ -4,7 +4,7 @@ require 'tap.settings'
 require 'tap.lazy' -- Plugins
 require 'tap.auto'
 require 'tap.keymap'
-require 'tap.jest-nvim'
+-- require 'tap.jest-nvim'
 require 'tap.redir'
 
 require('tap.utils').notify_in_debug(
