@@ -12,32 +12,13 @@ return {
     },
     lazy = true,
     init = function()
-      vim.keymap.set('n', 't<C-n>', '<cmd>lua require("neotest").run.run()<cr>', { desc = '[neotest] Test nearest' })
-      vim.keymap.set(
-        'n',
-        't<C-d>',
-        '<cmd>lua require("neotest").run.run({ strategy = "dap" })<cr>',
-        { desc = '[neotest] Debug nearest' }
-      )
-      vim.keymap.set(
-        'n',
-        't<C-f>',
-        '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>',
-        { desc = '[neotest] Test file' }
-      )
-      vim.keymap.set('n', 't<C-a>', '<cmd>lua require("neotest").run.attach()<cr>', { desc = '[neotest] Test attach' })
-      vim.keymap.set(
-        'n',
-        't<C-o>',
-        '<cmd>lua require("neotest").output_panel.toggle()<cr>',
-        { desc = '[neotest] Output panel' }
-      )
-      vim.keymap.set(
-        'n',
-        't<C-o>',
-        '<cmd>lua require("neotest").output_panel.toggle()<cr>',
-        { desc = '[neotest] Output panel' }
-      )
+      -- stylua: ignore start
+      vim.keymap.set('n', 't<C-n>', function() require('neotest').run.run() end,                    { desc = '[neotest] Test nearest' })
+      vim.keymap.set('n', 't<C-d>', function() require('neotest').run.run { strategy = 'dap' } end, { desc = '[neotest] Debug nearest' })
+      vim.keymap.set('n', 't<C-f>', function() require('neotest').run.run(vim.fn.expand '%') end,   { desc = '[neotest] Test file' })
+      vim.keymap.set('n', 't<C-a>', function() require("neotest").run.attach() end,                 { desc = '[neotest] Test attach' })
+      vim.keymap.set('n', 't<C-o>', function() require("neotest").output_panel.toggle() end,        { desc = '[neotest] Output panel' })
+      -- stylua: ignore end
 
       vim.keymap.set('n', '[n', '<cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>', { silent = true })
       vim.keymap.set('n', ']n', '<cmd>lua require("neotest").jump.next({ status = "failed" })<CR>', { silent = true })
