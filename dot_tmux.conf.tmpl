@@ -29,8 +29,6 @@ if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
   set -g @catppuccin_flavor 'mocha'
 }
 
-source-file -q "$HOME/.tmux/theme.conf"
-
 # New window at current path
 bind > new-window -c "#{pane_current_path}"
 
@@ -182,3 +180,7 @@ if "test ! -d ~/.tmux/plugins/tpm" {
 }
 
 run '~/.tmux/plugins/tpm/tpm'
+
+
+# Override catppuccin status
+source-file -q "$HOME/.tmux/theme.conf"
