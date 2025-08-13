@@ -2,6 +2,13 @@
   "$schema": "https://opencode.ai/config.json",
   "theme": "catppuccin",
   "autoupdate": true,
+  "keybinds": {
+    "leader": "ctrl+q",
+    "messages_page_up": "ctrl+y",
+    "messages_page_down": "ctrl+e",
+    "messages_half_page_up": "ctrl+u",
+    "messages_half_page_down": "ctrl+d"
+  },
   "mcp": {
     "context7": {
       "type": "local",
