@@ -94,6 +94,8 @@
   git = !exec git
   alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
   which = "!f() { [ -n \"$1\" ] && ALIAS=`git alias | grep \"^$1 \"`; [ -n \"$ALIAS\" ] && echo \"$ALIAS\" || echo \"$1 not found\"; }; f"
+  stls = "git forgit stash_show"
+
   # Git town aliases
   append = town append --detached
   compress = town compress
