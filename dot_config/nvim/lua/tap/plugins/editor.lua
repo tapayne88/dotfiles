@@ -308,6 +308,8 @@ return {
         'fugitive', -- git status with fugitive (causes errors when restored)
         'git', -- git push / fetch with fugitive and pushed into buffer with ctrl-d
         'gitcommit', -- git commit messages
+        'opencode_input', -- opencode.nvim buffers
+        'opencode_output', -- opencode.nvim buffers
       }
 
       require('persistence').setup {
