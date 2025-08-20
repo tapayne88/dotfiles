@@ -86,7 +86,7 @@ return {
   {
     'yetone/avante.nvim',
     event = 'VeryLazy',
-    -- {{- if not .features.neovim_copilot }}
+    -- {{- if not .features.neovim_avante }}
     enabled = false,
     -- {{- end }}
     version = false, -- Never set this value to "*"! Never!
@@ -202,6 +202,7 @@ return {
 
   {
     'ravitemer/mcphub.nvim',
+    lazy = true,
     dependencies = {
       'nvim-lua/plenary.nvim', -- Required for Job and HTTP requests
     },
