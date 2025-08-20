@@ -92,12 +92,16 @@ vim.filetype.add {
     -- end,
     ['tiltfile'] = 'python',
     ['tfvars'] = 'terraform',
+    ['gotmpl'] = 'gotmpl',
   },
   filename = {
     ['Tiltfile'] = 'python',
   },
   pattern = {
     ['Jenkinsfile.*'] = 'groovy',
+    ['.*/templates/.*%.tpl'] = 'helm',
+    ['.*/templates/.*%.ya?ml'] = 'helm',
+    ['helmfile.*%.ya?ml'] = 'helm',
   },
 }
 

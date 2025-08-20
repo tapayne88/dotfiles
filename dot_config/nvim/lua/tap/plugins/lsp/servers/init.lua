@@ -2,6 +2,7 @@ return {
   require 'tap.plugins.lsp.servers.bashls',
   require 'tap.plugins.lsp.servers.cucumber_language_server',
   require 'tap.plugins.lsp.servers.eslint',
+  require 'tap.plugins.lsp.servers.helm_ls',
   require 'tap.plugins.lsp.servers.jsonls',
   require 'tap.plugins.lsp.servers.jsonnet',
   require 'tap.plugins.lsp.servers.lua_ls',

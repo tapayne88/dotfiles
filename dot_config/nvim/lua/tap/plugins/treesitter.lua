@@ -35,6 +35,7 @@ return {
           'go',
           'graphql',
           'groovy',
+          'helm',
           'html',
           'hurl',
           'java',
