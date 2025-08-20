@@ -86,10 +86,10 @@ setup_colors
 # Constants #
 #############
 
-KITTY_THEME_DARK="Catppuccin-Frappe"
+KITTY_THEME_DARK="Catppuccin-Mocha"
 KITTY_THEME_LIGHT="Catppuccin-Latte"
 
-BAT_THEME_DARK="Catppuccin-frappe"
+BAT_THEME_DARK="Catppuccin-mocha"
 BAT_THEME_LIGHT="Catppuccin-latte"
 
 ###########

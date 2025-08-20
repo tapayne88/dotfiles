@@ -17,7 +17,7 @@ local set_dark = function()
   vim.g.use_light_theme = false
 
   vim.o.background = 'dark'
-  vim.cmd.colorscheme 'catppuccin-frappe'
+  vim.cmd.colorscheme 'catppuccin-mocha'
 end
 
 local set_light = function()
