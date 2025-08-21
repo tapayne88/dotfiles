@@ -57,7 +57,6 @@ return {
           insert_only = true,
           -- These are passed to nvim_open_win
           relative = 'cursor',
-          border = 'rounded',
           -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
           prefer_width = 40,
           max_width = nil,

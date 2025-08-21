@@ -22,9 +22,6 @@ return {
 
     require('lsp-virtual-improved').setup()
 
-    -- TODO: Create config module where this can live - duplicated in utils/lsp.lua
-    local border_window_style = 'rounded'
-
     vim.diagnostic.config {
       underline = true,
       update_in_insert = false,
@@ -39,7 +36,6 @@ return {
       float = {
         show_header = false,
         source = true,
-        border = border_window_style,
       },
     }
 
