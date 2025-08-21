@@ -1,11 +1,9 @@
-local lsp_utils = require 'tap.utils.lsp'
-
 local M = {}
 
 M.ensure_installed = { 'lua_ls' }
 
 function M.setup()
-  require('lspconfig').lua_ls.setup(lsp_utils.merge_with_default_config {
+  vim.lsp.config('lua_ls', {
     settings = {
       Lua = {
         -- Prevent annoying 'Do you need to configure your work environment as `X`?' prompts
@@ -17,6 +15,8 @@ function M.setup()
       },
     },
   })
+
+  vim.lsp.enable 'lua_ls'
 end
 
 return M

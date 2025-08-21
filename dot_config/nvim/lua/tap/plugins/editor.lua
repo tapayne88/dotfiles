@@ -353,7 +353,7 @@ return {
         segments = {
           { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
           {
-            sign = { namespace = { 'diagnostic' }, maxwidth = 2, auto = true },
+            sign = { namespace = { 'diagnostic' }, maxwidth = 1, auto = true },
             click = 'v:lua.ScSa',
           },
           { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },

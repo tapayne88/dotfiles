@@ -50,6 +50,12 @@ return {
         :flatten()
         :totable()
 
+      local mason_settings = require 'mason.settings'
+      vim.lsp.config('*', {
+        -- set cmd_cwd to mason install_root_dir to ensure node version consistency
+        cmd_cwd = mason_settings.current.install_root_dir,
+      })
+
       require('mason-lspconfig').setup {
         ensure_installed = ensure_installed,
         automatic_installation = true,

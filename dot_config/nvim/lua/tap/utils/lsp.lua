@@ -36,27 +36,31 @@ end
 ---@param bufnr number
 ---@return nil
 local function on_attach(_, bufnr)
-  local nnoremap = require('tap.utils').nnoremap
-  local keymap = require('tap.utils').keymap
-
   -- Mappings.
   local with_opts = function(desc)
     return { buffer = bufnr, desc = '[LSP] ' .. desc }
   end
-  nnoremap('grn', require('live-rename').rename, with_opts 'Rename')
+
+  vim.keymap.set('n', 'grn', require('live-rename').rename, with_opts 'Rename')
 
   -- other mappings, not sure about these
-  nnoremap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', with_opts 'Add workspace folder')
-  nnoremap('<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', with_opts 'Remove workspace folder')
-  nnoremap(
+  vim.keymap.set('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', with_opts 'Add workspace folder')
+  vim.keymap.set(
+    'n',
+    '<space>wr',
+    '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>',
+    with_opts 'Remove workspace folder'
+  )
+  vim.keymap.set(
+    'n',
     '<space>wl',
     '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
     with_opts 'List workspace folders'
   )
-  nnoremap('<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', with_opts 'Go to type definition')
+  vim.keymap.set('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', with_opts 'Go to type definition')
 
   if vim.lsp.inlay_hint then
-    keymap('n', '<leader>ih', function()
+    vim.keymap.set('n', '<leader>ih', function()
       local new_state = not vim.lsp.inlay_hint.is_enabled { bufnr = 0 }
       vim.lsp.inlay_hint.enable(new_state, { bufnr = 0 })
     end, with_opts 'Toggle Inlay Hints')
@@ -82,18 +86,8 @@ end
 ---@param config table|nil
 ---@return table
 function M.merge_with_default_config(config)
-  local mason_settings = require 'mason.settings'
-
   local base_config = {
-    autostart = true,
     on_attach = on_attach,
-    -- set cmd_cwd to mason install_root_dir to ensure node version consistency
-    cmd_cwd = mason_settings.current.install_root_dir,
-    capabilities = vim.tbl_deep_extend(
-      'force',
-      vim.lsp.protocol.make_client_capabilities(),
-      require('cmp_nvim_lsp').default_capabilities()
-    ),
   }
   return vim.tbl_deep_extend('force', base_config, config or {})
 end
