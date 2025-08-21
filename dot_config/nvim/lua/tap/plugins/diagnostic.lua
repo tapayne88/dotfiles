@@ -29,8 +29,13 @@ return {
       virtual_improved = diagnostic_toggle_map.virtual_text[diagnostic_toggle_index],
       virtual_lines = diagnostic_toggle_map.virtual_lines[diagnostic_toggle_index],
       signs = {
-        -- Make priority higher than vim-signify
         priority = 100,
+        text = {
+          [vim.diagnostic.severity.ERROR] = lsp_symbol 'error',
+          [vim.diagnostic.severity.WARN] = lsp_symbol 'warning',
+          [vim.diagnostic.severity.HINT] = lsp_symbol 'hint',
+          [vim.diagnostic.severity.INFO] = lsp_symbol 'info',
+        },
       },
       severity_sort = true,
       float = {
@@ -60,20 +65,5 @@ return {
       local msg = diagnostic_toggle_index == 2 and 'Hide diagnostic output' or 'Show diagnostic output'
       vim.notify(msg, vim.log.levels.INFO, { title = 'Diagnostic' })
     end, { desc = 'Toggle diagnostic display' })
-
-    -----------
-    -- Signs --
-    -----------
-    local signs = {
-      Error = lsp_symbol 'error',
-      Warn = lsp_symbol 'warning',
-      Hint = lsp_symbol 'hint',
-      Info = lsp_symbol 'info',
-    }
-
-    for type, icon in pairs(signs) do
-      local hl = 'DiagnosticSign' .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-    end
   end,
 }
