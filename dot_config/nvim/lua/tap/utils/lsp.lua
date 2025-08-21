@@ -82,18 +82,8 @@ end
 ---@param config table|nil
 ---@return table
 function M.merge_with_default_config(config)
-  local mason_settings = require 'mason.settings'
-
   local base_config = {
-    autostart = true,
     on_attach = on_attach,
-    -- set cmd_cwd to mason install_root_dir to ensure node version consistency
-    cmd_cwd = mason_settings.current.install_root_dir,
-    capabilities = vim.tbl_deep_extend(
-      'force',
-      vim.lsp.protocol.make_client_capabilities(),
-      require('cmp_nvim_lsp').default_capabilities()
-    ),
   }
   return vim.tbl_deep_extend('force', base_config, config or {})
 end
