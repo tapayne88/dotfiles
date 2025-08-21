@@ -9,8 +9,7 @@ function M.setup()
       -- https://github.com/cucumber/language-server/issues/102#issuecomment-2026719010
       ASDF_NODEJS_VERSION = '18.16.0',
     },
-    -- use package.json as root_dir indicator to work with monorepos
-    root_dir = require('lspconfig.util').find_package_json_ancestor,
+    root_markers = { 'package.json' },
     cmd_cwd = nil,
   })
 
