@@ -1,12 +1,9 @@
-local lsp_utils = require 'tap.utils.lsp'
-
 local M = {}
 
 M.ensure_installed = { 'vtsls' }
 
 function M.setup()
-  require('lspconfig.configs').vtsls = require('vtsls').lspconfig
-  require('lspconfig').vtsls.setup(lsp_utils.merge_with_default_config {
+  vim.lsp.config('vtsls', {
     settings = {
       complete_function_calls = true,
       vtsls = {
@@ -20,7 +17,7 @@ function M.setup()
         },
       },
       typescript = {
-        updateImportsOnFileMove = { enabled = 'always' },
+        updateImportsOnFileMove = 'always',
         suggest = {
           completeFunctionCalls = true,
         },
@@ -33,8 +30,13 @@ function M.setup()
           variableTypes = { enabled = false },
         },
       },
+      javascript = {
+        updateImportsOnFileMove = 'always',
+      },
     },
   })
+
+  vim.lsp.enable 'vtsls'
 end
 
 return M
