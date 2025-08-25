@@ -1,0 +1,4 @@
+{
+  "runtime.path": ["../neodev/types/stable/?.lua"],
+  "workspace.library": ["../neodev/types/stable/?.lua"]
+}
