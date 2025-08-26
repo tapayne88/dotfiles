@@ -90,10 +90,49 @@ return {
       'shumphrey/fugitive-gitlab.vim', -- :GBrowse gitlab
     },
     keys = function()
+      local function toggle_git_status()
+        local function is_git_status_buffer(buf)
+          local filetype = vim.bo[buf].filetype
+          local buf_name = vim.api.nvim_buf_get_name(buf)
+
+          -- Git status buffer has filetype 'fugitive' and matches specific patterns
+          if filetype == 'fugitive' then
+            if string.match(buf_name, 'fugitive://.*%.git//$') then
+              return true
+            end
+          end
+          return false
+        end
+
+        -- Check if current buffer is the git status buffer
+        local current_buf = vim.api.nvim_get_current_buf()
+
+        if is_git_status_buffer(current_buf) then
+          vim.cmd 'quit'
+          return
+        end
+
+        -- Check if any git status buffer exists and close it
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(buf) and is_git_status_buffer(buf) then
+            -- Find window with this buffer and close it
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              if vim.api.nvim_win_get_buf(win) == buf then
+                vim.api.nvim_win_close(win, false)
+                return
+              end
+            end
+          end
+        end
+
+        -- No git status buffer found, open git status (automatically focuses)
+        vim.cmd 'Git'
+      end
+
       return {
         -- stylua: ignore start
         { '<leader>ga', ':Git add %:p<CR><CR>',         desc = 'Git add file' },
-        { '<leader>gs', ':Git<CR>',                     desc = 'Git status' },
+        { '<leader>gs', toggle_git_status,              desc = 'Toggle git status' },
         { '<leader>gf', ':Git fetch<CR>',               desc = 'Git fetch' },
         { '<leader>gc', ':Git commit -v -q<CR>',        desc = 'Git commit' },
         { '<leader>gt', ':Git commit -v -q %:p<CR>',    desc = 'Git commit file' },
