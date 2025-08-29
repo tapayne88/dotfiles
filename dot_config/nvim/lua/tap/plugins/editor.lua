@@ -143,7 +143,7 @@ return {
         { '<leader>gl', ':Gclog<CR>',                   desc = 'Git log' },
         { '<leader>go', ':Git checkout<Space>',         desc = 'Git checkout' },
         { '<leader>gb', ':GBrowse!<CR>',                desc = 'Git browse file' },
-        { '<leader>gb', ":'<,'>GBrowse!<CR>",           desc = 'Git browse visual selection' },
+        { '<leader>gb', ":'<,'>GBrowse!<CR>",           desc = 'Git browse visual selection', mode = 'v' },
         -- stylua: ignore end
 
         {
