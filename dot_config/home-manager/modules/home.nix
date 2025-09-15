@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     antigen # zsh plugin manager
     asciinema # asciinema.org recorder
+    atuin # Magical shell history
     awscli2 # cli for working with aws
     bat # colourised cat
     cargo # rust build tool for tmux-thumbs
