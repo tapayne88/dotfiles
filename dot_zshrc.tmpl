@@ -108,6 +108,16 @@ eval `dircolors $HOME/.dir_colors`
 # Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
 prepend_path "$HOME/.local/bin" "$HOME/.gem/ruby/2.7.0/bin"
 
+function zvm_config() {
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
+
+# Workaround to make vi-mode work with atuin
+function zvm_after_init() {
+  zvm_bindkey viins '^R' atuin-search
+  zvm_bindkey vicmd '^R' atuin-search
+}
+
 source ~/.nix-profile/share/antigen/antigen.zsh
 
 # patches required for modules
@@ -133,6 +143,7 @@ antigen bundle robbyrussell/oh-my-zsh plugins/z
 
 antigen bundle atuinsh/atuin --branch=main
 antigen bundle wfxr/forgit --branch=main
+antigen bundle jeffreytse/zsh-vi-mode
 
 antigen theme romkatv/powerlevel10k
 
