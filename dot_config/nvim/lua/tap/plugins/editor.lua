@@ -422,21 +422,21 @@ return {
     init = function()
       ---@diagnostic disable: missing-parameter
       --stylua: ignore start
-      vim.keymap.set('n', 'K',      function() require('hover').hover() end,                  { desc = 'hover.nvim' })
-      vim.keymap.set('n', 'gK',     function() require('hover').hover_select() end,           { desc = 'hover.nvim (select)' })
-      vim.keymap.set("n", "<C-p>",  function() require("hover").hover_switch("previous") end, { desc = "hover.nvim (previous source)" })
-      vim.keymap.set("n", "<C-n>",  function() require("hover").hover_switch("next") end,     { desc = "hover.nvim (next source)" })
+      vim.keymap.set('n', 'K',      function() require('hover').open() end,             { desc = 'hover.nvim (open)' })
+      vim.keymap.set('n', 'gK',     function() require('hover').enter() end,            { desc = 'hover.nvim (enter)' })
+      vim.keymap.set('n', '<C-p>',  function() require('hover').switch('previous') end, { desc = 'hover.nvim (previous source)' })
+      vim.keymap.set('n', '<C-n>',  function() require('hover').switch('next') end,     { desc = 'hover.nvim (next source)' })
       --stylua: ignore end
       ---@diagnostic enable: missing-parameter
     end,
     config = function()
-      require('hover').setup {
-        init = function()
-          require 'hover.providers.lsp'
-          require 'hover.providers.diagnostic'
-          require 'hover.providers.man'
-          require 'hover.providers.dictionary'
-        end,
+      require('hover').config {
+        providers = {
+          'hover.providers.lsp',
+          'hover.providers.diagnostic',
+          'hover.providers.man',
+          'hover.providers.dictionary',
+        },
         preview_opts = {
           border = 'rounded',
         },
