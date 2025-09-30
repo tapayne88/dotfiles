@@ -8,6 +8,15 @@ return {
   },
   config = function()
     require('catppuccin').setup {
+      lsp_styles = {
+        underlines = {
+          errors = { 'undercurl' },
+          hints = { 'undercurl' },
+          warnings = { 'undercurl' },
+          information = { 'undercurl' },
+          ok = { 'undercurl' },
+        },
+      },
       integrations = {
         cmp = true,
         dap = true,
@@ -18,21 +27,6 @@ return {
         mason = true,
         neotree = true,
         neotest = true,
-        native_lsp = {
-          enabled = true,
-          virtual_text = {
-            errors = { 'italic' },
-            hints = { 'italic' },
-            warnings = { 'italic' },
-            information = { 'italic' },
-          },
-          underlines = {
-            errors = { 'undercurl' },
-            hints = { 'undercurl' },
-            warnings = { 'undercurl' },
-            information = { 'undercurl' },
-          },
-        },
         -- Enabled manually in ./lualine.lua
         -- navic = {
         --   enabled = true,
