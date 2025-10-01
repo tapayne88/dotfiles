@@ -74,9 +74,9 @@
           "type": "string",
           "description": "Basic token from https://github.com/settings/personal-access-tokens. Required to avoid API rate limiting for things like nix"
         },
-        "tailscale_name": {
+        "home_network_tld": {
           "type": "string",
-          "description": "Tailscale name used for TLD when resolving hostanmes, see https://login.tailscale.com/admin/dns"
+          "description": "TLD of my home network"
         },
         "neovim_dev_plugin_dir": {
           "type": "string",
@@ -96,7 +96,7 @@
         "features",
         "github_enterprise_host",
         "github_auth_token",
-        "tailscale_name",
+        "home_network_tld",
         "asdf_nodejs_version"
       ]
     }
