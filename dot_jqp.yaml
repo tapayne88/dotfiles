@@ -1,1 +1,2 @@
-theme: "nord"
+theme:
+  name: "catppuccin-mocha"
