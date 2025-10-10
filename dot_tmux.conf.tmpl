@@ -127,6 +127,9 @@ bind -n C-M-l run "tmux send-keys C-l"
 # Easier inline selection
 bind -T copy-mode-vi 'v' send -X begin-selection
 
+# lazygit popup
+bind g display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" lazygit
+
 ######################################
 # tmux-plugins/tmux-prefix-highlight #
 ######################################
