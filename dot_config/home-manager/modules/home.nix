@@ -29,7 +29,6 @@
     iperf # Tool to measure IP bandwidth using UDP or TCP
     just # Handy way to save and run project-specific commands
     jq # json cli processor
-    k9s # Kubernetes CLI To Manage Your Clusters In Style!
     kubie # even nicer interaction with k8s cli with multiple configs
     mosh # better ssh
     netcat # netcat implementaion
@@ -59,6 +58,7 @@
     unstable.git-town # Generic, high-level git support for git-flow workflows
     unstable.hurl # HTTP requests runner
     unstable.jqp # TUI playground for jq
+    unstable.k9s # Kubernetes CLI To Manage Your Clusters In Style!
     unstable.nerdfix # fix for nerd fonts
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
