@@ -1,2 +1,3 @@
-[delta "my-theme"]
-  syntax-theme = Catppuccin-mocha
+# vim: ft=gitconfig
+[delta]
+	features = catppuccin-mocha

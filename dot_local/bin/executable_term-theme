@@ -89,8 +89,11 @@ setup_colors
 KITTY_THEME_DARK="Catppuccin-Mocha"
 KITTY_THEME_LIGHT="Catppuccin-Latte"
 
-BAT_THEME_DARK="Catppuccin-mocha"
-BAT_THEME_LIGHT="Catppuccin-latte"
+BAT_THEME_DARK="Catppuccin Mocha"
+BAT_THEME_LIGHT="Catppuccin Latte"
+
+DELTA_THEME_DARK="catppuccin-mocha"
+DELTA_THEME_LIGHT="catppuccin-latte"
 
 ###########
 # Helpers #
@@ -120,7 +123,7 @@ set_bat_theme() {
 
 set_delta_theme() {
   local CMD
-  [ "$1" = "dark" ] && CMD="s/$BAT_THEME_LIGHT/$BAT_THEME_DARK/" || CMD="s/$BAT_THEME_DARK/$BAT_THEME_LIGHT/"
+  [ "$1" = "dark" ] && CMD="s/$DELTA_THEME_LIGHT/$DELTA_THEME_DARK/" || CMD="s/$DELTA_THEME_DARK/$DELTA_THEME_LIGHT/"
   sed -i $CMD "$HOME/.gitconfig-theme"
 }
 
@@ -166,7 +169,7 @@ command_toggle() {
 
   [ "$THEME" = "light" ] && THEME="dark" || THEME="light"
 
-  update_theme $THEME
+  update_theme "$THEME"
 }
 
 command_light() {

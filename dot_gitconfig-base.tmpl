@@ -4,15 +4,11 @@
   # default to personal email
   email = {{ .email.personal }}
 
-# If in repo within `work` directory, use work email
-[includeIf "gitdir:work/"]
-  path = .gitconfig-work
-
 [init]
   templateDir = {{ .chezmoi.sourceDir }}/misc/git_template
 
 [core]
-  pager = delta --features default
+  pager = delta
 
 # Without the below my p10k prompt would show incorrect git status info, see issue
 # https://github.com/romkatv/powerlevel10k/issues/2232#issuecomment-1478166292
@@ -123,7 +119,7 @@
   cmd = vim -c \"execute 'Gstatus' | wincmd p | Gvdiff ~1\" $MERGED
 
 [merge]
-  conflictStyle = diff3
+  conflictStyle = zdiff3
 
 [mergetool]
   hideResolved = true
@@ -132,25 +128,14 @@
   showDirtyState = true
 
 [interactive]
-  diffFilter = delta --features default --color-only
+  diffFilter = delta --color-only
 
 [include]
   path = ~/.gitconfig-theme
 
-[delta "default"]
+[include]
+  path = ~/.catppuccin.gitconfig
+
+[delta]
   navigate = true
   side-by-side = true
-  features = my-theme syntax
-
-[delta "my-theme"]
-  line-numbers-zero-style = blue
-  line-numbers-minus-style = white red
-  line-numbers-plus-style = black green
-  minus-style = white red
-  minus-emph-style = red white 
-  plus-style = black green
-  plus-emph-style = black white
-
-[delta "fzf"]
-  line-numbers = true
-  features = my-theme syntax
