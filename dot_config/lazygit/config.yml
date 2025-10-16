@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 gui:
   theme:
     activeBorderColor:
@@ -22,3 +23,12 @@ gui:
 
   authorColors:
     "*": "#b4befe"
+
+git:
+  paging:
+    pager: delta --dark --paging=never --features catppuccin-mocha --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+
+  mainBranches:
+    - master
+    - main
+    - develop

@@ -30,7 +30,6 @@
     just # Handy way to save and run project-specific commands
     jq # json cli processor
     kubie # even nicer interaction with k8s cli with multiple configs
-    lazygit # simple terminal UI for git commands
     mosh # better ssh
     netcat # netcat implementaion
     poppler_utils # pdf utils - pdfunite to combine pdfs
@@ -60,6 +59,7 @@
     unstable.hurl # HTTP requests runner
     unstable.jqp # TUI playground for jq
     unstable.k9s # Kubernetes CLI To Manage Your Clusters In Style!
+    unstable.lazygit # simple terminal UI for git commands
     unstable.nerdfix # fix for nerd fonts
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
