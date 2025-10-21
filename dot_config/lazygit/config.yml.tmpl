@@ -1,3 +1,4 @@
+# vim: ft=yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 gui:
   theme:
@@ -32,3 +33,6 @@ git:
     - master
     - main
     - develop
+
+services:
+  "{{ .github_enterprise_host }}": "github:{{ .github_enterprise_host }}"
