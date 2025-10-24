@@ -64,39 +64,9 @@ return {
   },
 
   {
-    'mxsdev/nvim-dap-vscode-js',
-    lazy = true,
-    dependencies = {
-      'microsoft/vscode-js-debug',
-      tag = 'v1.96.0',
-      build = table.concat({
-        'npm install --legacy-peer-deps',
-        'npx gulp vsDebugServerBundle',
-        'rm -rf out/dist',
-        'mv dist out',
-        'git checkout package-lock.json',
-      }, ' && '),
-    },
-    config = function()
-      local log_file_path = vim.fn.stdpath 'cache' .. '/dap_vscode_js.log' -- Path for file logging
-      require('tap.utils').notify_in_debug(log_file_path, vim.log.levels.DEBUG, { title = 'nvim-dap' })
-
-      require('dap-vscode-js').setup {
-        -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-        debugger_path = require('lazy.core.config').options.root .. '/vscode-js-debug', -- Path to vscode-js-debug installation.
-        -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-        adapters = { 'pwa-node' }, -- which adapters to register in nvim-dap
-        log_file_path = log_file_path, -- Path for file logging
-        log_file_level = require('tap.utils').debug_enabled() and vim.log.levels.DEBUG or vim.log.levels.WARN, -- Logging level for output to file. Set to false to disable file logging.
-      }
-    end,
-  },
-
-  {
     'mfussenegger/nvim-dap',
     lazy = true,
     dependencies = {
-      'mxsdev/nvim-dap-vscode-js',
       'rcarriga/nvim-dap-ui',
       { 'theHamsta/nvim-dap-virtual-text', config = true },
       'hrsh7th/nvim-cmp',
@@ -115,8 +85,8 @@ return {
       { "<leader>dj", function() require("dap").down() end, desc = "Down" },
       { "<leader>dk", function() require("dap").up() end, desc = "Up" },
       { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-      { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<leader>dO", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<leader>do", function() require("dap").step_over() end, desc = "Step Over" },
       { "<leader>dP", function() require("dap").pause() end, desc = "Pause" },
       { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
       { "<leader>ds", function() require("dap").session() end, desc = "Session" },
@@ -125,6 +95,8 @@ return {
     },
 
     init = function()
+      require('tap.utils.lsp').ensure_installed { 'js-debug-adapter' }
+
       vim.api.nvim_create_user_command('DapToggleBreakpoint', function()
         require('dap').toggle_breakpoint()
       end, { desc = 'Toggle breakpoint' })
@@ -150,47 +122,152 @@ return {
     end,
 
     config = function()
+      local dap = require 'dap'
+
+      vim.fn.sign_define('DapStopped', {
+        text = '󰁕 ',
+        texthl = 'DiagnosticWarn',
+        linehl = 'DapStoppedLine',
+        numhl = '',
+      })
       vim.fn.sign_define('DapBreakpoint', {
-        text = '',
+        text = ' ',
         texthl = 'DapBreakpoint',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapBreakpointCondition', {
-        text = '',
+        text = ' ',
         texthl = 'DapBreakpointCondition',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapLogPoint', {
-        text = '◆',
+        text = '◆ ',
         texthl = 'DapLogPoint',
         linehl = '',
         numhl = '',
       })
       vim.fn.sign_define('DapBreakpointRejected', {
-        text = '',
-        texthl = 'DapBreakpoint',
+        text = ' ',
+        texthl = 'DiagnosticError',
         linehl = '',
         numhl = '',
       })
 
-      require('cmp').setup {
-        enabled = function()
-          return require 'cmp.config.default'().enabled() or require('cmp_dap').is_dap_buffer()
-        end,
-      }
       require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
         sources = {
           { name = 'dap' },
         },
       })
 
-      require('dap').listeners.before.attach.dapui_config = function()
+      -- setup dap config by VsCode launch.json file
+      local vscode = require 'dap.ext.vscode'
+      local json = require 'plenary.json'
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vscode.json_decode = function(str)
+        return vim.json.decode(json.json_strip_comments(str))
+      end
+
+      dap.listeners.before.attach.dapui_config = function()
         require('dapui').open()
       end
-      require('dap').listeners.before.launch.dapui_config = function()
+      dap.listeners.before.launch.dapui_config = function()
         require('dapui').open()
+      end
+
+      -- ╭──────────────────────────────────────────────────────────╮
+      -- │ Adapters                                                 │
+      -- ╰──────────────────────────────────────────────────────────╯
+      for _, adapterType in ipairs { 'node', 'chrome', 'msedge' } do
+        local pwaType = 'pwa-' .. adapterType
+
+        if not dap.adapters[pwaType] then
+          dap.adapters[pwaType] = {
+            type = 'server',
+            host = 'localhost',
+            port = '${port}',
+            executable = {
+              command = 'js-debug-adapter',
+              args = { '${port}' },
+            },
+          }
+        end
+
+        -- Define adapters without the "pwa-" prefix for VSCode compatibility
+        if not dap.adapters[adapterType] then
+          dap.adapters[adapterType] = function(cb, config)
+            local nativeAdapter = dap.adapters[pwaType]
+
+            config.type = pwaType
+
+            if type(nativeAdapter) == 'function' then
+              nativeAdapter(cb, config)
+            else
+              cb(nativeAdapter)
+            end
+          end
+        end
+      end
+
+      -- ╭──────────────────────────────────────────────────────────╮
+      -- │ Configurations                                           │
+      -- ╰──────────────────────────────────────────────────────────╯
+      local js_filetypes = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' }
+
+      vscode.type_to_filetypes['node'] = js_filetypes
+      vscode.type_to_filetypes['pwa-node'] = js_filetypes
+
+      for _, language in ipairs(js_filetypes) do
+        if not dap.configurations[language] then
+          local runtimeExecutable = nil
+          if language:find 'typescript' then
+            runtimeExecutable = vim.fn.executable 'tsx' == 1 and 'tsx' or 'ts-node'
+          end
+          dap.configurations[language] = {
+            {
+              type = 'pwa-node',
+              request = 'launch',
+              name = 'Launch file',
+              program = '${file}',
+              cwd = '${workspaceFolder}',
+              sourceMaps = true,
+              runtimeExecutable = runtimeExecutable,
+              skipFiles = {
+                '<node_internals>/**',
+                'node_modules/**',
+              },
+              resolveSourceMapLocations = {
+                '${workspaceFolder}/**',
+                '!**/node_modules/**',
+              },
+            },
+            {
+              type = 'pwa-node',
+              request = 'attach',
+              name = 'Attach',
+              processId = require('dap.utils').pick_process,
+              cwd = '${workspaceFolder}',
+              sourceMaps = true,
+              runtimeExecutable = runtimeExecutable,
+              skipFiles = {
+                '<node_internals>/**',
+                'node_modules/**',
+              },
+              resolveSourceMapLocations = {
+                '${workspaceFolder}/**',
+                '!**/node_modules/**',
+              },
+            },
+            -- Divider for the launch.json derived configs
+            {
+              name = '----- ↓ launch.json configs ↓ -----',
+              type = '',
+              request = 'launch',
+            },
+          }
+        end
       end
     end,
   },
