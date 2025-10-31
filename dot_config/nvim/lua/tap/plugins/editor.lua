@@ -431,12 +431,39 @@ return {
     end,
     config = function()
       require('hover').config {
-        providers = {
-          'hover.providers.lsp',
-          'hover.providers.diagnostic',
-          'hover.providers.man',
-          'hover.providers.dictionary',
-        },
+        providers = vim
+          .iter({
+            {
+              module = 'hover.providers.lsp',
+              name = 'LSP',
+            },
+            {
+              module = 'hover.providers.dap',
+              name = 'DAP',
+            },
+            {
+              module = 'hover.providers.diagnostic',
+              name = 'Diagnostics',
+            },
+            {
+              module = 'hover.providers.fold_preview',
+              name = 'Fold',
+            },
+            {
+              module = 'hover.providers.man',
+              name = 'man',
+            },
+            {
+              module = 'hover.providers.dictionary',
+              name = 'Diagnostics',
+            },
+          })
+          :enumerate()
+          :map(function(index, provider)
+            provider.priority = 2000 - index
+            return provider
+          end)
+          :totable(),
         preview_opts = {
           border = 'rounded',
         },
@@ -444,6 +471,7 @@ return {
         -- to a :h preview-window when pressing the hover keymap.
         preview_window = false,
         title = true,
+        mouse_providers = {},
       }
     end,
   },
