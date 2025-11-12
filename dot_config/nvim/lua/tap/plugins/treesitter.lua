@@ -44,6 +44,7 @@ return {
           'json',
           'json5',
           'jsonnet',
+          'just',
           'kotlin',
           'lua',
           'make',
