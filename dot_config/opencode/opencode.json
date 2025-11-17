@@ -11,8 +11,7 @@
     "messages_half_page_down": "ctrl+d"
   },
   "disabled_providers": ["opencode"],
-  "model": "github-copilot/claude-sonnet-4-5",
-  "small_model": "github-copilot/claude-haiku-4-5",
+  "model": "github-copilot/claude-sonnet-4",
   "mcp": {
     "context7": {
       "type": "local",
