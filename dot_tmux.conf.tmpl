@@ -39,16 +39,6 @@ bind a set-window-option synchronize-panes
 bind ! select-layout even-vertical      # Shift + 1
 bind @ select-layout even-horizontal    # Shift + 2
 
-# Toggle mouse on
-bind-key M \
-  set-option -g mouse on \;\
-  display-message 'Mouse: ON'
-
-# Toggle mouse off
-bind-key m \
-  set-option -g mouse off \;\
-  display-message 'Mouse: OFF'
-
 # Window navigation (mac like replaces iTerms tab navigation)
 bind -n "M-{" prev            # Send HEX Code: 0x02 0x70
 bind -n "M-}" next            # Send HEX Code: 0x02 0x6E
