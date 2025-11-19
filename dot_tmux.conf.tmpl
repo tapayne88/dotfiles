@@ -22,13 +22,6 @@ set -g focus-events on
 # Source local config file - if it exists
 source-file -q "$HOME/.tmux.local.conf"
 
-# Unset theme should defualt to dark 
-if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
-  set -g @catppuccin_flavor 'latte'
-} {
-  set -g @catppuccin_flavor 'mocha'
-}
-
 # New window at current path
 bind > new-window -c "#{pane_current_path}"
 
@@ -178,6 +171,44 @@ set -g @override_copy_command 'xsel --clipboard'
 #{{- end }}
 set -g @shell_mode 'vi'
 
+######################################
+# tmux-plugins/tmux-prefix-highlight #
+######################################
+set -g @prefix_highlight_fg "#{@thm_red}"
+set -g @prefix_highlight_bg "#{@thm_bg}"
+set -g @prefix_highlight_output_prefix ""
+set -g @prefix_highlight_output_suffix " "
+set -g @prefix_highlight_prefix_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_red}]#[fg=#{@thm_red}]#[bg=#{@thm_bg}]"
+
+set -g @prefix_highlight_copy_mode_attr "fg=#{@thm_yellow},bg=#{@thm_bg}"
+set -g @prefix_highlight_copy_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_yellow}]#[fg=#{@thm_yellow}]#[bg=#{@thm_bg}]"
+
+set -g @prefix_highlight_sync_mode_attr "fg=#{@thm_mauve},bg=#{@thm_bg}"
+set -g @prefix_highlight_sync_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_mauve}]#[fg=#{@thm_mauve}]#[bg=#{@thm_bg}]"
+
+###################
+# catppuccin/tmux #
+###################
+# Unset theme should defualt to dark
+if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
+  set -g @catppuccin_flavor 'latte'
+} {
+  set -g @catppuccin_flavor 'mocha'
+}
+
+set -g @catppuccin_window_status_style "rounded"
+set -g status-right-length 100
+set -g status-left "#[fg=#{@thm_peach},bg=#{@thm_bg}]#[fg=#{@thm_bg},bg=#{@thm_peach},bold] #S#[fg=#{@thm_peach},bg=#{@thm_bg}]"
+
+set -g status-left-length 100
+set -g status-right "#{prefix_highlight}"
+set -ag status-right "#[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore]%a %d-%m-%Y #[fg=#{@thm_mantle},bg=#{@thm_bg}]┃ #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore]%H:%M #[fg=#{@thm_bg},bg=#{@thm_bg},bold]"
+set -agF status-right "#{E:@catppuccin_status_battery}"
+
+set -g @catppuccin_window_status_style "none"
+set -g window-status-format " #[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_bg}]#I #[fg=#{@thm_mantle},bg=#{@thm_bg}]┃ #[fg=#{@thm_fg},bg=#{@thm_bg}]#W#[fg=#{@thm_bg},bg=#{@thm_mantle}]"
+set -g window-status-current-format " #[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_mantle}]#I #[fg=#{@thm_bg},bg=#{@thm_sky},nobold,noitalics,nounderscore] #W#{?#{>:#{window_panes},1}, #[fg=#{@thm_fg}]#[bg=#{@thm_bg}] 󰕮 #[fg=#{@thm_bg}]#[bg=#{@thm_mantle}],#[fg=#{@thm_sky},bg=#{@thm_bg}]}"
+
 # tpm plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'jbnicolai/tmux-fpp'
@@ -199,7 +230,3 @@ if "test ! -d ~/.tmux/plugins/tpm" {
 }
 
 run '~/.tmux/plugins/tpm/tpm'
-
-
-# Override catppuccin status
-source-file -q "$HOME/.tmux/theme.conf"
