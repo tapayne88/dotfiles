@@ -115,13 +115,13 @@ bind g display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" lazygit
 
 # Pane hiding/showing functionality
 # Break pane and mark it for easy reattaching
-bind B run-shell '\
+bind b run-shell '\
   source_window=$(tmux display-message -p "#{window_name}"); \
   pane_name=$(tmux display-message -p "#{pane_current_command}"); \
   new_window=$(tmux break-pane -d -P -n "$source_window:$pane_name"); \
   tmux select-pane -m -t "$new_window"'
 # Rejoin the marked pane to current window (right or below)
-bind J run-shell '\
+bind j run-shell '\
   pane_count=$(tmux list-panes | wc -l); \
   if [ $pane_count -gt 1 ]; then \
     tmux join-pane -v -s "{marked}"; \
@@ -129,7 +129,7 @@ bind J run-shell '\
     tmux join-pane -h -s "{marked}"; \
   fi'
 # Rejoin the marked pane to current window (right or above)
-bind K run-shell '\
+bind k run-shell '\
   pane_count=$(tmux list-panes | wc -l); \
   if [ $pane_count -gt 1 ]; then \
     tmux join-pane -b -v -s "{marked}"; \
