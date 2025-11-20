@@ -202,7 +202,8 @@ set -g status-left "#[fg=#{@thm_peach},bg=#{@thm_bg}]█#[fg=#{@thm_bg},bg=#{@th
 
 set -g status-left-length 100
 set -g status-right "#{prefix_highlight}"
-set -ag status-right "#[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore]%a %d-%m-%Y #[fg=#{@thm_mantle},bg=#{@thm_bg}]┃ #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore]%H:%M #[fg=#{@thm_bg},bg=#{@thm_bg},bold]"
+set -ag status-right "#[fg=#{@thm_maroon},bg=#{@thm_mantle}]#[fg=#{@thm_mantle},bg=#{@thm_maroon}] #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore] %a %d-%m-%Y "
+set -ag status-right "#[fg=#{@thm_green},bg=#{@thm_mantle}]#[fg=#{@thm_mantle},bg=#{@thm_green}]󰥔 #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore] %H:%M #[fg=#{@thm_bg},bg=#{@thm_bg},bold]"
 set -agF status-right "#{E:@catppuccin_status_battery}"
 
 set -g @catppuccin_window_status_style "none"
