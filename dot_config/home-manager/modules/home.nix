@@ -45,6 +45,7 @@
     up # utlimate plumber - unix pipes tool
     unixtools.watch # run command periodically
     vim # vim
+    vivid # A themeable LS_COLORS generator with a rich filetype datebase
     wget # fetch things from urls
     xan # fast CSV toolkit
     yarn # JS package manager
@@ -53,6 +54,7 @@
 
     # Unstable Packages
     unstable._1password-cli # 1password version is quite old - unstable is much newer
+    unstable.carapace # A multi-shell completion library
     unstable.git # newest git!
     unstable.git-town # Generic, high-level git support for git-flow workflows
     unstable.hurl # HTTP requests runner

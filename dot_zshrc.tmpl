@@ -116,6 +116,11 @@ function zvm_config() {
 function zvm_after_init() {
   zvm_bindkey viins '^R' atuin-search
   zvm_bindkey vicmd '^R' atuin-search
+
+  # Setup carapace after compinit to ensure it can override existing completions
+  export CARAPACE_BRIDGES='zsh,inshellisense' # optional
+  export CARAPACE_MATCH=1
+  source <(carapace _carapace)
 }
 
 source ~/.nix-profile/share/antigen/antigen.zsh
@@ -127,7 +132,6 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-syntax-highlighting
 
-antigen bundle robbyrussell/oh-my-zsh lib/completion.zsh
 antigen bundle robbyrussell/oh-my-zsh lib/key-bindings.zsh
 antigen bundle robbyrussell/oh-my-zsh lib/theme-and-appearance.zsh
 antigen bundle robbyrussell/oh-my-zsh plugins/asdf
@@ -169,10 +173,11 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
+export LS_COLORS=$(vivid generate catppuccin-mocha)
 
-# Need to run this after oh-my-zsh lib/completion as it resets it
-# for the benefit of macOS
+# Need to run this after carapace setup to ensure colors are preserved
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 
 LOCAL_RC=~/.zshrc.local
 if [ -e $LOCAL_RC ]; then
