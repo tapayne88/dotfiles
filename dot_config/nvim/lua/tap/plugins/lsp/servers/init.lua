@@ -9,6 +9,7 @@ return {
   -- No longer using tailwindcss
   -- require 'tap.plugins.lsp.servers.tailwindcss',
   require 'tap.plugins.lsp.servers.terraformls',
+  require 'tap.plugins.lsp.servers.tilt_ls',
   require 'tap.plugins.lsp.servers.vtsls',
   require 'tap.plugins.lsp.servers.yamlls',
 }
