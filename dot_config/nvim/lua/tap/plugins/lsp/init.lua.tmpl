@@ -82,6 +82,7 @@ return {
       local lsp_utils = require 'tap.utils.lsp'
 
       lsp_utils.ensure_installed {
+        'buildifier',
         'hadolint',
         'markdownlint',
         'prettierd',
@@ -110,6 +111,9 @@ return {
             extra_args = { '--config', vim.fn.expand '$HOME' .. '/.config/sqlfluff.toml' },
             filetypes = { 'mysql', 'sql' },
           },
+          null_ls.builtins.diagnostics.buildifier.with {
+            filetypes = { 'tiltfile' },
+          },
 
           -----------
           -- Hover --
@@ -132,6 +136,7 @@ return {
       local lsp_utils = require 'tap.utils.lsp'
 
       lsp_utils.ensure_installed {
+        'buildifier',
         'prettierd',
         'sqlfluff',
         'stylua',
@@ -209,6 +214,7 @@ return {
           markdown = structured_data_formatters,
           mysql = { 'sqlfluff' },
           sql = { 'sqlfluff' },
+          tiltfile = { 'buildifier' },
           typescript = js_ts_formatters,
           typescriptreact = js_ts_formatters,
           yaml = structured_data_formatters,
