@@ -9,4 +9,7 @@ endif
 " Source Python syntax highlighting
 runtime! syntax/python.vim
 
+" Set comment string for Tiltfiles (Python-style comments)
+setlocal commentstring=#\ %s
+
 let b:current_syntax = "tiltfile"
