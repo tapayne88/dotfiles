@@ -60,22 +60,21 @@
             }
           ];
         };
-        # MacBook Pro Intel (Work)
-        "tom.payne@C02G41YZMD6R" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = system_pkgs "x86_64-darwin";
+        # Pixelbook Omarchy
+        "tpayne@omarchy-pixelbook" = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = system_pkgs "x86_64-linux";
           modules = [
             {
               imports = [
                 ./modules/home.nix
-                ./modules/darwin.nix
+                ./modules/linux.nix
                 ./modules/neovim.nix
-                ./modules/work.nix
               ];
             }
             {
               home = {
-                username = "tom.payne";
-                homeDirectory = "/Users/tom.payne";
+                username = "tpayne";
+                homeDirectory = "/home/tpayne";
                 stateVersion = "25.05";
               };
             }
