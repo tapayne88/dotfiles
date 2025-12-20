@@ -155,18 +155,17 @@ set -g @1password-filter-tags 'cli'
 # fcsonline/tmux-thumbs #
 #########################
 set -g @thumbs-key c-f
-#{{- if eq "crostini" .ostype }}
-set -g @thumbs-command 'echo -n {} | xsel --clipboard && tmux display-message "Copied {}"'
-#{{- end }}
-#{{- if eq "macOS" .ostype }}
+#{{- if eq .chezmoi.os "darwin" }}
 set -g @thumbs-command 'echo -n {} | pbcopy && tmux display-message "Copied {}"'
+#{{- else }}
+set -g @thumbs-command 'echo -n {} | xsel --clipboard && tmux display-message "Copied {}"'
 #{{- end }}
 set -g @thumbs-upcase-command 'tmux set-buffer {} && tmux paste-buffer'
 
 ##########################
 # tmux-plugins/tmux-yank #
 ##########################
-#{{- if eq "crostini" .ostype }}
+#{{- if eq .chezmoi.os "linux" }}
 set -g @override_copy_command 'xsel --clipboard'
 #{{- end }}
 set -g @shell_mode 'vi'

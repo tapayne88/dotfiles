@@ -49,7 +49,7 @@ for profile in ''${(z)NIX_PROFILES}; do
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
 done
 
-#{{- if ne "macOS" .ostype }}
+#{{- if eq .chezmoi.os "linux" }}
 # Fix nix locale errors
 export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 export LANGUAGE=en_GB.UTF-8

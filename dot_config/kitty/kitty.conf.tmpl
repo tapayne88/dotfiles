@@ -4,7 +4,7 @@
 # Autostart tmux in kitty
 env ZSH_TMUX_AUTOSTART=true
 
-#{{- if eq "crostini" .ostype }}
+#{{- if eq .ostype "crostini" }}
 # Force crostini to use x11 as 'auto' uses 'wayland' which seemingly isn't supported
 # by crostini's compositor (sommelier). Using wayland we get the following error
 # [glfw error 65544]: Wayland: Failed to find xdg-shell in your compositor
@@ -32,7 +32,7 @@ scrollback_lines                    0
 scrollback_pager_history_size       0
 # Disable things like new tabs spawning
 clear_all_shortcuts                 yes
-#{{- if eq "macOS" .ostype }}
+#{{- if eq .chezmoi.os "darwin" }}
 macos_option_as_alt                 right
 macos_quit_when_last_window_closed  yes
 macos_show_window_title_in          none

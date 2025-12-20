@@ -106,7 +106,7 @@ vim.filetype.add {
   },
 }
 
--- {{- if eq "crostini" .ostype }}
+-- {{- if eq .chezmoi.os "linux" }}
 -- Configure vim's other clipboard registers to use xsel (system clipboard)
 vim.g.clipboard = {
   name = 'crostiniClipboard',

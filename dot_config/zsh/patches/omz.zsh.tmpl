@@ -1,5 +1,5 @@
 # vim:ft=zsh
-#{{- if eq "macOS" .ostype }}
+#{{- if eq .chezmoi.os "darwin" }}
 # Register gls alias to trick oh-my-zsh into thinking we've installed coreutils
 # through homebrew (actually installed with nix). This way we get nice ls color
 # support

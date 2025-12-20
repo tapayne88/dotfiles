@@ -13,7 +13,7 @@
     viAlias = true;
     withNodeJs = true;
     extraConfig = ''
-      "{{- if eq "macOS" .ostype }}
+      "{{- if eq .chezmoi.os "darwin" }}
       let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.dylib'
       "{{- else }}
       let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
