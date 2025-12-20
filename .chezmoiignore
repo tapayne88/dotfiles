@@ -1,11 +1,11 @@
 # Crostini / Chrome OS only files
-{{- if ne "crostini" .ostype }}
+{{- if ne .ostype "crostini" }}
 .config/zsh/functions/crostini.zsh
 .local/share
 {{- end }}
 
 # MacOS only files
-{{- if ne "macOS" .ostype }}
+{{- if ne .chezmoi.os "darwin" }}
 .Brewfile
 .config/aerospace
 .config/sketchybar
@@ -13,7 +13,7 @@
 {{- end }}
 
 # WSL only files
-{{- if ne "wsl" .ostype }}
+{{- if ne .ostype "wsl" }}
 .config/zsh/functions/wsl.zsh
 {{- end }}
 
