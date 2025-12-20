@@ -133,7 +133,7 @@ set_system_theme() {
 }
 
 reload_tmux() {
-  tmux source-file ~/.tmux.conf &
+  tmux source-file "$XDG_CONFIG_HOME/tmux/tmux.conf" &
 }
 
 read_theme() {
