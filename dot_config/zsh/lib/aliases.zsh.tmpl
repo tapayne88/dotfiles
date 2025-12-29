@@ -6,15 +6,12 @@ alias open='explorer.exe'
 # override omz's common-aliases for ls with eza commands
 alias ls='eza --group-directories-first --icons'
 
-alias l='ls -lFh'                 #size,show type,human readable
-alias la='ls -la'                 #long list,show almost all,show type,human readable
-alias lr='ls -tRFh'               #sorted by date,recursive,show type,human readable
-alias lt='ls -l --time modified'  #long list,sorted by date,show type,human readable
-alias ll='ls -l'                  #long list
-alias lg='ll --git'               #long list,with git
-alias ldot='ls -ld .*'
-alias lS='ls -1FS'
-alias lart='ls -1Far --time modified'
-alias lrt='ls -1Fr --time modified'
+alias l='ls --long --classify="always" --header'
+alias la='ls --long --all'
+alias lt='ls --tree'
+alias ll='ls --long'
+alias lg='ls --long --git'
+alias ldot='ls --long --list-dirs .*'
+alias lrt='ls --long --classify="always" --reverse --time="modified" --header'
 
 alias lvi='NVIM_APPNAME=LazyVim nvim'
