@@ -113,6 +113,9 @@ bind -T copy-mode-vi 'v' send -X begin-selection
 # lazygit popup
 bind g display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" lazygit
 
+# terminal popup
+bind P display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}"
+
 # Pane hiding/showing functionality
 # Break pane and mark it for easy reattaching
 bind b run-shell '\
