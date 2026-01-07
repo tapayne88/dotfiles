@@ -1,0 +1,227 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Example configuration file format:
+# ~/.config/rancher-clusters.yaml
+#
+# rancher_instances:
+#   - name: "prod-rancher"
+#     url: "https://rancher.example.com"
+#     token: "token-abc123..."
+#   - name: "dev-rancher"
+#     url: "https://dev-rancher.example.com"
+#     token: "token-def456..."
+#
+# File should have 0600 permissions for security:
+# chmod 600 ~/.config/rancher-clusters.yaml
+
+# Configuration
+CONFIG_FILE="$HOME/.config/rancher-clusters.yaml"
+KUBIE_CONFIGS_DIR="$HOME/.kube/configs"
+TEMP_DIR=$(mktemp -d)
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+log() {
+    echo -e "${GREEN}[INFO]${NC} $*"
+}
+
+warn() {
+    echo -e "${YELLOW}[WARN]${NC} $*"
+}
+
+error() {
+    echo -e "${RED}[ERROR]${NC} $*" >&2
+}
+
+cleanup() {
+    rm -rf "$TEMP_DIR"
+    # Logout from rancher if logged in
+    rancher logout >/dev/null 2>&1 || true
+}
+
+trap cleanup EXIT
+
+check_dependencies() {
+    local missing=()
+
+    if ! command -v rancher >/dev/null 2>&1; then
+        missing+=("rancher")
+    fi
+
+    if ! command -v yq >/dev/null 2>&1; then
+        missing+=("yq")
+    fi
+
+    if ! command -v jq >/dev/null 2>&1; then
+        missing+=("jq")
+    fi
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        error "Missing required dependencies: ${missing[*]}"
+        error "Please install the missing tools and try again."
+        exit 1
+    fi
+}
+
+check_config() {
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        error "Configuration file not found: $CONFIG_FILE"
+        error "Please create the config file with your rancher instances."
+        exit 1
+    fi
+
+    # Check file permissions (simplified cross-platform check)
+    local perms_string
+    perms_string=$(find "$CONFIG_FILE" | awk '{ print $3 }')
+
+    if [[ "$perms_string" != "-rw-------" ]]; then
+        warn "Config file permissions should be 600 (owner read/write only)"
+        warn "Run: chmod 600 $CONFIG_FILE"
+    fi
+}
+
+get_available_clusters() {
+    local url="$1"
+    local token="$2"
+
+    # First login without selecting a cluster to get the cluster list
+    if ! echo "1" | rancher login "$url" --token "$token" --skip-verify >/dev/null 2>&1; then
+        error "Failed to login to $name at $url"
+        error "Please check your URL and token"
+        return 1
+    fi
+
+    # Get list of available clusters using JSON format
+    rancher cluster ls --format json 2>/dev/null | jq -r '.Cluster.name' || true
+}
+
+sync_rancher_instance() {
+    local name="$1"
+    local url="$2"
+    local token="$3"
+
+    log "Processing rancher instance: $name ($url)"
+
+    # Get available clusters first
+    log "Discovering clusters in $name..."
+    local clusters
+    clusters=$(get_available_clusters "$url" "$token")
+
+    if [[ -z "$clusters" ]]; then
+        error "Failed to connect to $name or no clusters found"
+        return 1
+    fi
+
+    local cluster_count
+    cluster_count=$(echo "$clusters" | wc -l | tr -d ' ')
+    log "Found $cluster_count cluster(s) in $name"
+
+    local processed_count=0
+    local cluster_index=1
+
+    # Process each cluster
+    while IFS= read -r cluster; do
+        [[ -z "$cluster" ]] && continue
+
+        log "  Processing cluster: $cluster"
+
+        # Login and select this specific cluster (using the cluster index)
+        log "  → Logging into $cluster (option $cluster_index)..."
+
+        if echo "$cluster_index" | rancher login "$url" --token "$token" --skip-verify >/dev/null 2>&1; then
+            log "  → Successfully connected to cluster: $cluster"
+
+            # Generate kubectl config
+            local temp_config="$TEMP_DIR/${cluster}.yaml"
+            log "  → Exporting kubectl config for: $cluster"
+
+            if rancher kubectl config view --raw=true > "$temp_config" 2>/dev/null; then
+                # Validate the generated config
+                if [[ -s "$temp_config" ]]; then
+                    # Move to final location
+                    local final_config="$KUBIE_CONFIGS_DIR/${cluster}.yaml"
+                    mv "$temp_config" "$final_config"
+                    log "  ✓ Successfully wrote: $final_config"
+                    ((processed_count++))
+                else
+                    error "  ✗ Generated config for $cluster is empty - skipping"
+                fi
+            else
+                error "  ✗ Failed to generate kubectl config for $cluster"
+            fi
+
+            # Logout from this cluster
+            rancher logout >/dev/null 2>&1 || true
+        else
+            error "  ✗ Failed to connect to cluster $cluster (option $cluster_index)"
+        fi
+
+        ((cluster_index++))
+    done <<< "$clusters"
+
+    log "Completed $name: $processed_count/$cluster_count clusters processed successfully"
+}
+
+main() {
+    log "Starting rancher cluster config sync"
+
+    check_dependencies
+    check_config
+
+    # Ensure kubie configs directory exists
+    mkdir -p "$KUBIE_CONFIGS_DIR"
+
+    # Read and process each rancher instance
+    local instance_count
+    instance_count=$(yq '.rancher_instances | length' "$CONFIG_FILE")
+
+    if [[ "$instance_count" -eq 0 ]] || [[ "$instance_count" == "null" ]]; then
+        error "No rancher instances found in config file"
+        exit 1
+    fi
+
+    log "Processing $instance_count rancher instance(s)"
+
+    for ((i=0; i<instance_count; i++)); do
+        local name url token
+        name=$(yq -r ".rancher_instances[$i].name" "$CONFIG_FILE")
+        url=$(yq -r ".rancher_instances[$i].url" "$CONFIG_FILE")
+        token=$(yq -r ".rancher_instances[$i].token" "$CONFIG_FILE")
+
+        if [[ -z "$name" ]] || [[ -z "$url" ]] || [[ -z "$token" ]]; then
+            error "Invalid configuration for instance $i (missing name, url, or token)"
+            continue
+        fi
+
+        sync_rancher_instance "$name" "$url" "$token"
+    done
+
+    log "Sync completed successfully"
+    log "Updated configs are available in: $KUBIE_CONFIGS_DIR"
+    log "Use 'kubie ctx' to switch between clusters"
+}
+
+# Show help if requested
+if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+    echo "Usage: $(basename "$0")"
+    echo ""
+    echo "Syncs kubectl configs from multiple rancher instances to kubie."
+    echo "Configuration file: $CONFIG_FILE"
+    echo "Output directory: $KUBIE_CONFIGS_DIR"
+    echo ""
+    echo "The script will:"
+    echo "1. Read rancher instances from the config file"
+    echo "2. Login to each rancher instance"
+    echo "3. Discover available clusters"
+    echo "4. Export kubectl configs for each cluster"
+    echo "5. Place configs in the kubie configs directory"
+    exit 0
+fi
+
+main "$@"
