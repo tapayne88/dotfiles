@@ -10,6 +10,7 @@ tap "sst/tap"
 brew "opencode"
 
 brew "dark-mode"
+brew "ldcli"
 brew "mas"
 brew "node"
 brew "rancher-cli"
@@ -17,6 +18,7 @@ brew "rancher-cli"
 # https://github.com/facebook/watchman/issues/923#issuecomment-1506301844
 brew "watchman"
 cask "chatgpt"
+cask "copilot-cli"
 cask "claude"
 cask "eqmac"
 cask "font-jetbrains-mono-nerd-font"
@@ -38,4 +40,3 @@ cask "xbar"
 mas "Hidden Bar", id: 1452453066
 mas "MenuBar Stats", id: 714196447
 mas "rcmd", id: 1596283165
-mas "Todoist", id: 585829637
