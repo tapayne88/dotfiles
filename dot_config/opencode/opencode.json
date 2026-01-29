@@ -22,6 +22,14 @@
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true
+    },
+    "tilt-mcp": {
+      "type": "local",
+      "command": ["npx", "-y", "@0xbigboss/tilt-mcp"],
+      "environment": {
+        "TILT_PORT": "10350"
+      },
+      "enabled": true
     }
   }
 }

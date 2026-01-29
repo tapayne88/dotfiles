@@ -9,6 +9,9 @@ brew "sketchybar"
 tap "sst/tap"
 brew "opencode"
 
+tap "oven-sh/bun"
+brew "bun"
+
 brew "dark-mode"
 brew "ldcli"
 brew "mas"
