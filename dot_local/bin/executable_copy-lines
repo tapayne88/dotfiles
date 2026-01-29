@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Script to copy each line from piped input to clipboard, waiting between lines
+# Usage: cat file.txt | copy-lines
+
+# Check if input is being piped
+if [ -t 0 ]; then
+    echo "Error: This script expects piped input"
+    echo "Usage: cat file.txt | copy-lines"
+    exit 1
+fi
+
+# Check if pbcopy is available (macOS clipboard utility)
+if ! command -v pbcopy &> /dev/null; then
+    echo "Error: pbcopy not found. This script requires macOS clipboard utilities."
+    exit 1
+fi
+
+# Create a temporary file to store the input
+temp_file=$(mktemp)
+trap 'rm -f "$temp_file"' EXIT
+
+# Save stdin to temp file
+cat > "$temp_file"
+
+line_count=0
+total_lines=$(wc -l < "$temp_file")
+
+echo "Starting to copy lines to clipboard. Press Enter to copy each line, Ctrl+C to quit."
+echo "Total lines: $total_lines"
+echo ""
+
+# Read each line from the temp file
+while IFS= read -r line; do
+    ((line_count++))
+
+    # Show the current line
+    echo "Line $line_count: $line"
+
+    # Wait for user input (read from /dev/tty to avoid conflicts)
+    echo -n "Press Enter to copy to clipboard (or Ctrl+C to quit): "
+    read -r < /dev/tty
+
+    # Copy to clipboard
+    echo "$line" | pbcopy
+    echo "✓ Copied to clipboard!"
+    echo ""
+done < "$temp_file"
+
+echo "All lines processed. Done!"
