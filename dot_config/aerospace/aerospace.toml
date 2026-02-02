@@ -64,7 +64,7 @@ inner.horizontal = 5
 inner.vertical   = 5
 outer.left       = 10
 outer.bottom     = 10
-outer.top        = [{ monitor."built-in" = 15 }, 45]
+outer.top        = [{ monitor."built-in" = 10 }, 10]
 outer.right      = 10
 
 [workspace-to-monitor-force-assignment]
