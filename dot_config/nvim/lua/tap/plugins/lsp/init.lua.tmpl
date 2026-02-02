@@ -132,16 +132,31 @@ return {
     dependencies = {
       'williamboman/mason.nvim',
     },
+    keys = {
+      {
+        '<leader>tf',
+        function()
+          if vim.g.disable_autoformat then
+            vim.g.disable_autoformat = false
+            vim.b.disable_autoformat = false
+          elseif vim.b.disable_autoformat then
+            vim.b.disable_autoformat = false
+          else
+            vim.b.disable_autoformat = true
+          end
+        end,
+        desc = '[Format] Toggle formatting on save',
+      },
+      {
+        '<space>f',
+        function()
+          require('conform').format()
+        end,
+        mode = { 'n', 'v' },
+        desc = '[Format] Run formatter',
+      },
+    },
     init = function()
-      local lsp_utils = require 'tap.utils.lsp'
-
-      lsp_utils.ensure_installed {
-        'buildifier',
-        'prettierd',
-        'sqlfluff',
-        'stylua',
-      }
-
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
       vim.api.nvim_create_user_command('FormatDisable', function(args)
@@ -161,24 +176,18 @@ return {
       end, {
         desc = '[Format] Re-enable autoformat-on-save',
       })
+    end,
+    config = function(_, opts)
+      local lsp_utils = require 'tap.utils.lsp'
 
-      local function toggle_format()
-        if vim.g.disable_autoformat then
-          vim.g.disable_autoformat = false
-          vim.b.disable_autoformat = false
-        elseif vim.b.disable_autoformat then
-          vim.b.disable_autoformat = false
-        else
-          vim.b.disable_autoformat = true
-        end
-      end
+      lsp_utils.ensure_installed {
+        'buildifier',
+        'prettierd',
+        'sqlfluff',
+        'stylua',
+      }
 
-      vim.keymap.set('n', '<leader>tf', toggle_format, {
-        desc = '[Format] Toggle formatting on save',
-      })
-      vim.keymap.set({ 'n', 'v' }, '<space>f', function()
-        return require('conform').format()
-      end, { desc = '[Format] Run formatter' })
+      require('conform').setup(opts)
     end,
 
     opts = function()
