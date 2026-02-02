@@ -8,6 +8,7 @@ return {
   require 'tap.plugins.lsp.servers.lua_ls',
   -- No longer using tailwindcss
   -- require 'tap.plugins.lsp.servers.tailwindcss',
+  require 'tap.plugins.lsp.servers.ruff',
   require 'tap.plugins.lsp.servers.terraformls',
   require 'tap.plugins.lsp.servers.tilt_ls',
   require 'tap.plugins.lsp.servers.vtsls',
