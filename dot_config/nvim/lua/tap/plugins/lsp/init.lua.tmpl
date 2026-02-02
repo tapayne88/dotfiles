@@ -183,6 +183,7 @@ return {
       lsp_utils.ensure_installed {
         'buildifier',
         'prettierd',
+        'ruff',
         'sqlfluff',
         'stylua',
       }
@@ -222,6 +223,7 @@ return {
           lua = { 'stylua' },
           markdown = structured_data_formatters,
           mysql = { 'sqlfluff' },
+          python = { 'ruff_fix', 'ruff_format' },
           sql = { 'sqlfluff' },
           tiltfile = { 'buildifier' },
           typescript = js_ts_formatters,
