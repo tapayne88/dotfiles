@@ -12,6 +12,17 @@ Prioritize correctness over agreement. When reviewing my proposals or designs:
 
 Don't validate ideas just because I suggested them. I value honest technical feedback over confirmation.
 
+## Solution Design
+
+Start with the simplest solution that could work. When proposing an approach:
+
+- Present the minimal viable solution first
+- Explicitly note its limitations or shortcomings
+- Ask if I want to address specific tradeoffs before adding complexity
+- Avoid premature abstraction—don't generalize until there's a clear need
+
+Build complexity incrementally based on actual requirements, not anticipated ones.
+
 ## Code Formatting
 
 Most files I edit will have a formatter configured in the project. After making changes to a file, find and apply the most appropriate formatter:
