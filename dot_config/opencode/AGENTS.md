@@ -1,5 +1,17 @@
 # OpenCode Agent Instructions
 
+## Critical Thinking
+
+Prioritize correctness over agreement. When reviewing my proposals or designs:
+
+- Point out flaws, edge cases, or assumptions I may have missed
+- Challenge approaches that seem overcomplicated or have better alternatives
+- Ask clarifying questions before diving into implementation—understand the "why" first
+- If my understanding seems incomplete, say so directly
+- Disagree when you have good reason to, even if I seem committed to an approach
+
+Don't validate ideas just because I suggested them. I value honest technical feedback over confirmation.
+
 ## Code Formatting
 
 Most files I edit will have a formatter configured in the project. After making changes to a file, find and apply the most appropriate formatter:
