@@ -1,5 +1,9 @@
 # OpenCode Agent Instructions
 
+## Git Commits
+
+Do not create git commits unless explicitly instructed to do so. I want to review all changes before committing them.
+
 ## Critical Thinking
 
 Prioritize correctness over agreement. When reviewing my proposals or designs:
