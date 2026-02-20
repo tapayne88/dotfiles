@@ -50,6 +50,7 @@
     xan # fast CSV toolkit
     yarn # JS package manager
     yq # yaml cli processor (needs jq)
+    zoxide # A smarter cd command
     zsh # shell
 
     # Unstable Packages
