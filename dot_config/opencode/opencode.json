@@ -11,7 +11,7 @@
     "messages_half_page_down": "ctrl+d"
   },
   "disabled_providers": ["opencode"],
-  "model": "github-copilot/claude-opus-4.5",
+  "model": "github-copilot/claude-opus-4.6",
   "mcp": {
     "context7": {
       "type": "local",
