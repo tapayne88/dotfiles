@@ -19,7 +19,7 @@ function nic() {
     echo "  │        (nvim)        │  (30%)    │"
     echo "  │                      │           │"
     echo "  ├──────────────────────┴───────────┤"
-    echo "  │           terminal (5%)          │"
+    echo "  │           terminal (20%)         │"
     echo "  └──────────────────────────────────┘"
     echo ""
     echo "If a session with the same name already exists, attaches to it."
@@ -47,10 +47,10 @@ function nic() {
   # Create new detached session
   tmux new-session -d -s "$session_name" -c "$dir" -x "$(tput cols)" -y "$(tput lines)"
 
-  # Split bottom 5% (full width) for terminal
-  tmux split-window -v -l 5% -t "$session_name:1.0" -c "$dir"
+  # Split bottom 20% (full width) for terminal
+  tmux split-window -v -l 20% -t "$session_name:1.0" -c "$dir"
 
-  # Split right 20% for opencode
+  # Split right 30% for opencode
   tmux split-window -h -l 30% -t "$session_name:1.0" -c "$dir"
 
   # Start applications
