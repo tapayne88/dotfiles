@@ -116,6 +116,9 @@ bind g display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" lazygit
 # terminal popup
 bind P display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" "tmux new -A -s popup"
 
+# nic popup
+bind C-n display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" "nic $(zoxide query -l | fzf)"
+
 # Pane hiding/showing functionality
 # Break pane and mark it for easy reattaching
 bind b run-shell '\
