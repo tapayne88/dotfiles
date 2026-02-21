@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# nic - create a development tmux session with neovim, opencode, and terminal panes
+
+set -euo pipefail
+
+show_help() {
+  cat << 'EOF'
+nic - create a development tmux session with neovim, opencode, and terminal panes
+
+Usage:
+  nic [-h] [directory]
+
+Arguments:
+  directory    Directory to start session in (defaults to current directory)
+
+Flags:
+  -h           Show this help message
+
+Layout:
+  ┌──────────────────────┬───────────┐
+  │                      │           │
+  │       neovim         │ opencode  │
+  │        (nvim)        │  (30%)    │
+  │                      │           │
+  ├──────────────────────┴───────────┤
+  │           terminal (20%)         │
+  └──────────────────────────────────┘
+
+If a session with the same name already exists, attaches to it.
+EOF
+}
+
+if [[ "${1:-}" == "-h" ]]; then
+  show_help
+  exit 0
+fi
+
+dir="${1:-$PWD}"
+dir="$(cd "$dir" && pwd -P)"
+session_name="$(basename "$dir")"
+
+# Determine attach or switch based on whether we're in tmux
+if [[ -n "${TMUX:-}" ]]; then
+  attach_cmd="switch-client"
+else
+  attach_cmd="attach-session"
+fi
+
+# If session exists, just attach/switch to it
+if tmux has-session -t "$session_name" 2>/dev/null; then
+  tmux $attach_cmd -t "$session_name"
+  exit 0
+fi
+
+# Create new detached session
+tmux new-session -d -s "$session_name" -c "$dir" -x "$(tput cols)" -y "$(tput lines)"
+
+# Split bottom 20% (full width) for terminal
+tmux split-window -v -l 20% -t "$session_name:1.0" -c "$dir"
+
+# Split right 30% for opencode
+tmux split-window -h -l 30% -t "$session_name:1.0" -c "$dir"
+
+# Start applications
+tmux send-keys -t "$session_name:1.0" "nvim" C-m
+tmux send-keys -t "$session_name:1.1" "opencode --port" C-m
+
+# Focus neovim pane
+tmux select-pane -t "$session_name:1.0"
+
+# Attach/switch to the session
+tmux $attach_cmd -t "$session_name"
