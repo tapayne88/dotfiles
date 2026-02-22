@@ -113,8 +113,12 @@ bind -T copy-mode-vi 'v' send -X begin-selection
 # lazygit popup
 bind g display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" lazygit
 
-# terminal popup
-bind P display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" "tmux new -A -s popup"
+# toggle terminal popup
+bind P if-shell -F '#{==:#{session_name},popup}' {
+    detach-client
+} {
+    display-popup -d "#{pane_current_path}" -xC -yC -w 80% -h 80% -E 'tmux attach-session -t popup || tmux new-session -s popup'
+}
 
 # nic popup
 bind C-n display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}" "nic $(zoxide query -l | fzf)"
