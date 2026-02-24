@@ -37,7 +37,11 @@ fi
 
 dir="${1:-$PWD}"
 dir="$(cd "$dir" && pwd -P)"
-session_name="$(basename "$dir")"
+if [[ "$(basename "$(dirname "$dir")")" == "worktrees" ]]; then
+  session_name="wt/$(basename "$dir")"
+else
+  session_name="$(basename "$dir")"
+fi
 
 # Determine attach or switch based on whether we're in tmux
 if [[ -n "${TMUX:-}" ]]; then
@@ -47,7 +51,7 @@ else
 fi
 
 # If session exists, just attach/switch to it
-if tmux has-session -t "$session_name" 2>/dev/null; then
+if tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -Fqx "$session_name"; then
   tmux $attach_cmd -t "$session_name"
   exit 0
 fi
