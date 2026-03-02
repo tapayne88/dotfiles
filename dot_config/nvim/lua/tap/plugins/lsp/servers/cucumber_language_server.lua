@@ -8,9 +8,9 @@ function M.setup()
   local root_markers = { 'package.json', '.git' }
   vim.lsp.config('cucumber_language_server', {
     cmd_env = {
-      -- requires same node version as shipped with vscode, currently that's v18
+      -- requires same node version as shipped with vscode, currently that's v22
       -- https://github.com/cucumber/language-server/issues/102#issuecomment-2026719010
-      ASDF_NODEJS_VERSION = '18.16.0',
+      ASDF_NODEJS_VERSION = '22.22.0',
     },
     root_markers = root_markers,
 
