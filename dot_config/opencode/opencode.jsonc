@@ -3,7 +3,7 @@
   "autoupdate": true,
   "share": "disabled",
   "disabled_providers": ["opencode"],
-  "model": "github-copilot/claude-sonnet-4.6",
+  "model": "github-copilot/claude-sonnet-4",
   "mcp": {
     "context7": {
       "type": "local",
