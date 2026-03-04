@@ -1,3 +1,4 @@
+// vim: ft=jsonc
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
@@ -8,17 +9,24 @@
     "context7": {
       "type": "local",
       "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
+      "environment": {
+        "ASDF_NODEJS_VERSION" : "{{ .asdf_nodejs_version }}",
+      },
       "enabled": true,
     },
     "chrome-devtools": {
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "environment": {
+        "ASDF_NODEJS_VERSION" : "{{ .asdf_nodejs_version }}",
+      },
       "enabled": true,
     },
     "tilt-mcp": {
       "type": "local",
       "command": ["npx", "-y", "@0xbigboss/tilt-mcp"],
       "environment": {
+        "ASDF_NODEJS_VERSION" : "{{ .asdf_nodejs_version }}",
         "TILT_PORT": "10350",
       },
       "enabled": true,
