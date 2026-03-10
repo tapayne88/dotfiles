@@ -51,6 +51,8 @@ dir="${1:-$PWD}"
 dir="$(cd "$dir" && pwd -P)"
 if [[ -n "$custom_name" ]]; then
   session_name="$custom_name"
+elif [[ "$(git -C "$dir/.." rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
+  session_name="$(basename "$(dirname "$dir")")/$(basename "$dir")"
 elif [[ "$(basename "$(dirname "$dir")")" == "worktrees" ]]; then
   session_name="wt/$(basename "$dir")"
 else
