@@ -1,4 +1,4 @@
-worktree-path = "../{{ branch | sanitize }}"
+worktree-path = "../worktrees/{{ repo }}.{{ branch | sanitize }}"
 
 [post-switch]
 nic = """
@@ -8,6 +8,6 @@ nic "$WORKTREE_PATH"
 
 [pre-remove]
 tmux = """
-NAME={{ repo }}.{{ branch }}
+NAME={{ repo }}/{{ branch }}
 tmux kill-session -t "$NAME" 2>/dev/null || true
 """

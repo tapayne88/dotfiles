@@ -54,7 +54,7 @@ if [[ -n "$custom_name" ]]; then
 elif [[ "$(git -C "$dir/.." rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
   session_name="$(basename "$(dirname "$dir")")/$(basename "$dir")"
 elif [[ "$(basename "$(dirname "$dir")")" == "worktrees" ]]; then
-  session_name="wt/$(basename "$dir")"
+  session_name="$(basename "$dir" | sed 's/\./\//')"
 else
   session_name="$(basename "$dir")"
 fi
