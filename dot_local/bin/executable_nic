@@ -8,13 +8,14 @@ show_help() {
 nic - create a development tmux session with neovim, opencode, and terminal panes
 
 Usage:
-  nic [-h] [directory]
+  nic [-h] [-n name] [directory]
 
 Arguments:
   directory    Directory to start session in (defaults to current directory)
 
 Flags:
   -h           Show this help message
+  -n name      Name for the tmux session (defaults to directory basename)
 
 Layout:
   ┌──────────────────────┬───────────┐
@@ -35,9 +36,22 @@ if [[ "${1:-}" == "-h" ]]; then
   exit 0
 fi
 
+custom_name=""
+while getopts ":hn:" opt; do
+  case $opt in
+    h) show_help; exit 0 ;;
+    n) custom_name="$OPTARG" ;;
+    \?) echo "Unknown option: -$OPTARG" >&2; exit 1 ;;
+    :) echo "Option -$OPTARG requires an argument" >&2; exit 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
 dir="${1:-$PWD}"
 dir="$(cd "$dir" && pwd -P)"
-if [[ "$(basename "$(dirname "$dir")")" == "worktrees" ]]; then
+if [[ -n "$custom_name" ]]; then
+  session_name="$custom_name"
+elif [[ "$(basename "$(dirname "$dir")")" == "worktrees" ]]; then
   session_name="wt/$(basename "$dir")"
 else
   session_name="$(basename "$dir")"
