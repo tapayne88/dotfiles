@@ -19,6 +19,7 @@ brew "rancher-cli"
 # MacOS installed through homebrew as needs to be in /usr/local/bin for some reason
 # https://github.com/facebook/watchman/issues/923#issuecomment-1506301844
 brew "watchman"
+brew "worktrunk"
 cask "chatgpt"
 cask "copilot-cli"
 cask "claude"
