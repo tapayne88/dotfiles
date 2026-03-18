@@ -3,5 +3,6 @@
 count=1
 while "$@"; do echo "Finished run $count"; ((count++));  done
 
-echo "------------------------"
-echo "Failed on attempt $count"
+echo -e "\n\033[1;31m========================\033[0m"
+echo -e "\033[1;31m FAILED on attempt $count\033[0m"
+echo -e "\033[1;31m========================\033[0m"
