@@ -64,6 +64,7 @@
     unstable.kubie # even nicer interaction with k8s cli with multiple configs
     unstable.lazygit # simple terminal UI for git commands
     unstable.nerdfix # fix for nerd fonts
+    unstable.television # A very fast, portable and hackable fuzzy finder.
     unstable.tldr # simplified and community-driven man pages
     unstable.tmux # terminal multiplexer
     unstable.wttrbar # module for showing the weather
