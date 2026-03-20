@@ -9,7 +9,6 @@ return {
     config = function()
       local lsp_symbol = require('tap.utils.lsp').symbol
       local highlight_group_attrs = require('tap.utils').highlight_group_attrs
-      local require_plugin = require('tap.utils').require_plugin
       local get_lsp_clients = require('tap.utils.lsp').get_lsp_clients
 
       local conditions = {
@@ -394,57 +393,6 @@ return {
       },
     },
     init = function()
-      require('tap.utils').apply_user_highlights('Navic', function(hl, C, O)
-        local background = C.mantle
-
-        -- Set Navic highlights manually to ensure the bg value updates when the
-        -- colorscheme changes
-        --
-        -- Copy of Navic highlights from
-        -- https://github.com/catppuccin/nvim/blob/fa9a4465672fa81c06b23634c0f04f6a5d622211/lua/catppuccin/groups/integrations/navic.lua
-        local highlights = {
-          NavicIconsFile = { fg = C.blue, bg = background },
-          NavicIconsModule = { fg = C.blue, bg = background },
-          NavicIconsNamespace = { fg = C.blue, bg = background },
-          NavicIconsPackage = { fg = C.blue, bg = background },
-          NavicIconsClass = { fg = C.yellow, bg = background },
-          NavicIconsMethod = { fg = C.blue, bg = background },
-          NavicIconsProperty = { fg = C.green, bg = background },
-          NavicIconsField = { fg = C.green, bg = background },
-          NavicIconsConstructor = { fg = C.blue, bg = background },
-          NavicIconsEnum = { fg = C.green, bg = background },
-          NavicIconsInterface = { fg = C.yellow, bg = background },
-          NavicIconsFunction = { fg = C.blue, bg = background },
-          NavicIconsVariable = { fg = C.flamingo, bg = background },
-          NavicIconsConstant = { fg = C.peach, bg = background },
-          NavicIconsString = {
-            fg = C.green,
-            style = O.styles.strings,
-            bg = background,
-          },
-          NavicIconsNumber = { fg = C.peach, bg = background },
-          NavicIconsBoolean = { fg = C.peach, bg = background },
-          NavicIconsArray = { fg = C.peach, bg = background },
-          NavicIconsObject = { fg = C.peach, bg = background },
-          NavicIconsKey = {
-            fg = C.pink,
-            style = O.styles.keywords,
-            bg = background,
-          },
-          NavicIconsNull = { fg = C.peach, bg = background },
-          NavicIconsEnumMember = { fg = C.red, bg = background },
-          NavicIconsStruct = { fg = C.blue, bg = background },
-          NavicIconsEvent = { fg = C.blue, bg = background },
-          NavicIconsOperator = { fg = C.sky, bg = background },
-          NavicIconsTypeParameter = { fg = C.blue, bg = background },
-          NavicText = { fg = C.sapphire, bg = background },
-          NavicSeparator = { fg = C.text, bg = background },
-        }
-
-        for group, colors in pairs(highlights) do
-          hl(group, colors)
-        end
-      end)
       require('tap.utils.lsp').on_attach(function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
           require('nvim-navic').attach(client, bufnr)
