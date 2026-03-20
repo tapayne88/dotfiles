@@ -1,0 +1,20 @@
+[metadata]
+name = "nic"
+description = "Spawn new nic tmux session from zoxide directory history"
+requirements = ["zoxide"]
+
+[source]
+command = "zoxide query -l"
+no_sort = true
+frecency = false
+
+[preview]
+command = "ls -la --color=always '{}'"
+
+[keybindings]
+enter = "actions:nic"
+
+[actions.nic]
+description = "Launch new nic tmux session at the selected directory"
+command = "nic '{}'"
+mode = "execute"
