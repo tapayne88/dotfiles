@@ -45,6 +45,12 @@ return {
       -- Required for `vim.g.opencode_opts.auto_reload`
       vim.opt.autoread = true
 
+      -- Override <S-CR> → <M-CR> for "append" in ask(),
+      -- since tmux doesn't pass through <S-CR> (Kitty keyboard protocol).
+      local ask_win = require('opencode.config').opts.ask.snacks.win
+      ask_win.keys.i_s_cr[1] = '<M-CR>'
+      ask_win.footer_keys = { '<CR>', '<M-CR>' }
+
       -- Recommended/example keymaps
       -- stylua: ignore start
       vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end,  { desc = "Ask about this" })
