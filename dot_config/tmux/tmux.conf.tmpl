@@ -64,6 +64,7 @@ bind -n C-M-k clear-history
 
 # Status bar / window
 set -g status on
+set -g status-position "top"
 set -g status-justify "left"
 set -g status-left-length 15
 set -g status-right-length 150
@@ -189,17 +190,17 @@ set -g @shell_mode 'vi'
 ######################################
 # tmux-plugins/tmux-prefix-highlight #
 ######################################
+set -g @prefix_highlight_output_prefix ""
+set -g @prefix_highlight_output_suffix ""
+
 set -g @prefix_highlight_fg "#{@thm_red}"
-set -g @prefix_highlight_bg "#{@thm_bg}"
-set -g @prefix_highlight_output_prefix ""
-set -g @prefix_highlight_output_suffix " "
-set -g @prefix_highlight_prefix_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_red}]#[fg=#{@thm_red}]#[bg=#{@thm_bg}]"
+set -g @prefix_highlight_prefix_prompt " |"
 
-set -g @prefix_highlight_copy_mode_attr "fg=#{@thm_yellow},bg=#{@thm_bg}"
-set -g @prefix_highlight_copy_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_yellow}]#[fg=#{@thm_yellow}]#[bg=#{@thm_bg}]"
+set -g @prefix_highlight_copy_mode_attr "fg=#{@thm_yellow}"
+set -g @prefix_highlight_copy_prompt " |"
 
-set -g @prefix_highlight_sync_mode_attr "fg=#{@thm_mauve},bg=#{@thm_bg}"
-set -g @prefix_highlight_sync_prompt "#[fg=#{@thm_bg}]#[bg=#{@thm_mauve}]#[fg=#{@thm_mauve}]#[bg=#{@thm_bg}]"
+set -g @prefix_highlight_sync_mode_attr "fg=#{@thm_mauve}"
+set -g @prefix_highlight_sync_prompt " |"
 
 ###################
 # catppuccin/tmux #
@@ -211,19 +212,21 @@ if-shell '[ $($HOME/.local/bin/term-theme echo) = "light" ]' {
   set -g @catppuccin_flavor 'mocha'
 }
 
-set -g @catppuccin_window_status_style "rounded"
-set -g status-right-length 100
-set -g status-left "#[fg=#{@thm_peach},bg=#{@thm_bg}]█#[fg=#{@thm_bg},bg=#{@thm_peach},bold] #S#[fg=#{@thm_peach},bg=#{@thm_bg}]"
+# set -g @rose_pine_current_window_icon '' # Changes the default icon to the left of the active window name
 
+set -g @catppuccin_status_background 'none'
+
+# set -gF status-style "bg=#{@thm_bg},fg=#{@thm_fg}"
+set -g status-left " #[fg=#{@thm_peach}] #S  "
 set -g status-left-length 100
-set -g status-right "#{prefix_highlight}"
-set -ag status-right "#[fg=#{@thm_maroon},bg=#{@thm_mantle}]#[fg=#{@thm_mantle},bg=#{@thm_maroon}] #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore] %a %d-%m-%Y "
-set -ag status-right "#[fg=#{@thm_green},bg=#{@thm_mantle}]#[fg=#{@thm_mantle},bg=#{@thm_green}]󰥔 #[fg=#{@thm_fg},bg=#{@thm_bg},nobold,noitalics,nounderscore] %H:%M #[fg=#{@thm_bg},bg=#{@thm_bg},bold]"
-set -agF status-right "#{E:@catppuccin_status_battery}"
 
 set -g @catppuccin_window_status_style "none"
-set -g window-status-format " #[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_bg}]#I #[fg=#{@thm_mantle},bg=#{@thm_bg}]┃ #[fg=#{@thm_fg},bg=#{@thm_bg}]#W#[fg=#{@thm_bg},bg=#{@thm_mantle}]"
-set -g window-status-current-format " #[fg=#{@thm_bg},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_bg}]#I #[fg=#{@thm_bg},bg=#{@thm_sky},nobold,noitalics,nounderscore] #W#{?#{>:#{window_panes},1}, #[fg=#{@thm_fg}]#[bg=#{@thm_bg}] 󰕮#[fg=#{@thm_bg}]#[bg=#{@thm_mantle}],#[fg=#{@thm_sky}]#[bg=#{@thm_mantle}]}"
+set -g window-status-current-format " #[fg=#{@thm_sky},nobold,noitalics,nounderscore]#I:#W#{?#{>:#{window_panes},1}, 󰕮,} "
+set -g window-status-format " #[fg=#{@thm_fg}]#I:#W#{?#{>:#{window_panes},1}, 󰕮,} "
+
+set -g status-right-length 100
+set -g status-right "#{prefix_highlight}"
+set -ag status-right "#[fg=#{@thm_lavender}]#{battery_icon} #{battery_percentage}"
 
 set -g @fzf-goto-preview-enabled 'true'
 set -g @fzf-goto-win-width-preview 80%
