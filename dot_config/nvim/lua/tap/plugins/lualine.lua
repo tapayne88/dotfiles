@@ -273,7 +273,7 @@ return {
         })
       end)
 
-      local winbar_y = {
+      local winbar_x = {
         project_name(),
       }
 
@@ -341,16 +341,16 @@ return {
               cond = conditions.is_navic_available,
             },
           },
-          lualine_x = {},
-          lualine_y = winbar_y,
+          lualine_x = winbar_x,
+          lualine_y = {},
           lualine_z = winbar_z,
         },
         inactive_winbar = {
           lualine_a = {},
           lualine_b = {},
           lualine_c = {},
-          lualine_x = {},
-          lualine_y = winbar_y,
+          lualine_x = winbar_x,
+          lualine_y = {},
           lualine_z = winbar_z,
         },
       }
