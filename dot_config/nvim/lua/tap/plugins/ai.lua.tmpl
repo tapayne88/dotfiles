@@ -45,12 +45,6 @@ return {
       -- Required for `vim.g.opencode_opts.auto_reload`
       vim.opt.autoread = true
 
-      -- Override <S-CR> → <M-CR> for "append" in ask(),
-      -- since tmux doesn't pass through <S-CR> (Kitty keyboard protocol).
-      local ask_win = require('opencode.config').opts.ask.snacks.win
-      ask_win.keys.i_s_cr[1] = '<M-CR>'
-      ask_win.footer_keys = { '<CR>', '<M-CR>' }
-
       -- Recommended/example keymaps
       -- stylua: ignore start
       vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end,  { desc = "Ask about this" })
@@ -61,8 +55,8 @@ return {
       vim.keymap.set("n", "<leader>on", function() require("opencode").command("session.new") end,                      { desc = "New session" })
       vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session.interrupt") end,                { desc = "Interrupt session" })
 
-      vim.keymap.set("n", "<S-C-u>",    function() require("opencode").command("messages.half.page.up") end,            { desc = "Messages half page up" })
-      vim.keymap.set("n", "<S-C-d>",    function() require("opencode").command("messages.half.page.down") end,          { desc = "Messages half page down" })
+      vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,                { desc = "Scroll opencode up" })
+      vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,              { desc = "Scroll opencode down" })
       -- stylua: ignore end
     end,
   },
