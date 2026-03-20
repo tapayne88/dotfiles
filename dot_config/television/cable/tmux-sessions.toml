@@ -9,7 +9,7 @@ display = "{split:\t:0} ({split:\t:1})"
 output = "{split:\t:0}"
 
 [keybindings]
-enter = "actions:attach"
+enter = "actions:switch"
 
 [preview]
 command = "tmux capture-pane -t '{split:\t:0}' -p 2>/dev/null || echo 'No preview available'"
@@ -17,6 +17,11 @@ command = "tmux capture-pane -t '{split:\t:0}' -p 2>/dev/null || echo 'No previe
 [actions.attach]
 description = "Attach to the selected session"
 command = "tmux attach-session -t '{split:\t:0}'"
+mode = "execute"
+
+[actions.switch]
+description = "Switch to the selected session"
+command = "tmux switch-client -t '{split:\t:0}'"
 mode = "execute"
 
 [actions.kill]
