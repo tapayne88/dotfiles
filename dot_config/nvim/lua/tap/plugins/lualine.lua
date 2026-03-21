@@ -286,7 +286,7 @@ return {
 
       require('lualine').setup {
         options = {
-          theme = 'auto',
+          theme = 'catppuccin-nvim',
           component_separators = { left = '', right = '' },
           section_separators = section_separators,
           globalstatus = true,
