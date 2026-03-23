@@ -224,8 +224,8 @@ set -g status-left " #[fg=#{@thm_peach}] #S  "
 set -g status-left-length 100
 
 set -g @catppuccin_window_status_style "none"
-set -g window-status-current-format " #[fg=#{@thm_sky},nobold,noitalics,nounderscore]#I:#W#{?#{>:#{window_panes},1}, 󰕮,} "
-set -g window-status-format " #[fg=#{@thm_fg}]#I:#W#{?#{>:#{window_panes},1}, 󰕮,} "
+set -g window-status-current-format " #[fg=#{@thm_sky},nobold,noitalics,nounderscore]#I:#W#{?#{window_zoomed_flag}, ,} "
+set -g window-status-format " #[fg=#{@thm_fg}]#I:#W#{?#{window_zoomed_flag}, ,} "
 
 set -g status-right-length 100
 set -g status-right "#{prefix_highlight}"
