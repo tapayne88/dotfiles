@@ -171,16 +171,10 @@ set -g @prefix_highlight_show_sync_mode 'on'
 # Filter for cli tags - without below, default filtering excludes anything without a url
 set -g @1password-filter-tags 'cli'
 
-#########################
-# fcsonline/tmux-thumbs #
-#########################
-set -g @thumbs-key c-f
-#{{- if eq .chezmoi.os "darwin" }}
-set -g @thumbs-command 'echo -n {} | pbcopy && tmux display-message "Copied {}"'
-#{{- else }}
-set -g @thumbs-command 'echo -n {} | xsel --clipboard && tmux display-message "Copied {}"'
-#{{- end }}
-set -g @thumbs-upcase-command 'tmux set-buffer {} && tmux paste-buffer'
+##########################
+# Morantron/tmux-fingers #
+##########################
+set -g @fingers-jump-key c-j
 
 ##########################
 # tmux-plugins/tmux-yank #
