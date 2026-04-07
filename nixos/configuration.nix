@@ -75,7 +75,6 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    neovim
     tmux
     git
     curl
@@ -97,6 +96,11 @@
 
   programs.git.enable = true;
   programs.zsh.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
   programs.regreet.enable = true;
 
@@ -129,9 +133,6 @@
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
     polkitPolicyOwners = [ "tom" ];
   };
-
-  environment.variables.EDITOR = "nvim";
-  environment.variables.VISUAL = "nvim";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
