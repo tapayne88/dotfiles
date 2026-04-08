@@ -82,15 +82,17 @@
     fd
     vim
     wget
-    wl-clipboard
-    mako
+    kitty
+    chezmoi
+    inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
+
+    wl-clipboard # clipboard management
+    mako # notifications
+    impala # wifi utility
+
+    # hyprland utils
     hyprlauncher
     hyprlock
-    kitty
-    impala
-    chezmoi
-    
-    inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
   ];
 
   services.gnome.gnome-keyring.enable = true;
