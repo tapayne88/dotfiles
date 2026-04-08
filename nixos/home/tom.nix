@@ -8,13 +8,33 @@
     enable = true;
     defaultEditor = true;
     viAlias = true;
+    extraConfig = ''
+      let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.so'
+
+      luafile ${config.xdg.configHome}/nvim/init-lua.lua
+    '';
   };
-  programs.tmux.enable = true;
+
+  programs.zsh = {
+    enable = true;
+
+    # TODO: Fix deprecation warning
+    dotDir = ".config/zsh";
+
+    initContent = ''
+      source ${pkgs.antigen}/share/antigen/antigen.zsh
+
+      if [ -f ~/.zshrc ]; then
+        source ~/.zshrc
+      fi
+    '';
+  };
 
   home.packages = with pkgs; [
     antigen # zsh plugin manager
     atuin # Magical shell history
     bat # colourised cat
+    delta # better git diffs
     eza # ls replacement
     fd # faster more user friendly find
     fzf # fuzzy-finder
@@ -32,7 +52,8 @@
     kubie # even nicer interaction with k8s cli with multiple configs
     lazygit # simple terminal UI for git commands
     television # A very fast, portable and hackable fuzzy finder.
+    tmux # terminal multiplexer
   ];
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
 }
