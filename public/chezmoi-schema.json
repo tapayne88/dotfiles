@@ -6,11 +6,6 @@
       "type": "object",
       "description": "Chezmoi data object for use in templates",
       "properties": {
-        "ostype": {
-          "type": "string",
-          "enum": ["macOS", "crostini", "wsl", "linux"],
-          "description": "Determines behaviour of chezmoi, only includes files / config required for the specified platform"
-        },
         "email": {
           "type": "object",
           "description": "Email addresses used in git commits",
@@ -69,7 +64,6 @@
       },
       "additionalProperties": false,
       "required": [
-        "ostype",
         "email",
         "terminal_font",
         "terminal_font_size",
