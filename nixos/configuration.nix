@@ -88,6 +88,7 @@
     hyprlock
     kitty
     impala
+    chezmoi
     
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
   ];
