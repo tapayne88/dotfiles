@@ -34,5 +34,7 @@ git:
     - main
     - develop
 
+# {{- if ne "" .github_enterprise_host }}
 services:
   "{{ .github_enterprise_host }}": "github:{{ .github_enterprise_host }}"
+# {{- end }}

@@ -38,11 +38,6 @@
           "type": "object",
           "description": "Feature flags that enable / disable functionality",
           "properties": {
-            "neovim_nightly": {
-              "type": "boolean",
-              "description": "Enable neovim-nightly, fallback to latest neovim stable release (through nix-unstable)",
-              "default": false
-            },
             "neovim_copilot": {
               "type": "boolean",
               "description": "Enable copilot AI tooling",
@@ -59,12 +54,7 @@
               "default": false
             }
           },
-          "required": [
-            "neovim_nightly",
-            "neovim_copilot",
-            "neovim_avante",
-            "neovim_opencode"
-          ]
+          "required": ["neovim_copilot", "neovim_avante", "neovim_opencode"]
         },
         "github_enterprise_host": {
           "type": "string",
@@ -97,6 +87,7 @@
         "github_enterprise_host",
         "github_auth_token",
         "home_network_tld",
+        "neovim_dev_plugin_dir",
         "asdf_nodejs_version"
       ]
     }

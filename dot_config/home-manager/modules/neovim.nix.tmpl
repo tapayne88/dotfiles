@@ -21,12 +21,5 @@
 
       luafile ${config.xdg.configHome}/nvim/init-lua.lua
     '';
-
-    # <features.neovim_nightly>
-    #{{- if (eq .features.neovim_nightly true) }} Neovim nightly
-    package = pkgs.neovim-nightly;
-    #{{- else }} Neovim Stable
-    package = pkgs.unstable.neovim-unwrapped;
-    #{{- end }} </features.neovim_nightly>
   };
 }
