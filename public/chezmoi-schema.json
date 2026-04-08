@@ -38,23 +38,13 @@
           "type": "object",
           "description": "Feature flags that enable / disable functionality",
           "properties": {
-            "neovim_copilot": {
-              "type": "boolean",
-              "description": "Enable copilot AI tooling",
-              "default": false
-            },
-            "neovim_avante": {
-              "type": "boolean",
-              "description": "Enable avante AI tooling in neovim",
-              "default": false
-            },
             "neovim_opencode": {
               "type": "boolean",
               "description": "Enable opencode neovim integration",
               "default": false
             }
           },
-          "required": ["neovim_copilot", "neovim_avante", "neovim_opencode"]
+          "required": ["neovim_opencode"]
         },
         "github_enterprise_host": {
           "type": "string",
