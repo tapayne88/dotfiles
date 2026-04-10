@@ -86,14 +86,6 @@
     chezmoi
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
 
-    # neovim utils
-    gcc
-    gnumake
-    binutils
-    lua
-    luaPackages.luarocks
-    tree-sitter # nvim-treesitter dependency
-
     brightnessctl # brightness controls
     wl-clipboard # clipboard management
     mako # notifications

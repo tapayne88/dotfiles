@@ -31,6 +31,14 @@
   };
 
   home.packages = with pkgs; [
+    # neovim utils
+    gcc
+    gnumake
+    binutils
+    lua
+    luaPackages.luarocks
+    tree-sitter # nvim-treesitter dependency
+
     antigen # zsh plugin manager
     atuin # Magical shell history
     bat # colourised cat
