@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'ruff' }
-
 function M.setup()
   vim.lsp.config('ruff', {
     -- Disable hover in favor of other LSPs (like pyright)

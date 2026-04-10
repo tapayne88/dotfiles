@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'lua_ls' }
-
 function M.setup()
   vim.lsp.config('lua_ls', {
     settings = {

@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'jsonls' }
-
 function M.setup()
   vim.lsp.config('jsonls', {
     init_options = { provideFormatter = false },

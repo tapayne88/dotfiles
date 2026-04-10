@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'eslint' }
-
 function M.setup()
   vim.lsp.config('eslint', {
     handlers = {
