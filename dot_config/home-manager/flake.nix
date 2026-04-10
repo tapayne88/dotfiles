@@ -5,9 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    # TODO: Fix this (don't forget the overlay)
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     nixgl.url = "github:guibou/nixGL";
 
     home-manager = {
@@ -22,9 +19,6 @@
         unstable = import inputs.nixpkgs-unstable {
           system = prev.system;
           config.allowUnfree = true;
-          config.permittedInsecurePackages = [
-            "electron-25.9.0" # crostini - obsidian
-          ];
         };
       };
       system_pkgs = system: import inputs.nixpkgs {
@@ -33,33 +27,11 @@
         overlays = [
           overlay-unstable
           nixgl.overlay
-          # inputs.neovim-nightly-overlay.overlay
         ];
       };
     in
     {
       homeConfigurations = {
-        # Pixelbook
-        "tapayne88@penguin" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = system_pkgs "x86_64-linux";
-          modules = [
-            {
-              imports = [
-                ./modules/home.nix
-                ./modules/crostini.nix
-                ./modules/linux.nix
-                ./modules/neovim.nix
-              ];
-            }
-            {
-              home = {
-                username = "tapayne88";
-                homeDirectory = "/home/tapayne88";
-                stateVersion = "25.05";
-              };
-            }
-          ];
-        };
         # Pixelbook Omarchy
         "tpayne@omarchy-pixelbook" = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = system_pkgs "x86_64-linux";
@@ -96,26 +68,6 @@
               home = {
                 username = "tom.payne";
                 homeDirectory = "/Users/tom.payne";
-                stateVersion = "25.05";
-              };
-            }
-          ];
-        };
-        # WSL
-        "tpayne@DESKTOP-EACCNGB" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = system_pkgs "x86_64-linux";
-          modules = [
-            {
-              imports = [
-                ./modules/home.nix
-                ./modules/linux.nix
-                ./modules/neovim.nix
-              ];
-            }
-            {
-              home = {
-                username = "tpayne";
-                homeDirectory = "/home/tpayne";
                 stateVersion = "25.05";
               };
             }
