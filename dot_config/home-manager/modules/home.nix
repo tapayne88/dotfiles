@@ -31,7 +31,6 @@
     jq # json cli processor
     mosh # better ssh
     netcat # netcat implementaion
-    poppler_utils # pdf utils - pdfunite to combine pdfs
     python3 # python312
     python312Packages.pip # pip for python312
     python312Packages.setuptools # setuptools for python312
