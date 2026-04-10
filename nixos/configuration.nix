@@ -86,6 +86,7 @@
     chezmoi
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
 
+    brightnessctl # brightness controls
     wl-clipboard # clipboard management
     mako # notifications
     impala # wifi utility
