@@ -12,6 +12,7 @@
     enable = true;
     viAlias = true;
     withNodeJs = true;
+    package = pkgs.unstable.neovim-unwrapped;
     extraConfig = ''
       "{{- if eq .chezmoi.os "darwin" }}
       let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/libsqlite3.dylib'
