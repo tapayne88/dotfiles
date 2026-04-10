@@ -20,4 +20,7 @@ return require('lazy').setup('tap.plugins', {
     ---@type string | fun(plugin: LazyPlugin): string
     path = '{{ .neovim_dev_plugin_dir }}',
   },
+  rocks = {
+    enabled = false,
+  }
 })
