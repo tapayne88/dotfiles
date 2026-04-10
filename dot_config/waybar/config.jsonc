@@ -1,0 +1,55 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 24,
+  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    // "custom/screenshot",
+    // "custom/temp",
+    "network",
+    "power-profiles-daemon",
+    "pulseaudio",
+    // "backlight",
+    "battery",
+    "tray"
+  ],
+  "hyprland/workspaces": {
+  "disable-scroll": true,
+  "all-outputs": true,
+  "format": "{name}",
+  "on-click": "activate"
+},
+"clock": {
+  "format": "<span>󰥔</span> {:%H:%M}",
+  "format-alt": " {:%A, %B %d, %Y}",
+  "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+  "on-click": "right"
+},
+"battery": {
+  "states": {
+    "good": 95,
+    "warning": 30,
+    "critical": 15
+  },
+  "format": "{capacity}% <span>{icon}</span>",
+  "format-charging": "{capacity}% <span>󰂄</span>",
+  "format-plugged": "{capacity}% <span>󰚥</span>",
+  "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+},
+"network": {
+  "format-wifi": "<span></span>  {signalStrength}%",
+  "format-ethernet": "<span></span> {ifname}",
+  "format-disconnected": "Disconnected <span>⚠</span>",
+  "on-click": "nm-connection-editor"
+},
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "default": ["", "", " "]
+        },
+        "on-click": "pavucontrol"
+    }
+}
