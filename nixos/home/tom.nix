@@ -39,6 +39,26 @@
     luaPackages.luarocks
     tree-sitter # nvim-treesitter dependency
 
+    # lsp
+    bazel-buildtools
+    hadolint
+    helm-ls
+    lua-language-server
+    sqlfluff
+    ruff
+    stylua
+    markdownlint-cli
+    prettierd
+    bash-language-server
+    # cucumber_language_server
+    eslint_d
+    python314Packages.python-lsp-server
+    terraform-ls
+    vtsls
+    jsonnet-language-server
+    vscode-json-languageserver
+    yaml-language-server
+
     antigen # zsh plugin manager
     atuin # Magical shell history
     bat # colourised cat
