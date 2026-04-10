@@ -241,10 +241,15 @@ return {
 
   -- Highlight same words
   {
-    'RRethy/vim-illuminate',
+    -- TODO: Swap back to upstream RRethy/vim-illuminate when below is resolved
+    -- https://github.com/RRethy/vim-illuminate/issues/247
+    'UrsaDK/vim-illuminate',
     event = 'BufReadPost',
     config = function()
-      require('illuminate').configure { delay = 200, filetypes_denylist = { 'bigfile' } }
+      require('illuminate').configure {
+        delay = 200,
+        filetypes_denylist = { 'bigfile' },
+      }
 
       -- stylua: ignore start
       vim.keymap.set('n', ']]', function() require('illuminate').goto_next_reference(false) end, { desc = 'Next Reference' })
