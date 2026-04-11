@@ -16,7 +16,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "thinkpad";
 
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.backend = "iwd";
@@ -95,6 +95,12 @@
     hyprlauncher
     hyprlock
   ];
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 3";
+  };
 
   services.gnome.gnome-keyring.enable = true;
 
