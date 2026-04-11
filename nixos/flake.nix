@@ -30,7 +30,12 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.tom = ./home/tom.nix;
+            users.tom = {
+              imports = [
+                ./home/tom.nix
+                ./modules/neovim.nix
+              ];
+            };
           };
         }
         stylix.nixosModules.stylix
