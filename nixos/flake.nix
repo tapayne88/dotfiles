@@ -24,7 +24,7 @@
       };
 
       modules = [ 
-        ./configuration.nix
+        ./hosts/thinkpad/configuration.nix
 	home-manager.nixosModules.default
         {
           home-manager = {
