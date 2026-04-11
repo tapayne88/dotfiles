@@ -15,8 +15,15 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-wallpaper.url = "github:lunik1/nix-wallpaper";
   };
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, stylix, ... }: {
     nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs;
@@ -32,6 +39,7 @@
             users.tom = ./home/tom.nix;
           };
         }
+        stylix.nixosModules.stylix
       ];
     };
   };
