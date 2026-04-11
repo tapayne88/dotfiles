@@ -74,12 +74,7 @@
 
   stylix.enable = true;
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-  stylix.image =
-    let
-      wp = inputs.nix-wallpaper.packages.${pkgs.system}.default.override {
-        preset = "catppuccin-macchiato-rainbow";
-      };
-    in "${wp}/share/wallpapers/nixos-wallpaper.png";
+  stylix.image = ./home/catppuccin-nix.png;
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -103,6 +98,7 @@
     # hyprland utils
     hyprlauncher
     hyprlock
+    hyprpaper
   ];
 
   programs.nh = {
