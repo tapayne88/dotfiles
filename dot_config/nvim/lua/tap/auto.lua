@@ -45,7 +45,6 @@ augroup('TapColorColumn', {
         'dap-repl',
         'fugitive',
         'git',
-        'mason',
         'oil',
         'qf',
         'rgflow',

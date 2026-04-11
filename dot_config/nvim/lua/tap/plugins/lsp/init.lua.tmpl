@@ -31,7 +31,6 @@ return {
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
-      'williamboman/mason.nvim',
       'saecki/live-rename.nvim',
       'yioneko/nvim-vtsls',
     },
@@ -43,16 +42,10 @@ return {
 
       local servers = require 'tap.plugins.lsp.servers'
 
-      local mason_settings = require 'mason.settings'
       vim.lsp.config('*', {
         -- set cmd_cwd to mason install_root_dir to ensure node version consistency
-        cmd_cwd = mason_settings.current.install_root_dir,
+        -- cmd_cwd = mason_settings.current.install_root_dir,
       })
-
-      require('mason-lspconfig').setup {
-        automatic_installation = true,
-        automatic_enable = false,
-      }
 
       for _, server in pairs(servers) do
         server.setup()
@@ -66,7 +59,6 @@ return {
     dependencies = {
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
-      'williamboman/mason.nvim',
       'gbprod/none-ls-shellcheck.nvim',
     },
     config = function()
@@ -112,9 +104,6 @@ return {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
-    dependencies = {
-      'williamboman/mason.nvim',
-    },
     keys = {
       {
         '<leader>tf',

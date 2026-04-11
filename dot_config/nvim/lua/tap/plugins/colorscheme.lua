@@ -42,7 +42,6 @@ return {
           end,
         },
         lsp_trouble = true,
-        mason = true,
         neotree = true,
         neotest = true,
         navic = {
