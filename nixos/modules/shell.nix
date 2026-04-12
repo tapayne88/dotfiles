@@ -50,4 +50,10 @@
     tldr # simplified and community-driven man pages
     tmux # terminal multiplexer
   ];
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 3";
+  };
 }
