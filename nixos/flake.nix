@@ -50,7 +50,7 @@
     homeConfigurations = {
       # Pixelbook Omarchy
       "tpayne@omarchy-pixelbook" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs-stable.legacyPackages.x86_64-linux;
+        pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
         modules = [
           {
             imports = [
@@ -70,7 +70,7 @@
       };
       # MacBook Pro M3 (Work)
       "tom.payne@KL2M3W1G4N" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs-stable.legacyPackages.aarch64-darwin;
+        pkgs = nixpkgs-unstable.legacyPackages.aarch64-darwin;
         modules = [
           {
             imports = [
