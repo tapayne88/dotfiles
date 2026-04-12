@@ -1,9 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "tom";
-  home.homeDirectory = "/home/tom";
-
   programs.zsh = {
     enable = true;
 
@@ -43,6 +40,4 @@
     television # A very fast, portable and hackable fuzzy finder.
     tmux # terminal multiplexer
   ];
-
-  home.stateVersion = "26.05";
 }

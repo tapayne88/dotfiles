@@ -32,9 +32,14 @@
             useUserPackages = true;
             users.tom = {
               imports = [
-                ./home/tom.nix
                 ./modules/neovim.nix
+                ./modules/shell.nix
               ];
+              home = {
+                username = "tom";
+                homeDirectory = "/home/tom";
+                stateVersion = "26.05";
+              };
             };
           };
         }
