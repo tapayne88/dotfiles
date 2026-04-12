@@ -25,6 +25,7 @@
       };
 
       modules = [ 
+        ./configs/nixpkgs.nix
         ./hosts/thinkpad/configuration.nix
 	home-manager.nixosModules.default
         {
@@ -54,6 +55,7 @@
         modules = [
           {
             imports = [
+              ./configs/nixpkgs.nix
               ./modules/shell.nix
               ./modules/linux.nix
               ./modules/neovim.nix
@@ -74,6 +76,7 @@
         modules = [
           {
             imports = [
+              ./configs/nixpkgs.nix
               ./modules/shell.nix
               ./modules/darwin.nix
               ./modules/neovim.nix
