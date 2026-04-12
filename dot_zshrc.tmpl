@@ -18,12 +18,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
 
 # nh env var to flake
-#{{- if eq .chezmoi.os "darwin" }}
-# Only use home-manager on MacOS
-export NH_FLAKE="$HOME/.config/home-manager"
-#{{- else }}
 export NH_FLAKE="{{ .chezmoi.sourceDir }}/nixos"
-#{{- end }}
 
 function prepend_path {
   for p in $@; do
