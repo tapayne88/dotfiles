@@ -40,7 +40,7 @@
               home = {
                 username = "tom";
                 homeDirectory = "/home/tom";
-                stateVersion = "26.05";
+                stateVersion = "25.11";
               };
             };
           };
