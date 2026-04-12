@@ -7,14 +7,11 @@
   programs.zsh = {
     enable = true;
 
-    # TODO: Fix deprecation warning
-    dotDir = ".config/zsh";
-
     initContent = ''
       source ${pkgs.antigen}/share/antigen/antigen.zsh
 
-      if [ -f ~/.zshrc ]; then
-        source ~/.zshrc
+      if [ -f ${config.xdg.configHome}/zsh/config ]; then
+        source ${config.xdg.configHome}/zsh/config
       fi
     '';
   };
