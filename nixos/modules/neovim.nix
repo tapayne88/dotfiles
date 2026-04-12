@@ -25,7 +25,7 @@
     terraform-ls
     vtsls
     jsonnet-language-server
-    vscode-json-languageserver
+    vscode-langservers-extracted
     yaml-language-server
   ];
 
