@@ -17,7 +17,6 @@
   };
 
   home.packages = with pkgs; [
-    antigen # zsh plugin manager
     atuin # Magical shell history
     bat # colourised cat
     chezmoi # dotfile manager
