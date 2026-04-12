@@ -36,6 +36,7 @@
               imports = [
                 ./modules/neovim.nix
                 ./modules/shell.nix
+                ./modules/linux.nix
               ];
               home = {
                 username = "tom";
