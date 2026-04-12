@@ -1,24 +1,25 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     stylix = {
       url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
-  outputs = inputs@{ self, nixpkgs, home-manager, stylix, ... }: {
-    nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, stylix, ... }: {
+    nixosConfigurations.thinkpad = nixpkgs-unstable.lib.nixosSystem {
       specialArgs = {
         inherit inputs;
       };
