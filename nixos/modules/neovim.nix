@@ -33,6 +33,8 @@
     enable = true;
     defaultEditor = true;
     viAlias = true;
+    withRuby = false;
+    withPython3 = false;
     extraConfig = ''
       let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/${
         if pkgs.stdenv.isDarwin
