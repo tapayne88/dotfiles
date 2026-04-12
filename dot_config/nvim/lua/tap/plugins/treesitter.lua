@@ -11,6 +11,7 @@ return {
         'dockerfile',
         'go',
         'graphql',
+        'gotmpl',
         'groovy',
         'helm',
         'html',

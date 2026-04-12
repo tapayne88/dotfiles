@@ -730,4 +730,6 @@ return {
     --   vim.api.nvim_create_user_command('CopyFilePathWorkspace', function() ... end)
     -- end,
   },
+
+  { 'qvalentin/helm-ls.nvim', ft = 'helm', opts = {} },
 }
