@@ -6,6 +6,7 @@ let
       "1password-cli"
       "1password-gui"
       "1password"
+      "terraform"
     ];
 in
 {

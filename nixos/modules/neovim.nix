@@ -3,8 +3,6 @@
 {
   home.packages = with pkgs; [
     # tree-sitter + dependency
-    binutils
-    gcc
     gnumake
     lua
     luaPackages.luarocks
