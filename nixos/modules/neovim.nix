@@ -9,23 +9,24 @@
     tree-sitter
 
     # lsp
-    bazel-buildtools
-    hadolint
-    helm-ls
-    lua-language-server
-    sqlfluff
-    ruff
-    stylua
-    markdownlint-cli
-    prettierd
     bash-language-server
+    bazel-buildtools
     # cucumber_language_server
     eslint_d
-    python314Packages.python-lsp-server
-    terraform-ls
-    vtsls
+    hadolint
+    helm-ls
     jsonnet-language-server
+    lua-language-server
+    markdownlint-cli
+    prettierd
+    python314Packages.python-lsp-server
+    ruff
+    shellcheck
+    sqlfluff
+    stylua
+    terraform-ls
     vscode-langservers-extracted
+    vtsls
     yaml-language-server
   ];
 
