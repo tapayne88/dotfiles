@@ -37,11 +37,12 @@
     impala # wifi utility
 
     # hyprland utils
-    hypridle
     hyprlauncher
     hyprlock
     hyprpaper
   ];
+
+  services.hypridle.enable = true;
 
   programs.git.enable = true;
   programs.zsh.enable = true;
