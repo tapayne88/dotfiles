@@ -37,6 +37,7 @@
     impala # wifi utility
 
     # hyprland utils
+    hypridle
     hyprlauncher
     hyprlock
     hyprpaper
