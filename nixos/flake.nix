@@ -20,8 +20,6 @@
   };
   outputs =
     inputs@{
-      self,
-      nixpkgs-stable,
       nixpkgs-unstable,
       home-manager,
       stylix,

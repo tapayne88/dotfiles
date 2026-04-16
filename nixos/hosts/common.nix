@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   inputs,
   ...
@@ -21,7 +19,7 @@
       "wheel"
       "networkmanager"
     ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [ ];
+    packages = [ ];
     shell = pkgs.zsh;
   };
 
