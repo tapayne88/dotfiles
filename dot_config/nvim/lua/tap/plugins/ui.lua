@@ -98,7 +98,6 @@ return {
           .iter({
             'help',
             'lazy',
-            'mason',
             'neo-tree',
             'oil_preview',
             'snacks_dashboard',
@@ -129,7 +128,6 @@ return {
         'TelescopePrompt',
 
         'lazy',
-        'mason',
         'oil_preview',
       },
     },
@@ -158,7 +156,6 @@ return {
             { icon = ' ', key = 'r', desc = 'Recent Files',    action = ':lua require("telescope.builtin").oldfiles{ cwd_only = true }' },
             { icon = ' ', key = 's', desc = 'Restore Session', action = ':lua require("persistence").load()' },
             { icon = '󰒲 ', key = 'l', desc = 'Lazy',            action = ':Lazy' },
-            { icon = '◍ ', key = 'm', desc = 'Mason',           action = ':Mason' },
             { icon = ' ', key = 'q', desc = 'Quit',            action = ':qa' },
           },
           -- stylua: ignore end

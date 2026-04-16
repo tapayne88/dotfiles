@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'pylsp' }
-
 function M.setup()
   vim.lsp.config('pylsp', {
     settings = {

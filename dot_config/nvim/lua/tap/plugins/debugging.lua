@@ -95,7 +95,8 @@ return {
     },
 
     init = function()
-      require('tap.utils.lsp').ensure_installed { 'js-debug-adapter' }
+      -- TOOD: Add this the nix way
+      -- require('tap.utils.lsp').ensure_installed { 'js-debug-adapter' }
 
       vim.api.nvim_create_user_command('DapToggleBreakpoint', function()
         require('dap').toggle_breakpoint()

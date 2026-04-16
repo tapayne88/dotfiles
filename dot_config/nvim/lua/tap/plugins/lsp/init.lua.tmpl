@@ -31,7 +31,6 @@ return {
       'j-hui/fidget.nvim',
       'rcarriga/nvim-notify',
       'rmagatti/goto-preview',
-      'williamboman/mason.nvim',
       'saecki/live-rename.nvim',
       'yioneko/nvim-vtsls',
     },
@@ -43,24 +42,10 @@ return {
 
       local servers = require 'tap.plugins.lsp.servers'
 
-      local ensure_installed = vim
-        .iter(vim.tbl_map(function(server)
-          return server.ensure_installed
-        end, servers))
-        :flatten()
-        :totable()
-
-      local mason_settings = require 'mason.settings'
       vim.lsp.config('*', {
         -- set cmd_cwd to mason install_root_dir to ensure node version consistency
-        cmd_cwd = mason_settings.current.install_root_dir,
+        -- cmd_cwd = mason_settings.current.install_root_dir,
       })
-
-      require('mason-lspconfig').setup {
-        ensure_installed = ensure_installed,
-        automatic_installation = true,
-        automatic_enable = false,
-      }
 
       for _, server in pairs(servers) do
         server.setup()
@@ -74,21 +59,11 @@ return {
     dependencies = {
       'j-hui/fidget.nvim',
       'rmagatti/goto-preview',
-      'williamboman/mason.nvim',
       'gbprod/none-ls-shellcheck.nvim',
     },
     config = function()
       local null_ls = require 'null-ls'
       local lsp_utils = require 'tap.utils.lsp'
-
-      lsp_utils.ensure_installed {
-        'buildifier',
-        'hadolint',
-        'markdownlint',
-        'prettierd',
-        'sqlfluff',
-        'stylua',
-      }
 
       require('null-ls').register(require 'none-ls-shellcheck.diagnostics')
       require('null-ls').register(require 'none-ls-shellcheck.code_actions')
@@ -129,9 +104,6 @@ return {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
-    dependencies = {
-      'williamboman/mason.nvim',
-    },
     keys = {
       {
         '<leader>tf',
@@ -180,15 +152,6 @@ return {
     config = function(_, opts)
       local lsp_utils = require 'tap.utils.lsp'
 
-      lsp_utils.ensure_installed {
-        'buildifier',
-        'eslint_d',
-        'prettierd',
-        'ruff',
-        'sqlfluff',
-        'stylua',
-      }
-
       require('conform').setup(opts)
     end,
 
@@ -236,6 +199,7 @@ return {
           lua = { 'stylua' },
           markdown = structured_data_formatters,
           mysql = { 'sqlfluff' },
+          nix = { 'nixfmt' },
           python = { 'ruff_fix', 'ruff_format' },
           sql = { 'sqlfluff' },
           tiltfile = { 'buildifier' },

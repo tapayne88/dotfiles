@@ -11,11 +11,13 @@ export XDG_STATE_HOME=$HOME/.local/state
 export ZSH_HOME=~/.config/zsh
 export ZSH_CACHE_DIR=~/.cache/zsh
 
-export SHELL=$HOME/.nix-profile/bin/zsh
 export VISUAL=nvim
 export EDITOR=nvim
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
+
+# nh env var to flake
+export NH_FLAKE="{{ .chezmoi.sourceDir }}/nixos"
 
 function prepend_path {
   for p in $@; do
@@ -124,8 +126,6 @@ function zvm_after_init() {
 
   eval "$(zoxide init zsh)"
 }
-
-source ~/.nix-profile/share/antigen/antigen.zsh
 
 # patches required for modules
 antigen bundle $ZSH_HOME/patches

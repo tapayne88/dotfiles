@@ -1,0 +1,31 @@
+name: Nix CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - main
+
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+
+      - name: Enable flakes
+        run: |
+          mkdir -p ~/.config/nix
+          echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+
+      - name: Check flake
+        run: nix flake check ./nixos
+
+      - name: Check formatting (nixfmt)
+        run: |
+          nix develop ./nixos --command treefmt --ci

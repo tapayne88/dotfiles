@@ -1,7 +1,5 @@
 local M = {}
 
-M.ensure_installed = { 'vtsls' }
-
 function M.setup()
   vim.lsp.config('vtsls', {
     settings = {

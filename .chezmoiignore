@@ -5,9 +5,19 @@
 .config/zsh/functions/brew.zsh
 {{- end }}
 
+{{- if eq .chezmoi.os "darwin" }}
+.config/hypr
+.config/waybar
+{{- end }}
+
+{{- if eq .chezmoi.os "linux" }}
+.config/nix
+{{- end }}
+
 .local/share/fonts/update-fonts
 .prettierrc.js
 misc
 public
 README.md
 stylua.toml
+nixos

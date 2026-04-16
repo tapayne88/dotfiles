@@ -6,6 +6,7 @@ return {
   require 'tap.plugins.lsp.servers.jsonls',
   require 'tap.plugins.lsp.servers.jsonnet',
   require 'tap.plugins.lsp.servers.lua_ls',
+  require 'tap.plugins.lsp.servers.nixd',
   require 'tap.plugins.lsp.servers.pylsp',
   require 'tap.plugins.lsp.servers.ruff',
   -- No longer using tailwindcss
