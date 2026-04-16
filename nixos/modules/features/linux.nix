@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.linux =
+  flake.modules.homeManager.linux =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

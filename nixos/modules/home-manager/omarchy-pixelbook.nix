@@ -8,10 +8,10 @@
         modules = [
           {
             imports = [
-              self.nixosModules.nixpkgsConfig
-              self.nixosModules.shell
-              self.nixosModules.linux
-              self.nixosModules.neovim
+              self.modules.nixpkgsConfig
+              self.modules.homeManager.shell
+              self.modules.homeManager.linux
+              self.modules.homeManager.neovim
             ];
           }
           {

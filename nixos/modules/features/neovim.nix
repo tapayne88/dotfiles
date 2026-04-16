@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.neovim =
+  flake.modules.homeManager.neovim =
     { config, pkgs, ... }:
     {
       home.packages = with pkgs; [

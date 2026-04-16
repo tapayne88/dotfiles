@@ -4,11 +4,11 @@
   ...
 }:
 {
-  flake.nixosConfigurations.thinkpad = self.nixpkgs-unstable.lib.nixosSystem {
+  flake.nixosConfigurations.thinkpad = inputs.nixpkgs-unstable.lib.nixosSystem {
     modules = [
-      self.nixosModules.nixpkgsConfig
       self.nixosModules.thinkpadConfiguration
-      self.nixosModules.home.tom
+      self.modules.nixos.nixpkgsConfig
+      self.nixosModules.tom
       inputs.home-manager.nixosModules.default
       inputs.stylix.nixosModules.stylix
     ];

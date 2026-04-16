@@ -4,7 +4,6 @@
   flake.nixosModules.commonConfiguration =
     {
       pkgs,
-      inputs,
       ...
     }:
 

@@ -1,15 +1,14 @@
 { self, inputs, ... }:
-
 {
-  flake.nixosModules.home.tom = {
+  flake.nixosModules.tom = {
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
       users.tom = {
         imports = [
-          self.nixosModules.neovim
-          self.nixosModules.shell
-          self.nixosModules.linux
+          self.modules.homeManager.neovim
+          self.modules.homeManager.shell
+          self.modules.homeManager.linux
         ];
         home = {
           username = "tom";

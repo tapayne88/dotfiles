@@ -6,11 +6,11 @@
     modules = [
       {
         imports = [
-          self.nixosModules.nixpkgsConfig
-          self.nixosModules.shell
-          self.nixosModules.darwin
-          self.nixosModules.neovim
-          self.nixosModules.work
+          self.modules.nixpkgsConfig
+          self.modules.homeManager.shell
+          self.modules.homeManager.darwin
+          self.modules.homeManager.neovim
+          self.modules.homeManager.work
         ];
       }
       {

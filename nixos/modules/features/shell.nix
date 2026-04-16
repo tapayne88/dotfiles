@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.shell =
+  flake.modules.homeManager.shell =
     { config, pkgs, ... }:
 
     {

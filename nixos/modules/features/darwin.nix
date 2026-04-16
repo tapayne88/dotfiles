@@ -1,6 +1,5 @@
-{ self, inputs, ... }:
 {
-  flake.nixosModules.darwin =
+  flake.modules.homeManager.darwin =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
