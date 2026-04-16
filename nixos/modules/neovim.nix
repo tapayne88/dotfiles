@@ -18,6 +18,8 @@
     jsonnet-language-server
     lua-language-server
     markdownlint-cli
+    nixd
+    nixfmt
     prettierd
     python314Packages.python-lsp-server
     ruff
