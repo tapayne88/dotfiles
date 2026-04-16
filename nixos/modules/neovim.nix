@@ -40,9 +40,7 @@
     withPython3 = false;
     extraConfig = ''
       let g:sqlite_clib_path = '${pkgs.sqlite.out}/lib/${
-        if pkgs.stdenv.isDarwin
-        then "libsqlite3.dylib"
-        else "libsqlite3.so"
+        if pkgs.stdenv.isDarwin then "libsqlite3.dylib" else "libsqlite3.so"
       }'
 
       luafile ${config.xdg.configHome}/nvim/init-lua.lua
