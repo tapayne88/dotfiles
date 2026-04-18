@@ -1,5 +1,7 @@
 { self, inputs, ... }:
 {
+  nixpkgs.allowedUnfreePackages = [ "terraform" ];
+
   flake.modules.homeManager.work =
     { pkgs, ... }:
     {

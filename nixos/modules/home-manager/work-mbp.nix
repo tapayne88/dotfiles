@@ -6,7 +6,6 @@
     modules = [
       {
         imports = [
-          self.modules.nixpkgsConfig
           self.modules.homeManager.shell
           self.modules.homeManager.darwin
           self.modules.homeManager.neovim

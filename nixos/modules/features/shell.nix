@@ -1,5 +1,7 @@
 { self, inputs, ... }:
 {
+  nixpkgs.allowedUnfreePackages = [ "1password-cli" ];
+
   flake.modules.homeManager.shell =
     { config, pkgs, ... }:
 

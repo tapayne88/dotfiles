@@ -1,6 +1,11 @@
 { self, inputs, ... }:
 
 {
+  nixpkgs.allowedUnfreePackages = [
+    "1password-cli"
+    "1password-gui"
+  ];
+
   flake.nixosModules.commonConfiguration =
     {
       pkgs,
