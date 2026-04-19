@@ -2,7 +2,7 @@
 {
   # MacBook Pro M3 (Work)
   flake.homeConfigurations."tom.payne@KL2M3W1G4N" = inputs.home-manager.lib.homeManagerConfiguration {
-    pkgs = inputs.nixpkgs-unstable.legacyPackages.aarch64-darwin;
+    pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
     modules = [
       {
         imports = [

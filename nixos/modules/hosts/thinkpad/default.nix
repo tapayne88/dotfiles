@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosConfigurations.thinkpad = inputs.nixpkgs-unstable.lib.nixosSystem {
+  flake.nixosConfigurations.thinkpad = inputs.nixpkgs.lib.nixosSystem {
     modules = [
       self.nixosModules.thinkpadConfiguration
       self.nixosModules.tom
