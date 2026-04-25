@@ -1,38 +1,116 @@
 @import "mocha.css";
 
+/* Global */
 * {
-  /* reference the color by using @color-name */
-  color: @text;
-  font-family: "JetBrains Mono Nerd Font";
-  font-size: 13px;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 16px;
+  border: none;
+  border-radius: 0;
   min-height: 0;
+  min-width: 0;
 }
 
-#waybar {
-  background-color: @surface0;
-  color: @text;
-  margin: 5px 5px;
+/* Bar background */
+window#waybar {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  background-color: @crust;
 }
 
-#workspaces {
-  border-radius: 1rem;
-  margin: 5px;
-  background-color: @surface0;
-  margin-left: 1rem;
-}
-
+/* Workspaces */
 #workspaces button {
-  color: @lavender;
-  border-radius: 1rem;
-  padding: 0.4rem;
-}
-
-#workspaces button.active {
-  color: @sky;
-  border-radius: 1rem;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  border-radius: 6px;
+  background-color: @base;
+  color: @text;
 }
 
 #workspaces button:hover {
+  color: @base;
+  background-color: @text;
+}
+
+#workspaces button.active {
+  background-color: @base;
+  color: @blue;
+}
+
+#workspaces button.urgent {
+  background-color: @base;
+  color: @red;
+}
+
+/* All modules via container trick */
+#clock,
+#pulseaudio,
+#network,
+#battery,
+#custom-logo,
+#custom-power,
+#custom-spotify,
+#custom-notification,
+#cpu,
+#tray,
+#memory,
+#window {
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.25rem;
+  border-radius: 6px;
+  background-color: @base;
+}
+
+/* Separator */
+#custom-sep {
+  padding: 0;
+  color: @surface0;
+}
+
+/* Hide empty window module */
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+/* Module colours */
+#cpu {
+  color: @teal;
+}
+
+#memory {
+  color: @mauve;
+}
+
+#clock {
   color: @sapphire;
-  border-radius: 1rem;
+}
+
+#clock.simpleclock {
+  color: @blue;
+}
+
+#window {
+  color: @text;
+}
+
+#pulseaudio {
+  color: @lavender;
+}
+
+#pulseaudio.muted {
+  color: @subtext0;
+}
+
+#custom-logo {
+  color: @blue;
+}
+
+#custom-power {
+  color: @red;
+}
+
+/* Tooltip */
+tooltip {
+  background-color: @mantle;
+  border: 2px solid @blue;
+  color: @text;
 }
