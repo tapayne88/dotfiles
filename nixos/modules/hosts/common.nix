@@ -2,7 +2,6 @@
 
 {
   nixpkgs.allowedUnfreePackages = [
-    "1password-cli"
     "1password-gui"
   ];
 
@@ -86,7 +85,6 @@
         nerd-fonts.jetbrains-mono
       ];
 
-      programs._1password.enable = true;
       programs._1password-gui = {
         enable = true;
         # Certain features, including CLI integration and system authentication support,
