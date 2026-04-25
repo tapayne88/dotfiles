@@ -45,7 +45,7 @@
     wl-clipboard # clipboard management
     mako # notifications
     impala # wifi utility
-    wlogout # logout
+    wlogout # logout util
 
     # hyprland utils
     hyprlauncher
