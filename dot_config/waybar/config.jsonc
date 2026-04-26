@@ -101,7 +101,7 @@
     },
     "format": "{capacity}% <span>{icon}</span>",
     "format-charging": "{capacity}% <span>󰂄</span>",
-    "format-plugged": "{capacity}% <span>󰚥</span>",
+    "format-plugged": "󰚥",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
   "custom/sep": {
