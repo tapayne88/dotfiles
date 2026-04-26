@@ -8,7 +8,6 @@
 {{- if eq .chezmoi.os "darwin" }}
 .config/hypr
 .config/waybar
-.config/wlogout
 {{- end }}
 
 {{- if eq .chezmoi.os "linux" }}
