@@ -75,7 +75,7 @@
     "format-wifi": "{signalStrength}%",
     "format-ethernet": "{ifname}",
     "format-disconnected": "Disconnected <span>⚠</span>",
-    "on-click": "impala",
+    "on-click": "xdg-terminal-exec impala",
   },
   "battery": {
     "states": {

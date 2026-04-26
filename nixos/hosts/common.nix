@@ -47,6 +47,8 @@
     impala # wifi utility
     wlogout # logout util
 
+    xdg-terminal-exec
+
     # hyprland utils
     hyprlauncher
     hyprlock
