@@ -72,10 +72,14 @@
     "on-click": "pavucontrol",
   },
   "network": {
-    "format-wifi": "{signalStrength}%",
-    "format-ethernet": "{ifname}",
-    "format-disconnected": "Disconnected <span>⚠</span>",
+    "format-ethernet": "󰈀",
+    "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-wifi": "{icon}",
+    "format-disconnected": "󰤭",
     "on-click": "xdg-terminal-exec impala",
+    "tooltip-format": "{ifname}\nIP: {ipaddr}\nGateway: {gwaddr}",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)\nIP: {ipaddr}\nGateway: {gwaddr}",
+    "tooltip-format-disconnected": "Disconnected",
   },
   "battery": {
     "states": {
