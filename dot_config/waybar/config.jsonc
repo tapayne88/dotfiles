@@ -63,13 +63,14 @@
     "format": " {used:0.1f}Gi",
   },
   "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": "",
+    "format": "{icon}",
+    "format-muted": " ",
     "format-icons": {
       "headphone": "",
-      "default": [" ", " ", " "],
+      "default": [" ", " "],
     },
     "on-click": "pavucontrol",
+    "tooltip-format": "{desc}\nVolume: {volume}%",
   },
   "network": {
     "format-ethernet": "󰈀",

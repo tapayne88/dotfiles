@@ -46,6 +46,7 @@
     mako # notifications
     impala # wifi utility
     wlogout # logout util
+    pavucontrol # audio control
 
     xdg-terminal-exec
 
