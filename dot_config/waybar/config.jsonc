@@ -67,11 +67,11 @@
   },
   "cpu": {
     "format": " {usage}%",
-    "tooltip": true,
-    "interval": 1,
+    "interval": 2,
   },
   "memory": {
     "format": " {used:0.1f}Gi",
+    "tooltip-format": "Used: {used:0.1f}G/{total:0.1f}G\nSwap: {swapUsed:0.1f}G/{swapTotal:0.1f}G",
   },
   "pulseaudio": {
     "format": "{icon}",
