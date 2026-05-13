@@ -27,6 +27,7 @@
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     image = ../home/catppuccin-nix.png;
+    polarity = "dark";
   };
 
   environment.systemPackages = with pkgs; [
