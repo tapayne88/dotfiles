@@ -20,7 +20,6 @@ brew "rancher-cli"
 # https://github.com/facebook/watchman/issues/923#issuecomment-1506301844
 brew "watchman"
 brew "worktrunk"
-cask "chatgpt"
 cask "claude"
 cask "claude-code"
 cask "copilot-cli"
