@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 
@@ -40,7 +39,6 @@
     wget
     kitty
     chezmoi
-    inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
 
     brightnessctl # brightness controls
     wl-clipboard # clipboard management
