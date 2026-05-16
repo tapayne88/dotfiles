@@ -110,7 +110,7 @@
   },
   "custom/power": {
     "tooltip": false,
-    "on-click": "wlogout",
+    "on-click": "/run/current-system/sw/bin/wlogout",
     "format": "⏻",
   },
 }
