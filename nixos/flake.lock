@@ -68,6 +68,22 @@
         "type": "github"
       }
     },
+    "catppuccin-wlogout": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754591901,
+        "narHash": "sha256-0VCk+7t/cSEmcnfvKdxUDwwrtK0VLhZrVpw4enoBEbc=",
+        "owner": "catppuccin",
+        "repo": "wlogout",
+        "rev": "b51d7189efb414fc76cb6c08f27c0c69706b9f78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "wlogout",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -238,6 +254,7 @@
     },
     "root": {
       "inputs": {
+        "catppuccin-wlogout": "catppuccin-wlogout",
         "home-manager": "home-manager",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",

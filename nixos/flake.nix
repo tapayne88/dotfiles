@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    catppuccin-wlogout = {
+      url = "github:catppuccin/wlogout";
+      flake = false;
+    };
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

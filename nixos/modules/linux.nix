@@ -99,27 +99,27 @@
     }
 
     #lock {
-        background-image: url("${../home/wlogout/icons/lock.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/lock.svg");
     }
 
     #logout {
-        background-image: url("${../home/wlogout/icons/logout.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/logout.svg");
     }
 
     #suspend {
-        background-image: url("${../home/wlogout/icons/suspend.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/suspend.svg");
     }
 
     #hibernate {
-        background-image: url("${../home/wlogout/icons/hibernate.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/hibernate.svg");
     }
 
     #shutdown {
-        background-image: url("${../home/wlogout/icons/shutdown.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/shutdown.svg");
     }
 
     #reboot {
-        background-image: url("${../home/wlogout/icons/reboot.svg}");
+        background-image: url("${inputs.catppuccin-wlogout}/icons/wleave/mocha/blue/reboot.svg");
     }
   '';
 }
