@@ -50,7 +50,6 @@
     xdg-terminal-exec
 
     # hyprland utils
-    hyprlauncher
     hyprlock
     hyprpaper
   ];

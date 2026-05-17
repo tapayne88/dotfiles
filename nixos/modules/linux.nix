@@ -22,6 +22,7 @@
     ncdu # disk usage tool
     nq # linux queue utility
     unzip
+    vicinae # Native, fast, extensible launcher for the desktop
   ];
 
   home.pointerCursor = {
@@ -30,6 +31,23 @@
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
     size = 16;
+  };
+
+  systemd.user.services.vicinae = {
+    Unit = {
+      Description = "Vicinae launcher";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.vicinae}/bin/vicinae server";
+      Restart = "on-failure";
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 
   xdg.mimeApps = {
