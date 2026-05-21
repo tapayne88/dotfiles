@@ -42,6 +42,7 @@
     k9s # Kubernetes CLI To Manage Your Clusters In Style!
     kubie # even nicer interaction with k8s cli with multiple configs
     lazygit # simple terminal UI for git commands
+    mise # Front-end to your dev env
     television # A very fast, portable and hackable fuzzy finder.
     tldr # simplified and community-driven man pages
     tmux # terminal multiplexer
