@@ -22,6 +22,8 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    vicinae.url = "github:vicinaehq/vicinae";
   };
   outputs =
     inputs@{
@@ -46,6 +48,16 @@
         };
 
         modules = [
+          {
+            nix.settings = {
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+              extra-substituters = [ "https://vicinae.cachix.org" ];
+              extra-trusted-public-keys = [ "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=" ];
+            };
+          }
           ./configs/nixpkgs.nix
           ./hosts/thinkpad/configuration.nix
           home-manager.nixosModules.default

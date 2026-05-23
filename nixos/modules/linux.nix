@@ -1,10 +1,14 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
 {
-  imports = [ inputs.zen-browser.homeModules.beta ];
+  imports = [
+    inputs.zen-browser.homeModules.beta
+    inputs.vicinae.homeManagerModules.default
+  ];
 
   programs.zen-browser = {
     enable = true;
@@ -22,7 +26,6 @@
     ncdu # disk usage tool
     nq # linux queue utility
     unzip
-    vicinae # Native, fast, extensible launcher for the desktop
   ];
 
   home.pointerCursor = {
@@ -33,20 +36,14 @@
     size = 16;
   };
 
-  systemd.user.services.vicinae = {
-    Unit = {
-      Description = "Vicinae launcher";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.vicinae}/bin/vicinae server";
-      Restart = "on-failure";
-    };
-
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
+  services.vicinae = {
+    enable = true;
+    systemd = {
+      enable = true;
+      autoStart = true;
+      environment = {
+        USE_LAYER_SHELL = 1;
+      };
     };
   };
 
