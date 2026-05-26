@@ -13,6 +13,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    catppuccin-waybar = {
+      url = "github:catppuccin/waybar";
+      flake = false;
+    };
     catppuccin-wlogout = {
       url = "github:catppuccin/wlogout";
       flake = false;
