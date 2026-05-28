@@ -77,6 +77,10 @@
                   ./modules/neovim.nix
                   ./modules/shell.nix
                   ./modules/linux.nix
+
+                  ./features/hyprland.nix
+                  ./features/vicinae.nix
+                  ./features/zen-browser.nix
                 ];
                 home = {
                   username = "tom";
