@@ -64,6 +64,7 @@
           }
           ./configs/nixpkgs.nix
           ./hosts/thinkpad/configuration.nix
+          ./features/file-browser.nix
           home-manager.nixosModules.default
           {
             home-manager = {
