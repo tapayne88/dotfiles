@@ -296,7 +296,7 @@
           ];
           "format-wifi" = "{icon}";
           "format-disconnected" = "󰤭";
-          "on-click" = "xdg-terminal-exec impala";
+          "on-click" = "${lib.getExe pkgs.kitty} ${lib.getExe pkgs.impala}";
           "tooltip-format" = "{ifname}\nIP= {ipaddr}\nGateway= {gwaddr}";
           "tooltip-format-wifi" = "{essid} ({signalStrength}%)\nIP= {ipaddr}\nGateway= {gwaddr}";
           "tooltip-format-disconnected" = "Disconnected";
