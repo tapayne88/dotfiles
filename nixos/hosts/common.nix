@@ -41,15 +41,7 @@
     impala # wifi utility
     wlogout # logout util
     pavucontrol # audio control
-
-    xdg-terminal-exec
-
-    # hyprland utils
-    hyprlock
-    hyprpaper
   ];
-
-  services.hypridle.enable = true;
 
   programs.git.enable = true;
   programs.zsh.enable = true;
