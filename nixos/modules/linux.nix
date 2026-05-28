@@ -49,12 +49,6 @@
     };
   };
 
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "x-scheme-handler/terminal" = [ "kitty.desktop" ];
-    };
-  };
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
