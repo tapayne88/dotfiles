@@ -22,6 +22,13 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     image = ../home/catppuccin-nix.png;
     polarity = "dark";
+
+    cursor = {
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
+      size = 24;
+    };
+
   };
 
   environment.systemPackages = with pkgs; [
