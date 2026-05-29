@@ -50,6 +50,13 @@
         name = "Noto Color Emoji";
       };
     };
+
+    icons = {
+      enable = true;
+      package = pkgs.tela-circle-icon-theme;
+      dark = "Tela-circle-dark";
+      light = "Tela-circle-light";
+    };
   };
 
   environment.systemPackages = with pkgs; [
