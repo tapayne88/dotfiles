@@ -57,8 +57,6 @@
     defaultEditor = true;
   };
 
-  programs.regreet.enable = true;
-
   programs.hyprland = {
     enable = true;
     withUWSM = true;
