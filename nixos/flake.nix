@@ -82,6 +82,7 @@
 
                   ./features/browser.nix
                   ./features/hyprland.nix
+                  ./features/programs.nix
                   ./features/vicinae.nix
                 ];
                 home = {
