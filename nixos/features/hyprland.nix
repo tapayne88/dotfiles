@@ -557,4 +557,6 @@
       ];
     };
   };
+
+  services.mako.enable = true;
 }
