@@ -88,8 +88,8 @@
         "$mainMod, Space, exec, vicinae toggle"
         "$mainMod CTRL, Q, exec, ${lib.getExe pkgs.hyprlock}"
 
-        # Super + Shift + 4 screenshots
-        "$mainMod SHIFT, 4, exec, ${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -"
+        # Super + Ctrl + 4 screenshots
+        "$mainMod CTRL, 4, exec, ${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -"
 
         # Move focus
         "$mainMod, h, movefocus, l"
