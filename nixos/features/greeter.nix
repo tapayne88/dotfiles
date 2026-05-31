@@ -1,18 +1,19 @@
+{ pkgs, ... }:
 {
-  programs.regreet = {
+  services.greetd = {
     enable = true;
     settings = {
-      commands = {
-        reboot = [
-          "systemctl"
-          "reboot"
-        ];
-        poweroff = [
-          "systemctl"
-          "poweroff"
-        ];
+      default_session = {
+        user = "greeter";
+        command = ''
+          ${pkgs.tuigreet}/bin/tuigreet \
+          --time \
+          --remember \
+          --user-menu \
+          --remember-user-session \
+          --cmd 'uwsm start hyprland-uwsm.desktop'
+        '';
       };
     };
   };
-
 }
