@@ -28,6 +28,8 @@
     };
 
     vicinae.url = "github:vicinaehq/vicinae";
+
+    tuigreet-fork.url = "github:notashelf/tuigreet";
   };
   outputs =
     inputs@{
@@ -58,8 +60,6 @@
                 "nix-command"
                 "flakes"
               ];
-              extra-substituters = [ "https://vicinae.cachix.org" ];
-              extra-trusted-public-keys = [ "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=" ];
             };
           }
           ./configs/nixpkgs.nix
