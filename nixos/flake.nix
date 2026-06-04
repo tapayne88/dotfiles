@@ -76,9 +76,9 @@
               };
               users.tom = {
                 imports = [
-                  ./modules/neovim.nix
-                  ./modules/shell.nix
-                  ./modules/linux.nix
+                  ./homeManagerModules/neovim.nix
+                  ./homeManagerModules/shell.nix
+                  ./homeManagerModules/linux.nix
 
                   ./features/browser.nix
                   ./features/hyprland.nix
@@ -104,9 +104,9 @@
             {
               imports = [
                 ./configs/nixpkgs.nix
-                ./modules/shell.nix
-                ./modules/linux.nix
-                ./modules/neovim.nix
+                ./homeManagerModules/shell.nix
+                ./homeManagerModules/linux.nix
+                ./homeManagerModules/neovim.nix
               ];
             }
             {
@@ -125,10 +125,10 @@
             {
               imports = [
                 ./configs/nixpkgs.nix
-                ./modules/shell.nix
-                ./modules/darwin.nix
-                ./modules/neovim.nix
-                ./modules/work.nix
+                ./homeManagerModules/shell.nix
+                ./homeManagerModules/darwin.nix
+                ./homeManagerModules/neovim.nix
+                ./homeManagerModules/work.nix
               ];
             }
             {
