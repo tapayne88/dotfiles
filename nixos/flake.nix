@@ -62,10 +62,8 @@
               ];
             };
           }
-          ./configs/nixpkgs.nix
-          ./hosts/thinkpad/configuration.nix
-          ./features/file-browser.nix
-          ./features/greeter.nix
+
+          stylix.nixosModules.stylix
           home-manager.nixosModules.default
           {
             home-manager = {
@@ -93,7 +91,16 @@
               };
             };
           }
-          stylix.nixosModules.stylix
+
+          ./configs/nixpkgs.nix
+          ./hosts/thinkpad/configuration.nix
+          ./features/file-browser.nix
+          ./features/greeter.nix
+          ./nixosModules/password-manager.nix
+          ./nixosModules/programs.nix
+          ./nixosModules/stylix.nix
+          ./nixosModules/user.nix
+          ./nixosModules/window-manager.nix
         ];
       };
       homeConfigurations = {
