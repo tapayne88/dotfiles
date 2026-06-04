@@ -96,6 +96,7 @@
           ./hosts/thinkpad/configuration.nix
           ./features/file-browser.nix
           ./features/greeter.nix
+          ./nixosModules/network-shares.nix
           ./nixosModules/password-manager.nix
           ./nixosModules/programs.nix
           ./nixosModules/stylix.nix
