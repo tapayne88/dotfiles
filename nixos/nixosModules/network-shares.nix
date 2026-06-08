@@ -33,29 +33,29 @@ let
   );
 
   getMountPath = share: "/mnt/truenas/${lib.strings.toLower share.name}";
-  # Define common options once to avoid repetition
-  commonMountOptions =
-    { name }:
-    [
-      "x-systemd.automount"
-      "noauto"
-      "x-systemd.idle-timeout=60"
-      "credentials=/etc/nixos/smb-secrets"
-      "uid=1000"
-      "gid=100"
-      "file_mode=0664"
-      "dir_mode=0775"
-      "_netdev"
-      "soft"
 
-      "x-systemd.device-timeout=5s"
-      "x-systemd.mount-timeout=5s"
+  commonMountOptions = name: [
+    # --- Core Mounting & Security ---
+    "x-systemd.automount"
+    "noauto"
+    "credentials=/etc/nixos/smb-secrets"
+    "_netdev"
 
-      # --- Icon and UI Metadata ---
-      "x-gvfs-show"
-      "x-gvfs-name=${name}"
-      "x-gvfs-symbolic-icon=network-server"
-    ];
+    # --- Permissions ---
+    "uid=1000"
+    "gid=100"
+
+    # --- Aggressive Reliability & Fail-Safes ---
+    "soft"
+    "x-systemd.mount-timeout=5s"
+    "x-systemd.device-timeout=5s"
+    "x-systemd.idle-timeout=60"
+
+    # --- Icon and UI Metadata ---
+    "x-gvfs-show"
+    "x-gvfs-name=${name}"
+    "x-gvfs-symbolic-icon=network-server"
+  ];
 in
 {
   services.gvfs.enable = true;
@@ -68,7 +68,7 @@ in
       value = {
         device = "${truenasServer}/${share.share}";
         fsType = "cifs";
-        options = commonMountOptions { name = share.name; };
+        options = commonMountOptions share.name;
       };
     }) shares
   );
@@ -104,12 +104,14 @@ in
     {
       type = "basic";
       source = pkgs.writeShellScript "nas-wifi-tether" ''
-        # $1 is the interface name (e.g., wlan0)
-        # $2 is the action (e.g., up, down, dhcp4-change)
-
         if [ "$2" = "up" ]; then
-          echo "Network interface $1 came UP. Refreshing NAS mounts..."
-          /run/current-system/sw/bin/systemctl start prewarm-nas.service
+          ${pkgs.util-linux}/bin/logger -t "NAS-Dispatcher" "Network up. Activating mounts..."
+          /run/current-system/sw/bin/systemctl start prewarm-truenas.service
+        fi
+
+        if [ "$2" = "down" ] || [ "$2" = "pre-down" ]; then
+          ${pkgs.util-linux}/bin/logger -t "NAS-Dispatcher" "Network down. Stopping mounts..."
+          /run/current-system/sw/bin/systemctl stop "mnt-truenas-*.mount" || true
         fi
       '';
     }
