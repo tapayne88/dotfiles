@@ -3,11 +3,8 @@
   ...
 }:
 {
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs; [
-      thunar-volman
-      tumbler
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    nemo
+    nemo-with-extensions
+  ];
 }
