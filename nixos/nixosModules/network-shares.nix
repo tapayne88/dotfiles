@@ -49,7 +49,6 @@ let
     "soft"
     "x-systemd.mount-timeout=5s"
     "x-systemd.device-timeout=5s"
-    "x-systemd.idle-timeout=60"
 
     # --- Icon and UI Metadata ---
     "x-gvfs-show"
