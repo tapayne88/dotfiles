@@ -24,15 +24,16 @@ let
 
   prewarmCommands = builtins.concatStringsSep "\n" (
     map (share: ''
-      echo "Refreshing systemd unit for: ${share.name}"
+      echo "Refreshing systemd unit for: ${getShareName share}"
       # If a mount is stuck or a zombie, resetting the native systemd unit 
       # clears it cleanly without breaking the automount listener trap.
-      ${pkgs.systemd}/bin/systemctl try-restart "mnt-truenas-${share.name}.mount" || true
-      ${pkgs.systemd}/bin/systemctl start "mnt-truenas-${share.name}.mount" || true
+      ${pkgs.systemd}/bin/systemctl try-restart --no-block "mnt-truenas-${getShareName share}.mount" || true
+      ${pkgs.systemd}/bin/systemctl start --no-block "mnt-truenas-${getShareName share}.mount" || true
     '') shares
   );
 
-  getMountPath = share: "/mnt/truenas/${lib.strings.toLower share.name}";
+  getShareName = share: lib.strings.toLower share.name;
+  getMountPath = share: "/mnt/truenas/${getShareName share}";
 
   commonMountOptions = name: [
     # --- Core Mounting & Security ---
@@ -76,15 +77,9 @@ in
     description = "Trigger NAS automounts on boot and wake from sleep";
 
     # Tell systemd to fire this during boot AND when resuming from sleep
-    after = [
-      "network-online.target"
-      "post-resume.target"
-    ];
+    after = [ "post-resume.target" ];
     wants = [ "network-online.target" ];
-    wantedBy = [
-      "multi-user.target"
-      "post-resume.target"
-    ];
+    wantedBy = [ "post-resume.target" ];
 
     serviceConfig = {
       Type = "oneshot";
