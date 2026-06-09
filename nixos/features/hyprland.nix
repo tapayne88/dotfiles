@@ -171,6 +171,7 @@
         ];
         "modules-center" = [ ];
         "modules-right" = [
+          "idle_inhibitor"
           "cpu"
           "memory"
           "pulseaudio"
@@ -284,6 +285,13 @@
             "󰂂"
             "󰁹"
           ];
+        };
+        "idle_inhibitor" = {
+          format = "{icon}";
+          format-icons = {
+            activated = "󰅶 "; # Icon when caffeine mode is ON
+            deactivated = "󰛊 "; # Icon when caffeine mode is OFF
+          };
         };
         "custom/sep" = {
           "format" = "|";
