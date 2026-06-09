@@ -94,6 +94,7 @@
 
           ./configs/nixpkgs.nix
           ./hosts/thinkpad/configuration.nix
+          ./features/darktable.nix
           ./features/file-browser.nix
           ./features/greeter.nix
           ./nixosModules/network-shares.nix
