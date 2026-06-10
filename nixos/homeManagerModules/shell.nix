@@ -23,6 +23,7 @@
     curl # curl...
     delta # better git diffs
     dig # dns lookup
+    direnv # Shell extension that manages your environment
     duf # pretty alternative to df
     eza # ls replacement
     fd # faster more user friendly find
