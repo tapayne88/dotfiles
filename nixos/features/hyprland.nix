@@ -8,6 +8,9 @@
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+
+    # TODO: Swap to lua
+    configType = "hyprlang";
     settings = {
       #####################
       ### LOOK AND FEEL ###
