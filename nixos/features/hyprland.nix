@@ -5,8 +5,6 @@
   ...
 }:
 {
-  gtk.gtk4.theme = null;
-
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
