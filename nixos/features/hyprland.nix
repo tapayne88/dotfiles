@@ -134,6 +134,12 @@
         ", switch:on:Lid Switch, exec, ${lib.getExe pkgs.hyprlock}"
       ];
 
+      bindm = [
+        # Move windows
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
+      ];
+
       layerrule = [
         # blur
         {
