@@ -140,6 +140,23 @@
         "$mainMod, mouse:273, resizewindow"
       ];
 
+      extraConfig = ''
+        # window resize
+        bind = $mainMod, S, submap, resize
+
+        submap = resize
+
+        binde = , l, resizeactive, 30 0
+        binde = , h, resizeactive, -30 0
+        binde = , k, resizeactive, 0 -30
+        binde = , j, resizeactive, 0 30
+
+        bind = , escape, submap, reset
+        bind = , enter, submap, reset
+
+        submap = reset
+      '';
+
       layerrule = [
         # blur
         {
@@ -179,6 +196,7 @@
         "modules-center" = [ ];
         "modules-right" = [
           "idle_inhibitor"
+          "hyprland/submap"
           "cpu"
           "memory"
           "pulseaudio"
@@ -197,6 +215,11 @@
         };
         "hyprland/window" = {
           "format" = "{title}";
+        };
+        "hyprland/submap" = {
+          "format" = "󰘳 {}";
+          "max-length" = 20;
+          "tooltip" = false;
         };
         "tray" = {
           "show-passive-items" = true;
@@ -367,7 +390,8 @@
       #cpu,
       #tray,
       #memory,
-      #window {
+      #window,
+      #submap {
         padding: 0.3rem 0.6rem;
         margin: 0.4rem 0.25rem;
         border-radius: 6px;
@@ -419,6 +443,10 @@
       }
 
       #custom-power {
+        color: @red;
+      }
+
+      #submap {
         color: @red;
       }
 
