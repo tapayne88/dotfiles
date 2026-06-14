@@ -9,171 +9,337 @@
     enable = true;
     systemd.enable = true;
 
-    # TODO: Swap to lua
-    configType = "hyprlang";
-    settings = {
-      #####################
-      ### LOOK AND FEEL ###
-      #####################
+    configType = "lua";
+    settings =
+      let
+        mkLuaInline = lib.generators.mkLuaInline;
+        toLua = lib.generators.toLua;
+        mkArgs = args: { _args = args; };
+        bind =
+          keys: dispatcher: options:
+          mkArgs [
+            keys
+            dispatcher
+            options
+          ];
+        curve = name: points: mkLuaInline "hl.curve(${name}, ${toLua { } points})";
+        dsp = {
+          exec_cmd = app: mkLuaInline "hl.dsp.exec_cmd('${app}')";
+          focus = arg: mkLuaInline "hl.dsp.focus(${toLua { } arg})";
+          window = {
+            move = arg: mkLuaInline "hl.dsp.window.move(${toLua { } arg})";
+            drag = mkLuaInline "hl.dsp.window.drag()";
+            resize = mkLuaInline "hl.dsp.window.resize()";
+            close = mkLuaInline "hl.dsp.window.close()";
+            kill = mkLuaInline "hl.dsp.window.kill()";
+          };
+          workspace = {
+            move = arg: mkLuaInline "hl.dsp.workspace.move(${toLua { } arg})";
+          };
+        };
+        mod = "SUPER";
+        workspaces = lib.stringToCharacters "abcdefgimnopqrstuvwxyz";
+      in
+      {
+        config = {
+          input = {
+            kb_layout = "gb";
+            kb_options = "ctrl:nocaps";
+          };
 
-      # Refer to https://wiki.hypr.land/Configuring/Variables/
+          animations.enabled = true;
+        };
 
-      # https://wiki.hypr.land/Configuring/Variables/#animations
-      animations = {
-        enabled = "yes";
-
-        # Default curves, see https://wiki.hypr.land/Configuring/Animations/#curves
-        bezier = [
-          #NAME,           X0,   Y0,   X1,   Y1
-          "easeOutQuint,   0.23, 1,    0.32, 1"
-          "easeInOutCubic, 0.65, 0.05, 0.36, 1"
-          "linear,         0,    0,    1,    1"
-          "almostLinear,   0.5,  0.5,  0.75, 1"
-          "quick,          0.15, 0,    0.1,  1"
+        device = [
+          {
+            name = "topre-corporation-hhkb-professional";
+            kb_layout = "us";
+          }
         ];
 
-        # Default animations, see https://wiki.hypr.land/Configuring/Animations/
+        curve = [
+          (mkArgs [
+            "easeOutQuint"
+            {
+              type = "bezier";
+              points = [
+                [
+                  0.23
+                  1
+                ]
+                [
+                  0.32
+                  1
+                ]
+              ];
+            }
+          ])
+          (mkArgs [
+            "easeInOutCubic"
+            {
+              type = "bezier";
+              points = [
+                [
+                  0.65
+                  0.05
+                ]
+                [
+                  0.36
+                  1
+                ]
+              ];
+            }
+          ])
+          (mkArgs [
+            "linear"
+            {
+              type = "bezier";
+              points = [
+                [
+                  0
+                  0
+                ]
+                [
+                  1
+                  1
+                ]
+              ];
+            }
+          ])
+          (mkArgs [
+            "almostLinear"
+            {
+              type = "bezier";
+              points = [
+                [
+                  0.5
+                  0.5
+                ]
+                [
+                  0.75
+                  1
+                ]
+              ];
+            }
+          ])
+          (mkArgs [
+            "quick"
+            {
+              type = "bezier";
+              points = [
+                [
+                  0.15
+                  0
+                ]
+                [
+                  0.1
+                  1
+                ]
+              ];
+            }
+          ])
+        ];
+
         animation = [
-          #NAME,          ONOFF, SPEED, CURVE,        [STYLE]
-          "global,        1,     10,    default"
-          "border,        1,     5.39,  easeOutQuint"
-          "windows,       1,     4.79,  easeOutQuint"
-          "windowsIn,     1,     4.1,   easeOutQuint, popin 87%"
-          "windowsOut,    1,     1.49,  linear,       popin 87%"
-          "fadeIn,        1,     1.73,  almostLinear"
-          "fadeOut,       1,     1.46,  almostLinear"
-          "fade,          1,     3.03,  quick"
-          "layers,        1,     3.81,  easeOutQuint"
-          "layersIn,      1,     4,     easeOutQuint, fade"
-          "layersOut,     1,     1.5,   linear,       fade"
-          "fadeLayersIn,  1,     1.79,  almostLinear"
-          "fadeLayersOut, 1,     1.39,  almostLinear"
-          "workspaces,    1,     1.94,  almostLinear, fade"
-          "workspacesIn,  1,     1.21,  almostLinear, fade"
-          "workspacesOut, 1,     1.94,  almostLinear, fade"
-          "zoomFactor,    1,     7,     quick"
+          {
+            leaf = "global";
+            enabled = true;
+            speed = 10;
+            bezier = "default";
+          }
+          {
+            leaf = "border";
+            enabled = true;
+            speed = 5.39;
+            bezier = "easeOutQuint";
+          }
+          {
+            leaf = "windows";
+            enabled = true;
+            speed = 4.79;
+            bezier = "easeOutQuint";
+          }
+          {
+            leaf = "windowsIn";
+            enabled = true;
+            speed = 4.1;
+            bezier = "easeOutQuint";
+            style = "popin 87%";
+          }
+          {
+            leaf = "windowsOut";
+            enabled = true;
+            speed = 1.49;
+            bezier = "linear";
+            style = "popin 87%";
+          }
+          {
+            leaf = "fadeIn";
+            enabled = true;
+            speed = 1.73;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fadeOut";
+            enabled = true;
+            speed = 1.46;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fade";
+            enabled = true;
+            speed = 3.03;
+            bezier = "quick";
+          }
+          {
+            leaf = "layers";
+            enabled = true;
+            speed = 3.81;
+            bezier = "easeOutQuint";
+          }
+          {
+            leaf = "layersIn";
+            enabled = true;
+            speed = 4;
+            bezier = "easeOutQuint";
+            style = "fade";
+          }
+          {
+            leaf = "layersOut";
+            enabled = true;
+            speed = 1.5;
+            bezier = "linear";
+            style = "fade";
+          }
+          {
+            leaf = "fadeLayersIn";
+            enabled = true;
+            speed = 1.79;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "fadeLayersOut";
+            enabled = true;
+            speed = 1.39;
+            bezier = "almostLinear";
+          }
+          {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 1.94;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "workspacesIn";
+            enabled = true;
+            speed = 1.21;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "workspacesOut";
+            enabled = true;
+            speed = 1.94;
+            bezier = "almostLinear";
+            style = "fade";
+          }
+          {
+            leaf = "zoomFactor";
+            enabled = true;
+            speed = 7;
+            bezier = "quick";
+          }
+        ];
+
+        layer_rule = [
+          # blur
+          {
+            match.namespace = "vicinae";
+            blur = true;
+            ignore_alpha = 0;
+          }
+
+          # disable animation for vicinae only
+          {
+            match.namespace = "vicinae";
+            no_anim = true;
+          }
+        ];
+
+        bind = lib.flatten [
+          (bind "${mod} + Space" (dsp.exec_cmd "vicinae toggle") { })
+          (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
+
+          # Super + Ctrl + 4 screenshots
+          (bind "${mod} + CTRL + 4"
+            (dsp.exec_cmd "${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -")
+            { }
+          )
+
+          (bind "${mod} + h" (dsp.focus { direction = "l"; }) { })
+          (bind "${mod} + j" (dsp.focus { direction = "d"; }) { })
+          (bind "${mod} + k" (dsp.focus { direction = "u"; }) { })
+          (bind "${mod} + l" (dsp.focus { direction = "r"; }) { })
+
+          (bind "${mod} + SHIFT + h" (dsp.window.move { direction = "l"; }) { })
+          (bind "${mod} + SHIFT + j" (dsp.window.move { direction = "d"; }) { })
+          (bind "${mod} + SHIFT + k" (dsp.window.move { direction = "u"; }) { })
+          (bind "${mod} + SHIFT + l" (dsp.window.move { direction = "r"; }) { })
+
+          # Switch workspaces with mainMod + [0-9]
+          (bind "${mod} + 1" (dsp.focus { workspace = "1"; }) { })
+          (bind "${mod} + 2" (dsp.focus { workspace = "2"; }) { })
+          (bind "${mod} + 3" (dsp.focus { workspace = "3"; }) { })
+          (bind "${mod} + 4" (dsp.focus { workspace = "4"; }) { })
+          (bind "${mod} + 5" (dsp.focus { workspace = "5"; }) { })
+          (bind "${mod} + 5" (dsp.focus { workspace = "6"; }) { })
+          (bind "${mod} + 7" (dsp.focus { workspace = "7"; }) { })
+          (bind "${mod} + 8" (dsp.focus { workspace = "8"; }) { })
+          (bind "${mod} + 9" (dsp.focus { workspace = "9"; }) { })
+          (bind "${mod} + 0" (dsp.focus { workspace = "0"; }) { })
+
+          # Move active window to a workspace with mainMod + SHIFT + [0-9]
+          (bind "${mod} + SHIFT + 1" (dsp.window.move { workspace = "1"; }) { })
+          (bind "${mod} + SHIFT + 2" (dsp.window.move { workspace = "2"; }) { })
+          (bind "${mod} + SHIFT + 3" (dsp.window.move { workspace = "3"; }) { })
+          (bind "${mod} + SHIFT + 4" (dsp.window.move { workspace = "4"; }) { })
+          (bind "${mod} + SHIFT + 5" (dsp.window.move { workspace = "5"; }) { })
+          (bind "${mod} + SHIFT + 6" (dsp.window.move { workspace = "6"; }) { })
+          (bind "${mod} + SHIFT + 7" (dsp.window.move { workspace = "7"; }) { })
+          (bind "${mod} + SHIFT + 8" (dsp.window.move { workspace = "8"; }) { })
+          (bind "${mod} + SHIFT + 9" (dsp.window.move { workspace = "9"; }) { })
+          (bind "${mod} + SHIFT + 0" (dsp.window.move { workspace = "0"; }) { })
+
+          # Mouse bindings
+          (bind "${mod} + mouse:272" (dsp.window.drag) { mouse = true; })
+          (bind "${mod} + mouse:273" (dsp.window.resize) { mouse = true; })
+
+          # Lock on lid close
+          (bind "switch:on:Lid Switch" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
         ];
       };
 
-      #############
-      ### INPUT ###
-      #############
+    extraConfig =
+      let
+        resizeValue = "30";
+      in
+      ''
+        hl.bind("ALT + R", hl.dsp.submap("resize"))
 
-      # https://wiki.hypr.land/Configuring/Variables/#input
-      input = {
-        kb_layout = "gb";
-        kb_options = "ctrl:nocaps";
-      };
+        -- Start a submap called "resize".
+        hl.define_submap("resize", function()
 
-      device = {
-        name = "topre-corporation-hhkb-professional";
-        kb_layout = "us";
-      };
+            -- Set repeating binds for resizing the active window.
+            hl.bind("l", hl.dsp.window.resize({ x = ${resizeValue}, y = 0, relative = true}), { repeating = true })
+            hl.bind("h", hl.dsp.window.resize({ x = -${resizeValue}, y = 0, relative = true}), { repeating = true })
+            hl.bind("k", hl.dsp.window.resize({ x = 0, y = ${resizeValue}, relative = true}), { repeating = true })
+            hl.bind("j", hl.dsp.window.resize({ x = 0, y = -${resizeValue}, relative = true}), { repeating = true })
 
-      ###################
-      ### MY PROGRAMS ###
-      ###################
-
-      # See https://wiki.hypr.land/Configuring/Keywords/
-
-      # Set programs that you use
-      "$terminal" = "kitty";
-
-      ###################
-      ### KEYBINDINGS ###
-      ###################
-
-      # See https://wiki.hypr.land/Configuring/Keywords/
-      "$mainMod" = "SUPER";
-      bind = [
-        "$mainMod, Space, exec, vicinae toggle"
-        "$mainMod CTRL, Q, exec, ${lib.getExe pkgs.hyprlock}"
-
-        # Super + Ctrl + 4 screenshots
-        "$mainMod CTRL, 4, exec, ${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -"
-
-        # Move focus
-        "$mainMod, h, movefocus, l"
-        "$mainMod, l, movefocus, r"
-        "$mainMod, k, movefocus, u"
-        "$mainMod, j, movefocus, d"
-
-        # Move window
-        "$mainMod SHIFT, h, movewindow, l"
-        "$mainMod SHIFT, l, movewindow, r"
-        "$mainMod SHIFT, k, movewindow, u"
-        "$mainMod SHIFT, j, movewindow, d"
-
-        # Switch workspaces with mainMod + [0-9]
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-        "$mainMod, 6, workspace, 6"
-        "$mainMod, 7, workspace, 7"
-        "$mainMod, 8, workspace, 8"
-        "$mainMod, 9, workspace, 9"
-        "$mainMod, 0, workspace, 10"
-
-        # Move active window to a workspace with mainMod + SHIFT + [0-9]
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
-      ];
-
-      bindl = [
-        # Lock on lid close
-        ", switch:on:Lid Switch, exec, ${lib.getExe pkgs.hyprlock}"
-      ];
-
-      bindm = [
-        # Move windows
-        "$mainMod, mouse:272, movewindow"
-        "$mainMod, mouse:273, resizewindow"
-      ];
-
-      extraConfig = ''
-        # window resize
-        bind = $mainMod, S, submap, resize
-
-        submap = resize
-
-        binde = , l, resizeactive, 30 0
-        binde = , h, resizeactive, -30 0
-        binde = , k, resizeactive, 0 -30
-        binde = , j, resizeactive, 0 30
-
-        bind = , escape, submap, reset
-        bind = , enter, submap, reset
-
-        submap = reset
+            -- Use `reset` to go back to the global submap
+            hl.bind("escape", hl.dsp.submap("reset"))
+        end)
       '';
-
-      layerrule = [
-        # blur
-        {
-          name = "vicinae-blur";
-          blur = "on";
-          ignore_alpha = 0;
-          "match:namespace" = "vicinae";
-        }
-
-        # disable animation for vicinae only
-        {
-          name = "vicinae-no-animation";
-          no_anim = "on";
-          "match:namespace" = "vicinae";
-        }
-      ];
-    };
   };
 
   programs.waybar = {
