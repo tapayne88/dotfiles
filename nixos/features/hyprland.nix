@@ -449,9 +449,28 @@ in
         "hyprland/workspaces" = {
           "on-click" = "activate";
           "format" = "{id}";
-          "all-outputs" = true;
           "disable-scroll" = false;
+
+          "all-outputs" = false;
           "active-only" = false;
+
+          "persistent-workspaces" = {
+            "${internalMonitor}" = [
+              6
+              7
+              8
+              9
+              10
+            ];
+            # Fallback for the external display
+            "*" = [
+              1
+              2
+              3
+              4
+              5
+            ];
+          };
         };
         "hyprland/window" = {
           "format" = "{title}";
@@ -606,6 +625,11 @@ in
       #workspaces button:hover {
         color: @base;
         background-color: @text;
+      }
+
+      #workspaces button.visible {
+        background-color: @base;
+        color: @blue;
       }
 
       #workspaces button.active {
