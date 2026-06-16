@@ -293,11 +293,11 @@
           (bind "${mod} + 3" (dsp.focus { workspace = "3"; }) { })
           (bind "${mod} + 4" (dsp.focus { workspace = "4"; }) { })
           (bind "${mod} + 5" (dsp.focus { workspace = "5"; }) { })
-          (bind "${mod} + 5" (dsp.focus { workspace = "6"; }) { })
+          (bind "${mod} + 6" (dsp.focus { workspace = "6"; }) { })
           (bind "${mod} + 7" (dsp.focus { workspace = "7"; }) { })
           (bind "${mod} + 8" (dsp.focus { workspace = "8"; }) { })
           (bind "${mod} + 9" (dsp.focus { workspace = "9"; }) { })
-          (bind "${mod} + 0" (dsp.focus { workspace = "0"; }) { })
+          (bind "${mod} + 0" (dsp.focus { workspace = "10"; }) { })
 
           # Move active window to a workspace with mainMod + SHIFT + [0-9]
           (bind "${mod} + SHIFT + 1" (dsp.window.move { workspace = "1"; }) { })
@@ -309,7 +309,7 @@
           (bind "${mod} + SHIFT + 7" (dsp.window.move { workspace = "7"; }) { })
           (bind "${mod} + SHIFT + 8" (dsp.window.move { workspace = "8"; }) { })
           (bind "${mod} + SHIFT + 9" (dsp.window.move { workspace = "9"; }) { })
-          (bind "${mod} + SHIFT + 0" (dsp.window.move { workspace = "0"; }) { })
+          (bind "${mod} + SHIFT + 0" (dsp.window.move { workspace = "10"; }) { })
 
           # Mouse bindings
           (bind "${mod} + mouse:272" (dsp.window.drag) { mouse = true; })
