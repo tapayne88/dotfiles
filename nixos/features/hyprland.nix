@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  internalMonitor = "LVDS-1";
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -22,7 +25,6 @@
             dispatcher
             options
           ];
-        curve = name: points: mkLuaInline "hl.curve(${name}, ${toLua { } points})";
         dsp = {
           exec_cmd = app: mkLuaInline "hl.dsp.exec_cmd('${app}')";
           focus = arg: mkLuaInline "hl.dsp.focus(${toLua { } arg})";
@@ -54,6 +56,30 @@
           {
             name = "topre-corporation-hhkb-professional";
             kb_layout = "us";
+          }
+        ];
+
+        monitor = [
+          # Built-in
+          {
+            output = "${internalMonitor}";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
+          }
+          # Home external monitor
+          {
+            output = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
+          }
+          # Fallback
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
           }
         ];
 
@@ -264,6 +290,54 @@
           {
             match.namespace = "vicinae";
             no_anim = true;
+          }
+        ];
+
+        workspace_rule = [
+          # External Monitor (Workspaces 1-5)
+          {
+            workspace = "1";
+            monitor = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+            default = true;
+          }
+          {
+            workspace = "2";
+            monitor = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+          }
+          {
+            workspace = "3";
+            monitor = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+          }
+          {
+            workspace = "4";
+            monitor = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+          }
+          {
+            workspace = "5";
+            monitor = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
+          }
+
+          # Built-in Monitor (Workspaces 6-10)
+          {
+            workspace = "6";
+            monitor = "${internalMonitor}";
+            default = true;
+          }
+          {
+            workspace = "7";
+            monitor = "${internalMonitor}";
+          }
+          {
+            workspace = "8";
+            monitor = "${internalMonitor}";
+          }
+          {
+            workspace = "9";
+            monitor = "${internalMonitor}";
+          }
+          {
+            workspace = "10";
+            monitor = "${internalMonitor}";
           }
         ];
 
