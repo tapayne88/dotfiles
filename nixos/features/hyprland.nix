@@ -449,7 +449,7 @@ in
         "modules-right" = [
           "idle_inhibitor"
           "hyprland/submap"
-          "cpu"
+          "group/cpu-display"
           "memory"
           "pulseaudio"
           "network"
@@ -528,9 +528,22 @@ in
           };
           "tooltip-format" = "<span color='#cdd6f4'><tt><small>{calendar}</small></tt></span>";
         };
+        "group/cpu-display" = {
+          "orientation" = "horizontal";
+          "modules" = [
+            "custom/cpu-icon"
+            "cpu"
+          ];
+        };
+        "custom/cpu-icon" = {
+          "format" = " ";
+          "tooltip" = false;
+        };
         "cpu" = {
-          "format" = " {usage}%";
+          "format" = "{usage}%";
           "interval" = 2;
+          "min-length" = 3;
+          "align" = 1;
         };
         "memory" = {
           "format" = " {used:.1f}Gi";
@@ -663,7 +676,7 @@ in
       #custom-power,
       #custom-spotify,
       #custom-notification,
-      #cpu,
+      #cpu-display,
       #tray,
       #memory,
       #window,
@@ -686,7 +699,7 @@ in
       }
 
       /* Module colours */
-      #cpu {
+      #cpu-display {
         color: @teal;
       }
 
