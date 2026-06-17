@@ -401,7 +401,7 @@ in
           (mkLuaInline ''
             function()
               hl.exec_cmd("uwsm app -- syncthingtray --wait") 
-              hl.exec_cmd("uwsm app -- trayscale --minimized") 
+              hl.exec_cmd("uwsm app -- tailscale systray") 
             end'')
         ];
       };
