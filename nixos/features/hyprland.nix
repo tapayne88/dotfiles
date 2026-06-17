@@ -397,6 +397,7 @@ in
           "hyprland.start"
           (mkLuaInline ''
             function()
+              hl.exec_cmd("uwsm app -- syncthingtray --wait") 
               hl.exec_cmd("uwsm app -- trayscale --minimized") 
             end'')
         ];

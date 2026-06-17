@@ -1,4 +1,9 @@
+{ pkgs, ... }:
 {
+  environment.systemPackages = [
+    pkgs.syncthingtray
+  ];
+
   services.syncthing = {
     enable = true;
     user = "tom";
