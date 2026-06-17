@@ -392,6 +392,14 @@ in
           # Lock on lid close
           (bind "switch:on:Lid Switch" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
         ];
+
+        on = mkArgs [
+          "hyprland.start"
+          (mkLuaInline ''
+            function()
+              hl.exec_cmd("uwsm app -- trayscale --minimized") 
+            end'')
+        ];
       };
 
     extraConfig =

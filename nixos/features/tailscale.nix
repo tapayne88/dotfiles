@@ -2,5 +2,8 @@
 
   services.tailscale.enable = true;
 
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = with pkgs; [
+    tailscale
+    trayscale
+  ];
 }
