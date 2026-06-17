@@ -465,24 +465,6 @@ in
 
           "all-outputs" = false;
           "active-only" = false;
-
-          "persistent-workspaces" = {
-            "${internalMonitor}" = [
-              6
-              7
-              8
-              9
-              10
-            ];
-            # Fallback for the external display
-            "*" = [
-              1
-              2
-              3
-              4
-              5
-            ];
-          };
         };
         "hyprland/window" = {
           "format" = "{title}";
