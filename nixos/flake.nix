@@ -84,6 +84,7 @@
 
                   ./features/browser.nix
                   ./features/hyprland.nix
+                  ./features/obsidian.nix
                   ./features/programs.nix
                   ./features/vicinae.nix
                 ];
