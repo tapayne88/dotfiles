@@ -34,6 +34,7 @@ in
             resize = mkLuaInline "hl.dsp.window.resize()";
             close = mkLuaInline "hl.dsp.window.close()";
             kill = mkLuaInline "hl.dsp.window.kill()";
+            cycle_next = arg: mkLuaInline "hl.dsp.window.cycle_next(${toLua { } arg})";
           };
           workspace = {
             move = arg: mkLuaInline "hl.dsp.workspace.move(${toLua { } arg})";
@@ -344,6 +345,8 @@ in
         bind = lib.flatten [
           (bind "${mod} + Space" (dsp.exec_cmd "vicinae toggle") { })
           (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
+
+          (bind "${mod} + Tab" (dsp.focus { last = true; }) { })
 
           # Super + Ctrl + 4 screenshots
           (bind "${mod} + CTRL + 4"
