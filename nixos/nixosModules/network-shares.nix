@@ -48,8 +48,8 @@ let
 
     # --- Aggressive Reliability & Fail-Safes ---
     "soft"
-    "x-systemd.mount-timeout=5s"
-    "x-systemd.device-timeout=5s"
+    "x-systemd.mount-timeout=10s"
+    "x-systemd.device-timeout=10s"
 
     # --- Icon and UI Metadata ---
     "x-gvfs-show"
