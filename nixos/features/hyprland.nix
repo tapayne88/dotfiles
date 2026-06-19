@@ -41,7 +41,6 @@ in
           };
         };
         mod = "SUPER";
-        workspaces = lib.stringToCharacters "abcdefgimnopqrstuvwxyz";
       in
       {
         config = {
