@@ -1,4 +1,7 @@
 { pkgs, inputs, ... }:
+let
+  internalMonitor = "LVDS-1";
+in
 {
   nix.settings = {
     extra-substituters = [ "https://nyx.cachix.org" ];
@@ -48,5 +51,13 @@
     input = "gray"
     action = "darkgrey"
     button = "yellow"
+
+    [[outputs]]
+    connector = "HDMI-A-1"
+    primary = true
+
+    [[outputs]]
+    connector = "${internalMonitor}"
+    enabled = true
   '';
 }
