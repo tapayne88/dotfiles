@@ -24,11 +24,8 @@ let
 
   prewarmCommands = builtins.concatStringsSep "\n" (
     map (share: ''
-      echo "Refreshing systemd unit for: ${getShareName share}"
-      # If a mount is stuck or a zombie, resetting the native systemd unit 
-      # clears it cleanly without breaking the automount listener trap.
-      ${pkgs.systemd}/bin/systemctl try-restart --no-block "mnt-truenas-${getShareName share}.mount" || true
-      ${pkgs.systemd}/bin/systemctl start --no-block "mnt-truenas-${getShareName share}.mount" || true
+      echo "User-space glance to trigger the kernel autofs trap for: ${getShareName share}"
+      ${pkgs.coreutils}/bin/stat ${getMountPath share}/ >/dev/null 2>&1 || true
     '') shares
   );
 
@@ -73,41 +70,18 @@ in
     }) shares
   );
 
-  systemd.services.prewarm-truenas = {
-    description = "Trigger NAS automounts on boot and wake from sleep";
+  systemd.user.services.prime-truenas-shares = {
+    description = "Quietly prime TrueNAS automounts on graphical session startup";
 
-    # Tell systemd to fire this during boot AND when resuming from sleep
-    after = [ "post-resume.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "post-resume.target" ];
+    # NixOS flattens these directly onto the service, no Unit or Install blocks needed
+    after = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ]; # Lowercase 'w', sitting at the top level
 
     serviceConfig = {
       Type = "oneshot";
-      # Before we touch the folders, we force-unmount any zombie/stale links
-      # from before the sleep cycle, then cleanly wake them back up.
-      ExecStart = pkgs.writeShellScript "prewarm-script" ''
+      ExecStart = "${pkgs.writeShellScript "prime-shares" ''
         ${prewarmCommands}
-      '';
-      TimeoutStartSec = "10";
-      # We remove RemainAfterExit so systemd is allowed to re-run this
-      # every single time you open your laptop lid.
+      ''}";
     };
   };
-
-  networking.networkmanager.dispatcherScripts = [
-    {
-      type = "basic";
-      source = pkgs.writeShellScript "nas-wifi-tether" ''
-        if [ "$2" = "up" ]; then
-          ${pkgs.util-linux}/bin/logger -t "NAS-Dispatcher" "Network up. Activating mounts..."
-          /run/current-system/sw/bin/systemctl start prewarm-truenas.service
-        fi
-
-        if [ "$2" = "down" ] || [ "$2" = "pre-down" ]; then
-          ${pkgs.util-linux}/bin/logger -t "NAS-Dispatcher" "Network down. Stopping mounts..."
-          /run/current-system/sw/bin/systemctl stop "mnt-truenas-*.mount" || true
-        fi
-      '';
-    }
-  ];
 }
