@@ -8,15 +8,7 @@
     };
     users."${config.hostSettings.username}" = {
       imports = [
-        ../homeManagerModules/neovim.nix
-        ../homeManagerModules/shell.nix
-        ../homeManagerModules/linux.nix
-
-        ../features/browser.nix
-        ../features/hyprland.nix
-        ../features/obsidian.nix
-        ../features/programs.nix
-        ../features/vicinae.nix
+        ../homeManagerModules
       ];
       home = {
         username = config.hostSettings.username;
