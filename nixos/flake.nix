@@ -1,16 +1,16 @@
 {
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     catppuccin-waybar = {
@@ -24,7 +24,7 @@
 
     stylix = {
       url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     vicinae.url = "github:vicinaehq/vicinae";
@@ -33,14 +33,14 @@
   };
   outputs =
     inputs@{
-      nixpkgs-unstable,
+      nixpkgs,
       home-manager,
       stylix,
       ...
     }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs-unstable { inherit system; };
+      pkgs = import nixpkgs { inherit system; };
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -48,7 +48,7 @@
           nixfmt-tree
         ];
       };
-      nixosConfigurations.thinkpad = nixpkgs-unstable.lib.nixosSystem {
+      nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
         };
@@ -79,7 +79,7 @@
       homeConfigurations = {
         # Pixelbook Omarchy
         "tpayne@omarchy-pixelbook" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             {
               imports = [
@@ -100,7 +100,7 @@
         };
         # MacBook Pro M3 (Work)
         "tom.payne@KL2M3W1G4N" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs-unstable.legacyPackages.aarch64-darwin;
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           modules = [
             {
               imports = [
