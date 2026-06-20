@@ -3,7 +3,7 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-    image = ../home/catppuccin-nix.png;
+    image = ../assets/nixos-catppuccin-mocha.png;
     polarity = "dark";
 
     cursor = {
