@@ -41,6 +41,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs-unstable { inherit system; };
+      username = "tom";
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -50,7 +51,7 @@
       };
       nixosConfigurations.thinkpad = nixpkgs-unstable.lib.nixosSystem {
         specialArgs = {
-          inherit inputs;
+          inherit inputs username;
         };
 
         modules = [
@@ -74,9 +75,9 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {
-                inherit inputs;
+                inherit inputs username;
               };
-              users.tom = {
+              users."${username}" = {
                 imports = [
                   ./homeManagerModules/neovim.nix
                   ./homeManagerModules/shell.nix
@@ -89,8 +90,8 @@
                   ./features/vicinae.nix
                 ];
                 home = {
-                  username = "tom";
-                  homeDirectory = "/home/tom";
+                  inherit username;
+                  homeDirectory = "/home/${username}";
                   stateVersion = "25.11";
                 };
               };
