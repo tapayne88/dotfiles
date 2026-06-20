@@ -107,6 +107,7 @@
           ./nixosModules/audio.nix
           ./nixosModules/network-shares.nix
           ./nixosModules/password-manager.nix
+          ./nixosModules/printing.nix
           ./nixosModules/programs.nix
           ./nixosModules/stylix.nix
           ./nixosModules/user.nix

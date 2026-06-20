@@ -29,9 +29,6 @@
   # Force the TTY console to use the same layout as above
   console.useXkbConfig = true;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
   services.gnome.gnome-keyring.enable = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
