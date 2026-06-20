@@ -70,23 +70,10 @@
           stylix.nixosModules.stylix
           home-manager.nixosModules.default
 
+          ./configs/host-options.nix
           ./configs/nixpkgs.nix
           ./hosts/thinkpad/configuration.nix
-          ./features/darktable.nix
-          ./features/file-browser.nix
-          ./features/file-syncing.nix
-          ./features/greeter.nix
-          ./features/tailscale.nix
-          ./nixosModules/audio.nix
-          ./nixosModules/home-manager.nix
-          ./nixosModules/host-options.nix
-          ./nixosModules/network-shares.nix
-          ./nixosModules/password-manager.nix
-          ./nixosModules/printing.nix
-          ./nixosModules/programs.nix
-          ./nixosModules/stylix.nix
-          ./nixosModules/user.nix
-          ./nixosModules/window-manager.nix
+          ./nixosModules
         ];
       };
       homeConfigurations = {
