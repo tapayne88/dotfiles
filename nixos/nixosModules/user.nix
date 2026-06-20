@@ -1,9 +1,9 @@
-{ pkgs, username, ... }:
+{ pkgs, config, ... }:
 {
   # Set your time zone.
   time.timeZone = "Europe/London";
 
-  users.users."${username}" = {
+  users.users."${config.hostSettings.username}" = {
     isNormalUser = true;
     extraGroups = [
       "wheel"

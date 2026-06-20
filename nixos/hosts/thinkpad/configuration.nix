@@ -5,6 +5,7 @@
   ];
 
   hostSettings = {
+    username = "tom";
     internalMonitor = "LVDS-1";
   };
 

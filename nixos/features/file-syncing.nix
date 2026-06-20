@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, config, ... }:
 {
   environment.systemPackages = [
     pkgs.syncthingtray
@@ -6,9 +6,9 @@
 
   services.syncthing = {
     enable = true;
-    user = username;
+    user = config.hostSettings.username;
 
-    dataDir = "/home/${username}";
+    dataDir = "/home/${config.hostSettings.username}";
 
     openDefaultPorts = true;
 

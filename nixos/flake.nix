@@ -41,7 +41,6 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs-unstable { inherit system; };
-      username = "tom";
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -51,7 +50,7 @@
       };
       nixosConfigurations.thinkpad = nixpkgs-unstable.lib.nixosSystem {
         specialArgs = {
-          inherit inputs username;
+          inherit inputs;
         };
 
         modules = [
@@ -70,33 +69,6 @@
 
           stylix.nixosModules.stylix
           home-manager.nixosModules.default
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs username;
-              };
-              users."${username}" = {
-                imports = [
-                  ./homeManagerModules/neovim.nix
-                  ./homeManagerModules/shell.nix
-                  ./homeManagerModules/linux.nix
-
-                  ./features/browser.nix
-                  ./features/hyprland.nix
-                  ./features/obsidian.nix
-                  ./features/programs.nix
-                  ./features/vicinae.nix
-                ];
-                home = {
-                  inherit username;
-                  homeDirectory = "/home/${username}";
-                  stateVersion = "25.11";
-                };
-              };
-            };
-          }
 
           ./configs/nixpkgs.nix
           ./hosts/thinkpad/configuration.nix
@@ -106,6 +78,7 @@
           ./features/greeter.nix
           ./features/tailscale.nix
           ./nixosModules/audio.nix
+          ./nixosModules/home-manager.nix
           ./nixosModules/host-options.nix
           ./nixosModules/network-shares.nix
           ./nixosModules/password-manager.nix
