@@ -1,6 +1,11 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
 let
-  internalMonitor = "LVDS-1";
+  internalMonitor = config.hostSettings.internalMonitor;
 in
 {
   nix.settings = {

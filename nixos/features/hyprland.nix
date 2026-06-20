@@ -2,10 +2,11 @@
   pkgs,
   inputs,
   lib,
+  osConfig,
   ...
 }:
 let
-  internalMonitor = "LVDS-1";
+  internalMonitor = osConfig.hostSettings.internalMonitor;
 in
 {
   wayland.windowManager.hyprland = {

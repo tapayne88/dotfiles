@@ -1,12 +1,12 @@
 {
-  ...
-}:
-
-{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+
+  hostSettings = {
+    internalMonitor = "LVDS-1";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

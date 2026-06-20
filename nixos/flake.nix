@@ -106,6 +106,7 @@
           ./features/greeter.nix
           ./features/tailscale.nix
           ./nixosModules/audio.nix
+          ./nixosModules/host-options.nix
           ./nixosModules/network-shares.nix
           ./nixosModules/password-manager.nix
           ./nixosModules/printing.nix
