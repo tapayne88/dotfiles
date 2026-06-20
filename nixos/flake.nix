@@ -104,6 +104,7 @@
           ./features/file-syncing.nix
           ./features/greeter.nix
           ./features/tailscale.nix
+          ./nixosModules/audio.nix
           ./nixosModules/network-shares.nix
           ./nixosModules/password-manager.nix
           ./nixosModules/programs.nix
