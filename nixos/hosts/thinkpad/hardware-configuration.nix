@@ -25,22 +25,60 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/45875692-2f0d-4698-bff8-b38b38d3e62b";
-    fsType = "ext4";
+  boot.initrd.luks.devices."cryptroot" = {
+    device = "/dev/disk/by-uuid/eff69a1e-7d27-4d5c-9410-4e763c923957";
+    allowDiscards = true;
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/CB57-FFC3";
-    fsType = "vfat";
+  fileSystems."/" = {
+    device = "none";
+    fsType = "tmpfs";
     options = [
-      "fmask=0077"
-      "dmask=0077"
+      "size=2G"
+      "mode=755"
     ];
   };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/E460-8616";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "btrfs";
+    options = [ "subvol=@nix" ];
+  };
+
+  fileSystems."/persist" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "btrfs";
+    options = [ "subvol=@persist" ];
+    neededForBoot = true;
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "btrfs";
+    options = [ "subvol=@log" ];
+    neededForBoot = true;
+  };
+
+  fileSystems."/swap" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "btrfs";
+    options = [ "subvol=@swap" ];
+  };
+
   swapDevices = [
-    { device = "/dev/disk/by-uuid/4c09d926-c0ac-4744-bd68-ae8c9315ce13"; }
+    {
+      device = "/swap/swapfile";
+      size = 4096;
+    }
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

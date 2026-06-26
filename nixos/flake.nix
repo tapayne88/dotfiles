@@ -3,6 +3,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
 
+    impermanence.url = "github:nix-community/impermanence";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +38,7 @@
       nixpkgs,
       home-manager,
       stylix,
+      impermanence,
       ...
     }:
     let
@@ -69,6 +72,7 @@
 
           stylix.nixosModules.stylix
           home-manager.nixosModules.default
+          impermanence.nixosModules.impermanence
 
           ./configs/host-options.nix
           ./configs/nixpkgs.nix
