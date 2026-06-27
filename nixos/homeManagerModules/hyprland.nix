@@ -520,16 +520,19 @@ in
         "custom/cpu-icon" = {
           "format" = " ";
           "tooltip" = false;
+          "on-click" = "${lib.getExe pkgs.kitty} ${lib.getExe pkgs.btop}";
         };
         "cpu" = {
           "format" = "{usage}%";
           "interval" = 2;
           "min-length" = 3;
           "align" = 1;
+          "on-click" = "${lib.getExe pkgs.kitty} ${lib.getExe pkgs.btop}";
         };
         "memory" = {
           "format" = " {used:.1f}Gi";
           "tooltip-format" = "Used= {used:.1f}G/{total:.1f}G\nSwap= {swapUsed:.1f}G/{swapTotal:.1f}G";
+          "on-click" = "${lib.getExe pkgs.kitty} ${lib.getExe pkgs.btop}";
         };
         "pulseaudio" = {
           "format" = "{icon}";
