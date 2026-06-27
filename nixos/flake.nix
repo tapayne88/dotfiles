@@ -3,7 +3,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      # Dev dependencies only
+      inputs.nixpkgs.follows = "";
+      inputs.home-manager.follows = "";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
