@@ -1,21 +1,6 @@
 local resizeValue = '30'
 local mod = 'SUPER'
 
-hl.bind('ALT + R', hl.dsp.submap 'resize')
-
--- Start a submap called "resize".
-hl.define_submap('resize', function()
-  -- Set repeating binds for resizing the active window.
-  hl.bind('l', hl.dsp.window.resize { x = resizeValue, y = 0, relative = true }, { repeating = true })
-  hl.bind('h', hl.dsp.window.resize { x = -resizeValue, y = 0, relative = true }, { repeating = true })
-  hl.bind('k', hl.dsp.window.resize { x = 0, y = resizeValue, relative = true }, { repeating = true })
-  hl.bind('j', hl.dsp.window.resize { x = 0, y = -resizeValue, relative = true }, { repeating = true })
-
-  -- Use `reset` to go back to the global submap
-  hl.bind('Escape', hl.dsp.submap 'reset')
-  hl.bind('Return', hl.dsp.submap 'reset')
-end)
-
 -- A completely native function leveraging the internal window.group state
 local function get_group_position()
   local win = hl.get_active_window()
@@ -96,14 +81,18 @@ hl.bind(mod .. ' + SHIFT + k', hl.dsp.window.move { direction = 'up', group_awar
 hl.bind(mod .. ' + SHIFT + j', hl.dsp.window.move { direction = 'down', group_aware = true })
 
 --- ==========================================
---- WINDOW MOVE SUBMAP (Super + w)
+--- WINDOW MODE SUBMAP
 --- ==========================================
 
--- 1. Trigger the submap entry point
-hl.bind(mod .. ' + w', hl.dsp.submap 'window_move')
+hl.bind(mod .. ' + w', hl.dsp.submap 'window_mode')
 
--- 2. Define the isolated keybind envelope for the submap
-hl.define_submap('window_move', function()
+hl.define_submap('window_mode', function()
+  -- Set repeating binds for resizing the active window.
+  hl.bind('SHIFT + l', hl.dsp.window.resize { x = resizeValue, y = 0, relative = true }, { repeating = true })
+  hl.bind('SHIFT + h', hl.dsp.window.resize { x = -resizeValue, y = 0, relative = true }, { repeating = true })
+  hl.bind('SHIFT + k', hl.dsp.window.resize { x = 0, y = resizeValue, relative = true }, { repeating = true })
+  hl.bind('SHIFT + j', hl.dsp.window.resize { x = 0, y = -resizeValue, relative = true }, { repeating = true })
+
   -- Bare keys (h,j,k,l) execute classic layout shuffles ignoring group tabs
   hl.bind(mod .. ' + h', hl.dsp.focus { direction = 'left' })
   hl.bind(mod .. ' + l', hl.dsp.focus { direction = 'right' })
@@ -116,7 +105,6 @@ hl.define_submap('window_move', function()
   hl.bind(mod .. ' + SHIFT + k', hl.dsp.window.move { direction = 'up', group_aware = false })
   hl.bind(mod .. ' + SHIFT + j', hl.dsp.window.move { direction = 'down', group_aware = false })
 
-  -- 3. Exit vectors to return back to normal global operation
   hl.bind('Escape', hl.dsp.submap 'reset')
   hl.bind('Return', hl.dsp.submap 'reset')
 end)
