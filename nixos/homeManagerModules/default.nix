@@ -4,7 +4,7 @@
     ./shell.nix
     ./linux.nix
     ./browser.nix
-    ./hyprland.nix
+    ./hyprland
     ./obsidian.nix
     ./programs.nix
     ./vicinae.nix
