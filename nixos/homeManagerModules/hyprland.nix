@@ -7,6 +7,7 @@
 }:
 let
   internalMonitor = osConfig.hostSettings.internalMonitor;
+  mod = "SUPER";
 in
 {
   wayland.windowManager.hyprland = {
@@ -29,6 +30,9 @@ in
         dsp = {
           exec_cmd = app: mkLuaInline "hl.dsp.exec_cmd('${app}')";
           focus = arg: mkLuaInline "hl.dsp.focus(${toLua { } arg})";
+          group = {
+            toggle = mkLuaInline "hl.dsp.group.toggle()";
+          };
           window = {
             move = arg: mkLuaInline "hl.dsp.window.move(${toLua { } arg})";
             drag = mkLuaInline "hl.dsp.window.drag()";
@@ -36,12 +40,13 @@ in
             close = mkLuaInline "hl.dsp.window.close()";
             kill = mkLuaInline "hl.dsp.window.kill()";
             cycle_next = arg: mkLuaInline "hl.dsp.window.cycle_next(${toLua { } arg})";
+            float = arg: mkLuaInline "hl.dsp.window.float(${toLua { } arg})";
+            fullscreen = arg: mkLuaInline "hl.dsp.window.fullscreen(${toLua { } arg})";
           };
           workspace = {
             move = arg: mkLuaInline "hl.dsp.workspace.move(${toLua { } arg})";
           };
         };
-        mod = "SUPER";
       in
       {
         config = {
@@ -348,21 +353,18 @@ in
 
           (bind "${mod} + Tab" (dsp.focus { last = true; }) { })
 
+          (bind "${mod} + G" (dsp.group.toggle) { })
+          (bind "${mod} + F" (dsp.window.float { action = "toggle"; }) { })
+          (bind "${mod} + x" (dsp.window.fullscreen {
+            mode = "maximized";
+            action = "toggle";
+          }) { })
+
           # Super + Ctrl + 4 screenshots
           (bind "${mod} + CTRL + 4"
             (dsp.exec_cmd "${lib.getExe pkgs.grim} -g \"$(${lib.getExe pkgs.slurp})\" - | ${lib.getExe pkgs.satty} --filename -")
             { }
           )
-
-          (bind "${mod} + h" (dsp.focus { direction = "l"; }) { })
-          (bind "${mod} + j" (dsp.focus { direction = "d"; }) { })
-          (bind "${mod} + k" (dsp.focus { direction = "u"; }) { })
-          (bind "${mod} + l" (dsp.focus { direction = "r"; }) { })
-
-          (bind "${mod} + SHIFT + h" (dsp.window.move { direction = "l"; }) { })
-          (bind "${mod} + SHIFT + j" (dsp.window.move { direction = "d"; }) { })
-          (bind "${mod} + SHIFT + k" (dsp.window.move { direction = "u"; }) { })
-          (bind "${mod} + SHIFT + l" (dsp.window.move { direction = "r"; }) { })
 
           # Switch workspaces with mainMod + [0-9]
           (bind "${mod} + 1" (dsp.focus { workspace = "1"; }) { })
@@ -423,7 +425,117 @@ in
             hl.bind("j", hl.dsp.window.resize({ x = 0, y = -${resizeValue}, relative = true}), { repeating = true })
 
             -- Use `reset` to go back to the global submap
-            hl.bind("escape", hl.dsp.submap("reset"))
+            hl.bind("Escape", hl.dsp.submap("reset"))
+            hl.bind("Return", hl.dsp.submap("reset"))
+        end)
+      ''
+      + ''
+        -- A completely native function leveraging the internal window.group state
+        local function get_group_position()
+            local win = hl.get_active_window()
+            if not win or not win.group then
+                return nil, nil
+            end
+
+            local group = win.group
+            -- If the group only has 1 window, treat it as a normal tiled layout
+            if group.size <= 1 then
+                return nil, nil
+            end
+
+            -- Match our current window's hardware address against the group's members array
+            for index, group_win in ipairs(group.members) do
+                if win.address == group_win.address then
+                    return index, group.size
+                end
+            end
+
+            return nil, nil
+        end
+
+        --- ==========================================
+        --- SMART WINDOW SWITCHING (Super + h/j/k/l)
+        --- ==========================================
+
+        -- Focus Left: Cycle tab backward, or break out left if at the first tab
+        hl.bind("${mod} + h", function()
+            local idx, total = get_group_position()
+            if idx and idx > 1 then
+                hl.dispatch(hl.dsp.group.prev())
+            else
+                hl.dispatch(hl.dsp.focus({ direction = "left" }))
+            end
+        end)
+
+        -- Focus Right: Cycle tab forward, or break out right if at the last tab
+        hl.bind("${mod} + l", function()
+            local idx, total = get_group_position()
+            if idx and idx < total then
+                hl.dispatch(hl.dsp.group.next())
+            else
+                hl.dispatch(hl.dsp.focus({ direction = "right" }))
+            end
+        end)
+
+        -- Vertical focus shifts always step outside the horizontal tab layout
+        hl.bind("${mod} + k", hl.dsp.focus({ direction = "up" }))
+        hl.bind("${mod} + j", hl.dsp.focus({ direction = "down" }))
+
+
+        --- ==========================================
+        --- SMART WINDOW MOVING (Super + Shift + h/j/k/l)
+        --- ==========================================
+
+        -- Move Left: Shift tab position backward, or eject window left at the edge
+        hl.bind("${mod} + SHIFT + h", function()
+            local idx, total = get_group_position()
+            if idx and idx > 1 then
+                hl.dispatch(hl.dsp.group.move_window({ forward = false }))
+            else
+                hl.dispatch(hl.dsp.window.move({ direction = "left", group_aware = true }))
+            end
+        end)
+
+        -- Move Right: Shift tab position forward, or eject window right at the edge
+        hl.bind("${mod} + SHIFT + l", function()
+            local idx, total = get_group_position()
+            if idx and idx < total then
+                hl.dispatch(hl.dsp.group.move_window({ forward = true }))
+            else
+                hl.dispatch(hl.dsp.window.move({ direction = "right", group_aware = true }))
+            end
+        end)
+
+        -- Vertical shifts gracefully slice windows out of the tab bar up or down
+        hl.bind("${mod} + SHIFT + k", hl.dsp.window.move({ direction = "up", group_aware = true }))
+        hl.bind("${mod} + SHIFT + j", hl.dsp.window.move({ direction = "down", group_aware = true }))
+      ''
+      + ''
+        --- ==========================================
+        --- WINDOW MOVE SUBMAP (Super + w)
+        --- ==========================================
+
+        -- 1. Trigger the submap entry point
+        hl.bind("${mod} + w", hl.dsp.submap("window_move"))
+
+        -- 2. Define the isolated keybind envelope for the submap
+        hl.define_submap("window_move", function()
+            
+            -- Bare keys (h,j,k,l) execute classic layout shuffles ignoring group tabs
+            hl.bind("${mod} + h", hl.dsp.focus({ direction = "left" }))
+            hl.bind("${mod} + l", hl.dsp.focus({ direction = "right" }))
+            hl.bind("${mod} + k", hl.dsp.focus({ direction = "up" }))
+            hl.bind("${mod} + j", hl.dsp.focus({ direction = "down" }))
+
+            -- Catch Shift + directional keys too just in case muscle memory kicks in
+            hl.bind("${mod} + SHIFT + h", hl.dsp.window.move({ direction = "left", group_aware = false }))
+            hl.bind("${mod} + SHIFT + l", hl.dsp.window.move({ direction = "right", group_aware = false }))
+            hl.bind("${mod} + SHIFT + k", hl.dsp.window.move({ direction = "up", group_aware = false }))
+            hl.bind("${mod} + SHIFT + j", hl.dsp.window.move({ direction = "down", group_aware = false }))
+
+            -- 3. Exit vectors to return back to normal global operation
+            hl.bind("Escape", hl.dsp.submap("reset"))
+            hl.bind("Return", hl.dsp.submap("reset"))
         end)
       '';
   };
