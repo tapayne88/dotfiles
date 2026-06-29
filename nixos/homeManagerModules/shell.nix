@@ -15,7 +15,6 @@ let
     k9s # Kubernetes CLI To Manage Your Clusters In Style!
     kubie # even nicer interaction with k8s cli with multiple configs
     lazygit # simple terminal UI for git commands
-    mise # Front-end to your dev env
     television # A very fast, portable and hackable fuzzy finder.
     tldr # simplified and community-driven man pages
     tmux # terminal multiplexer
@@ -54,6 +53,7 @@ in
       gti # alias for git, with a gti
       just # Handy way to save and run project-specific commands
       jq # json cli processor
+      mise # Front-end to your dev env
       ripgrep # rg searching
       vivid # A themeable LS_COLORS generator with a rich filetype datebase
       zoxide # A smarter cd command
