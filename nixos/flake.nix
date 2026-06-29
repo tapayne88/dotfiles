@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     impermanence = {
       url = "github:nix-community/impermanence";
@@ -13,6 +13,11 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     zen-browser = {
@@ -41,17 +46,20 @@
   outputs =
     inputs@{
       nixpkgs,
+      nixpkgs-stable,
       home-manager,
+      home-manager-stable,
       stylix,
       impermanence,
       ...
     }:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      linuxSystem = "x86_64-linux";
+      macSystem = "aarch64-darwin";
+      pkgs = import nixpkgs { inherit linuxSystem; };
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
+      devShells.${linuxSystem}.default = pkgs.mkShell {
         buildInputs = with pkgs; [
           nixfmt-tree
         ];
@@ -108,8 +116,14 @@
           ];
         };
         # MacBook Pro M3 (Work)
-        "tom.payne@KL2M3W1G4N" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        "tom.payne@KL2M3W1G4N" = home-manager-stable.lib.homeManagerConfiguration {
+          pkgs = nixpkgs-stable.legacyPackages.aarch64-darwin;
+          extraSpecialArgs = {
+            pkgs-unstable = import nixpkgs {
+              system = macSystem;
+              config.allowUnfree = true;
+            };
+          };
           modules = [
             {
               imports = [

@@ -1,5 +1,26 @@
-{ config, pkgs, ... }:
-
+{
+  config,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
+let
+  # MacOS defaults to stable, nixos defaults to unstable. This is an explicit
+  # list of unstable packages so macOS can get them
+  unstablePkgs = with (if pkgs.stdenv.isDarwin then pkgs-unstable else pkgs); [
+    _1password-cli
+    carapace # A multi-shell completion library
+    git # newest git!
+    jqp # TUI playground for jq
+    k9s # Kubernetes CLI To Manage Your Clusters In Style!
+    kubie # even nicer interaction with k8s cli with multiple configs
+    lazygit # simple terminal UI for git commands
+    mise # Front-end to your dev env
+    television # A very fast, portable and hackable fuzzy finder.
+    tldr # simplified and community-driven man pages
+    tmux # terminal multiplexer
+  ];
+in
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -16,38 +37,28 @@
     '';
   };
 
-  home.packages = with pkgs; [
-    atuin # Magical shell history
-    bat # colourised cat
-    chezmoi # dotfile manager
-    curl # curl...
-    delta # better git diffs
-    dig # dns lookup
-    direnv # Shell extension that manages your environment
-    duf # pretty alternative to df
-    eza # ls replacement
-    fd # faster more user friendly find
-    fzf # fuzzy-finder
-    gti # alias for git, with a gti
-    just # Handy way to save and run project-specific commands
-    jq # json cli processor
-    ripgrep # rg searching
-    vivid # A themeable LS_COLORS generator with a rich filetype datebase
-    zoxide # A smarter cd command
-
-    # unstable
-    _1password-cli
-    carapace # A multi-shell completion library
-    git # newest git!
-    jqp # TUI playground for jq
-    k9s # Kubernetes CLI To Manage Your Clusters In Style!
-    kubie # even nicer interaction with k8s cli with multiple configs
-    lazygit # simple terminal UI for git commands
-    mise # Front-end to your dev env
-    television # A very fast, portable and hackable fuzzy finder.
-    tldr # simplified and community-driven man pages
-    tmux # terminal multiplexer
-  ];
+  home.packages =
+    with pkgs;
+    [
+      atuin # Magical shell history
+      bat # colourised cat
+      chezmoi # dotfile manager
+      curl # curl...
+      delta # better git diffs
+      dig # dns lookup
+      direnv # Shell extension that manages your environment
+      duf # pretty alternative to df
+      eza # ls replacement
+      fd # faster more user friendly find
+      fzf # fuzzy-finder
+      gti # alias for git, with a gti
+      just # Handy way to save and run project-specific commands
+      jq # json cli processor
+      ripgrep # rg searching
+      vivid # A themeable LS_COLORS generator with a rich filetype datebase
+      zoxide # A smarter cd command
+    ]
+    ++ unstablePkgs;
 
   programs.nh = {
     enable = true;
