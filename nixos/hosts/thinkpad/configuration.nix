@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
@@ -7,6 +8,7 @@
   hostSettings = {
     username = "tpayne";
     internalMonitor = "LVDS-1";
+    terminal = pkgs.kitty;
   };
 
   # Use the systemd-boot EFI boot loader.

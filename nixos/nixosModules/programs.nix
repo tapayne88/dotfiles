@@ -9,6 +9,7 @@
     vim
     wget
     kitty
+    ghostty
     chezmoi
 
     brightnessctl # brightness controls
