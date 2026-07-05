@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.terminal =
+  flake.homeModules.terminal =
     { config, ... }:
     {
       programs.kitty.enable = config.hostSettings.terminal.pname == "kitty";

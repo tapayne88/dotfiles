@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.work =
+  flake.homeModules.work =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

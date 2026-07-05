@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.neovim =
+  flake.homeModules.neovim =
     { config, pkgs, ... }:
 
     {

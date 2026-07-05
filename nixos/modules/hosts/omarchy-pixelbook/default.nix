@@ -8,9 +8,9 @@
           {
             imports = [
               # ./configs/nixpkgs.nix
-              self.modules.homeManager.shell
-              self.modules.homeManager.linux
-              self.modules.homeManager.neovim
+              self.homeModules.shell
+              self.homeModules.linux
+              self.homeModules.neovim
             ];
           }
           {

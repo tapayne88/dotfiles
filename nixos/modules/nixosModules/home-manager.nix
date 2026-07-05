@@ -11,20 +11,20 @@
         };
         users."${config.hostSettings.username}" = {
           imports = [
-            self.modules.homeManager.neovim
-            self.modules.homeManager.shell
-            self.modules.homeManager.linux
-            self.modules.homeManager.browser
-            self.modules.homeManager.obsidian
-            self.modules.homeManager.programs
-            self.modules.homeManager.vicinae
+            self.homeModules.neovim
+            self.homeModules.shell
+            self.homeModules.linux
+            self.homeModules.browser
+            self.homeModules.obsidian
+            self.homeModules.programs
+            self.homeModules.vicinae
 
-            self.modules.homeManager.hyprland
-            self.modules.homeManager.hypridle
-            self.modules.homeManager.hyprlandConfig
-            self.modules.homeManager.hyprlock
-            self.modules.homeManager.waybar
-            self.modules.homeManager.wlogout
+            self.homeModules.hyprland
+            self.homeModules.hypridle
+            self.homeModules.hyprlandConfig
+            self.homeModules.hyprlock
+            self.homeModules.waybar
+            self.homeModules.wlogout
           ];
           home = {
             username = config.hostSettings.username;

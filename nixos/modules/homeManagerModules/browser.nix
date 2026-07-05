@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.homeManager.browser = {
+  flake.homeModules.browser = {
     imports = [
       inputs.zen-browser.homeModules.beta
     ];

@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.wlogout = {
+  flake.homeModules.wlogout = {
     programs.wlogout = {
       enable = true;
       style = ''

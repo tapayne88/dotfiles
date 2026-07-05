@@ -12,10 +12,10 @@
       {
         imports = [
           # ./configs/nixpkgs.nix
-          self.modules.homeManager.shell
-          self.modules.homeManager.darwin
-          self.modules.homeManager.neovim
-          self.modules.homeManager.work
+          self.homeModules.shell
+          self.homeModules.darwin
+          self.homeModules.neovim
+          self.homeModules.work
         ];
       }
       {

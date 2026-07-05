@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.linux =
+  flake.homeModules.linux =
     {
       pkgs,
       ...

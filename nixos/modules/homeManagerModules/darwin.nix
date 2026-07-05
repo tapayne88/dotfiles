@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.darwin =
+  flake.homeModules.darwin =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

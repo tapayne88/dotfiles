@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.waybar =
+  flake.homeModules.waybar =
     {
       pkgs,
       inputs,

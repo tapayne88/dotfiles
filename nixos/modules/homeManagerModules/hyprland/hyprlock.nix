@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.hyprlock = {
+  flake.homeModules.hyprlock = {
     programs.hyprlock = {
       enable = true;
       settings = {
