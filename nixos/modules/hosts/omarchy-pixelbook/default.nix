@@ -7,7 +7,6 @@
         modules = [
           {
             imports = [
-              # ./configs/nixpkgs.nix
               self.homeModules.shell
               self.homeModules.linux
               self.homeModules.neovim

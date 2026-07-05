@@ -5,10 +5,6 @@
 }:
 {
   flake.nixosConfigurations.thinkpad = inputs.nixpkgs.lib.nixosSystem {
-    specialArgs = {
-      inherit inputs;
-    };
-
     modules = [
       {
         nix.settings = {
@@ -27,10 +23,11 @@
       inputs.home-manager.nixosModules.default
       inputs.impermanence.nixosModules.impermanence
 
+      # Nix Config
       self.nixosModules.host-settings
       self.nixosModules.unfree
 
-      # ../../configs/nixpkgs.nix
+      # Features
       self.nixosModules.audio
       self.nixosModules.darktable
       self.nixosModules.file-browser

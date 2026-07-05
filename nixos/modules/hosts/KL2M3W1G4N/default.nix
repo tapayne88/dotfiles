@@ -11,7 +11,6 @@
     modules = [
       {
         imports = [
-          # ./configs/nixpkgs.nix
           self.homeModules.shell
           self.homeModules.darwin
           self.homeModules.neovim

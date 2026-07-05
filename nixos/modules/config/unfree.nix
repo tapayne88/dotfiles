@@ -1,20 +1,3 @@
-# { lib, ... }:
-#
-# let
-#   allowUnfree =
-#     pkg:
-#     builtins.elem (lib.getName pkg) [
-#       "1password-cli"
-#       "1password-gui"
-#       "1password"
-#       "obsidian"
-#       "terraform"
-#     ];
-# in
-# {
-#   nixpkgs.config.allowUnfreePredicate = allowUnfree;
-# }
-# ./modules/unfree.nix
 {
   # Inject the option definition and predicate rule into the generic modules tree
   flake.homeModules.unfree = { config, lib, ... }: {
