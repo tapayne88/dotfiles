@@ -1,10 +1,13 @@
-{ pkgs, ... }:
 {
-  hardware.graphics = {
-    enable = true;
-  };
+  flake.modules.nixos.darktable =
+    { pkgs, ... }:
+    {
+      hardware.graphics = {
+        enable = true;
+      };
 
-  environment.systemPackages = with pkgs; [
-    darktable
-  ];
+      environment.systemPackages = with pkgs; [
+        darktable
+      ];
+    };
 }

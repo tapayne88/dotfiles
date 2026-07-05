@@ -2,100 +2,102 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
-  lib,
-  modulesPath,
-  ...
-}:
-
-{
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
-
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ehci_pci"
-    "ahci"
-    "usb_storage"
-    "sd_mod"
-    "sdhci_pci"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
-  boot.initrd.luks.devices."cryptroot" = {
-    device = "/dev/disk/by-uuid/eff69a1e-7d27-4d5c-9410-4e763c923957";
-    allowDiscards = true;
-  };
-
-  fileSystems."/" = {
-    device = "none";
-    fsType = "tmpfs";
-    options = [
-      "size=2G"
-      "mode=755"
-    ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/E460-8616";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [
-      "subvol=@nix"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
-  fileSystems."/persist" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [
-      "subvol=@persist"
-      "compress=zstd"
-      "noatime"
-    ];
-    neededForBoot = true;
-  };
-
-  fileSystems."/var/log" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [
-      "subvol=@log"
-      "compress=zstd"
-      "noatime"
-    ];
-    neededForBoot = true;
-  };
-
-  fileSystems."/swap" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [
-      "subvol=@swap"
-      "noatime"
-    ];
-  };
-
-  swapDevices = [
+  flake.nixosModules.thinkpadHardware =
     {
-      device = "/swap/swapfile";
-      size = 4096;
-    }
-  ];
+      config,
+      lib,
+      modulesPath,
+      ...
+    }:
+    {
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
+      ];
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "ehci_pci"
+        "ahci"
+        "usb_storage"
+        "sd_mod"
+        "sdhci_pci"
+      ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModulePackages = [ ];
+
+      boot.initrd.luks.devices."cryptroot" = {
+        device = "/dev/disk/by-uuid/eff69a1e-7d27-4d5c-9410-4e763c923957";
+        allowDiscards = true;
+      };
+
+      fileSystems."/" = {
+        device = "none";
+        fsType = "tmpfs";
+        options = [
+          "size=2G"
+          "mode=755"
+        ];
+      };
+
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-uuid/E460-8616";
+        fsType = "vfat";
+        options = [
+          "fmask=0022"
+          "dmask=0022"
+        ];
+      };
+
+      fileSystems."/nix" = {
+        device = "/dev/mapper/cryptroot";
+        fsType = "btrfs";
+        options = [
+          "subvol=@nix"
+          "compress=zstd"
+          "noatime"
+        ];
+      };
+
+      fileSystems."/persist" = {
+        device = "/dev/mapper/cryptroot";
+        fsType = "btrfs";
+        options = [
+          "subvol=@persist"
+          "compress=zstd"
+          "noatime"
+        ];
+        neededForBoot = true;
+      };
+
+      fileSystems."/var/log" = {
+        device = "/dev/mapper/cryptroot";
+        fsType = "btrfs";
+        options = [
+          "subvol=@log"
+          "compress=zstd"
+          "noatime"
+        ];
+        neededForBoot = true;
+      };
+
+      fileSystems."/swap" = {
+        device = "/dev/mapper/cryptroot";
+        fsType = "btrfs";
+        options = [
+          "subvol=@swap"
+          "noatime"
+        ];
+      };
+
+      swapDevices = [
+        {
+          device = "/swap/swapfile";
+          size = 4096;
+        }
+      ];
+
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    };
 }

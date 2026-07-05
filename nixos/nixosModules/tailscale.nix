@@ -1,8 +1,9 @@
-{ pkgs, ... }: {
+{
+  flake.modules.nixos.tailscale = { pkgs, ... }: {
+    services.tailscale.enable = true;
 
-  services.tailscale.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    tailscale
-  ];
+    environment.systemPackages = with pkgs; [
+      tailscale
+    ];
+  };
 }

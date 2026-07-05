@@ -1,20 +1,24 @@
-{ inputs, config, ... }:
+{ self, inputs, ... }:
 {
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = {
-      inherit inputs;
-    };
-    users."${config.hostSettings.username}" = {
-      imports = [
-        ../homeManagerModules
-      ];
-      home = {
-        username = config.hostSettings.username;
-        homeDirectory = "/home/${config.hostSettings.username}";
-        stateVersion = "25.11";
+  flake.modules.nixos.home-manager =
+    { config, ... }:
+    {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+        users."${config.hostSettings.username}" = {
+          imports = [
+            self.homeManager.default
+          ];
+          home = {
+            username = config.hostSettings.username;
+            homeDirectory = "/home/${config.hostSettings.username}";
+            stateVersion = "25.11";
+          };
+        };
       };
     };
-  };
 }
