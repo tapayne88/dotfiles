@@ -26,23 +26,10 @@
       # Nix Config
       self.nixosModules.host-settings
       self.nixosModules.unfree
+      self.nixosModules.thinkpadConfiguration
 
       # Features
-      self.nixosModules.audio
-      self.nixosModules.darktable
-      self.nixosModules.file-browser
-      self.nixosModules.file-syncing
-      self.nixosModules.greeter
-      self.nixosModules.home-manager
-      self.nixosModules.network-shares
-      self.nixosModules.tailscale
-      self.nixosModules.password-manager
-      self.nixosModules.printing
-      self.nixosModules.programs
-      self.nixosModules.stylix
-      self.nixosModules.user
-      self.nixosModules.window-manager
-      self.nixosModules.thinkpadConfiguration
+      self.nixosModules.default
     ];
   };
 }
