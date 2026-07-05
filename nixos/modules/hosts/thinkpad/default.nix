@@ -27,7 +27,8 @@
       inputs.home-manager.nixosModules.default
       inputs.impermanence.nixosModules.impermanence
 
-      # ../../configs/host-options.nix
+      self.nixosModules.host-settings
+
       # ../../configs/nixpkgs.nix
       self.nixosModules.audio
       self.nixosModules.darktable
