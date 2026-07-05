@@ -15,14 +15,7 @@
         users."${config.hostSettings.username}" = {
           imports = [
             self.homeModules.unfree
-
-            self.homeModules.neovim
-            self.homeModules.shell
-            self.homeModules.linux
-            self.homeModules.browser
-            self.homeModules.obsidian
-            self.homeModules.programs
-            self.homeModules.vicinae
+            self.homeModules.default
 
             self.homeModules.hyprland
             self.homeModules.hypridle
