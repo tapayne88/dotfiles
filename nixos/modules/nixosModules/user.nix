@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.user =
+  flake.nixosModules.user =
     { pkgs, config, ... }:
     {
       # Set your time zone.

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.file-syncing =
+  flake.nixosModules.file-syncing =
     { pkgs, config, ... }:
     {
       environment.systemPackages = [

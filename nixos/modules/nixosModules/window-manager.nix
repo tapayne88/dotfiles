@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.window-manager = {
+  flake.nixosModules.window-manager = {
     programs.hyprland = {
       enable = true;
       withUWSM = true;

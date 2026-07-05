@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.password-manager =
+  flake.nixosModules.password-manager =
     { config, ... }:
     {
       programs._1password.enable = true;

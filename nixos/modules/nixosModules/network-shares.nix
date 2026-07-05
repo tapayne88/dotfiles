@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.network-shares =
+  flake.nixosModules.network-shares =
     { pkgs, lib, ... }:
 
     let

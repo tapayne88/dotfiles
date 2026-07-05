@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.modules.nixos.home-manager =
+  flake.nixosModules.home-manager =
     { config, ... }:
     {
       home-manager = {

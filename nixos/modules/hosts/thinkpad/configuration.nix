@@ -1,9 +1,9 @@
 { self, ... }:
 {
-  flake.modules.nixos.thinkpadConfiguration = { pkgs, ... }: {
+  flake.nixosModules.thinkpadConfiguration = { pkgs, ... }: {
     imports = [
       # Include the results of the hardware scan.
-      self.modules.nixos.thinkpadHardware
+      self.nixosModules.thinkpadHardware
     ];
 
     hostSettings = {

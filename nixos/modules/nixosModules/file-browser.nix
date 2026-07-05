@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.file-browser =
+  flake.nixosModules.file-browser =
     {
       pkgs,
       ...

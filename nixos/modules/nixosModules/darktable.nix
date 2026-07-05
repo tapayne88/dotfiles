@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.darktable =
+  flake.nixosModules.darktable =
     { pkgs, ... }:
     {
       hardware.graphics = {

@@ -27,7 +27,7 @@
   };
 
   # Do the exact same for NixOS systems
-  flake.modules.nixos.global-unfree = { config, lib, ... }: {
+  flake.nixosModules.global-unfree = { config, lib, ... }: {
     options.allowedUnfreePackages = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];

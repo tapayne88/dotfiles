@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.greeter =
+  flake.nixosModules.greeter =
     {
       pkgs,
       config,

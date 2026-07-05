@@ -29,21 +29,21 @@
 
       # ../../configs/host-options.nix
       # ../../configs/nixpkgs.nix
-      self.modules.nixos.audio
-      self.modules.nixos.darktable
-      self.modules.nixos.file-browser
-      self.modules.nixos.file-syncing
-      self.modules.nixos.greeter
-      self.modules.nixos.home-manager
-      self.modules.nixos.network-shares
-      self.modules.nixos.tailscale
-      self.modules.nixos.password-manager
-      self.modules.nixos.printing
-      self.modules.nixos.programs
-      self.modules.nixos.stylix
-      self.modules.nixos.user
-      self.modules.nixos.window-manager
-      self.modules.nixos.thinkpadConfiguration
+      self.nixosModules.audio
+      self.nixosModules.darktable
+      self.nixosModules.file-browser
+      self.nixosModules.file-syncing
+      self.nixosModules.greeter
+      self.nixosModules.home-manager
+      self.nixosModules.network-shares
+      self.nixosModules.tailscale
+      self.nixosModules.password-manager
+      self.nixosModules.printing
+      self.nixosModules.programs
+      self.nixosModules.stylix
+      self.nixosModules.user
+      self.nixosModules.window-manager
+      self.nixosModules.thinkpadConfiguration
     ];
   };
 }
