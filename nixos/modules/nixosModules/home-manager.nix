@@ -15,10 +15,16 @@
             self.modules.homeManager.shell
             self.modules.homeManager.linux
             self.modules.homeManager.browser
-            self.modules.homeManager.hyprland
             self.modules.homeManager.obsidian
             self.modules.homeManager.programs
             self.modules.homeManager.vicinae
+
+            self.modules.homeManager.hyprland
+            self.modules.homeManager.hypridle
+            self.modules.homeManager.hyprlandConfig
+            self.modules.homeManager.hyprlock
+            self.modules.homeManager.waybar
+            self.modules.homeManager.wlogout
           ];
           home = {
             username = config.hostSettings.username;
