@@ -17,7 +17,7 @@
 # ./modules/unfree.nix
 {
   # Inject the option definition and predicate rule into the generic modules tree
-  flake.homeModules.global-unfree = { config, lib, ... }: {
+  flake.homeModules.unfree = { config, lib, ... }: {
     options.allowedUnfreePackages = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -27,7 +27,7 @@
   };
 
   # Do the exact same for NixOS systems
-  flake.nixosModules.global-unfree = { config, lib, ... }: {
+  flake.nixosModules.unfree = { config, lib, ... }: {
     options.allowedUnfreePackages = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];

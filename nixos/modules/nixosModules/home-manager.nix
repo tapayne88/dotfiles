@@ -15,6 +15,8 @@
         };
         users."${config.hostSettings.username}" = {
           imports = [
+            self.homeModules.unfree
+
             self.homeModules.neovim
             self.homeModules.shell
             self.homeModules.linux

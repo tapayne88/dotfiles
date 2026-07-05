@@ -28,6 +28,7 @@
       inputs.impermanence.nixosModules.impermanence
 
       self.nixosModules.host-settings
+      self.nixosModules.unfree
 
       # ../../configs/nixpkgs.nix
       self.nixosModules.audio
