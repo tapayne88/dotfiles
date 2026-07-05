@@ -29,8 +29,8 @@
 
       # ../../configs/host-options.nix
       # ../../configs/nixpkgs.nix
-      self.nixosModules.default
-      self.nixosModules.thinkpadConfiguration
+      self.modules.nixos.default
+      self.modules.nixos.thinkpadConfiguration
     ];
   };
 }

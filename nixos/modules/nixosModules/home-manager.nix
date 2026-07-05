@@ -11,7 +11,7 @@
         };
         users."${config.hostSettings.username}" = {
           imports = [
-            self.homeManager.default
+            self.modules.homeManager.default
           ];
           home = {
             username = config.hostSettings.username;
