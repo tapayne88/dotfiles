@@ -7,6 +7,8 @@
         modules = [
           {
             imports = [
+              self.homeModules.unfree
+
               self.homeModules.shell
               self.homeModules.linux
               self.homeModules.neovim
