@@ -3,6 +3,7 @@
   flake.homeModules.default = {
     imports = [
       self.homeModules.browser
+      self.homeModules.hyprland
       self.homeModules.linux
       self.homeModules.neovim
       self.homeModules.obsidian

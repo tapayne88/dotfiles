@@ -16,13 +16,6 @@
           imports = [
             self.homeModules.unfree
             self.homeModules.default
-
-            self.homeModules.hyprland
-            self.homeModules.hypridle
-            self.homeModules.hyprlandConfig
-            self.homeModules.hyprlock
-            self.homeModules.waybar
-            self.homeModules.wlogout
           ];
           home = {
             username = config.hostSettings.username;

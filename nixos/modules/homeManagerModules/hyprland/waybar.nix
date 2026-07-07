@@ -8,6 +8,8 @@
       ...
     }:
     {
+      stylix.targets.waybar.colors.enable = false;
+
       programs.waybar = {
         enable = true;
         systemd.enable = true;
