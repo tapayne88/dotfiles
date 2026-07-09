@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.printing = {
+  flake.nixosModules.printing = { config, ... }: {
     # Enable CUPS to print documents.
     services.printing.enable = true;
 
@@ -10,7 +10,7 @@
       openFirewall = true;
     };
 
-    environment.persistence."/persist".directories = [
+    environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
       {
         directory = "/var/lib/cups";
         user = "root";

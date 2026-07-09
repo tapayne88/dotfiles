@@ -7,7 +7,7 @@
   flake.nixosModules.home-manager =
     { config, ... }:
     {
-      environment.persistence."/persist".directories = [
+      environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
         "/home"
       ];
 

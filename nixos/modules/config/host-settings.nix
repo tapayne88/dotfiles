@@ -2,6 +2,10 @@
   flake.nixosModules.host-settings = { lib, pkgs, ... }: {
     options.hostSettings = {
       username = lib.mkOption { type = lib.types.str; };
+      persistenceMountPath = lib.mkOption {
+        type = lib.types.str;
+        default = "/persist";
+      };
       internalMonitor = lib.mkOption {
         type = lib.types.str;
         default = "";

@@ -1,8 +1,8 @@
 {
-  flake.nixosModules.vpn = { pkgs, ... }: {
+  flake.nixosModules.vpn = { pkgs, config, ... }: {
     services.tailscale.enable = true;
 
-    environment.persistence."/persist".directories = [
+    environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
       "/var/lib/tailscale"
     ];
 

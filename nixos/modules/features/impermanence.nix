@@ -1,6 +1,6 @@
 {
-  flake.nixosModules.impermanence = {
-    environment.persistence."/persist" = {
+  flake.nixosModules.impermanence = { config, ... }: {
+    environment.persistence."${config.hostSettings.persistenceMountPath}" = {
       hideMounts = true;
       directories = [
         "/var/log"

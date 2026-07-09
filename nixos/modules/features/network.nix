@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.network = { pkgs, ... }: {
+  flake.nixosModules.network = { pkgs, config, ... }: {
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";
 
@@ -7,7 +7,7 @@
       pkgs.impala # wifi utility
     ];
 
-    environment.persistence."/persist".directories = [
+    environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
       "/var/lib/iwd"
     ];
   };

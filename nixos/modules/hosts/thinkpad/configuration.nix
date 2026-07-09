@@ -10,6 +10,7 @@
       username = "tpayne";
       internalMonitor = "LVDS-1";
       terminal = pkgs.kitty;
+      persistenceMountPath = "/persist";
     };
 
     # Use the systemd-boot EFI boot loader.
