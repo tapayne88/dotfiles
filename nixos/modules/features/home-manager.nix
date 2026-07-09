@@ -20,7 +20,7 @@
             self.homeModules.launcher
             self.homeModules.linux
             self.homeModules.neovim
-            self.homeModules.obsidian
+            self.homeModules.notes
             self.homeModules.programs
             self.homeModules.shell
             self.homeModules.window-manager
