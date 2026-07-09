@@ -403,8 +403,8 @@
               "hyprland.start"
               (mkLuaInline ''
                 function()
-                  hl.exec_cmd("uwsm app -- syncthingtray --wait") 
-                  hl.exec_cmd("uwsm app -- tailscale systray") 
+                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.syncthingtray} --wait") 
+                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.tailscale} systray") 
                 end'')
             ];
           };
