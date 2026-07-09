@@ -5,6 +5,11 @@
       # Set your time zone.
       time.timeZone = "Europe/London";
 
+      nix.settings.trusted-users = [
+        "root"
+        "@wheel"
+      ];
+
       users.users.root.hashedPasswordFile = "${config.hostSettings.persistenceMountPath}/passwords/root";
 
       users.users."${config.hostSettings.username}" = {
