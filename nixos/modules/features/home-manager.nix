@@ -17,13 +17,13 @@
             self.homeModules.unfree
 
             self.homeModules.browser
-            self.homeModules.hyprland
             self.homeModules.linux
             self.homeModules.neovim
             self.homeModules.obsidian
             self.homeModules.programs
             self.homeModules.shell
             self.homeModules.vicinae
+            self.homeModules.window-manager
           ];
           home = {
             username = config.hostSettings.username;
