@@ -7,7 +7,6 @@
         "/var/lib/bluetooth"
         "/var/lib/iwd"
         "/var/lib/nixos"
-        "/var/lib/tailscale"
         "/home"
         "/etc/nixos"
 
