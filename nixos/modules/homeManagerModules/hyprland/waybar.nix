@@ -230,8 +230,8 @@
           }
 
           #workspaces button.urgent {
-            background-color: @base;
-            color: @red;
+            background-color: @red;
+            color: @base;
           }
 
           /* All modules via container trick */
