@@ -3,6 +3,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
+
     impermanence = {
       url = "github:nix-community/impermanence";
       # Dev dependencies only
@@ -44,105 +47,15 @@
     tuigreet-fork.url = "github:notashelf/tuigreet";
   };
   outputs =
-    inputs@{
-      nixpkgs,
-      nixpkgs-stable,
-      home-manager,
-      home-manager-stable,
-      stylix,
-      impermanence,
-      ...
-    }:
-    let
-      linuxSystem = "x86_64-linux";
-      macSystem = "aarch64-darwin";
-      pkgs = import nixpkgs { inherit linuxSystem; };
-    in
-    {
-      devShells.${linuxSystem}.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nixfmt-tree
-        ];
-      };
-      nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-        };
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
-        modules = [
-          {
-            nix.settings = {
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-              trusted-users = [
-                "root"
-                "@wheel"
-              ];
-            };
-          }
-
-          stylix.nixosModules.stylix
-          home-manager.nixosModules.default
-          impermanence.nixosModules.impermanence
-
-          ./configs/host-options.nix
-          ./configs/nixpkgs.nix
-          ./hosts/thinkpad/configuration.nix
-          ./nixosModules
-        ];
-      };
-      homeConfigurations = {
-        # Pixelbook Omarchy
-        "tpayne@omarchy-pixelbook" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            {
-              imports = [
-                ./configs/nixpkgs.nix
-                ./homeManagerModules/shell.nix
-                ./homeManagerModules/linux.nix
-                ./homeManagerModules/neovim.nix
-              ];
-            }
-            {
-              home = {
-                username = "tpayne";
-                homeDirectory = "/home/tpayne";
-                stateVersion = "25.11";
-              };
-            }
-          ];
-        };
-        # MacBook Pro M3 (Work)
-        "tom.payne@KL2M3W1G4N" = home-manager-stable.lib.homeManagerConfiguration {
-          pkgs = nixpkgs-stable.legacyPackages.aarch64-darwin;
-          extraSpecialArgs = {
-            pkgs-unstable = import nixpkgs {
-              system = macSystem;
-              config.allowUnfree = true;
-            };
-          };
-          modules = [
-            {
-              imports = [
-                ./configs/nixpkgs.nix
-                ./homeManagerModules/shell.nix
-                ./homeManagerModules/darwin.nix
-                ./homeManagerModules/neovim.nix
-                ./homeManagerModules/work.nix
-              ];
-            }
-            {
-              home = {
-                username = "tom.payne";
-                homeDirectory = "/Users/tom.payne";
-                stateVersion = "25.11";
-              };
-            }
-          ];
-        };
-      };
+      imports = [
+        (inputs.import-tree ./modules)
+      ];
     };
 }
