@@ -14,7 +14,7 @@
       self.nixosModules.printing
       self.nixosModules.programs
       self.nixosModules.stylix
-      self.nixosModules.tailscale
+      self.nixosModules.vpn
       self.nixosModules.user
       self.nixosModules.window-manager
     ];
