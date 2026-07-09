@@ -59,7 +59,7 @@
         ];
       };
 
-      fileSystems."/persist" = {
+      fileSystems."${config.hostSettings.persistenceMountPath}" = {
         device = "/dev/mapper/cryptroot";
         fsType = "btrfs";
         options = [

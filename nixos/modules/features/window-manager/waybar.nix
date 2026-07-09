@@ -126,7 +126,7 @@
                   " "
                 ];
               };
-              "on-click" = "pavucontrol";
+              "on-click" = "${lib.getExe pkgs.pavucontrol}";
               "tooltip-format" = "{desc}\nVolume= {volume}%";
             };
             "network" = {

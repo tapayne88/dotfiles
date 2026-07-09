@@ -17,9 +17,6 @@
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
         mako # notifications
-        impala # wifi utility
-        wlogout # logout util
-        pavucontrol # audio control
       ];
 
       programs.git.enable = true;
@@ -29,4 +26,9 @@
         defaultEditor = true;
       };
     };
+
+  flake.homeModules.programs = {
+    # Document viewer
+    programs.zathura.enable = true;
+  };
 }

@@ -1,14 +1,7 @@
 { inputs, ... }:
 {
   flake.nixosModules.greeter =
-    {
-      pkgs,
-      config,
-      ...
-    }:
-    let
-      internalMonitor = config.hostSettings.internalMonitor;
-    in
+    { pkgs, config, ... }:
     {
       nix.settings = {
         extra-substituters = [ "https://nyx.cachix.org" ];
@@ -30,6 +23,15 @@
           };
         };
       };
+
+      environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
+        {
+          directory = "/var/cache/tuigreet";
+          user = "greeter";
+          group = "greeter";
+          mode = "0755";
+        }
+      ];
 
       environment.etc."tuigreet/config.toml".text = ''
         [display]
@@ -64,7 +66,7 @@
         primary = true
 
         [[outputs]]
-        connector = "${internalMonitor}"
+        connector = "${config.hostSettings.internalMonitor}"
         enabled = true
       '';
     };

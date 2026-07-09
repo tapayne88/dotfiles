@@ -7,6 +7,10 @@
   flake.nixosModules.home-manager =
     { config, ... }:
     {
+      environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
+        "/home"
+      ];
+
       home-manager = {
         useUserPackages = true;
         extraSpecialArgs = {
@@ -15,7 +19,15 @@
         users."${config.hostSettings.username}" = {
           imports = [
             self.homeModules.unfree
-            self.homeModules.default
+
+            self.homeModules.browser
+            self.homeModules.launcher
+            self.homeModules.linux
+            self.homeModules.neovim
+            self.homeModules.notes
+            self.homeModules.programs
+            self.homeModules.shell
+            self.homeModules.window-manager
           ];
           home = {
             username = config.hostSettings.username;
