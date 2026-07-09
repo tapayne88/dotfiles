@@ -8,6 +8,7 @@
       self.nixosModules.file-syncing
       self.nixosModules.greeter
       self.nixosModules.home-manager
+      self.nixosModules.impermanence
       self.nixosModules.network-shares
       self.nixosModules.password-manager
       self.nixosModules.printing
