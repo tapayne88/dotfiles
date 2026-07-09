@@ -7,6 +7,10 @@
   flake.nixosModules.home-manager =
     { config, ... }:
     {
+      environment.persistence."/persist".directories = [
+        "/home"
+      ];
+
       home-manager = {
         useUserPackages = true;
         extraSpecialArgs = {

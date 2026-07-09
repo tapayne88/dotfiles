@@ -9,5 +9,14 @@
       nssmdns4 = true;
       openFirewall = true;
     };
+
+    environment.persistence."/persist".directories = [
+      {
+        directory = "/var/lib/cups";
+        user = "root";
+        group = "lp";
+        mode = "0755";
+      }
+    ];
   };
 }

@@ -31,6 +31,15 @@
         };
       };
 
+      environment.persistence."/persist".directories = [
+        {
+          directory = "/var/cache/tuigreet";
+          user = "greeter";
+          group = "greeter";
+          mode = "0755";
+        }
+      ];
+
       environment.etc."tuigreet/config.toml".text = ''
         [display]
         show_time = true

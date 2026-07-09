@@ -6,21 +6,7 @@
         "/var/log"
         "/var/lib/bluetooth"
         "/var/lib/nixos"
-        "/home"
         "/etc/nixos"
-
-        {
-          directory = "/var/lib/cups";
-          user = "root";
-          group = "lp";
-          mode = "0755";
-        }
-        {
-          directory = "/var/cache/tuigreet";
-          user = "greeter";
-          group = "greeter";
-          mode = "0755";
-        }
       ];
       files = [
         "/etc/machine-id"
