@@ -9,13 +9,14 @@
       self.nixosModules.greeter
       self.nixosModules.home-manager
       self.nixosModules.impermanence
+      self.nixosModules.network
       self.nixosModules.network-shares
       self.nixosModules.password-manager
       self.nixosModules.printing
       self.nixosModules.programs
       self.nixosModules.stylix
-      self.nixosModules.vpn
       self.nixosModules.user
+      self.nixosModules.vpn
       self.nixosModules.window-manager
     ];
   };

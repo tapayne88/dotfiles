@@ -18,9 +18,6 @@
 
     networking.hostName = "thinkpad";
 
-    networking.networkmanager.enable = true;
-    networking.networkmanager.wifi.backend = "iwd";
-
     # Select internationalisation properties.
     i18n.defaultLocale = "en_GB.UTF-8";
 

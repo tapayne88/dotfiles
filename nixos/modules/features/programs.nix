@@ -17,7 +17,6 @@
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
         mako # notifications
-        impala # wifi utility
       ];
 
       programs.git.enable = true;

@@ -5,7 +5,6 @@
       directories = [
         "/var/log"
         "/var/lib/bluetooth"
-        "/var/lib/iwd"
         "/var/lib/nixos"
         "/home"
         "/etc/nixos"
