@@ -1,12 +1,6 @@
 # vim set:ft=brewfile
-tap "FelixKratz/formulae"
 cask "font-hack-nerd-font" # font for sketchybar
 cask "sf-symbols" # apple's own nerdfont icons
-brew "lua" # required for sketchybar lua plugins
-brew "borders" # macos focus border 
-
-tap "sst/tap"
-brew "opencode"
 
 tap "oven-sh/bun"
 brew "bun"
@@ -23,7 +17,6 @@ brew "watchman"
 brew "worktrunk"
 cask "claude"
 cask "claude-code"
-cask "copilot-cli"
 cask "eqmac"
 cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
@@ -41,6 +34,4 @@ cask "xbar"
 # mas seems a little flakey and can sometime not realise it's installed an app
 # This means every time the bundle is installed it'll try install the app,
 # usually succeed but write `null` to the lockfile
-mas "Hidden Bar", id: 1452453066
 mas "MenuBar Stats", id: 714196447
-mas "rcmd", id: 1596283165
