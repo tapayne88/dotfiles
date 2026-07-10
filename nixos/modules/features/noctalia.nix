@@ -16,16 +16,6 @@
       enable = true;
 
       settings = {
-        theme = {
-          mode = "dark";
-          source = "builtin";
-          builtin = "Catppuccin";
-        };
-
-        wallpaper = {
-          enabled = true;
-          default.path = "../assets/nixos-catppuccin-mocha.png";
-        };
       };
     };
   };
