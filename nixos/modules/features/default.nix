@@ -19,6 +19,8 @@
       self.nixosModules.user
       self.nixosModules.vpn
       self.nixosModules.window-manager
+
+      self.nixosModules.noctalia
     ];
   };
 }
