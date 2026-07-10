@@ -3,6 +3,8 @@
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";
 
+    hardware.bluetooth.enable = true;
+
     environment.systemPackages = [
       pkgs.impala # wifi utility
     ];
