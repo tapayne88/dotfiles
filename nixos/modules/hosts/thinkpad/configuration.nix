@@ -19,9 +19,6 @@
 
     networking.hostName = "thinkpad";
 
-    # Select internationalisation properties.
-    i18n.defaultLocale = "en_GB.UTF-8";
-
     # This handles the login screen (if using X11-based DM) and TTY
     services.xserver.xkb = {
       layout = "gb";
@@ -30,8 +27,6 @@
 
     # Force the TTY console to use the same layout as above
     console.useXkbConfig = true;
-
-    services.gnome.gnome-keyring.enable = true;
 
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

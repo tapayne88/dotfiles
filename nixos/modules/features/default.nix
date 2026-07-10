@@ -15,6 +15,7 @@
       self.nixosModules.printing
       self.nixosModules.programs
       self.nixosModules.stylix
+      self.nixosModules.system
       self.nixosModules.user
       self.nixosModules.vpn
       self.nixosModules.window-manager

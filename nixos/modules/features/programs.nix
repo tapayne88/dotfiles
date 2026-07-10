@@ -2,6 +2,8 @@
   flake.nixosModules.programs =
     { pkgs, ... }:
     {
+      services.gnome.gnome-keyring.enable = true;
+
       environment.systemPackages = with pkgs; [
         tmux
         git
