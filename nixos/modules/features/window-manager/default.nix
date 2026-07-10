@@ -7,6 +7,8 @@
       self.homeModules.hyprlock
       self.homeModules.waybar
       self.homeModules.wlogout
+
+      self.homeModules.noctalia
     ];
 
     services.mako.enable = true;
