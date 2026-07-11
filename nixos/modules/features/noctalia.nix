@@ -51,6 +51,9 @@
             display_mode = "graphic";
             show_label = false;
           };
+          clock = {
+            tooltip_format = "{:%A, %e %B %Y}";
+          };
           media = {
             album_art_only = true;
             art_size = 24;
