@@ -9,7 +9,7 @@
     };
   };
 
-  flake.homeModules.noctalia = {
+  flake.homeModules.noctalia = { osConfig, ... }: {
     imports = [
       inputs.noctalia.homeModules.default
     ];
@@ -46,6 +46,24 @@
               "control-center"
               "session"
             ];
+            monitor = {
+              "${osConfig.hostSettings.internalMonitor}" = {
+                end = [
+                  "caffeine"
+                  "tray"
+                  "sysmon"
+                  "weather"
+                  "notifications"
+                  "clipboard"
+                  "network"
+                  "volume"
+                  "battery"
+                  "clock-short"
+                  "control-center"
+                  "session"
+                ];
+              };
+            };
           };
         };
         widget = {
@@ -55,6 +73,11 @@
           };
           clock = {
             format = "{:%H:%M %A, %e %B}";
+            tooltip_format = "{:%A, %e %B %Y}";
+          };
+          clock-short = {
+            type = "clock";
+            format = "{:%H:%M}";
             tooltip_format = "{:%A, %e %B %Y}";
           };
           media = {
