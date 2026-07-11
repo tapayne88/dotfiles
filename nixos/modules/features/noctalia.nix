@@ -19,7 +19,9 @@
       systemd.enable = false;
 
       settings = {
-        launch_apps_as_systemd_services = true;
+        shell = {
+          launch_apps_as_systemd_services = true;
+        };
 
         bar = {
           main = {
