@@ -23,16 +23,9 @@
           launch_apps_as_systemd_services = true;
         };
 
-        bar = {
-          main = {
-            margin_ends = 20; # inset from each end of the bar along its main axis
-            widget_spacing = 10; # gap between widgets within a section
-            start = [
-              "launcher"
-              "workspaces"
-            ];
-            center = [ "media" ];
-            end = [
+        bar =
+          let
+            endWidgets = [
               "caffeine"
               "tray"
               "sysmon"
@@ -46,26 +39,26 @@
               "control-center"
               "session"
             ];
-            monitor = {
-              "${osConfig.hostSettings.internalMonitor}" = {
-                end = [
-                  "caffeine"
-                  "tray"
-                  "sysmon"
-                  "weather"
-                  "notifications"
-                  "clipboard"
-                  "network"
-                  "volume"
-                  "battery"
-                  "clock-short"
-                  "control-center"
-                  "session"
-                ];
+            shortWidgetVariants = [ "clock" ];
+            getShortVariant = x: "${x}-short";
+          in
+          {
+            main = {
+              margin_ends = 20; # inset from each end of the bar along its main axis
+              widget_spacing = 10; # gap between widgets within a section
+              start = [
+                "launcher"
+                "workspaces"
+              ];
+              center = [ "media" ];
+              end = endWidgets;
+              monitor = {
+                "${osConfig.hostSettings.internalMonitor}" = {
+                  end = map (x: if builtins.elem x shortWidgetVariants then (getShortVariant x) else x) endWidgets;
+                };
               };
             };
           };
-        };
         widget = {
           battery = {
             display_mode = "graphic";
