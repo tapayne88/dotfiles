@@ -408,7 +408,7 @@
               in
               lib.flatten [
                 (bind "${mod} + Space" (dsp.exec_cmd "vicinae toggle") { })
-                (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
+                (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
 
                 (bind "${mod} + Tab" (dsp.focus { last = true; }) { })
 
@@ -461,7 +461,7 @@
                 (bind "${mod} + mouse:273" (dsp.window.resize) { mouse = true; })
 
                 # Lock on lid close
-                (bind "switch:on:Lid Switch" (dsp.exec_cmd "${lib.getExe pkgs.hyprlock}") { })
+                (bind "switch:on:Lid Switch" (dsp.exec_cmd "${ipc} session lock") { })
               ];
 
             on = mkArgs [

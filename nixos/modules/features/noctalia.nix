@@ -71,6 +71,20 @@
         location = {
           auto_locate = true;
         };
+        idle.behavior = {
+          lock = {
+            timeout = 300;
+            action = "lock";
+          };
+          screen-off = {
+            timeout = 600;
+            action = "screen_off";
+          };
+          suspend = {
+            timeout = 1800;
+            action = "lock_and_suspend";
+          };
+        };
       };
     };
   };
