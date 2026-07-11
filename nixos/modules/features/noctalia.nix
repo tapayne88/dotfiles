@@ -29,9 +29,8 @@
               "launcher"
               "workspaces"
             ];
-            center = [ "clock" ];
+            center = [ "media" ];
             end = [
-              "media"
               "caffeine"
               "tray"
               "sysmon"
@@ -41,6 +40,7 @@
               "network"
               "volume"
               "battery"
+              "clock"
               "control-center"
               "session"
             ];
@@ -52,10 +52,10 @@
             show_label = false;
           };
           clock = {
+            format = "{:%H:%M %A, %e %B}";
             tooltip_format = "{:%A, %e %B %Y}";
           };
           media = {
-            album_art_only = true;
             art_size = 24;
             hide_when_no_media = true;
           };
