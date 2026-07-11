@@ -23,6 +23,8 @@
 
         bar = {
           main = {
+            margin_ends = 20; # inset from each end of the bar along its main axis
+            widget_spacing = 10; # gap between widgets within a section
             start = [
               "launcher"
               "workspaces"
@@ -32,6 +34,8 @@
               "media"
               "caffeine"
               "tray"
+              "sysmon"
+              "weather"
               "notifications"
               "clipboard"
               "network"
@@ -43,13 +47,25 @@
           };
         };
         widget = {
-          network = {
+          battery = {
+            display_mode = "graphic";
             show_label = false;
           };
           media = {
             album_art_only = true;
             art_size = 24;
             hide_when_no_media = true;
+          };
+          network = {
+            show_label = false;
+          };
+          volume = {
+            show_label = false;
+          };
+          weather = {
+            max_length = 180;
+            show_condition = false;
+            show_temperature = true;
           };
         };
         location = {
