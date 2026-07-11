@@ -3,7 +3,6 @@
   flake.homeModules.window-manager = {
     imports = [
       self.homeModules.hyprland
-
       self.homeModules.noctalia
     ];
 

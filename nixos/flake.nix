@@ -30,15 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin-waybar = {
-      url = "github:catppuccin/waybar";
-      flake = false;
-    };
-    catppuccin-wlogout = {
-      url = "github:catppuccin/wlogout";
-      flake = false;
-    };
-
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";

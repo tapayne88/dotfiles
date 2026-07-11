@@ -68,38 +68,6 @@
         "type": "github"
       }
     },
-    "catppuccin-waybar": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1720870206,
-        "narHash": "sha256-za0y6hcN2rvN6Xjf31xLRe4PP0YyHu2i454ZPjr+lWA=",
-        "owner": "catppuccin",
-        "repo": "waybar",
-        "rev": "ee8ed32b4f63e9c417249c109818dcc05a2e25da",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "waybar",
-        "type": "github"
-      }
-    },
-    "catppuccin-wlogout": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1780529371,
-        "narHash": "sha256-4e5uGfMvE7iXOosthxryLaUgXT1v4rCxBxvTWveHE2c=",
-        "owner": "catppuccin",
-        "repo": "wlogout",
-        "rev": "de7da5b64610da3a6f3f2db23cda60acba4aa701",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "wlogout",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1781825982,
@@ -421,8 +389,6 @@
     },
     "root": {
       "inputs": {
-        "catppuccin-waybar": "catppuccin-waybar",
-        "catppuccin-wlogout": "catppuccin-wlogout",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",
