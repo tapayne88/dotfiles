@@ -309,19 +309,6 @@
             ];
 
             layer_rule = [
-              # blur
-              {
-                match.namespace = "vicinae";
-                blur = true;
-                ignore_alpha = 0;
-              }
-
-              # disable animation for vicinae only
-              {
-                match.namespace = "vicinae";
-                no_anim = true;
-              }
-
               {
                 name = "noctalia";
                 match = {
@@ -407,7 +394,7 @@
                 ipc = "noctalia msg";
               in
               lib.flatten [
-                (bind "${mod} + Space" (dsp.exec_cmd "vicinae toggle") { })
+                (bind "${mod} + Space" (dsp.exec_cmd "${ipc} panel-toggle launcher") { })
                 (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
 
                 (bind "${mod} + Tab" (dsp.focus { last = true; }) { })

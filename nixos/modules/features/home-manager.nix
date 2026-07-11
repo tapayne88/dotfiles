@@ -21,7 +21,6 @@
             self.homeModules.unfree
 
             self.homeModules.browser
-            self.homeModules.launcher
             self.homeModules.linux
             self.homeModules.neovim
             self.homeModules.notes

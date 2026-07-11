@@ -44,8 +44,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vicinae.url = "github:vicinaehq/vicinae";
-
     tuigreet-fork.url = "github:notashelf/tuigreet";
   };
   outputs =
