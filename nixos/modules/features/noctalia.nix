@@ -16,8 +16,10 @@
 
     programs.noctalia = {
       enable = true;
+      systemd.enable = false;
 
       settings = {
+        launch_apps_as_systemd_services = true;
       };
     };
   };

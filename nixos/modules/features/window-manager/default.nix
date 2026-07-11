@@ -2,11 +2,7 @@
 {
   flake.homeModules.window-manager = {
     imports = [
-      self.homeModules.hypridle
       self.homeModules.hyprland
-      self.homeModules.hyprlock
-      self.homeModules.waybar
-      self.homeModules.wlogout
 
       self.homeModules.noctalia
     ];
@@ -23,7 +19,5 @@
     };
 
     programs.uwsm.enable = true;
-
-    programs.waybar.enable = true;
   };
 }
