@@ -3,6 +3,8 @@
     { pkgs, ... }:
     {
       services.gnome.gnome-keyring.enable = true;
+      services.power-profiles-daemon.enable = true;
+      services.upower.enable = true;
 
       environment.systemPackages = with pkgs; [
         tmux
@@ -18,7 +20,6 @@
 
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
-        mako # notifications
       ];
 
       programs.git.enable = true;

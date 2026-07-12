@@ -68,38 +68,6 @@
         "type": "github"
       }
     },
-    "catppuccin-waybar": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1720870206,
-        "narHash": "sha256-za0y6hcN2rvN6Xjf31xLRe4PP0YyHu2i454ZPjr+lWA=",
-        "owner": "catppuccin",
-        "repo": "waybar",
-        "rev": "ee8ed32b4f63e9c417249c109818dcc05a2e25da",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "waybar",
-        "type": "github"
-      }
-    },
-    "catppuccin-wlogout": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1780529371,
-        "narHash": "sha256-4e5uGfMvE7iXOosthxryLaUgXT1v4rCxBxvTWveHE2c=",
-        "owner": "catppuccin",
-        "repo": "wlogout",
-        "rev": "de7da5b64610da3a6f3f2db23cda60acba4aa701",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "wlogout",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1781825982,
@@ -348,6 +316,19 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1783224372,
+        "narHash": "sha256-FGQ8TfSm9WviNE/fQAWsKs+y4GkX8fU4EScewpw54Y8=",
+        "rev": "d407951447dcd00442e97087bf374aad70c04cea",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1027867.d407951447dc/nixexprs.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1781577229,
         "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
         "owner": "NixOS",
@@ -362,19 +343,22 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
       "locked": {
-        "lastModified": 1772542754,
-        "narHash": "sha256-WGV2hy+VIeQsYXpsLjdr4GvHv5eECMISX1zKLTedhdg=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "8c809a146a140c5c8806f13399592dbcb1bb5dc4",
+        "lastModified": 1783717732,
+        "narHash": "sha256-3WzoXhPL5Pvvb02s6A79/+Tq98rNtD8csAmXPWG8ETE=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "4f2b614846e22e4718f79a489c7e17f8ff258abb",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
+        "owner": "noctalia-dev",
+        "ref": "cachix",
+        "repo": "noctalia",
         "type": "github"
       }
     },
@@ -405,8 +389,6 @@
     },
     "root": {
       "inputs": {
-        "catppuccin-waybar": "catppuccin-waybar",
-        "catppuccin-wlogout": "catppuccin-wlogout",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",
@@ -414,9 +396,9 @@
         "import-tree": "import-tree",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "noctalia": "noctalia",
         "stylix": "stylix",
         "tuigreet-fork": "tuigreet-fork",
-        "vicinae": "vicinae",
         "zen-browser": "zen-browser"
       }
     },
@@ -475,21 +457,6 @@
       }
     },
     "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -571,7 +538,7 @@
     "tuigreet-fork": {
       "inputs": {
         "crane": "crane",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "rust-overlay": "rust-overlay"
       },
       "locked": {
@@ -585,25 +552,6 @@
       "original": {
         "owner": "notashelf",
         "repo": "tuigreet",
-        "type": "github"
-      }
-    },
-    "vicinae": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_3",
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1783632113,
-        "narHash": "sha256-F6XS+sAOs4+sGY6Cff9Mv8Vfy3dHmhLg4csuX25+D1o=",
-        "owner": "vicinaehq",
-        "repo": "vicinae",
-        "rev": "6bfcc50926d801f290539422cb13f60d32e63c5e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vicinaehq",
-        "repo": "vicinae",
         "type": "github"
       }
     },

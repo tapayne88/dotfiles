@@ -23,26 +23,17 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    catppuccin-waybar = {
-      url = "github:catppuccin/waybar";
-      flake = false;
-    };
-    catppuccin-wlogout = {
-      url = "github:catppuccin/wlogout";
-      flake = false;
     };
 
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    vicinae.url = "github:vicinaehq/vicinae";
 
     tuigreet-fork.url = "github:notashelf/tuigreet";
   };
