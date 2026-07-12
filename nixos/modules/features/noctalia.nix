@@ -62,12 +62,12 @@
               "tray"
               "sysmon"
               "weather"
-              "notifications"
               "clipboard"
               "network"
               "volume"
               "battery"
               "clock"
+              "notifications"
               "control-center"
               "session"
             ];
