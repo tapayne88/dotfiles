@@ -11,6 +11,7 @@
       self.nixosModules.impermanence
       self.nixosModules.network
       self.nixosModules.network-shares
+      self.nixosModules.noctalia
       self.nixosModules.password-manager
       self.nixosModules.printing
       self.nixosModules.programs
@@ -19,8 +20,6 @@
       self.nixosModules.user
       self.nixosModules.vpn
       self.nixosModules.window-manager
-
-      self.nixosModules.noctalia
     ];
   };
 }
