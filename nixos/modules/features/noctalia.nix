@@ -23,6 +23,27 @@
           launch_apps_as_systemd_services = true;
         };
 
+        keybinds = {
+          left = [
+            "left"
+            "ctrl+h"
+          ];
+          right = [
+            "right"
+            "ctrl+l"
+          ];
+          up = [
+            "up"
+            "ctrl+p"
+            "ctrl+k"
+          ];
+          down = [
+            "down"
+            "ctrl+n"
+            "ctrl+j"
+          ];
+        };
+
         bar =
           let
             endWidgets = [
