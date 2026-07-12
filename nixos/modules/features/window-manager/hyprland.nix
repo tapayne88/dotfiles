@@ -397,7 +397,7 @@
                 (bind "${mod} + Space" (dsp.exec_cmd "${ipc} panel-toggle launcher") { })
                 (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
 
-                (bind "${mod} + Tab" (dsp.focus { last = true; }) { })
+                (bind "${mod} + Tab" (dsp.exec_cmd "${ipc} window-switcher") { })
 
                 (bind "${mod} + G" (dsp.group.toggle) { })
                 (bind "${mod} + F" (dsp.window.float { action = "toggle"; }) { })
