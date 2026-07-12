@@ -5,8 +5,6 @@
       self.homeModules.hyprland
       self.homeModules.noctalia
     ];
-
-    services.hyprpolkitagent.enable = true;
   };
 
   flake.nixosModules.window-manager = {

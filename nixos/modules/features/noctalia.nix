@@ -32,6 +32,7 @@
       settings = {
         shell = {
           launch_apps_as_systemd_services = true;
+          polkit_agent = true; # register Noctalia's native polkit authentication agent
         };
 
         keybinds = {
