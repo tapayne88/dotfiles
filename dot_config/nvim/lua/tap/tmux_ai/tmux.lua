@@ -1,5 +1,5 @@
-local config = require 'tap.cursor.config'
-local notify = require 'tap.cursor.notify'
+local config = require 'tap.tmux_ai.config'
+local notify = require 'tap.tmux_ai.notify'
 
 local M = {}
 
@@ -103,15 +103,22 @@ function M.list_panes()
   return parse_list_panes(stdout), nil
 end
 
-local function resolve_pane_title(pane_title)
+---@param patterns string[]
+---@return string|nil, string|nil
+local function resolve_pane_title(patterns)
   local panes, err = M.list_panes()
   if err then
     return nil, err
   end
 
-  local pattern = pane_title:lower()
   local matches = vim.tbl_filter(function(pane)
-    return pane.pane_title:lower():find(pattern, 1, true) ~= nil
+    local title = pane.pane_title:lower()
+    for _, pattern in ipairs(patterns) do
+      if title:find(pattern:lower()) ~= nil then
+        return true
+      end
+    end
+    return false
   end, panes)
 
   if #matches == 0 then
@@ -119,7 +126,7 @@ local function resolve_pane_title(pane_title)
   end
 
   if #matches > 1 then
-    return nil, string.format('multiple tmux panes match %q; pick a pane explicitly', pane_title)
+    return nil, 'multiple tmux panes match; pick a pane explicitly'
   end
 
   return matches[1].pane_id, nil
@@ -155,8 +162,8 @@ function M.resolve_target()
     return set_resolved_pane(configured.pane_id), nil
   end
 
-  if configured.pane_title and configured.pane_title ~= '' then
-    local pane_id, pane_err = resolve_pane_title(configured.pane_title)
+  if configured.pane_titles and #configured.pane_titles > 0 then
+    local pane_id, pane_err = resolve_pane_title(configured.pane_titles)
     if pane_id then
       return set_resolved_pane(pane_id), nil
     end
@@ -223,7 +230,7 @@ local function ensure_target_with_picker(on_done)
 
   M.pick_target(function(selected_pane_id)
     if not selected_pane_id then
-      on_done(nil, 'no Cursor tmux pane selected')
+      on_done(nil, 'no TmuxAI tmux pane selected')
       return
     end
 
@@ -239,7 +246,7 @@ function M.pick_target(on_done)
   end
 
   vim.ui.select(panes, {
-    prompt = 'Select Cursor tmux pane',
+    prompt = 'Select TmuxAI tmux pane',
     format_item = function(pane)
       local active = pane.pane_active and '*' or ' '
       return string.format(
@@ -262,7 +269,7 @@ function M.pick_target(on_done)
     end
 
     set_resolved_pane(choice.pane_id)
-    notify.info(string.format('Cursor target set to %s', choice.pane_id))
+    notify.info(string.format('TmuxAI target set to %s', choice.pane_id))
     if type(on_done) == 'function' then
       on_done(choice.pane_id)
     end
@@ -281,7 +288,7 @@ function M.send_text(text, opts, on_done)
       return
     end
 
-    local buffer_name = string.format('tap-cursor-%d', vim.loop.hrtime())
+    local buffer_name = string.format('tap-tmux-ai-%d', vim.loop.hrtime())
     local load_err = load_buffer_text(text, buffer_name)
     if load_err then
       if type(on_done) == 'function' then

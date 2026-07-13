@@ -1,7 +1,7 @@
 return {
   {
     dir = vim.fn.stdpath 'config',
-    name = 'tap-cursor',
+    name = 'tap-tmux-ai',
     lazy = false,
     opts = {},
     dependencies = {
@@ -17,13 +17,13 @@ return {
     },
     keys = {
       -- stylua: ignore start
-      { '<leader>oa', '<cmd>CursorSend<CR>',        mode = 'n', desc = 'Ask Cursor about buffer' },
-      { '<leader>oa', ":<C-u>'<,'>CursorSend<CR>",  mode = 'x', desc = 'Ask Cursor about selection' },
-      { '<leader>oc', '<cmd>CursorMode<CR>',                    desc = 'Cycle Cursor mode' },
+      { '<leader>oa', '<cmd>TmuxAISend<CR>',        mode = 'n', desc = 'Ask TmuxAI about buffer' },
+      { '<leader>oa', ":<C-u>'<,'>TmuxAISend<CR>",  mode = 'x', desc = 'Ask TmuxAI about selection' },
+      { '<leader>oc', '<cmd>TmuxAIMode<CR>',                    desc = 'Cycle TmuxAI mode' },
       -- stylua: ignore end
     },
     config = function(_, opts)
-      require('tap.cursor').setup(opts)
+      require('tap.tmux_ai').setup(opts)
     end,
   },
 }

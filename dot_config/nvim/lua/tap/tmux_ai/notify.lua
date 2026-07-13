@@ -2,7 +2,7 @@ local notify_in_debug = require('tap.utils').notify_in_debug
 
 local M = {}
 
-local notify_opts = { title = 'Cursor' }
+local notify_opts = { title = 'TmuxAI' }
 
 ---@param message string|nil
 function M.error(message)

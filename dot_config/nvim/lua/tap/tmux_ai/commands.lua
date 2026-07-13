@@ -1,9 +1,9 @@
-local context = require 'tap.cursor.context'
-local tmux = require 'tap.cursor.tmux'
-local notify = require 'tap.cursor.notify'
+local context = require 'tap.tmux_ai.context'
+local tmux = require 'tap.tmux_ai.tmux'
+local notify = require 'tap.tmux_ai.notify'
 
 local M = {}
-local cursor_prompt_highlight = 'TapCursorPrompt'
+local prompt_highlight = 'TapTmuxAIPrompt'
 local this_keyword = '@this'
 
 ---@param text string
@@ -17,7 +17,7 @@ local function highlight_this_keyword(text)
   -- dressing.nvim expects 0-indexed byte ranges for highlights.
   local col_start = start - 1
   local col_end = col_start + #this_keyword
-  return { { col_start, col_end, cursor_prompt_highlight } }
+  return { { col_start, col_end, prompt_highlight } }
 end
 
 local function send_prompt(prompt, opts)
@@ -25,21 +25,21 @@ local function send_prompt(prompt, opts)
   local payload = context.build_prompt(bufnr, prompt, opts.range)
   tmux.send_text(payload, { submit = opts.submit }, function(ok, err)
     if not ok then
-      notify.error(err or 'Failed to send prompt to Cursor')
+      notify.error(err or 'Failed to send prompt to TmuxAI')
       return
     end
 
-    notify.info 'Sent context to Cursor'
+    notify.info 'Sent context to TmuxAI'
   end)
 end
 
 local function ask_for_prompt(callback, default_text)
-  if vim.fn.hlexists(cursor_prompt_highlight) == 0 then
-    vim.api.nvim_set_hl(0, cursor_prompt_highlight, { link = 'WarningMsg' })
+  if vim.fn.hlexists(prompt_highlight) == 0 then
+    vim.api.nvim_set_hl(0, prompt_highlight, { link = 'WarningMsg' })
   end
 
   vim.ui.input({
-    prompt = 'Cursor prompt: ',
+    prompt = 'TmuxAI prompt: ',
     default = default_text or '',
     highlight = highlight_this_keyword,
   }, function(input)
@@ -96,33 +96,33 @@ function M.mode(args)
   local mode = args.args ~= '' and args.args or 'toggle'
   tmux.send_mode(mode, function(ok, err)
     if not ok then
-      notify.error(err or 'Failed to change Cursor mode')
+      notify.error(err or 'Failed to change TmuxAI mode')
       return
     end
 
     if mode == 'toggle' then
-      notify.info 'Sent Cursor mode cycle'
+      notify.info 'Sent TmuxAI mode cycle'
       return
     end
 
-    notify.info(string.format('Sent Cursor mode change: /%s', mode))
+    notify.info(string.format('Sent TmuxAI mode change: /%s', mode))
   end)
 end
 
 function M.target(args)
   local ok, err = tmux.set_target(args.args)
   if not ok then
-    notify.error(err or 'Failed to set Cursor target pane')
+    notify.error(err or 'Failed to set TmuxAI target pane')
     return
   end
 
-  notify.info(string.format('Cursor target set to %s', args.args))
+  notify.info(string.format('TmuxAI target set to %s', args.args))
 end
 
 function M.target_show()
   local target, err = tmux.show_target()
   if not target then
-    notify.error(err or 'no Cursor tmux pane configured')
+    notify.error(err or 'no TmuxAI tmux pane configured')
     return
   end
 
@@ -134,32 +134,32 @@ function M.target_pick()
 end
 
 function M.create()
-  vim.api.nvim_create_user_command('CursorSend', M.send, {
-    desc = 'Send current file or range to Cursor',
+  vim.api.nvim_create_user_command('TmuxAISend', M.send, {
+    desc = 'Send current file or range to TmuxAI',
     nargs = '*',
     range = true,
   })
 
-  vim.api.nvim_create_user_command('CursorMode', M.mode, {
-    desc = 'Change Cursor CLI mode',
+  vim.api.nvim_create_user_command('TmuxAIMode', M.mode, {
+    desc = 'Change TmuxAI CLI mode',
     nargs = '?',
     complete = function()
       return { 'plan', 'ask', 'debug', 'shell' }
     end,
   })
 
-  vim.api.nvim_create_user_command('CursorTarget', M.target, {
-    desc = 'Set the tmux pane target for Cursor',
+  vim.api.nvim_create_user_command('TmuxAITarget', M.target, {
+    desc = 'Set the tmux pane target for TmuxAI',
     nargs = 1,
   })
 
-  vim.api.nvim_create_user_command('CursorTargetShow', M.target_show, {
-    desc = 'Show the tmux pane target for Cursor',
+  vim.api.nvim_create_user_command('TmuxAITargetShow', M.target_show, {
+    desc = 'Show the tmux pane target for TmuxAI',
     nargs = 0,
   })
 
-  vim.api.nvim_create_user_command('CursorTargetPick', M.target_pick, {
-    desc = 'Pick the tmux pane target for Cursor',
+  vim.api.nvim_create_user_command('TmuxAITargetPick', M.target_pick, {
+    desc = 'Pick the tmux pane target for TmuxAI',
     nargs = 0,
   })
 end

@@ -1,6 +1,6 @@
-local config = require 'tap.cursor.config'
-local commands = require 'tap.cursor.commands'
-local tmux = require 'tap.cursor.tmux'
+local config = require 'tap.tmux_ai.config'
+local commands = require 'tap.tmux_ai.commands'
+local tmux = require 'tap.tmux_ai.tmux'
 local uv = vim.uv or vim.loop
 
 local M = {}
@@ -112,7 +112,7 @@ local function start_buffer_watch(bufnr)
 end
 
 local function create_file_watch_autocmds()
-  local group = vim.api.nvim_create_augroup('TapCursorRefreshWatch', { clear = true })
+  local group = vim.api.nvim_create_augroup('TapTmuxAIRefreshWatch', { clear = true })
 
   vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufFilePost', 'BufWritePost', 'BufEnter' }, {
     group = group,
@@ -143,7 +143,7 @@ local function create_file_watch_autocmds()
 end
 
 local function create_refresh_autocmds()
-  local group = vim.api.nvim_create_augroup('TapCursorRefresh', { clear = true })
+  local group = vim.api.nvim_create_augroup('TapTmuxAIRefresh', { clear = true })
 
   for _, event in ipairs(config.options.refresh.events) do
     vim.api.nvim_create_autocmd(event, {

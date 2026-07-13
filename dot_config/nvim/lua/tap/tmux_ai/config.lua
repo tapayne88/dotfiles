@@ -3,7 +3,10 @@ local M = {}
 local defaults = {
   target = {
     pane_id = nil,
-    pane_title = 'Cursor Agent',
+    -- Lua patterns matched case-insensitively against tmux pane titles to
+    -- auto-locate the AI agent pane. If more than one pane matches, the picker
+    -- is shown so a pane can be chosen explicitly.
+    pane_titles = { 'cursor', 'claude' },
   },
   send = {
     submit = true,
