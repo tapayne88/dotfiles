@@ -26,7 +26,10 @@ cd dotfiles
 Because Disko handles all mounts declaratively, use the `--no-filesystems` flag. This correctly detects your CPU microcode and necessary storage/input kernel modules from the physical hardware buses without needing the drives to be formatted first.
 
 ```bash
-sudo nixos-generate-config --no-filesystems --show-hardware-config > "hosts/${TARGET_HOST}/hardware-configuration.nix"
+sudo nixos-generate-config \
+  --no-filesystems \
+  --flake \
+  --dir "hosts/${TARGET_HOST}"
 ```
 
 ### 4. Identify and Set Your Hardware Disk ID
@@ -43,6 +46,8 @@ Open your host's configuration file and update the `mainDevice` variable to matc
 hostSettings.mainDevice = "/dev/disk/by-id/YOUR-DISCOVERED-ID";
 ```
 
+**N.B.** You'll also need to set the other required fields on `hostSettings`;
+
 Stage the changes so Nix Flakes can evaluate them in the next step:
 
 ```bash
@@ -51,25 +56,32 @@ git add .
 
 ---
 
-## Phase 2: Disk Partitioning & Formatting
+## Phase 2: Disk Partitioning, Formatting & Installation
 
 Disko handles the GPT partition table, LUKS encryption, Btrfs subvolumes, and mounting in a single command.
 
 > **Warning:** The `destroy,format,mount` mode will completely wipe the target drive. You will be prompted to enter and verify your new LUKS passphrase during this process.
 
 ```bash
-sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
-  --mode destroy,format,mount \
-  --flake ".#${TARGET_HOST}"
+sudo nix --extra-experimental-features "nix-command flakes" \
+  run 'github:nix-community/disko/latest#disko-install' -- \
+  --flake ".#${TARGET_HOST}" \
+  --disk main /dev/vda
 ```
 
-Once this finishes, your drive is fully partitioned, encrypted, and mounted to `/mnt`.
+Once this finishes, your drive is fully partitioned, encrypted and NixOS is installed.
 
 ---
 
 ## Phase 3: Configuration & Identity
 
 ### 1. Create Password Hashes
+
+First we need to mount the newly created `/persist` drive.
+
+```bash
+sudo mount -o subvol=@persist,compress=zstd,noatime /dev/mapper/cryptroot /mnt/persist
+```
 
 Store password hashes securely in the newly mounted persistent partition.
 
@@ -100,11 +112,7 @@ sudo cp -r ~/dotfiles "/mnt/persist/home/${INST_USER}/dotfiles"
 sudo chown -R 1000:100 "/mnt/persist/home/${INST_USER}"
 ```
 
----
-
-## Phase 4: Install NixOS
-
-### 1. Stage Final Changes
+### 3. Stage Final Changes
 
 Navigate to the permanent repository location and ensure all files (including the newly generated hardware configuration) are staged for the Flake installer.
 
@@ -113,17 +121,7 @@ cd "/mnt/persist/home/${INST_USER}/dotfiles"
 git add .
 ```
 
-### 2. Install
-
-Install NixOS directly from the Flake.
-
-```bash
-sudo nixos-install \
-    --flake ".#${TARGET_HOST}" \
-    --no-root-passwd
-```
-
-### 3. Reboot
+### 4. Reboot
 
 Unmount all filesystems and restart into the new installation.
 
