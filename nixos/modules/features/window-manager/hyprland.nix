@@ -321,20 +321,6 @@
               }
             ];
 
-            window_rule = [
-              # Noctalia Settings
-              {
-                match = {
-                  class = "dev.noctalia.Noctalia";
-                };
-                float = true;
-                size = [
-                  1080
-                  920
-                ];
-              }
-            ];
-
             workspace_rule = [
               # External Monitor (Workspaces 1-5)
               {
