@@ -11,6 +11,10 @@
       internalMonitor = "LVDS-1";
       terminal = pkgs.kitty;
       persistenceMountPath = "/persist";
+      mainDevice = "/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEAD137976Z";
+      tmpfsSize = "2G";
+      bootSize = "511M";
+      swapSize = "4096M";
     };
 
     # Use the systemd-boot EFI boot loader.

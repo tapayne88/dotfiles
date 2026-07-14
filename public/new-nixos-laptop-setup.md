@@ -1,127 +1,89 @@
 # NixOS Installation Guide
 
-## Phase 1: Disk Preparation
+## Phase 1: Preparation & Hardware Configuration
 
 ### 1. Set Installation Variables
 
-Identify your target installation drive (for example `/dev/nvme0n1` or `/dev/sda`) and the username that will own the persistent home directory.
+Identify the user that will own the persistent home directory and the hostname of the new machine.
 
 ```bash
-export INST_DISK="/dev/YOUR_DISCOVERED_DRIVE"
 export INST_USER="YOUR_USERNAME"
+export TARGET_HOST="YOUR_NEW_HOST_NAME"
 ```
 
-### 2. Form the GPT Partition Table
+### 2. Clone Your Dotfiles Locally
 
-Clear any existing partition signatures and create:
-
-- A **512 MiB EFI System Partition (ESP)**
-- A **LUKS-encrypted partition** using the remaining space
+Clone your configuration into the live USB's temporary memory so you can generate the hardware config and set the disk ID.
 
 ```bash
-sudo parted "$INST_DISK" -- mklabel gpt
-sudo parted "$INST_DISK" -- mkpart ESP fat32 1MiB 512MiB
-sudo parted "$INST_DISK" -- set 1 esp on
-sudo parted "$INST_DISK" -- mkpart primary 512MiB 100%
-
-# Refresh partition tables
-sudo udevadm settle
+cd ~
+git clone [https://github.com/tapayne88/dotfiles.git](https://github.com/tapayne88/dotfiles.git)
+cd dotfiles
 ```
 
-### 3. Determine Partition Names
+### 3. Generate Hardware Configuration
 
-Partition naming depends on the drive type.
-
-#### NVMe / eMMC
-
-Uses a `p` separator:
-
-- `/dev/nvme0n1p1`
-- `/dev/nvme0n1p2`
-
-#### SATA / SCSI
-
-Uses a numeric suffix:
-
-- `/dev/sda1`
-- `/dev/sda2`
-
-Inspect the partition layout:
+Because Disko handles all mounts declaratively, use the `--no-filesystems` flag. This correctly detects your CPU microcode and necessary storage/input kernel modules from the physical hardware buses without needing the drives to be formatted first.
 
 ```bash
-lsblk "$INST_DISK"
+sudo nixos-generate-config \
+  --no-filesystems \
+  --flake \
+  --dir "hosts/${TARGET_HOST}"
 ```
 
-Assign the partition paths:
+### 4. Identify and Set Your Hardware Disk ID
+
+Find the persistent hardware ID of your target installation drive (look for `ata-` or `nvme-` prefixes).
 
 ```bash
-export BOOT_PART="${INST_DISK}p1" # Use "${INST_DISK}1" for SATA drives
-export LUKS_PART="${INST_DISK}p2" # Use "${INST_DISK}2" for SATA drives
+ls -l /dev/disk/by-id/
+```
+
+Open your host's configuration file and update the `mainDevice` variable to match the discovered ID:
+
+```nix
+hostSettings.mainDevice = "/dev/disk/by-id/YOUR-DISCOVERED-ID";
+```
+
+**N.B.** You'll also need to set the other required fields on `hostSettings`;
+
+Stage the changes so Nix Flakes can evaluate them in the next step:
+
+```bash
+git add .
 ```
 
 ---
 
-# Phase 2: Encrypted Storage & Filesystem Layout
+## Phase 2: Disk Partitioning, Formatting & Installation
 
-## 1. Create the LUKS Container
+Disko handles the GPT partition table, LUKS encryption, Btrfs subvolumes, and mounting in a single command.
+
+> **Warning:** The `destroy,format,mount` mode will completely wipe the target drive. You will be prompted to enter and verify your new LUKS passphrase during this process.
 
 ```bash
-# Initialize the encrypted container
-sudo cryptsetup luksFormat "$LUKS_PART"
-
-# Open it as /dev/mapper/cryptroot
-sudo cryptsetup open "$LUKS_PART" cryptroot
+sudo nix --extra-experimental-features "nix-command flakes" \
+  run 'github:nix-community/disko/latest#disko-install' -- \
+  --flake ".#${TARGET_HOST}" \
+  --disk main /dev/vda
 ```
 
-## 2. Create the Btrfs Filesystem
+Once this finishes, your drive is fully partitioned, encrypted and NixOS is installed.
 
-Format the encrypted mapping and create the required subvolumes.
+---
 
-```bash
-sudo mkfs.btrfs -L system /dev/mapper/cryptroot
-sudo mount /dev/mapper/cryptroot /mnt
+## Phase 3: Configuration & Identity
 
-# Create subvolumes
-sudo btrfs subvolume create /mnt/@nix
-sudo btrfs subvolume create /mnt/@persist
-sudo btrfs subvolume create /mnt/@log
-sudo btrfs subvolume create /mnt/@swap
+### 1. Create Password Hashes
 
-# Disable Copy-on-Write for swap
-sudo chattr +C /mnt/@swap
-
-# Unmount
-sudo umount /mnt
-```
-
-## 3. Create the Temporary Root Filesystem
-
-Format the EFI partition, create a tmpfs root, and mount the Btrfs subvolumes.
+First we need to mount the newly created `/persist` drive.
 
 ```bash
-sudo mkfs.vfat -F 32 -n boot "$BOOT_PART"
-
-# Mount an ephemeral root in RAM
-sudo mount -t tmpfs -o size=2G,mode=755 none /mnt
-
-# Create mount points
-sudo mkdir -p /mnt/{boot,nix,persist,var/log,swap}
-
-# Mount partitions
-sudo mount "$BOOT_PART" /mnt/boot
-sudo mount -o subvol=@nix,compress=zstd,noatime /dev/mapper/cryptroot /mnt/nix
 sudo mount -o subvol=@persist,compress=zstd,noatime /dev/mapper/cryptroot /mnt/persist
-sudo mount -o subvol=@log,compress=zstd,noatime /dev/mapper/cryptroot /mnt/var/log
-sudo mount -o subvol=@swap,noatime /dev/mapper/cryptroot /mnt/swap
 ```
 
----
-
-# Phase 3: Configuration & Identity
-
-## 1. Create Password Hashes
-
-Store password hashes in the persistent partition before installation.
+Store password hashes securely in the newly mounted persistent partition.
 
 ```bash
 sudo mkdir -p /mnt/persist/passwords
@@ -133,68 +95,33 @@ sudo chmod 700 /mnt/persist/passwords
 sudo chmod 600 /mnt/persist/passwords/*
 ```
 
-> Ensure your configuration defines:
+> Ensure your host configuration defines:
 >
 > ```nix
 > users.users.root.hashedPasswordFile = "/persist/passwords/root";
 > users.users.<username>.hashedPasswordFile = "/persist/passwords/YOUR_USERNAME";
 > ```
->
-> where `<username>` matches the value of `INST_USER`.
 
-## 2. Clone Your Configuration Repository
+### 2. Move the Repository to Persistent Storage
+
+Move your configured, locally-edited dotfiles repository from the live environment's RAM into the persistent home directory where it will live permanently.
 
 ```bash
 sudo mkdir -p "/mnt/persist/home/${INST_USER}"
+sudo cp -r ~/dotfiles "/mnt/persist/home/${INST_USER}/dotfiles"
 sudo chown -R 1000:100 "/mnt/persist/home/${INST_USER}"
-
-git clone https://github.com/tapayne88/dotfiles.git \
-    "/mnt/persist/home/${INST_USER}/dotfiles"
 ```
 
-## 3. Generate the Hardware Configuration
+### 3. Stage Final Changes
 
-```bash
-# Generate the hardware configuration
-sudo nixos-generate-config --root /mnt --dir /tmp
-
-# Copy it into your repository
-cp /tmp/hardware-configuration.nix \
-    "/mnt/persist/home/${INST_USER}/dotfiles/hosts/YOUR_NEW_HOST_NAME/"
-```
-
----
-
-# Phase 4: Install NixOS
-
-## 1. Select the Flake Output
-
-Inspect the available host definitions.
+Navigate to the permanent repository location and ensure all files (including the newly generated hardware configuration) are staged for the Flake installer.
 
 ```bash
 cd "/mnt/persist/home/${INST_USER}/dotfiles"
-grep -A5 "nixosConfigurations" flake.nix
-```
-
-Select the hostname to install.
-
-```bash
-export TARGET_HOST="YOUR_MATCHING_HOSTNAME"
-```
-
-## 2. Stage Changes & Install
-
-Because Nix Flakes ignore untracked files, stage the generated hardware configuration before installing.
-
-```bash
 git add .
-
-sudo nixos-install \
-    --flake ".#${TARGET_HOST}" \
-    --no-root-passwd
 ```
 
-## 3. Reboot
+### 4. Reboot
 
 Unmount all filesystems and restart into the new installation.
 

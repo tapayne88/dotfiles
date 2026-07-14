@@ -4,6 +4,7 @@
     imports = [
       self.nixosModules.audio
       self.nixosModules.darktable
+      self.nixosModules.disko
       self.nixosModules.file-browser
       self.nixosModules.file-syncing
       self.nixosModules.greeter
