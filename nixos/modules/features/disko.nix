@@ -3,6 +3,7 @@
   flake.nixosModules.disko =
     { config, ... }:
     let
+      nixMountPath = "/nix";
       swapMountPath = "/swap";
       logMountPath = "/var/log";
     in
@@ -59,7 +60,7 @@
                       extraArgs = [ "-f" ];
                       subvolumes = {
                         "@nix" = {
-                          mountpoint = "/nix";
+                          mountpoint = nixMountPath;
                           mountOptions = [
                             "compress=zstd"
                             "noatime"
@@ -108,6 +109,7 @@
 
       # Manually flag datasets that are strictly required before the system fully boots
       fileSystems."${config.hostSettings.persistenceMountPath}".neededForBoot = true;
+      fileSystems."${nixMountPath}".neededForBoot = true;
       fileSystems."${logMountPath}".neededForBoot = true;
     };
 }
