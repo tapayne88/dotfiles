@@ -1,7 +1,12 @@
+{ inputs, ... }:
 {
   flake.nixosModules.disko =
     { config, ... }:
     {
+      imports = [
+        inputs.disko.nixosModules.disko
+      ];
+
       disko.devices = {
         # In-memory tmpfs root
         nodev = {
