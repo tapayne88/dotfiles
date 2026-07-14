@@ -13,7 +13,7 @@
           "/" = {
             fsType = "tmpfs";
             mountOptions = [
-              "size=2G"
+              "size=${config.hostSettings.tmpfsSize}"
               "mode=755"
             ];
           };
@@ -21,7 +21,7 @@
 
         disk = {
           main = {
-            device = "/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEAD137976Z";
+            device = config.hostSettings.mainDevice;
             type = "disk";
             content = {
               type = "gpt";
@@ -29,7 +29,7 @@
                 # Boot partition
                 ESP = {
                   type = "EF00";
-                  size = "511M";
+                  size = config.hostSettings.bootSize;
                   content = {
                     type = "filesystem";
                     format = "vfat";
@@ -80,7 +80,7 @@
                           mountOptions = [ "noatime" ];
                           swap = {
                             swapfile = {
-                              size = "4096M";
+                              size = config.hostSettings.swapSize;
                             };
                           };
                         };
