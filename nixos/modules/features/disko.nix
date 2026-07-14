@@ -26,10 +26,10 @@
             content = {
               type = "gpt";
               partitions = {
-                # Boot partition (replaces your /dev/disk/by-uuid/E460-8616)
+                # Boot partition
                 ESP = {
                   type = "EF00";
-                  size = "511M"; # Matched to the 511M shown in your lsblk output
+                  size = "511M";
                   content = {
                     type = "filesystem";
                     format = "vfat";
@@ -41,7 +41,7 @@
                   };
                 };
 
-                # Encrypted partition (replaces /dev/disk/by-uuid/eff69a1e...)
+                # Encrypted partition
                 luks = {
                   size = "100%";
                   content = {
