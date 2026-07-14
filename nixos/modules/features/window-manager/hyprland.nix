@@ -11,6 +11,9 @@
       mod = "SUPER";
     in
     {
+      # Trigger notification from lua submap with notify-send
+      home.packages = [ pkgs.libnotify ];
+
       wayland.windowManager.hyprland = {
         enable = true;
         systemd.enable = true;

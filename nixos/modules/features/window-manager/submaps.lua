@@ -84,7 +84,19 @@ hl.bind(mod .. ' + SHIFT + j', hl.dsp.window.move { direction = 'down', group_aw
 --- WINDOW MODE SUBMAP
 --- ==========================================
 
-hl.bind(mod .. ' + w', hl.dsp.submap 'window_mode')
+local submapNotificationId = 'string:x-canonical-private-synchronous:submap'
+local submapWindowModeIdLocation = '$XDG_RUNTIME_DIR/hypr_submap.id'
+
+hl.bind(mod .. ' + w', function()
+  hl.exec_cmd(
+    'notify-send --expire-time 0 --print-id --hint '
+      .. submapNotificationId
+      .. ' "Submap: Window Mode" "Use vim motions to manipulate windows"'
+      .. ' > '
+      .. submapWindowModeIdLocation
+  )
+  hl.dispatch(hl.dsp.submap 'window_mode')
+end)
 
 hl.define_submap('window_mode', function()
   -- Set repeating binds for resizing the active window.
@@ -105,6 +117,17 @@ hl.define_submap('window_mode', function()
   hl.bind(mod .. ' + SHIFT + k', hl.dsp.window.move { direction = 'up', group_aware = false })
   hl.bind(mod .. ' + SHIFT + j', hl.dsp.window.move { direction = 'down', group_aware = false })
 
-  hl.bind('Escape', hl.dsp.submap 'reset')
-  hl.bind('Return', hl.dsp.submap 'reset')
+  local clear = function()
+    hl.exec_cmd(
+      'notify-send --expire-time 1 --replace-id $(cat '
+        .. submapWindowModeIdLocation
+        .. ') --hint '
+        .. submapNotificationId
+        .. ' "Submap: Window Mode" "Exited"'
+    )
+    hl.dispatch(hl.dsp.submap 'reset')
+  end
+
+  hl.bind('Escape', clear)
+  hl.bind('Return', clear)
 end)
