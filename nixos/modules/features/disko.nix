@@ -3,6 +3,7 @@
   flake.nixosModules.disko =
     { config, ... }:
     let
+      swapMountPath = "/swap";
       logMountPath = "/var/log";
     in
     {
@@ -79,7 +80,7 @@
                           ];
                         };
                         "@swap" = {
-                          mountpoint = "/swap";
+                          mountpoint = swapMountPath;
                           mountOptions = [ "noatime" ];
                           swap = {
                             swapfile = {
@@ -97,6 +98,13 @@
           };
         };
       };
+
+      swapDevices = [
+        {
+          device = "${swapMountPath}/swapfile";
+          size = 4096;
+        }
+      ];
 
       # Manually flag datasets that are strictly required before the system fully boots
       fileSystems."${config.hostSettings.persistenceMountPath}".neededForBoot = true;
