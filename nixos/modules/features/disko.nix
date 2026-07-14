@@ -2,6 +2,9 @@
 {
   flake.nixosModules.disko =
     { config, ... }:
+    let
+      logMountPath = "/var/log";
+    in
     {
       imports = [
         inputs.disko.nixosModules.disko
@@ -69,7 +72,7 @@
                           ];
                         };
                         "@log" = {
-                          mountpoint = "/var/log";
+                          mountpoint = logMountPath;
                           mountOptions = [
                             "compress=zstd"
                             "noatime"
@@ -97,6 +100,6 @@
 
       # Manually flag datasets that are strictly required before the system fully boots
       fileSystems."${config.hostSettings.persistenceMountPath}".neededForBoot = true;
-      fileSystems."/var/log".neededForBoot = true;
+      fileSystems."${logMountPath}".neededForBoot = true;
     };
 }
