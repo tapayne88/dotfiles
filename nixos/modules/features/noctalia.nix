@@ -98,7 +98,7 @@
             show_label = false;
           };
           clock = {
-            format = "{:%H:%M %A, %e %B}";
+            format = "{:%a %e %b %H:%M}";
             tooltip_format = "{:%A, %e %B %Y}";
           };
           clock-short = {
