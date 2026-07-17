@@ -1,0 +1,4 @@
+session/base_directory_pattern=/mnt/truenas/photography/Lightroom/Catalog
+session/filename_pattern=$(FILE_NAME).$(FILE_EXTENSION)
+session/sub_directory_pattern=$(EXIF_YEAR)/$(EXIF_YEAR)-$(EXIF_MONTH)-$(EXIF_DAY)
+session/use_filename=FALSE

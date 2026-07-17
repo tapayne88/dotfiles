@@ -21,6 +21,7 @@
             self.homeModules.unfree
 
             self.homeModules.browser
+            self.homeModules.darktable
             self.homeModules.linux
             self.homeModules.neovim
             self.homeModules.notes
