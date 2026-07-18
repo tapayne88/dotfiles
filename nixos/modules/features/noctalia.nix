@@ -92,6 +92,12 @@
               };
             };
           };
+
+        calendar.account.google = {
+          type = "google";
+          name = "Personal";
+        };
+
         widget = {
           battery = {
             display_mode = "graphic";
