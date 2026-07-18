@@ -80,6 +80,9 @@
               input = {
                 kb_layout = "gb";
                 kb_options = "ctrl:nocaps";
+
+                repeat_rate = 35;
+                repeat_delay = 300;
               };
 
               animations.enabled = true;
