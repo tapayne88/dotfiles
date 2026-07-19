@@ -1,4 +1,7 @@
-worktree-path = "../worktrees/{{ repo }}.{{ branch | sanitize }}"
+worktree-path = "../.worktrees/{{ repo }}.{{ branch | hash }}"
+
+[post-start]
+copy = "wt step copy-ignored"
 
 [pre-remove]
 tmux = """

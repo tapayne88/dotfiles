@@ -20,6 +20,7 @@
         television # A very fast, portable and hackable fuzzy finder.
         tldr # simplified and community-driven man pages
         tmux # terminal multiplexer
+        worktrunk # Git worktree manager for parallel AI agent workflows
       ];
     in
     {
