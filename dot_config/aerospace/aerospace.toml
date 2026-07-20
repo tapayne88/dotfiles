@@ -160,7 +160,7 @@ alt-shift-semicolon = 'mode service'
 
 alt-shift-space = 'layout floating tiling'
 
-alt-x = 'fullscreen'
+alt-shift-x = 'fullscreen'
 alt-r = 'mode resize'
 
 [mode.resize.binding]
