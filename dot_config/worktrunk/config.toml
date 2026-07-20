@@ -5,6 +5,6 @@ copy = "wt step copy-ignored"
 
 [pre-remove]
 tmux = """
-NAME={{ repo }}/{{ branch }}
+NAME={{ repo }}/{{ branch | hash }}
 tmux kill-session -t "$NAME" 2>/dev/null || true
 """
