@@ -8,7 +8,7 @@ command = """
 tmux list-sessions -F '#{session_last_attached}\t#{session_name}\t#{session_windows} windows\t#{session_created_string}' \
   | sort --numeric-sort --reverse \
   | cut --delimiter '\t' --fields 2- \
-  | grep -v "^$(tmux display-message -p '#S' 2>/dev/null)\t"
+  | grep --invert-match --extended-regexp "^($(tmux display-message -p '#S' 2>/dev/null)|popup)\t"
 """
 no_sort = true
 frecency = false
