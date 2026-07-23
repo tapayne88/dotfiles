@@ -43,6 +43,16 @@ return {
         'vimdoc',
         'yaml',
       }
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+
+      -- The plugin loads on BufReadPost, after the first buffer's FileType
+      -- event has already fired, so start treesitter for it explicitly.
+      pcall(vim.treesitter.start, vim.api.nvim_get_current_buf())
     end,
   },
 
