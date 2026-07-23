@@ -76,11 +76,11 @@ check_config() {
         exit 1
     fi
 
-    # Check file permissions (simplified cross-platform check)
-    local perms_string
-    perms_string=$(find "$CONFIG_FILE" | awk '{ print $3 }')
+    # Check file permissions (cross-platform: BSD/macOS vs GNU/Linux stat)
+    local perms
+    perms=$(stat -c '%a' "$CONFIG_FILE" 2>/dev/null || stat -f '%Lp' "$CONFIG_FILE" 2>/dev/null)
 
-    if [[ "$perms_string" != "-rw-------" ]]; then
+    if [[ "$perms" != "600" ]]; then
         warn "Config file permissions should be 600 (owner read/write only)"
         warn "Run: chmod 600 $CONFIG_FILE"
     fi
@@ -105,8 +105,10 @@ sync_rancher_instance() {
     local name="$1"
     local url="$2"
     local token="$3"
+    local instance_num="$4"
+    local instance_total="$5"
 
-    log "Processing rancher instance: $name ($url)"
+    log "Processing rancher instance $instance_num/$instance_total: $name ($url)"
 
     # Get available clusters first
     log "Discovering clusters in $name..."
@@ -129,7 +131,7 @@ sync_rancher_instance() {
     while IFS= read -r cluster; do
         [[ -z "$cluster" ]] && continue
 
-        log "  Processing cluster: $cluster"
+        log "  Processing cluster $cluster_index/$cluster_count in $name: $cluster"
 
         # Login and select this specific cluster (using the cluster index)
         log "  → Logging into $cluster (option $cluster_index)..."
@@ -199,7 +201,7 @@ main() {
             continue
         fi
 
-        sync_rancher_instance "$name" "$url" "$token"
+        sync_rancher_instance "$name" "$url" "$token" "$((i+1))" "$instance_count"
     done
 
     log "Sync completed successfully"
