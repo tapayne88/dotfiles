@@ -33,6 +33,22 @@ local function send_prompt(prompt, opts)
   end)
 end
 
+-- Prompt for input using snacks.nvim's input directly rather than
+-- `vim.ui.input`. The Shift+Enter (no-submit) binding below is implemented with
+-- snacks' `win.keys`/`win.actions`, so it only works with snacks. Other plugins
+-- may hijack `vim.ui.input` at runtime -- notably dressing.nvim, which the
+-- target picker (`vim.ui.select`) lazy-loads and which then reinstalls its own
+-- input -- silently dropping the binding. Calling snacks directly keeps the
+-- prompt (and Shift+Enter) consistent regardless of what owns `vim.ui.input`.
+local function ui_input(opts, on_confirm)
+  local snacks = _G.Snacks
+  if snacks and snacks.input then
+    snacks.input(opts, on_confirm)
+  else
+    vim.ui.input(opts, on_confirm)
+  end
+end
+
 local function ask_for_prompt(callback, default_text)
   if vim.fn.hlexists(prompt_highlight) == 0 then
     vim.api.nvim_set_hl(0, prompt_highlight, { link = 'WarningMsg' })
@@ -42,7 +58,7 @@ local function ask_for_prompt(callback, default_text)
   -- further context can be appended in the target pane before sending.
   local submit = true
 
-  vim.ui.input({
+  ui_input({
     prompt = 'TmuxAI prompt: ',
     default = default_text or '',
     highlight = highlight_this_keyword,
