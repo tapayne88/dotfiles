@@ -29,7 +29,7 @@ local function send_prompt(prompt, opts)
       return
     end
 
-    notify.info 'Sent context to TmuxAI'
+    notify.info(opts.submit and 'Sent prompt to TmuxAI' or 'Sent prompt to TmuxAI (not submitted)')
   end)
 end
 
@@ -38,22 +38,40 @@ local function ask_for_prompt(callback, default_text)
     vim.api.nvim_set_hl(0, prompt_highlight, { link = 'WarningMsg' })
   end
 
+  -- Enter confirms and submits; Shift+Enter confirms without submitting so
+  -- further context can be appended in the target pane before sending.
+  local submit = true
+
   vim.ui.input({
     prompt = 'TmuxAI prompt: ',
     default = default_text or '',
     highlight = highlight_this_keyword,
+    win = {
+      keys = {
+        i_tmux_ai_no_submit = {
+          '<s-cr>',
+          { 'tmux_ai_no_submit', 'confirm' },
+          mode = { 'i', 'n' },
+        },
+      },
+      actions = {
+        tmux_ai_no_submit = function()
+          submit = false
+        end,
+      },
+    },
   }, function(input)
     if input == nil or vim.trim(input) == '' then
       return
     end
 
-    callback(input)
+    callback(input, submit)
   end)
 end
 
 local function with_prompt(args, callback, default_text)
   if args.args and vim.trim(args.args) ~= '' then
-    callback(args.args)
+    callback(args.args, true)
     return
   end
 
@@ -84,10 +102,10 @@ end
 
 function M.send(args)
   local range = get_range(args)
-  with_prompt(args, function(prompt)
+  with_prompt(args, function(prompt, submit)
     send_prompt(normalize_prompt(prompt, range), {
       range = range,
-      submit = true,
+      submit = submit,
     })
   end, range == nil and '' or '@this ')
 end
