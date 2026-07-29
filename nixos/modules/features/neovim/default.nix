@@ -13,7 +13,7 @@
         # lsp
         bash-language-server
         bazel-buildtools
-        # cucumber_language_server
+        (pkgs.callPackage ./_cucumber-language-server.nix { })
         eslint_d
         hadolint
         helm-ls
