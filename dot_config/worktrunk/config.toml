@@ -1,10 +1,10 @@
-worktree-path = "../.worktrees/{{ repo }}.{{ branch | hash }}"
+worktree-path = "../.worktrees/{{ repo }}.{{ branch | codename(2) }}"
 
 [post-start]
 copy = "wt step copy-ignored"
 
 [pre-remove]
 tmux = """
-NAME={{ repo }}/{{ branch | hash }}
+NAME={{ repo }}/{{ branch | codename(2) }}
 tmux kill-session -t "$NAME" 2>/dev/null || true
 """
