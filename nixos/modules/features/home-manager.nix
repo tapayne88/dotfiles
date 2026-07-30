@@ -24,6 +24,7 @@
             self.homeModules.darktable
             self.homeModules.linux
             self.homeModules.neovim
+            self.homeModules.nh
             self.homeModules.notes
             self.homeModules.programs
             self.homeModules.shell
