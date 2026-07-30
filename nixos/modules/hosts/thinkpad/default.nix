@@ -9,6 +9,7 @@
       inputs.stylix.nixosModules.stylix
       inputs.home-manager.nixosModules.default
       inputs.impermanence.nixosModules.impermanence
+      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
 
       # Nix Config
       self.nixosModules.nix-settings
