@@ -60,6 +60,7 @@
           jq # json cli processor
           mise # Front-end to your dev env
           ripgrep # rg searching
+          rustup
           vivid # A themeable LS_COLORS generator with a rich filetype datebase
           zoxide # A smarter cd command
         ]
