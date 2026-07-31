@@ -15,9 +15,10 @@
             imports = [
               self.homeModules.unfree
 
-              self.homeModules.shell
               self.homeModules.darwin
               self.homeModules.neovim
+              self.homeModules.nh
+              self.homeModules.shell
               self.homeModules.work
             ];
           }
