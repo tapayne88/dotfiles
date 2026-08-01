@@ -37,4 +37,13 @@
       };
     };
   };
+
+  flake.homeModules.host-settings = { lib, ... }: {
+    options.hostSettings = {
+      sshPublicKey = lib.mkOption {
+        type = lib.types.str;
+        description = "The public SSH key string used by 1Password for Git signing on this host.";
+      };
+    };
+  };
 }

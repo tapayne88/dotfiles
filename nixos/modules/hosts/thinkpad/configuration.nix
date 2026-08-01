@@ -1,4 +1,7 @@
-{ self, ... }:
+{ self, config, ... }:
+let
+  username = "tpayne";
+in
 {
   flake.nixosModules.thinkpadConfiguration = { pkgs, ... }: {
     imports = [
@@ -7,7 +10,7 @@
     ];
 
     hostSettings = {
-      username = "tpayne";
+      inherit username;
       internalMonitor = "LVDS-1";
       terminal = pkgs.kitty;
       persistenceMountPath = "/persist";
@@ -31,6 +34,12 @@
 
     # Force the TTY console to use the same layout as above
     console.useXkbConfig = true;
+
+    home-manager.users."${username}".imports = [
+      {
+        hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2";
+      }
+    ];
 
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

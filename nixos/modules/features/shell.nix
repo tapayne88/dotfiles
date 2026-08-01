@@ -93,7 +93,7 @@
 
         signing = {
           format = "ssh";
-          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2";
+          key = config.hostSettings.sshPublicKey;
           signByDefault = true;
           signer = "${pkgs._1password-gui}/bin/op-ssh-sign";
         };
