@@ -83,7 +83,7 @@
 
         includes = [
           {
-            path = "${config.xdg.configHome}/git/base";
+            path = "${config.xdg.configHome}/git/default";
           }
           {
             condition = "gitdir:work/";
