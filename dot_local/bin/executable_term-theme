@@ -124,7 +124,7 @@ set_bat_theme() {
 set_delta_theme() {
   local CMD
   [ "$1" = "dark" ] && CMD="s/$DELTA_THEME_LIGHT/$DELTA_THEME_DARK/" || CMD="s/$DELTA_THEME_DARK/$DELTA_THEME_LIGHT/"
-  sed -i $CMD "$HOME/.gitconfig-theme"
+  sed -i $CMD "$HOME/.config/git/theme"
 }
 
 set_system_theme() {
