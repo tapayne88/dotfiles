@@ -37,7 +37,7 @@ in
 
     home-manager.users."${username}".imports = [
       {
-        hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2";
+        hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2 thinkpad-nixos";
       }
     ];
 

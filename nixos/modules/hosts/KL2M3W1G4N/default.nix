@@ -27,7 +27,7 @@
             };
           }
           {
-            hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzWdfY+aZo47dJrD9Q4OI5h9fM+3Dkp9GiaVhV4l5ce";
+            hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzWdfY+aZo47dJrD9Q4OI5h9fM+3Dkp9GiaVhV4l5ce KL2M3W1G4N";
           }
         ];
       };
