@@ -89,6 +89,9 @@
             condition = "gitdir:work/";
             path = "${config.xdg.configHome}/git/work";
           }
+          {
+            path = "${config.xdg.configHome}/git/extra";
+          }
         ];
 
         signing = {
