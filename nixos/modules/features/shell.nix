@@ -12,7 +12,6 @@
       unstablePkgs = with (if pkgs.stdenv.isDarwin then pkgs-unstable else pkgs); [
         _1password-cli
         carapace # A multi-shell completion library
-        git # newest git!
         jqp # TUI playground for jq
         k9s # Kubernetes CLI To Manage Your Clusters In Style!
         kubie # even nicer interaction with k8s cli with multiple configs
@@ -22,9 +21,14 @@
         tmux # terminal multiplexer
         worktrunk # Git worktree manager for parallel AI agent workflows
       ];
+
+      gitPkg = if pkgs.stdenv.isDarwin then pkgs-unstable.git else pkgs.git;
     in
     {
-      allowedUnfreePackages = [ "1password-cli" ];
+      allowedUnfreePackages = [
+        "1password-cli"
+        "1password"
+      ];
 
       # Let Home Manager install and manage itself.
       programs.home-manager.enable = true;
@@ -70,6 +74,28 @@
         enable = true;
         settings = {
           vim_keys = true;
+        };
+      };
+
+      programs.git = {
+        enable = true;
+        package = gitPkg;
+
+        includes = [
+          {
+            path = "${config.xdg.configHome}/git/base";
+          }
+          {
+            condition = "gitdir:work/";
+            path = "${config.xdg.configHome}/git/work";
+          }
+        ];
+
+        signing = {
+          format = "ssh";
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2";
+          signByDefault = true;
+          signer = "${pkgs._1password-gui}/bin/op-ssh-sign";
         };
       };
     };

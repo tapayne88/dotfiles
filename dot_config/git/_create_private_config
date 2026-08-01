@@ -1,8 +1,8 @@
 # vim:ft=gitconfig
 
 [include]
-  path = .gitconfig-base
+  path = $XDG_CONFIG_HOME/git/base
 
 # If in repo within `work` directory, use work email
 [includeIf "gitdir:work/"]
-  path = .gitconfig-work
+  path = $XDG_CONFIG_HOME/git/work
