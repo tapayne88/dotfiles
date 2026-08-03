@@ -1,4 +1,4 @@
-{ self, config, ... }:
+{ self, ... }:
 let
   username = "tpayne";
 in
