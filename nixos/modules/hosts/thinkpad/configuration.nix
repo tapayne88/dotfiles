@@ -38,6 +38,19 @@ in
     home-manager.users."${username}".imports = [
       {
         hostSettings.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2 thinkpad-nixos";
+
+        xdg.configFile."1Password/ssh/agent.toml".text = ''
+          [[ssh-keys]]
+          item = "thinkpad-nixos (default)"
+          vault = "Private"
+
+          [[ssh-keys]]
+          item = "thinkpad-nixos (truenas)"
+          vault = "Private"
+
+          [[ssh-keys]]
+          vault = "Private"
+        '';
       }
     ];
 
