@@ -94,12 +94,20 @@
           }
         ];
 
-        signing = {
-          format = "ssh";
-          key = config.hostSettings.sshPublicKey;
-          signByDefault = true;
-          signer = "${pkgs._1password-gui}/bin/op-ssh-sign";
-        };
+        signing =
+          let
+            signer =
+              if pkgs.stdenv.isDarwin then
+                "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+              else
+                "${pkgs._1password-gui}/bin/op-ssh-sign";
+          in
+          {
+            inherit signer;
+            format = "ssh";
+            key = config.hostSettings.sshPublicKey;
+            signByDefault = true;
+          };
       };
     };
 }
