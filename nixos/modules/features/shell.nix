@@ -23,6 +23,12 @@
       ];
 
       gitPkg = if pkgs.stdenv.isDarwin then pkgs-unstable.git else pkgs.git;
+
+      _1passwordSock =
+        if pkgs.stdenv.isDarwin then
+          "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+        else
+          "${config.home.homeDirectory}/.1password/agent.sock";
     in
     {
       allowedUnfreePackages = [
@@ -42,6 +48,8 @@
           if [ -f ${config.xdg.configHome}/zsh/config ]; then
             source ${config.xdg.configHome}/zsh/config
           fi
+
+          export SSH_AUTH_SOCK="${_1passwordSock}"
         '';
       };
 
@@ -108,6 +116,17 @@
             key = config.hostSettings.sshPublicKey;
             signByDefault = true;
           };
+      };
+
+      programs.ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+        includes = [ "shared_config" ];
+        settings = {
+          "*" = {
+            IdentityAgent = ''"${_1passwordSock}"'';
+          };
+        };
       };
     };
 }
