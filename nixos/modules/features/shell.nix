@@ -4,6 +4,7 @@
       config,
       pkgs,
       pkgs-unstable,
+      lib,
       ...
     }:
     let
@@ -29,6 +30,8 @@
           "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
         else
           "${config.home.homeDirectory}/.1password/agent.sock";
+
+      tomlFormat = pkgs.formats.toml { };
     in
     {
       allowedUnfreePackages = [
@@ -126,6 +129,18 @@
           "*" = {
             IdentityAgent = ''"${_1passwordSock}"'';
           };
+        };
+      };
+
+      xdg.configFile."1Password/ssh/agent.toml" = lib.mkIf (config.hostSettings.availableSshKeys != [ ]) {
+        source = tomlFormat.generate "agent.toml" {
+          # 2. `builtins.filter` removes any dictionaries that ended up completely empty `{}`
+          ssh-keys = builtins.filter (attrs: attrs != { }) (
+            # 1. `map` and `filterAttrs` strip out keys where the value is `null` OR `{}`
+            map (
+              keyAttrs: lib.filterAttrs (name: value: value != null) keyAttrs
+            ) config.hostSettings.availableSshKeys
+          );
         };
       };
     };

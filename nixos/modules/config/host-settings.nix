@@ -44,6 +44,31 @@
         type = lib.types.str;
         description = "The public SSH key string used by 1Password for Git signing on this host.";
       };
+      availableSshKeys = lib.mkOption {
+        description = "List of available SSH keys for 1Password to make available via the SSH agent";
+        default = [ ];
+        type = lib.types.listOf (
+          lib.types.submodule {
+            options = {
+              item = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "The item name or ID";
+              };
+              vault = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "The vault name or ID";
+              };
+              account = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "The account name sign-in address or ID";
+              };
+            };
+          }
+        );
+      };
     };
   };
 }
