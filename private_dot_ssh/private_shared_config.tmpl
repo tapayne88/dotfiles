@@ -2,10 +2,11 @@
 AddKeysToAgent yes
 
 Host pi
+  ForwardAgent yes
   user tpayne
   hostname raspberrypi.{{ .home_network_tld }}
 
 Host truenas
+  ForwardAgent yes
   user tpayne
   hostname truenas.{{ .home_network_tld }}
-  IdentityFile ~/.ssh/truenas

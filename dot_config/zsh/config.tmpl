@@ -94,10 +94,6 @@ export FPP_DISABLE_SPLIT=1
 # tmuxp thing
 export DISABLE_AUTO_TITLE='true'
 
-zstyle :omz:plugins:ssh-agent agent-forwarding on
-zstyle :omz:plugins:ssh-agent lazy true
-zstyle :omz:plugins:ssh-agent lifetime 12h
-
 export ZSH_TMUX_AUTOQUIT="false"
 export ZSH_TMUX_AUTOCONNECT="false"
 
@@ -141,7 +137,6 @@ antigen bundle robbyrussell/oh-my-zsh plugins/direnv
 antigen bundle robbyrussell/oh-my-zsh plugins/docker
 antigen bundle robbyrussell/oh-my-zsh plugins/fzf
 antigen bundle robbyrussell/oh-my-zsh plugins/kubectl
-antigen bundle robbyrussell/oh-my-zsh plugins/ssh-agent
 antigen bundle robbyrussell/oh-my-zsh plugins/terraform
 antigen bundle robbyrussell/oh-my-zsh plugins/tmux
 

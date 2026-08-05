@@ -5,16 +5,12 @@
       {
         pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
         modules = [
-          {
-            imports = [
-              self.homeModules.unfree
+          self.homeModules.unfree
 
-              self.homeModules.linux
-              self.homeModules.neovim
-              self.homeModules.nh
-              self.homeModules.shell
-            ];
-          }
+          self.homeModules.linux
+          self.homeModules.neovim
+          self.homeModules.nh
+          self.homeModules.shell
           {
             home = {
               username = "tpayne";

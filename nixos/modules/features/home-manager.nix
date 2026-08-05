@@ -19,12 +19,12 @@
         users."${config.hostSettings.username}" = {
           imports = [
             self.homeModules.unfree
+            self.homeModules.host-settings
 
             self.homeModules.browser
             self.homeModules.darktable
             self.homeModules.linux
             self.homeModules.neovim
-            self.homeModules.nh
             self.homeModules.notes
             self.homeModules.programs
             self.homeModules.shell
