@@ -447,9 +447,10 @@
               "hyprland.start"
               (mkLuaInline ''
                 function()
-                  hl.exec_cmd("uwsm app -- noctalia") 
-                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.syncthingtray} --wait") 
-                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.tailscale} systray") 
+                  hl.exec_cmd("uwsm app -- noctalia")
+                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.syncthingtray} --wait")
+                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.tailscale} systray")
+                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs._1password-gui} --silent")
                 end'')
             ];
           };
