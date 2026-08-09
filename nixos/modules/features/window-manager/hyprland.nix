@@ -443,16 +443,20 @@
                 (bind "switch:on:Lid Switch" (dsp.exec_cmd "${ipc} session lock") { })
               ];
 
-            on = mkArgs [
-              "hyprland.start"
-              (mkLuaInline ''
-                function()
-                  hl.exec_cmd("uwsm app -- noctalia")
-                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.syncthingtray} --wait")
-                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs.tailscale} systray")
-                  hl.exec_cmd("uwsm app -- ${lib.getExe pkgs._1password-gui} --silent")
-                end'')
-            ];
+            on =
+              let
+                delaySeconds = "5";
+              in
+              mkArgs [
+                "hyprland.start"
+                (mkLuaInline ''
+                  function()
+                    hl.exec_cmd("uwsm app -- noctalia")
+                    hl.exec_cmd("uwsm app -- bash -c 'sleep ${delaySeconds} && ${lib.getExe pkgs.syncthingtray} --wait'")
+                    hl.exec_cmd("uwsm app -- bash -c 'sleep ${delaySeconds} && ${lib.getExe pkgs.tailscale} systray'")
+                    hl.exec_cmd("uwsm app -- bash -c 'sleep ${delaySeconds} && ${lib.getExe pkgs._1password-gui} --silent'")
+                  end'')
+              ];
           };
 
         extraConfig = builtins.readFile ./submaps.lua;
