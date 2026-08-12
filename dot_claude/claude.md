@@ -10,3 +10,9 @@
 - User instructions always override this file.
 
 [Source](https://github.com/drona23/claude-token-efficient)
+
+# Git
+
+- Never merge; always rebase. Use `git pull --rebase` and rebase branches onto their target instead of merging.
+- Stop and ask before rebasing when it would increase complexity, e.g. the branch is shared or already pushed, there are many commits with conflicts, or the history already contains merge commits.
+- Never rewrite published history without explicit confirmation.
