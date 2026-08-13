@@ -6,7 +6,9 @@
       "context": "Scroll",
       "bindings": {
         "ctrl+u": "scroll:halfPageUp",
-        "ctrl+d": "scroll:halfPageDown"
+        "ctrl+d": "scroll:halfPageDown",
+        "ctrl+y": "scroll:lineUp",
+        "ctrl+e": "scroll:lineDown"
       }
     }
   ]
