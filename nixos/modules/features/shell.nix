@@ -10,7 +10,7 @@
     let
       # MacOS defaults to stable, nixos defaults to unstable. This is an explicit
       # list of unstable packages so macOS can get them
-      unstablePkgs = with (if pkgs.stdenv.isDarwin then pkgs-unstable else pkgs); [
+      unstablePkgs = with (if pkgs.stdenv.hostPlatform.isDarwin then pkgs-unstable else pkgs); [
         _1password-cli
         carapace # A multi-shell completion library
         jqp # TUI playground for jq
@@ -23,10 +23,10 @@
         worktrunk # Git worktree manager for parallel AI agent workflows
       ];
 
-      gitPkg = if pkgs.stdenv.isDarwin then pkgs-unstable.git else pkgs.git;
+      gitPkg = if pkgs.stdenv.hostPlatform.isDarwin then pkgs-unstable.git else pkgs.git;
 
       _1passwordSock =
-        if pkgs.stdenv.isDarwin then
+        if pkgs.stdenv.hostPlatform.isDarwin then
           "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
         else
           "${config.home.homeDirectory}/.1password/agent.sock";
@@ -108,7 +108,7 @@
         signing =
           let
             signer =
-              if pkgs.stdenv.isDarwin then
+              if pkgs.stdenv.hostPlatform.isDarwin then
                 "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
               else
                 "${pkgs._1password-gui}/bin/op-ssh-sign";
