@@ -44,8 +44,6 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    tuigreet-fork.url = "github:notashelf/tuigreet";
   };
   outputs =
     inputs:

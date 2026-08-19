@@ -1,25 +1,18 @@
-{ inputs, ... }:
 {
   flake.nixosModules.greeter =
-    { pkgs, config, ... }:
     {
-      nix.settings = {
-        extra-substituters = [ "https://nyx.cachix.org" ];
-        extra-trusted-public-keys = [ "nyx.cachix.org-1:xH6G0MO9PrpeGe7mHBtj1WbNzmnXr7jId2mCiq6hipE=" ];
-      };
-
-      nixpkgs.overlays = [
-        (final: prev: {
-          tuigreet = inputs.tuigreet-fork.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        })
-      ];
-
+      lib,
+      pkgs,
+      config,
+      ...
+    }:
+    {
       services.greetd = {
         enable = true;
         settings = {
           default_session = {
             user = "greeter";
-            command = "${pkgs.tuigreet}/bin/tuigreet --cmd 'uwsm start hyprland-uwsm.desktop'";
+            command = "${lib.getExe pkgs.tuigreet} --cmd 'uwsm start hyprland-uwsm.desktop'";
           };
         };
       };
@@ -60,14 +53,6 @@
         input = "gray"
         action = "darkgrey"
         button = "yellow"
-
-        [[outputs]]
-        connector = "HDMI-A-1"
-        primary = true
-
-        [[outputs]]
-        connector = "${config.hostSettings.internalMonitor}"
-        enabled = true
       '';
     };
 }
