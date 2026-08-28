@@ -19,7 +19,20 @@ tmux list-sessions -F '#{session_last_attached}\t#{session_name}\t#{session_wind
         }
         close(summaryfile)
       }
-      { print $1, "(" $2 ") " (($1 in map) ? map[$1] : "") }
+      {
+        names[NR] = $1
+        wins[NR] = $2
+        if (length($1) > maxname) maxname = length($1)
+        if (length($2) > maxwin) maxwin = length($2)
+      }
+      END {
+        for (i = 1; i <= NR; i++) {
+          name = names[i]
+          win = wins[i]
+          summary = (name in map) ? map[name] : ""
+          printf "%s\t%*s(%-*s) %s\\n", name, maxname - length(name) + 1, "", maxwin, win, summary
+        }
+      }
     ' \
   || echo ""
 rm -f "$SUMMARY_FILE"
