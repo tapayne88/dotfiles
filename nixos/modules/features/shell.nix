@@ -70,6 +70,7 @@
           eza # ls replacement
           fd # faster more user friendly find
           fzf # fuzzy-finder
+          gh # GitHub CLI tool
           gti # alias for git, with a gti
           just # Handy way to save and run project-specific commands
           jq # json cli processor
