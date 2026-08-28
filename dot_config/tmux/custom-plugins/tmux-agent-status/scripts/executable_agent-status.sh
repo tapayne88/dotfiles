@@ -9,16 +9,12 @@
 set -uo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd -P)
-plugin_dir=$(dirname "$script_dir")
 
 # shellcheck source=./helpers.sh
 source "$script_dir/helpers.sh"
 
 command -v jq > /dev/null 2>&1 || exit 0
 command -v tmux > /dev/null 2>&1 || exit 0
-
-providers_option=$(tmux_option '@agent_status_providers' 'claude')
-provider_path=$(tmux_option '@agent_status_provider_path' '')
 
 # Defaults are Nerd Font glyphs: hourglass (waiting), play (running), check
 # (done) -- written as \xHH UTF-8 byte escapes (nf-fa-hourglass-half U+F252,
@@ -35,36 +31,9 @@ color_done=$(tmux_option '@agent_status_resolved_color_done' '')
 
 separator=$(tmux_option '@agent_status_separator' '  ')
 
-# Locate a provider executable by name: user path first, then the bundled
-# providers/ directory.
-find_provider() {
-  local name=$1 dir
-  for dir in "$provider_path" "$plugin_dir/providers"; do
-    [ -n "$dir" ] || continue
-    if [ -x "$dir/$name" ]; then
-      echo "$dir/$name"
-      return 0
-    fi
-  done
-  return 1
-}
-
-all_entries='[]'
-any_ran=0
-
-for name in $providers_option; do
-  exe=$(find_provider "$name") || continue
-
-  out=$("$exe" 2> /dev/null) || continue
-  echo "$out" | jq -e 'type == "array"' > /dev/null 2>&1 || continue
-
-  any_ran=1
-  all_entries=$(jq -c -n --argjson a "$all_entries" --argjson b "$out" '$a + $b')
-done
-
 # If nothing ran (no providers configured/found, or all failed), stay silent
 # rather than render a misleading all-zero segment.
-[ "$any_ran" -eq 1 ] || exit 0
+all_entries=$(run_providers) || exit 0
 
 counts=$(echo "$all_entries" | jq -c '
   reduce .[] as $e (
