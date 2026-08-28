@@ -175,6 +175,19 @@ formatted, colour-bearing row directly as the entry's second field
 as-is. `output`/`preview`/`actions` still read `{split:\t:0}` (the plain
 name, untouched), so they need no `strip_ansi`.
 
+The status summary column is right-aligned by having `awk` collect all
+rows first, compute the longest session name and windows-count string
+across the batch, then pad in an `END` block. The padding is pure leading
+spaces (`%*s` with an empty string), not a repeated, right-justified copy
+of the name -- repeating the name looked reasonable in isolation but threw
+alignment off, because the raw tab separating field 0 (plain name, for
+`output`) from field 1 (the padded display text) renders with a roughly
+constant width regardless of what precedes it, not a real tab-stop
+calculation. Padding with plain spaces (which don't share that quirk)
+combines with that constant tab width correctly; padding with a
+name-repeat does not, since the redundant name's varying length then
+un-cancels the alignment.
+
 Refresh is manual: television's existing `ctrl-r` (`reload_source`,
 `config.toml`) re-runs the source command, including the summary. No
 `watch`-based polling is configured.
