@@ -78,6 +78,27 @@ override wins).
 2. Add `<name>` to `@agent_status_providers` (space-separated).
 3. Test it in isolation: `providers/<name> | jq .`
 
+## Harness support
+
+The core polls providers on `status-interval` -- hooks are never required by
+the core itself. Whether a provider can be pure polling depends entirely on
+whether the harness maintains queryable state on its own:
+
+| Harness      | Pollable?  | Detail                                                                                                                                                                                             |
+| ------------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code  | Yes, fully | `~/.claude/sessions/<pid>.json`: `status`, `waitingFor`, tmux pane, pid for liveness -- see below                                                                                                  |
+| cursor-agent | No         | `~/.config/cursor/chats/<hash>/<id>/meta.json` has only `updatedAtMs` -- no pid, no status. Has hooks (`~/.cursor/hooks.json`)                                                                     |
+| Copilot CLI  | Barely     | `~/.copilot/session-state/<uuid>/events.jsonl` gives running-vs-idle from turn events, but no pid and no way to see "waiting for permission" -- indistinguishable from a long tool call. Has hooks |
+| opencode     | No (moot)  | State is exposed over HTTP/SSE only (`session.status`, `permission.updated`); nothing pollable on disk                                                                                             |
+
+A provider for a push-only harness needs a hook to write a state file first;
+the provider then just reads that file. The provider contract above doesn't
+need to change to accommodate this -- only the question of who writes the
+state differs. Note the Copilot trap in particular: its event log can tell
+you running vs idle but never "waiting for permission", so a naive Copilot
+provider would silently under-report exactly the state this status bar
+exists to surface.
+
 ## Options
 
 | Option                        | Default           | Notes                           |
@@ -95,8 +116,11 @@ override wins).
 ## Claude Code hook accelerator (optional)
 
 The 15s `status-interval` poll is the baseline and requires no
-configuration. For instant repaint on state changes, install hooks that
-force a tmux client refresh on `Stop`, `Notification`, and `SessionEnd`:
+configuration; the Claude provider works fully without any hooks installed.
+This section is purely a latency optimisation -- unlike the push-only
+harnesses above, Claude Code doesn't _need_ hooks to be pollable, it just
+repaints faster with them. Install hooks that force a tmux client refresh on
+`Stop`, `Notification`, and `SessionEnd`:
 
 ```sh
 ~/.config/tmux/custom-plugins/tmux-agent-status/agent-status.tmux install-claude-hooks
