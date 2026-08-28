@@ -53,22 +53,66 @@ done
 
 [ ${#live_files[@]} -eq 0 ] && fail_empty
 
+# State mapping: "shell" is a substate of idle (idle, with a live background
+# shell attached) -- the agent itself isn't doing anything, so it maps to
+# "done", not "running". Verified against the Claude Code binary:
+#   aM = bv==="idle" && gR ? "shell" : bv     -- shell only ever follows idle
+#   kB = bv==="busy"                          -- "working" is busy alone
+#
+# A session working via a background job (`claude bg-spare`) is recorded
+# twice: kind:interactive (the parked pane, status usually idle) and
+# kind:bg (the actual worker, status reflects the real work). Roll each
+# interactive session up into its bg worker when one is live, so the pane
+# reports the work actually happening rather than "parked == done". The
+# interactive record's `parkedJobId` is normally the first 8 hex chars of
+# the worker's `sessionId`; fall back to a name+cwd match for the case
+# where the worker has since respawned under a new sessionId. Any bg
+# worker left unmatched (its owning interactive session isn't live) is
+# still emitted, just with no pane to jump to.
 jq -s '
-  map(
-    select(.kind == "interactive")
-    | {
-        state: (
-          if .status == "waiting" then "waiting"
-          elif .status == "busy" or .status == "shell" then "running"
-          elif .status == "idle" then "done"
-          else empty
-          end
-        ),
-        pane: ((.tmux // "") | split(":") | .[1] // "" | split(".") | .[1]),
-        name: .name,
-        cwd: .cwd,
-        reason: .waitingFor,
-        agent: "claude"
-      }
-  )
+  . as $all
+  | ($all | map(select(.kind == "bg"))) as $bgs
+  | ($all | map(select(.kind == "interactive"))) as $inters
+  | def to_state(s):
+      if s == "waiting" then "waiting"
+      elif s == "busy" then "running"
+      elif s == "idle" or s == "shell" then "done"
+      else empty
+      end;
+    def pane_of(t):
+      (t // "") | split(":") | (.[1] // "") | split(".") | .[1];
+  ($inters | map(
+      . as $i
+      | (
+          ($bgs | map(select(
+              ($i.parkedJobId != null) and (.sessionId != null)
+              and (.sessionId | startswith($i.parkedJobId))
+            )) | first)
+          // ($bgs | map(select(.name == $i.name and .cwd == $i.cwd)) | first)
+        ) as $worker
+      | ($worker // $i) as $eff
+      | {
+          state: to_state($eff.status),
+          pane: pane_of($i.tmux),
+          name: $i.name,
+          cwd: $i.cwd,
+          reason: $eff.waitingFor,
+          agent: "claude",
+          _worker_sid: ($worker.sessionId // null)
+        }
+    )
+  ) as $rolled
+  | ($rolled | map(._worker_sid) | map(select(. != null))) as $used_sids
+  | ($bgs
+      | map(select(. as $b | ($used_sids | any(. == $b.sessionId)) | not))
+      | map({
+          state: to_state(.status),
+          pane: null,
+          name: .name,
+          cwd: .cwd,
+          reason: .waitingFor,
+          agent: "claude"
+        })
+    ) as $orphans
+  | ($rolled | map(del(._worker_sid))) + $orphans
 ' "${live_files[@]}" 2> /dev/null || fail_empty
