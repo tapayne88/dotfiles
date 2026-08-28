@@ -61,14 +61,14 @@ done
 #
 # A session working via a background job (`claude bg-spare`) is recorded
 # twice: kind:interactive (the parked pane, status usually idle) and
-# kind:bg (the actual worker, status reflects the real work). Roll each
-# interactive session up into its bg worker when one is live, so the pane
-# reports the work actually happening rather than "parked == done". The
-# interactive record's `parkedJobId` is normally the first 8 hex chars of
-# the worker's `sessionId`; fall back to a name+cwd match for the case
-# where the worker has since respawned under a new sessionId. Any bg
-# worker left unmatched (its owning interactive session isn't live) is
-# still emitted, just with no pane to jump to.
+# kind:bg (the actual worker, status reflects the real work, and carries a
+# `jobId` that equals the interactive record's `parkedJobId` exactly). Roll
+# each interactive session up into its live worker's status when one
+# exists, so the pane reports the work actually happening rather than
+# "parked == done". Output is always exactly one entry per live interactive
+# session -- a bg worker with no live owning pane (nothing to jump to in
+# tmux) is deliberately not emitted; see the README's Harness support
+# section.
 jq -s '
   . as $all
   | ($all | map(select(.kind == "bg"))) as $bgs
@@ -81,38 +81,20 @@ jq -s '
       end;
     def pane_of(t):
       (t // "") | split(":") | (.[1] // "") | split(".") | .[1];
-  ($inters | map(
+    def session_of(t):
+      (t // "") | split(":") | .[0];
+  $inters | map(
       . as $i
-      | (
-          ($bgs | map(select(
-              ($i.parkedJobId != null) and (.sessionId != null)
-              and (.sessionId | startswith($i.parkedJobId))
-            )) | first)
-          // ($bgs | map(select(.name == $i.name and .cwd == $i.cwd)) | first)
-        ) as $worker
+      | ($bgs | map(select($i.parkedJobId != null and .jobId == $i.parkedJobId)) | first) as $worker
       | ($worker // $i) as $eff
       | {
           state: to_state($eff.status),
           pane: pane_of($i.tmux),
+          session: session_of($i.tmux),
           name: $i.name,
           cwd: $i.cwd,
           reason: $eff.waitingFor,
-          agent: "claude",
-          _worker_sid: ($worker.sessionId // null)
+          agent: "claude"
         }
     )
-  ) as $rolled
-  | ($rolled | map(._worker_sid) | map(select(. != null))) as $used_sids
-  | ($bgs
-      | map(select(. as $b | ($used_sids | any(. == $b.sessionId)) | not))
-      | map({
-          state: to_state(.status),
-          pane: null,
-          name: .name,
-          cwd: .cwd,
-          reason: .waitingFor,
-          agent: "claude"
-        })
-    ) as $orphans
-  | ($rolled | map(del(._worker_sid))) + $orphans
 ' "${live_files[@]}" 2> /dev/null || fail_empty

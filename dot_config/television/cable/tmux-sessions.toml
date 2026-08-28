@@ -5,15 +5,28 @@ requirements = ["tmux"]
 
 [source]
 command = """
+SUMMARY_FILE=$(mktemp)
+"$XDG_CONFIG_HOME/tmux/custom-plugins/tmux-agent-status/scripts/session-summary.sh" > "$SUMMARY_FILE" 2>/dev/null
 tmux list-sessions -F '#{session_last_attached}\t#{session_name}\t#{session_windows} windows\t#{session_created_string}' \
   | sort --numeric-sort --reverse \
   | cut --delimiter '\t' --fields 2- \
   | grep --invert-match --extended-regexp "^($(tmux display-message -p '#S' 2>/dev/null)|popup)\t" \
+  | awk -F'\t' -v OFS='\t' -v summaryfile="$SUMMARY_FILE" '
+      BEGIN {
+        while ((getline line < summaryfile) > 0) {
+          split(line, f, "\t")
+          if (f[1] != "") map[f[1]] = f[2]
+        }
+        close(summaryfile)
+      }
+      { print $1, "(" $2 ") " (($1 in map) ? map[$1] : "") }
+    ' \
   || echo ""
+rm -f "$SUMMARY_FILE"
 """
 no_sort = true
 frecency = false
-display = "{split:\t:0} ({split:\t:1})"
+ansi = true
 output = "{split:\t:0}"
 
 [keybindings]

@@ -49,6 +49,7 @@ exits 0:
   {
     "state": "waiting",
     "pane": "%15",
+    "session": "agents-mono",
     "name": "lookup-eval-quoting-issue",
     "cwd": "/path/to/repo",
     "reason": "permission prompt",
@@ -59,9 +60,10 @@ exits 0:
 
 - `state` is **required**, and must be `waiting`, `running`, or `done`. Any
   other value is dropped.
-- `pane`, `name`, `cwd`, `reason`, `agent` are optional. The core only
-  aggregates on `state` today; the rest are carried through for future
-  features (jump-to-pane, per-window indicators) without a contract change.
+- `pane`, `session`, `name`, `cwd`, `reason`, `agent` are optional. The core
+  only aggregates on `state` today; the rest are carried through for other
+  consumers (e.g. `session`, added for the television integration below)
+  without a contract change.
 - Print `[]` when there are no agents.
 - Non-zero exit, empty output, or unparseable JSON must be treated by the
   core as "this provider contributed nothing" -- a broken provider must
@@ -134,16 +136,72 @@ idempotent -- running it again is a no-op. Reverse it with:
 ~/.config/tmux/custom-plugins/tmux-agent-status/agent-status.tmux uninstall-claude-hooks
 ```
 
+## Television session switcher integration
+
+`scripts/session-summary.sh` rolls up provider output per `session` (not
+per pane) and prints one `<session name>\t<summary>` line per tmux session
+that has at least one agent -- consumed by
+`dot_config/television/cable/tmux-sessions.toml`'s `tv tmux-sessions`
+channel, which left-joins it onto the session list as an extra column.
+
+**This is not the same colour encoding as the status bar.** The renderer
+above emits tmux's own `#[fg=#hex]` format syntax, meaningful only inside a
+tmux status-line string that tmux itself interprets -- printed as-is to a
+plain command's stdout, it would show up as literal garbage text.
+`session-summary.sh` instead builds real ANSI SGR truecolor escapes
+(`\033[38;2;R;G;Bm...\033[0m`) from the same resolved
+`@agent_status_resolved_color_*` hex values, for consumers like television
+that read raw output directly (`[source] ansi = true`). Don't reuse the
+renderer's output for a non-tmux consumer; build from the resolved hex
+values instead, the way this script does.
+
+The TOML `[source].command` writes the script's output to a temp file and
+has `awk` join on it via `getline` rather than passing it through `-v` --
+POSIX `-v var=value` treats the value as an awk string literal, and a raw
+newline embedded in that value (which a multi-line summary always has)
+breaks the parse. Reading it as a second input file sidesteps that
+entirely.
+
+**The channel has no custom `display` key, on purpose.** The first attempt
+built the visible row via `display = "{split:\t:0} ({split:\t:1}) ..."`,
+combining plain and ANSI-bearing fields through the template engine --
+which doesn't reliably preserve embedded escape codes assembled that way.
+None of this repo's other `ansi = true` channels (`git-log`, `git-stash`,
+`text`, `todo-comments`) set `display` either; they all rely on the
+default raw-entry display and only `strip_ansi` for `output`/`preview`/
+`actions`. This channel follows the same pattern: `awk` prints the fully
+formatted, colour-bearing row directly as the entry's second field
+(`name`, `(N windows) <summary>`), and the default `{}` display shows it
+as-is. `output`/`preview`/`actions` still read `{split:\t:0}` (the plain
+name, untouched), so they need no `strip_ansi`.
+
+Refresh is manual: television's existing `ctrl-r` (`reload_source`,
+`config.toml`) re-runs the source command, including the summary. No
+`watch`-based polling is configured.
+
 ## Claude Code provider details
 
 Reads `~/.claude/sessions/<pid>.json`, the native session registry Claude
 Code itself maintains and push-updates on every status transition.
 
-- Only `kind: "interactive"` sessions are counted; background/daemon workers
-  are excluded.
+- Output is always exactly one entry per live `kind: "interactive"` session
+  -- one per navigable tmux pane. `kind: "bg"` records (background job
+  workers) are never emitted on their own.
+- A parked interactive session (working via a background job, e.g. through
+  `/loop` or a spawned agent) is rolled up into its worker's status instead
+  of reporting its own idle-while-parked status: the interactive record's
+  `parkedJobId` is matched exactly against the live `bg` record's `jobId`.
+  If no live worker matches, the interactive record's own status is used.
+- **Known limitation:** a background job whose owning interactive session
+  isn't currently live (crashed, respawned under a new id, or launched
+  without ever having a parked pane) has no tmux pane to point you at, and
+  is deliberately not counted -- there's nothing to navigate to. This means
+  the total can undercount genuinely-running background work in that
+  specific case.
 - Liveness is checked with `kill -0 <pid>` plus a `ps -o comm=` match on
   `claude`, guarding against a stale file whose PID has been reused by an
   unrelated process.
-- State mapping: `waiting` -> `waiting`; `busy` / `shell` -> `running`;
-  `idle` -> `done`. There is no "seen" tracking -- an agent idle for days
-  still counts as done.
+- State mapping: `waiting` -> `waiting`; `busy` -> `running`; `shell` /
+  `idle` -> `done`. `shell` is a substate of idle (idle, with a live
+  background shell attached), not of busy. There is no "seen" tracking --
+  an agent idle for days still counts as done.
