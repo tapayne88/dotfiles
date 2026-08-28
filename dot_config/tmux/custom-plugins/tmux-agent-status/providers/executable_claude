@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# tmux-agent-status provider: Claude Code
+#
+# Reads Claude Code's native session registry (~/.claude/sessions/<pid>.json,
+# push-updated by Claude Code itself on every status transition) and emits a
+# JSON array describing each live interactive session, per the provider
+# contract documented in ../README.md.
+#
+# Must never fail loudly: on any problem this prints "[]" and exits 0, since
+# a broken provider must not break the status bar.
+
+set -uo pipefail
+
+CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+SESSIONS_DIR="$CONFIG_DIR/sessions"
+
+fail_empty() {
+  echo '[]'
+  exit 0
+}
+
+command -v jq > /dev/null 2>&1 || fail_empty
+[ -d "$SESSIONS_DIR" ] || fail_empty
+
+live_files=()
+for f in "$SESSIONS_DIR"/*.json; do
+  [ -e "$f" ] || continue
+
+  base=$(basename "$f")
+  pid=${base%.json}
+
+  # Skip anything that isn't a bare PID filename (e.g. stray files).
+  case "$pid" in
+  '' | *[!0-9]*) continue ;;
+  esac
+
+  # Liveness: process must exist and must actually be a claude process, so a
+  # reused PID belonging to some unrelated process is never counted. (We
+  # don't compare procStart -- the registry stores it in UTC/C-locale field
+  # order which plain `ps` does not reproduce, and it's unnecessary anyway:
+  # if a PID is reused by another claude, that process overwrites the file
+  # itself.)
+  kill -0 "$pid" 2> /dev/null || continue
+  comm=$(ps -o comm= -p "$pid" 2> /dev/null) || continue
+  case "$comm" in
+  *claude*) ;;
+  *) continue ;;
+  esac
+
+  live_files+=("$f")
+done
+
+[ ${#live_files[@]} -eq 0 ] && fail_empty
+
+jq -s '
+  map(
+    select(.kind == "interactive")
+    | {
+        state: (
+          if .status == "waiting" then "waiting"
+          elif .status == "busy" or .status == "shell" then "running"
+          elif .status == "idle" then "done"
+          else empty
+          end
+        ),
+        pane: ((.tmux // "") | split(":") | .[1] // "" | split(".") | .[1]),
+        name: .name,
+        cwd: .cwd,
+        reason: .waitingFor,
+        agent: "claude"
+      }
+  )
+' "${live_files[@]}" 2> /dev/null || fail_empty
