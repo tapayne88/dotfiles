@@ -1,0 +1,7 @@
+# vim: ft=yaml
+# What protocol to use when performing git operations. Supported values: ssh, https
+git_protocol: ssh
+# A pager program to send command output to. Reuses delta's git-config-driven
+# theme/navigate/side-by-side settings, so `gh pr diff` matches `git diff`.
+pager: delta
+version: 1
