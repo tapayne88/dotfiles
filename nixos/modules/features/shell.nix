@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   flake.homeModules.shell =
     {
@@ -20,6 +21,7 @@
         television # A very fast, portable and hackable fuzzy finder.
         tldr # simplified and community-driven man pages
         tmux # terminal multiplexer
+        inputs.treehouse.packages.${pkgs.stdenv.hostPlatform.system}.default # Manage worktrees without managing worktrees
         worktrunk # Git worktree manager for parallel AI agent workflows
       ];
 

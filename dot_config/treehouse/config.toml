@@ -1,0 +1,2 @@
+# Maximum number of worktrees in the pool
+max_trees = 16

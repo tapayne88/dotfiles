@@ -44,6 +44,11 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    treehouse = {
+      url = "github:kunchenguid/treehouse";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs:
