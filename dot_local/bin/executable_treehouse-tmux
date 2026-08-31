@@ -22,6 +22,11 @@ Usage:
 
   treehouse-tmux new
       Lease a fresh worktree from the pool and open a tmux session in it.
+
+  treehouse-tmux preview <path>
+      Print a human-readable summary of <path>: pool status, lease, tmux
+      session state, HEAD, ahead/behind the base branch, dirty files,
+      diffstat and recent log. Colourised unless NO_COLOR is set.
 EOF
 }
 
@@ -90,6 +95,120 @@ cmd_new() {
   nic "$path"
 }
 
+# Field-width used for the two-column key/value layout, e.g. "  lease   ".
+readonly PREVIEW_LABEL_WIDTH=7
+
+if [[ -z "${NO_COLOR:-}" ]]; then
+  c_reset=$'\e[0m'
+  c_bold=$'\e[1m'
+  c_dim=$'\e[2m'
+  c_green=$'\e[32m'
+  c_yellow=$'\e[33m'
+  c_red=$'\e[31m'
+  git_color_opts=(-c color.ui=always)
+else
+  c_reset=""
+  c_bold=""
+  c_dim=""
+  c_green=""
+  c_yellow=""
+  c_red=""
+  git_color_opts=(-c color.ui=never)
+fi
+
+status_color() {
+  case "$1" in
+    available) echo "$c_green" ;;
+    leased) echo "$c_yellow" ;;
+    inUse | dirty) echo "$c_red" ;;
+    *) echo "$c_dim" ;;
+  esac
+}
+
+cmd_preview() {
+  local raw="${1:?usage: treehouse-tmux preview <path>}"
+  local path
+  if ! path="$(cd "$raw" 2> /dev/null && pwd -P)"; then
+    echo "treehouse-tmux: '$raw' does not exist" >&2
+    return 0
+  fi
+
+  local entry name status lease_holder leased_at procs
+  entry="$(jq -c --arg p "$path" 'first(.[] | select(.path == $p)) // {}' <<< "$(pool_status_json)")"
+  name="$(jq -r '.name // "-"' <<< "$entry")"
+  status="$(jq -r '.status // "-"' <<< "$entry")"
+  lease_holder="$(jq -r '.lease_holder // empty' <<< "$entry")"
+  leased_at="$(jq -r '.leased_at // empty' <<< "$entry")"
+  procs="$(jq -r '(.processes // []) | map(.name) | unique | join(", ")' <<< "$entry")"
+  [[ -z "$procs" ]] && procs="none"
+
+  local lease_field="—"
+  if [[ -n "$leased_at" ]]; then
+    lease_field="since ${leased_at:11:5}"
+    [[ -n "$lease_holder" ]] && lease_field="$lease_holder $lease_field"
+  fi
+
+  local session tmux_state
+  session="$(nic -N "$path" 2> /dev/null || echo '?')"
+  if tmux has-session -t "$session" 2> /dev/null; then
+    tmux_state="live"
+  else
+    tmux_state="no session"
+  fi
+
+  local head_sha branch head_field
+  head_sha="$(git -C "$path" rev-parse --short HEAD 2> /dev/null || true)"
+  branch="$(git -C "$path" symbolic-ref -q --short HEAD 2> /dev/null || true)"
+  if [[ -n "$branch" ]]; then
+    head_field="$branch @ ${head_sha:-?}"
+  elif [[ -n "$head_sha" ]]; then
+    head_field="detached at $head_sha"
+  else
+    head_field="-"
+  fi
+
+  local base_branch base_field="-"
+  base_branch="$(treehouse status 2> /dev/null | awk 'NR==1{print $2}')"
+  [[ -z "$base_branch" ]] && base_branch="origin/HEAD"
+  if [[ -n "$head_sha" ]]; then
+    local behind ahead
+    read -r behind ahead <<< "$(git -C "$path" rev-list --left-right --count "$base_branch...HEAD" 2> /dev/null || echo "0 0")"
+    base_field="$base_branch · ${ahead:-0} ahead, ${behind:-0} behind"
+  fi
+
+  local dirty_count=0 dirty_field="-"
+  if [[ -n "$head_sha" ]]; then
+    dirty_count="$(git -C "$path" status --porcelain 2> /dev/null | wc -l | tr -d ' ')"
+    dirty_field="$dirty_count files"
+  fi
+
+  echo "${c_bold}╭─ ${name} · $(status_color "$status")${status}${c_reset}${c_bold} ──────────────────────────────${c_reset}"
+  printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "lease" "$lease_field"
+  printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "procs" "$procs"
+  printf '  %-*s %s (%s)\n' "$PREVIEW_LABEL_WIDTH" "tmux" "$session" "$tmux_state"
+  echo
+  printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "HEAD" "$head_field"
+  printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "base" "$base_field"
+  printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "dirty" "$dirty_field"
+
+  if [[ -n "$head_sha" ]]; then
+    local status_short diffstat_out log_out
+    # `|| true` guards against `set -o pipefail` turning head's early pipe
+    # close (SIGPIPE to git, once there are more than 10 changed files)
+    # into a non-zero exit that `set -e` would abort the script on.
+    status_short="$(git "${git_color_opts[@]}" -C "$path" status --short 2> /dev/null | head -10 || true)"
+    diffstat_out="$(git "${git_color_opts[@]}" -C "$path" diff --stat "$base_branch...HEAD" 2> /dev/null || true)"
+    log_out="$(git "${git_color_opts[@]}" -C "$path" log --oneline -5 2> /dev/null || true)"
+
+    # Only a blank line + section when there's something to show, so a
+    # worktree with nothing to report (clean, no unique commits) doesn't
+    # trail off into a stack of empty lines.
+    [[ -n "$status_short" ]] && { echo; echo "$status_short"; }
+    [[ -n "$diffstat_out" ]] && { echo; echo "$diffstat_out"; }
+    [[ -n "$log_out" ]] && { echo; echo "$log_out"; }
+  fi
+}
+
 case "${1:-}" in
   list)
     cmd_list
@@ -100,6 +219,10 @@ case "${1:-}" in
     ;;
   new)
     cmd_new
+    ;;
+  preview)
+    shift
+    cmd_preview "$@"
     ;;
   -h | --help | help | "")
     show_help

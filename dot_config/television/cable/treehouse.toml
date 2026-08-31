@@ -1,7 +1,7 @@
 [metadata]
 name = "treehouse"
 description = "Switch between this repo's worktrees, with treehouse pool status"
-requirements = ["treehouse", "git", "jq", "tmux"]
+requirements = ["treehouse", "git", "jq", "tmux", "lazygit"]
 
 [source]
 command = "treehouse-tmux list"
@@ -11,12 +11,20 @@ display = "{split:\t:3}"
 output = "{split:\t:0}"
 
 [preview]
-command = "cd '{split:\t:0}' && git log --oneline -10 --color=always && echo && git status --short --branch"
+command = "treehouse-tmux preview '{split:\t:0}'"
+
+[ui.preview_panel]
+size = 60
+border_type = "rounded"
+scrollbar = true
+padding = { left = 1, right = 1 }
+header = "{split:\t:3}"
 
 [keybindings]
 enter = "actions:nic"
 alt-r = "actions:release"
 alt-n = "actions:new"
+ctrl-g = "actions:lazygit"
 
 [actions.nic]
 description = "Open or switch to the tmux session for this worktree"
@@ -33,4 +41,9 @@ mode = "fork"
 [actions.new]
 description = "Lease a fresh worktree from the pool and open a tmux session in it"
 command = "treehouse-tmux new"
+mode = "execute"
+
+[actions.lazygit]
+description = "Open lazygit in this worktree"
+command = "lazygit -p '{split:\t:0}'"
 mode = "execute"
