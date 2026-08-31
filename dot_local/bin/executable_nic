@@ -10,7 +10,7 @@ show_help() {
 nic - create a development tmux session with neovim, agent harness, and terminal panes
 
 Usage:
-  nic [-h] [-n name] [directory]
+  nic [-h] [-N] [-n name] [directory]
 
 Arguments:
   directory    Directory to start session in (defaults to current directory)
@@ -18,6 +18,14 @@ Arguments:
 Flags:
   -h           Show this help message
   -n name      Name for the tmux session (defaults to directory basename)
+  -N           Print the computed session name and exit, without touching tmux
+
+Session naming (first match wins):
+  1. -n name
+  2. A treehouse pool worktree: <repo>/<pool-name>, e.g. dotfiles/1
+  3. A worktree of a bare repo: <bare-repo-basename>/<worktree-basename>
+  4. basename of the directory, with the first '.' turned into '/'
+     (matches worktrunk's "<repo>.<branch>" worktree directory layout)
 
 Layout:
   ┌──────────────────────┬───────────────┐
@@ -39,10 +47,12 @@ if [[ "${1:-}" == "-h" ]]; then
 fi
 
 custom_name=""
-while getopts ":hn:" opt; do
+print_name_only=false
+while getopts ":hn:N" opt; do
   case $opt in
     h) show_help; exit 0 ;;
     n) custom_name="$OPTARG" ;;
+    N) print_name_only=true ;;
     \?) echo "Unknown option: -$OPTARG" >&2; exit 1 ;;
     :) echo "Option -$OPTARG requires an argument" >&2; exit 1 ;;
   esac
@@ -51,15 +61,33 @@ shift $((OPTIND - 1))
 
 dir="${1:-$PWD}"
 dir="$(cd "$dir" && pwd -P)"
+
+pool_name=""
+if command -v treehouse >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+  pool_name="$(treehouse status --json 2>/dev/null \
+    | jq -r --arg p "$dir" 'first(.[] | select(.path == $p) | .name) // empty' 2>/dev/null || true)"
+fi
+
 if [[ -n "$custom_name" ]]; then
   session_name="$custom_name"
+elif [[ -n "$pool_name" ]]; then
+  common="$(git -C "$dir" rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)"
+  if [[ "$(basename "$common")" == ".git" ]]; then
+    repo="$(basename "$(dirname "$common")")"
+  else
+    repo="$(basename "${common%.git}")"
+  fi
+  session_name="$repo/$pool_name"
 elif [[ "$(git -C "$dir/.." rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
   session_name="$(basename "$(dirname "$dir")")/$(basename "$dir")"
 else
-  session_name="$(basename "$dir")"
+  session_name="$(basename "$dir" | sed 's/\./\//')"
 fi
 
-session_name="$(basename "$dir" | sed 's/\./\//')"
+if [[ "$print_name_only" == true ]]; then
+  echo "$session_name"
+  exit 0
+fi
 
 # Determine attach or switch based on whether we're in tmux
 if [[ -n "${TMUX:-}" ]]; then

@@ -1,0 +1,36 @@
+[metadata]
+name = "treehouse"
+description = "Switch between this repo's worktrees, with treehouse pool status"
+requirements = ["treehouse", "git", "jq", "tmux"]
+
+[source]
+command = "treehouse-tmux list"
+no_sort = true
+frecency = false
+display = "{split:\t:3}"
+output = "{split:\t:0}"
+
+[preview]
+command = "cd '{split:\t:0}' && git log --oneline -10 --color=always && echo && git status --short --branch"
+
+[keybindings]
+enter = "actions:nic"
+alt-r = "actions:release"
+alt-n = "actions:new"
+
+[actions.nic]
+description = "Open or switch to the tmux session for this worktree"
+command = "nic '{split:\t:0}'"
+mode = "execute"
+
+[actions.release]
+description = "Kill the tmux session and return the worktree to the pool"
+command = "treehouse-tmux release '{split:\t:0}'"
+# Note: tv doesn't reload the source after an action, so the returned
+# worktree's row stays stale until you press ctrl-r (reload_source).
+mode = "fork"
+
+[actions.new]
+description = "Lease a fresh worktree from the pool and open a tmux session in it"
+command = "treehouse-tmux new"
+mode = "execute"
