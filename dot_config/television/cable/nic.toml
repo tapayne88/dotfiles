@@ -1,7 +1,7 @@
 [metadata]
 name = "nic"
 description = "Spawn new nic tmux session from zoxide directory history"
-requirements = ["zoxide"]
+requirements = ["zoxide", "tmux", "treehouse", "git"]
 
 [source]
 command = "zoxide query -l"
@@ -13,8 +13,14 @@ command = "ls -la --color=always '{}'"
 
 [keybindings]
 enter = "actions:nic"
+alt-w = "actions:lease"
 
 [actions.nic]
 description = "Launch new nic tmux session at the selected directory"
 command = "nic '{}'"
+mode = "execute"
+
+[actions.lease]
+description = "Lease a treehouse worktree for this session's repo and open it"
+command = "treehouse-tmux lease-session '{split:\t:0}'"
 mode = "execute"

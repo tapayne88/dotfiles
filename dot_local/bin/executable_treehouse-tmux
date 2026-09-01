@@ -27,6 +27,11 @@ Usage:
       Print a human-readable summary of <path>: pool status, lease, tmux
       session state, HEAD, ahead/behind the base branch, dirty files,
       diffstat and recent log. Colourised unless NO_COLOR is set.
+
+  treehouse-tmux lease-session <path>
+      Lease a treehouse worktree for the repo at <path>, and open it with
+      `nic`. Prints a message and waits for a keypress instead of proceeding
+      if <path> isn't a git repo, or if the lease itself fails.
 EOF
 }
 
@@ -209,6 +214,31 @@ cmd_preview() {
   fi
 }
 
+cmd_lease_session() {
+  local dir="${1:?usage: treehouse-tmux lease-session <path>}"
+
+  if [[ -z "$dir" ]] || ! git -C "$dir" rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "${c_red}✗ '$dir' is not a git repository${c_reset}"
+    read -n 1 -s -r -p $'\nPress any key to continue...'
+    echo
+    return 1
+  fi
+
+  local path err_file
+  err_file="$(mktemp)"
+  trap 'rm -f "$err_file"' RETURN
+  if ! path="$(cd "$dir" && treehouse get --lease 2> "$err_file")"; then
+    echo "${c_red}✗ treehouse get --lease failed for '$dir':${c_reset}"
+    sed 's/^/  /' "$err_file"
+    read -n 1 -s -r -p $'\nPress any key to continue...'
+    echo
+    return 1
+  fi
+
+  echo "${c_green}✓ leased $(nic -N "$path")${c_reset}"
+  nic "$path"
+}
+
 case "${1:-}" in
   list)
     cmd_list
@@ -223,6 +253,10 @@ case "${1:-}" in
   preview)
     shift
     cmd_preview "$@"
+    ;;
+  lease-session)
+    shift
+    cmd_lease_session "$@"
     ;;
   -h | --help | help | "")
     show_help
