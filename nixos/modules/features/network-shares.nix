@@ -11,6 +11,10 @@
           share = "Media";
         }
         {
+          name = "music";
+          share = "music";
+        }
+        {
           name = "Paperless";
           share = "Paperless Consume";
         }

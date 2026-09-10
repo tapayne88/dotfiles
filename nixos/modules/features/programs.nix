@@ -20,6 +20,7 @@
 
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
+        picard
       ];
 
       programs.git.enable = true;
