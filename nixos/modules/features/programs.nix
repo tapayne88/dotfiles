@@ -33,5 +33,8 @@
   flake.homeModules.programs = {
     # Document viewer
     programs.zathura.enable = true;
+
+    # VNC client
+    services.remmina.enable = true;
   };
 }
