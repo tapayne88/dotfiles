@@ -6,5 +6,6 @@
   "permissions": {
     "defaultMode": "plan",
     "allow": ["Edit(.claude/**)"]
-  }
+  },
+  "autoMemoryEnabled": false
 }
