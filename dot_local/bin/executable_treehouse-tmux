@@ -32,6 +32,13 @@ Usage:
       Lease a treehouse worktree for the repo at <path>, and open it with
       `nic`. Prints a message and waits for a keypress instead of proceeding
       if <path> isn't a git repo, or if the lease itself fails.
+
+  treehouse-tmux release-current <path>
+      Switch the client back to its previous session, kill the tmux
+      session for the pool worktree at <path>, and return that worktree to
+      the pool. Meant to be bound to a key pressed from inside the session
+      being released. Refuses (after a keypress) if <path> isn't a pool
+      worktree.
 EOF
 }
 
@@ -239,6 +246,36 @@ cmd_lease_session() {
   nic "$path"
 }
 
+cmd_release_current() {
+  local dir="${1:?usage: treehouse-tmux release-current <path>}"
+  local path
+  path="$(cd "$dir" && pwd -P)"
+
+  local name
+  name="$(jq -r --arg p "$path" 'first(.[] | select(.path == $p) | .name) // empty' <<< "$(pool_status_json)")"
+  if [[ -z "$name" ]]; then
+    echo "${c_red}✗ '$path' is not a treehouse pool worktree, refusing to release it${c_reset}"
+    read -n 1 -s -r -p $'\nPress any key to continue...'
+    echo
+    return 1
+  fi
+
+  local session
+  session="$(nic -N "$path")"
+
+  # Move the client off this session first, so the kill-session below
+  # doesn't detach the client or fall back to tmux's own most-recently-
+  # active pick.
+  tmux switch-client -l 2> /dev/null || true
+
+  # Release before killing: this session (or the popup hosting this
+  # script) is what we're about to kill, so anything after kill-session
+  # would never run.
+  treehouse return --force "$path"
+
+  tmux kill-session -t "$session" 2> /dev/null || true
+}
+
 case "${1:-}" in
   list)
     cmd_list
@@ -257,6 +294,10 @@ case "${1:-}" in
   lease-session)
     shift
     cmd_lease_session "$@"
+    ;;
+  release-current)
+    shift
+    cmd_release_current "$@"
     ;;
   -h | --help | help | "")
     show_help
