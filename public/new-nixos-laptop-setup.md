@@ -17,7 +17,7 @@ Clone your configuration into the live USB's temporary memory so you can generat
 
 ```bash
 cd ~
-git clone [https://github.com/tapayne88/dotfiles.git](https://github.com/tapayne88/dotfiles.git)
+git clone https://github.com/tapayne88/dotfiles.git
 cd dotfiles
 ```
 
