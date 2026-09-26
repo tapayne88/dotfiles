@@ -14,7 +14,7 @@ in
       internalMonitor = "eDP-1";
       terminal = pkgs.ghostty;
       persistenceMountPath = "/persist";
-      mainDevice = "/dev/disk/by-id/<find ID>";
+      mainDevice = "/dev/disk/by-id/nvme-Sandisk_Optimus_GX_7100_500GB_26190C804579";
       tmpfsSize = "50%";
       bootSize = "1G";
       swapSize = "18G";
