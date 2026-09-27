@@ -19,6 +19,7 @@
 
       # Features
       self.nixosModules.default
+      self.nixosModules.fingerprint
     ];
   };
 }

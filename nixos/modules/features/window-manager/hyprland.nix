@@ -388,6 +388,7 @@
               lib.flatten [
                 (bind "${mod} + Space" (dsp.exec_cmd "${ipc} panel-toggle launcher") { })
                 (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
+                (bind "XF86PowerOff" (dsp.exec_cmd "${ipc} session lock") { })
 
                 (bind "${mod} + Tab" (dsp.exec_cmd "${ipc} window-switcher") { })
 
