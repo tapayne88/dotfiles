@@ -41,7 +41,7 @@ in
     home-manager.users."${username}".imports = [
       {
         hostSettings = {
-          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINmGM5fgdygjmhCYucEU5zTBUJ8mmlT+Qb2xQkBNRxHx framework-13-pro";
+          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAXz+yXHD4MQzf2pvqVCuGsA6tpBw3YDbo2WhcB96Voz framework-13-pro";
           availableSshKeys = [
             {
               item = "framework-13-pro (default)";
