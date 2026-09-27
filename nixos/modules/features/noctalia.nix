@@ -102,6 +102,13 @@
           enabled = false;
         };
 
+        lockscreen = {
+          # TODO: Remove when stylix has been updated to support this
+          # Without the below the default noctalia wallpaper shows on the lock
+          # screen
+          wallpaper = ../assets/nixos-catppuccin-mocha.png;
+        };
+
         widget = {
           battery = {
             display_mode = "graphic";
