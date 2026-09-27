@@ -8,6 +8,7 @@
     }:
     let
       internalMonitor = osConfig.hostSettings.internalMonitor;
+      internalMonitorScale = osConfig.hostSettings.internalMonitorScale;
       mod = "SUPER";
     in
     {
@@ -101,7 +102,7 @@
                 output = "${internalMonitor}";
                 mode = "preferred";
                 position = "auto";
-                scale = 1;
+                scale = internalMonitorScale;
               }
               # Home external monitor
               {

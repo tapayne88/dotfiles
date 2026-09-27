@@ -6,9 +6,14 @@
         type = lib.types.str;
         default = "/persist";
       };
+      # TODO: Refactor to monitor object
       internalMonitor = lib.mkOption {
         type = lib.types.str;
         default = "";
+      };
+      internalMonitorScale = lib.mkOption {
+        type = lib.types.int;
+        default = 1;
       };
       terminal = lib.mkOption {
         type = lib.types.package;

@@ -12,6 +12,7 @@ in
     hostSettings = {
       inherit username;
       internalMonitor = "eDP-1";
+      internalMonitorScale = 2;
       terminal = pkgs.ghostty;
       persistenceMountPath = "/persist";
       mainDevice = "/dev/disk/by-id/nvme-Sandisk_Optimus_GX_7100_500GB_26190C804579";
