@@ -86,6 +86,13 @@
                 repeat_delay = 300;
               };
 
+              input.touchpad = {
+                disable_while_typing = true;
+                tap_to_click = true;
+                # Pressing anywhere with two fingers acts as a right-click, and three fingers acts as a middle-click
+                clickfinger_behavior = 1;
+              };
+
               animations.enabled = true;
             };
 
