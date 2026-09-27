@@ -99,6 +99,7 @@
         };
 
         wallpaper = {
+          # Disable wallpapers, stylix handles this
           enabled = false;
         };
 
