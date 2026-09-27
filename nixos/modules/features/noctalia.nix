@@ -98,6 +98,10 @@
           name = "Personal";
         };
 
+        wallpaper = {
+          enabled = false;
+        };
+
         widget = {
           battery = {
             display_mode = "graphic";
