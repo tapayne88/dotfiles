@@ -7,7 +7,8 @@
       ...
     }:
     let
-      internalMonitor = osConfig.hostSettings.internalMonitor;
+      internalMonitor = osConfig.hostSettings.internalMonitor.name;
+      internalMonitorScale = osConfig.hostSettings.internalMonitor.scale;
       mod = "SUPER";
     in
     {
@@ -101,7 +102,7 @@
                 output = "${internalMonitor}";
                 mode = "preferred";
                 position = "auto";
-                scale = 1;
+                scale = internalMonitorScale;
               }
               # Home external monitor
               {
@@ -388,6 +389,7 @@
               lib.flatten [
                 (bind "${mod} + Space" (dsp.exec_cmd "${ipc} panel-toggle launcher") { })
                 (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
+                (bind "XF86PowerOff" (dsp.exec_cmd "${ipc} session lock") { })
 
                 (bind "${mod} + Tab" (dsp.exec_cmd "${ipc} window-switcher") { })
 

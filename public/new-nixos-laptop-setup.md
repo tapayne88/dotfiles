@@ -11,15 +11,15 @@ export INST_USER="YOUR_USERNAME"
 export TARGET_HOST="YOUR_NEW_HOST_NAME"
 ```
 
-### 2. Clone Your Dotfiles Locally
+### 2. Create a new branch
 
-Clone your configuration into the live USB's temporary memory so you can generate the hardware config and set the disk ID.
+Create a new branch on this repo and copy over one of the existing [nixos/modules/hosts](https://github.com/tapayne88/dotfiles/blob/05e4d70ca5118114181fb54bb9b8a15448fb856c/nixos/modules/hosts) entries. Update it to match the `TARGET_HOST` name above and adjust any of the other elements. The following will need updating to ensure they align with the information from the following steps:
 
-```bash
-cd ~
-git clone https://github.com/tapayne88/dotfiles.git
-cd dotfiles
-```
+- nixos-hardware module used in [`default.nix`](https://github.com/tapayne88/dotfiles/blob/05e4d70ca5118114181fb54bb9b8a15448fb856c/nixos/modules/hosts/framework-13-pro/default.nix#L12)
+- `hostSettings.mainDevice`
+- `hostSettings.internalMonitor.name`
+
+> **Suggestion:** Name the branch `$TARGET_HOST`, the following steps will make this assumption.
 
 ### 3. Generate Hardware Configuration
 
@@ -28,9 +28,10 @@ Because Disko handles all mounts declaratively, use the `--no-filesystems` flag.
 ```bash
 sudo nixos-generate-config \
   --no-filesystems \
-  --flake \
-  --dir "hosts/${TARGET_HOST}"
+  --dir "${TARGET_HOST}"
 ```
+
+The configuration in the generated config should be copied over to the branch started in the previous step.
 
 ### 4. Identify and Set Your Hardware Disk ID
 
@@ -40,23 +41,23 @@ Find the persistent hardware ID of your target installation drive (look for `ata
 ls -l /dev/disk/by-id/
 ```
 
-Open your host's configuration file and update the `mainDevice` variable to match the discovered ID:
+Open your host's configuration file on your branch and update the `mainDevice` variable to match the discovered ID:
 
 ```nix
 hostSettings.mainDevice = "/dev/disk/by-id/YOUR-DISCOVERED-ID";
 ```
 
-**N.B.** You'll also need to set the other required fields on `hostSettings`;
+**N.B.** You'll also need to set the other required fields on `hostSettings`.
 
-Stage the changes so Nix Flakes can evaluate them in the next step:
+### 5. Push Changes to GitHub
 
-```bash
-git add .
-```
+Because the installation commands pull directly from GitHub, you must commit and push your changes to the remote branch so the installer can see them.
 
 ---
 
 ## Phase 2: Disk Partitioning, Formatting & Installation
+
+### 1. Disk Partitioning
 
 Disko handles the GPT partition table, LUKS encryption, Btrfs subvolumes, and mounting in a single command.
 
@@ -64,12 +65,22 @@ Disko handles the GPT partition table, LUKS encryption, Btrfs subvolumes, and mo
 
 ```bash
 sudo nix --extra-experimental-features "nix-command flakes" \
-  run 'github:nix-community/disko/latest#disko-install' -- \
-  --flake ".#${TARGET_HOST}" \
-  --disk main /dev/vda
+  run 'github:nix-community/disko/latest#disko' -- \
+  --mode destroy,format,mount \
+  --flake "github:tapayne88/dotfiles/${TARGET_HOST}?dir=nixos#${TARGET_HOST}"
 ```
 
-Once this finishes, your drive is fully partitioned, encrypted and NixOS is installed.
+Once this finishes, your drive is fully partitioned, encrypted, and automatically mounted to `/mnt`.
+
+### 2. Installation
+
+Install NixOS with the standard installer. This two-step approach avoids pulling everything into RAM.
+
+```bash
+sudo nixos-install \
+  --flake "github:tapayne88/dotfiles/${TARGET_HOST}?dir=nixos#${TARGET_HOST}" \
+  --no-root-passwd
+```
 
 ---
 
@@ -77,13 +88,7 @@ Once this finishes, your drive is fully partitioned, encrypted and NixOS is inst
 
 ### 1. Create Password Hashes
 
-First we need to mount the newly created `/persist` drive.
-
-```bash
-sudo mount -o subvol=@persist,compress=zstd,noatime /dev/mapper/cryptroot /mnt/persist
-```
-
-Store password hashes securely in the newly mounted persistent partition.
+Since Disko already mounted the filesystems, we can write the passwords directly to the persistent directory. Store password hashes securely in the newly mounted persistent partition.
 
 ```bash
 sudo mkdir -p /mnt/persist/passwords
@@ -102,26 +107,7 @@ sudo chmod 600 /mnt/persist/passwords/*
 > users.users.<username>.hashedPasswordFile = "/persist/passwords/YOUR_USERNAME";
 > ```
 
-### 2. Move the Repository to Persistent Storage
-
-Move your configured, locally-edited dotfiles repository from the live environment's RAM into the persistent home directory where it will live permanently.
-
-```bash
-sudo mkdir -p "/mnt/persist/home/${INST_USER}"
-sudo cp -r ~/dotfiles "/mnt/persist/home/${INST_USER}/dotfiles"
-sudo chown -R 1000:100 "/mnt/persist/home/${INST_USER}"
-```
-
-### 3. Stage Final Changes
-
-Navigate to the permanent repository location and ensure all files (including the newly generated hardware configuration) are staged for the Flake installer.
-
-```bash
-cd "/mnt/persist/home/${INST_USER}/dotfiles"
-git add .
-```
-
-### 4. Reboot
+### 2. Reboot
 
 Unmount all filesystems and restart into the new installation.
 

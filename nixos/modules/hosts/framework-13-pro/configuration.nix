@@ -3,30 +3,31 @@ let
   username = "tpayne";
 in
 {
-  flake.nixosModules.thinkpadConfiguration = { pkgs, ... }: {
+  flake.nixosModules.framework13ProConfiguration = { pkgs, ... }: {
     imports = [
       # Include the results of the hardware scan.
-      self.nixosModules.thinkpadHardware
+      self.nixosModules.framework13ProHardware
     ];
 
     hostSettings = {
       inherit username;
       internalMonitor = {
-        name = "LVDS-1";
+        name = "eDP-1";
+        scale = 2;
       };
-      terminal = pkgs.kitty;
+      terminal = pkgs.ghostty;
       persistenceMountPath = "/persist";
-      mainDevice = "/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEAD137976Z";
-      tmpfsSize = "2G";
-      bootSize = "511M";
-      swapSize = "4096M";
+      mainDevice = "/dev/disk/by-id/nvme-Sandisk_Optimus_GX_7100_500GB_26190C804579";
+      tmpfsSize = "50%";
+      bootSize = "1G";
+      swapSize = "18G";
     };
 
     # Use the systemd-boot EFI boot loader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    networking.hostName = "thinkpad";
+    networking.hostName = "framework-13-pro";
 
     # This handles the login screen (if using X11-based DM) and TTY
     services.xserver.xkb = {
@@ -40,14 +41,14 @@ in
     home-manager.users."${username}".imports = [
       {
         hostSettings = {
-          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2 thinkpad-nixos";
+          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAXz+yXHD4MQzf2pvqVCuGsA6tpBw3YDbo2WhcB96Voz framework-13-pro";
           availableSshKeys = [
             {
-              item = "thinkpad-nixos (default)";
+              item = "framework-13-pro (default)";
               vault = "Private";
             }
             {
-              item = "thinkpad-nixos (truenas)";
+              item = "framework-13-pro (truenas)";
               vault = "Private";
             }
             {

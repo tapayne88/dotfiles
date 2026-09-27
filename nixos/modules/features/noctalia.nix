@@ -86,7 +86,7 @@
               center = [ "media" ];
               end = endWidgets;
               monitor = {
-                "${osConfig.hostSettings.internalMonitor}" = {
+                "${osConfig.hostSettings.internalMonitor.name}" = {
                   end = map (x: if builtins.elem x shortWidgetVariants then (getShortVariant x) else x) endWidgets;
                 };
               };
@@ -96,6 +96,18 @@
         calendar.account.google = {
           type = "google";
           name = "Personal";
+        };
+
+        wallpaper = {
+          # Disable wallpapers, stylix handles this
+          enabled = false;
+        };
+
+        lockscreen = {
+          # TODO: Remove when stylix has been updated to support this
+          # Without the below the default noctalia wallpaper shows on the lock
+          # screen
+          wallpaper = ../assets/nixos-catppuccin-mocha.png;
         };
 
         widget = {
