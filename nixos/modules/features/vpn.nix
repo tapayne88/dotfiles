@@ -9,5 +9,8 @@
     environment.systemPackages = with pkgs; [
       tailscale
     ];
+
+    # Prevent NetworkManager from hanging on Tailscale interfaces
+    networking.networkmanager.unmanaged = [ "interface-name:tailscale*" ];
   };
 }
