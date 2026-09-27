@@ -394,6 +394,7 @@
                 ipc = "noctalia msg";
               in
               lib.flatten [
+                (bind "${mod} + Return" (dsp.exec_cmd "${lib.getExe osConfig.hostSettings.terminal}") { })
                 (bind "${mod} + Space" (dsp.exec_cmd "${ipc} panel-toggle launcher") { })
                 (bind "${mod} + CTRL + Q" (dsp.exec_cmd "${ipc} session lock") { })
                 (bind "XF86PowerOff" (dsp.exec_cmd "${ipc} session lock") { })
