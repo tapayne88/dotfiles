@@ -11,7 +11,9 @@ in
 
     hostSettings = {
       inherit username;
-      internalMonitor = "LVDS-1";
+      internalMonitor = {
+        name = "LVDS-1";
+      };
       terminal = pkgs.kitty;
       persistenceMountPath = "/persist";
       mainDevice = "/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEAD137976Z";

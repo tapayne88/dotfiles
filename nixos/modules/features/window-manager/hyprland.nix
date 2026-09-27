@@ -7,8 +7,8 @@
       ...
     }:
     let
-      internalMonitor = osConfig.hostSettings.internalMonitor;
-      internalMonitorScale = osConfig.hostSettings.internalMonitorScale;
+      internalMonitor = osConfig.hostSettings.internalMonitor.name;
+      internalMonitorScale = osConfig.hostSettings.internalMonitor.scale;
       mod = "SUPER";
     in
     {

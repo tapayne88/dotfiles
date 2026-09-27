@@ -86,7 +86,7 @@
               center = [ "media" ];
               end = endWidgets;
               monitor = {
-                "${osConfig.hostSettings.internalMonitor}" = {
+                "${osConfig.hostSettings.internalMonitor.name}" = {
                   end = map (x: if builtins.elem x shortWidgetVariants then (getShortVariant x) else x) endWidgets;
                 };
               };

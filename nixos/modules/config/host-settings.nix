@@ -6,14 +6,26 @@
         type = lib.types.str;
         default = "/persist";
       };
-      # TODO: Refactor to monitor object
       internalMonitor = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-      };
-      internalMonitorScale = lib.mkOption {
-        type = lib.types.int;
-        default = 1;
+        description = "Configuration for the internal monitor.";
+        type = lib.types.submodule {
+          options = {
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = ''
+                The display identifier (e.g., 'eDP-1' or 'DP-1').
+
+                To easily find connected monitors directly from the hardware on a new machine, run:
+                `grep -l "^connected$" /sys/class/drm/card*-*/status | awk -F'/' '{print $5}' | cut -d'-' -f2-`
+              '';
+            };
+            scale = lib.mkOption {
+              type = lib.types.int;
+              default = 1;
+              description = "Scaling factor for the internal monitor. For higher resolution displays 2 often makes more sense.";
+            };
+          };
+        };
       };
       terminal = lib.mkOption {
         type = lib.types.package;
