@@ -19,6 +19,8 @@ Create a new branch on this repo and copy over one of the existing [nixos/module
 - `hostSettings.mainDevice`
 - `hostSettings.internalMonitor.name`
 
+> **Suggestion:** Name the branch `$TARGET_HOST`, the following steps will make this assumption.
+
 ### 3. Generate Hardware Configuration
 
 Because Disko handles all mounts declaratively, use the `--no-filesystems` flag. This correctly detects your CPU microcode and necessary storage/input kernel modules from the physical hardware buses without needing the drives to be formatted first.
@@ -51,12 +53,6 @@ hostSettings.mainDevice = "/dev/disk/by-id/YOUR-DISCOVERED-ID";
 
 Because the installation commands pull directly from GitHub, you must commit and push your changes to the remote branch so the installer can see them.
 
-```bash
-git add .
-git commit -m "Add hardware config for ${TARGET_HOST}"
-git push -u origin framework-setup
-```
-
 ---
 
 ## Phase 2: Disk Partitioning, Formatting & Installation
@@ -71,7 +67,7 @@ Disko handles the GPT partition table, LUKS encryption, Btrfs subvolumes, and mo
 sudo nix --extra-experimental-features "nix-command flakes" \
   run 'github:nix-community/disko/latest#disko' -- \
   --mode destroy,format,mount \
-  --flake "github:tapayne88/dotfiles/framework-setup?dir=nixos#${TARGET_HOST}"
+  --flake "github:tapayne88/dotfiles/${TARGET_HOST}?dir=nixos#${TARGET_HOST}"
 ```
 
 Once this finishes, your drive is fully partitioned, encrypted, and automatically mounted to `/mnt`.
@@ -81,7 +77,9 @@ Once this finishes, your drive is fully partitioned, encrypted, and automaticall
 Install NixOS with the standard installer. This two-step approach avoids pulling everything into RAM.
 
 ```bash
-sudo nixos-install --flake "github:tapayne88/dotfiles/framework-setup?dir=nixos#${TARGET_HOST}" --no-root-passwd
+sudo nixos-install \
+  --flake "github:tapayne88/dotfiles/${TARGET_HOST}?dir=nixos#${TARGET_HOST}" \
+  --no-root-passwd
 ```
 
 ---
