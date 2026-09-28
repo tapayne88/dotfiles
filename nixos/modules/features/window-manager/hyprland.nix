@@ -420,6 +420,9 @@
                 (bind "XF86AudioMute" (dsp.exec_cmd "${ipc} volume-mute") { })
                 (bind "XF86MonBrightnessUp" (dsp.exec_cmd "${ipc} brightness-up") { })
                 (bind "XF86MonBrightnessDown" (dsp.exec_cmd "${ipc} brightness-down") { })
+                (bind "XF86AudioPlay" (dsp.exec_cmd "${lib.getExe pkgs.playerctl} play-pause") { })
+                (bind "XF86AudioNext" (dsp.exec_cmd "${lib.getExe pkgs.playerctl} next") { })
+                (bind "XF86AudioPrev" (dsp.exec_cmd "${lib.getExe pkgs.playerctl} previous") { })
 
                 # Switch workspaces with mainMod + [0-9]
                 (bind "${mod} + 1" (dsp.focus { workspace = "1"; }) { })
