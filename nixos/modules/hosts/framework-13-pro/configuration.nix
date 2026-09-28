@@ -51,9 +51,6 @@ in
               item = "framework-13-pro (truenas)";
               vault = "Private";
             }
-            {
-              vault = "Private";
-            }
           ];
         };
       }
