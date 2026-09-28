@@ -116,7 +116,7 @@
                 output = "desc: LG Electronics LG HDR 4K 107NTYT9P250";
                 mode = "preferred";
                 position = "auto";
-                scale = 1;
+                scale = 2;
               }
               # Fallback
               {
