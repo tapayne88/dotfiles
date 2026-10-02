@@ -42,8 +42,14 @@
         # --- Core Mounting & Security ---
         "x-systemd.automount"
         "noauto"
-        "credentials=/etc/nixos/smb-secrets"
         "_netdev"
+
+        # Smb-secrets file should have the following content, be owned by
+        # root:root & have permissions 600
+        #
+        # username=your_username
+        # password=your_password
+        "credentials=/etc/nixos/smb-secrets"
 
         # --- Permissions ---
         "uid=1000"
