@@ -41,14 +41,14 @@ in
     home-manager.users."${username}".imports = [
       {
         hostSettings = {
-          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAXz+yXHD4MQzf2pvqVCuGsA6tpBw3YDbo2WhcB96Voz framework-13-pro";
+          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAXz+yXHD4MQzf2pvqVCuGsA6tpBw3YDbo2WhcB96Voz identity";
           availableSshKeys = [
             {
-              item = "framework-13-pro (default)";
+              item = "identity";
               vault = "Private";
             }
             {
-              item = "framework-13-pro (truenas)";
+              item = "homelab";
               vault = "Private";
             }
           ];

@@ -40,17 +40,14 @@ in
     home-manager.users."${username}".imports = [
       {
         hostSettings = {
-          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAbhCK48x0D+1HMbKLQhPOWUzWa1CHd10tGvNFbjtY2 thinkpad-nixos";
+          sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAXz+yXHD4MQzf2pvqVCuGsA6tpBw3YDbo2WhcB96Voz identity";
           availableSshKeys = [
             {
-              item = "thinkpad-nixos (default)";
+              item = "identity";
               vault = "Private";
             }
             {
-              item = "thinkpad-nixos (truenas)";
-              vault = "Private";
-            }
-            {
+              item = "homelab";
               vault = "Private";
             }
           ];
