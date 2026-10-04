@@ -9,6 +9,11 @@
       after = [ "iwd.service" ];
     };
 
+    # Restart iwd on resume (wake from sleep) to force wifi to reconnect
+    powerManagement.resumeCommands = ''
+      ${pkgs.systemd}/bin/systemctl restart iwd.service
+    '';
+
     hardware.bluetooth.enable = true;
 
     environment.systemPackages = [
