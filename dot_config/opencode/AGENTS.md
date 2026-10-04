@@ -42,14 +42,6 @@ Most files I edit will have a formatter configured in the project. After making 
 
 Check for project-specific formatter configs (`.prettierrc`, `pyproject.toml`, `.editorconfig`, etc.) and use those settings. If a `package.json` has a `format` script, prefer using that.
 
-## Documentation Lookup
-
-When asked about a programming language, library, framework feature, or API:
-
-1. Use the **Context7 MCP** to fetch up-to-date documentation
-2. First resolve the library ID using `context7_resolve-library-id`
-3. Then query the docs using `context7_query-docs`
-
 This ensures answers are based on current documentation rather than potentially outdated training data.
 
 ## File Editing Safety

@@ -9,6 +9,7 @@
 
 {{- if eq .chezmoi.os "linux" }}
 .config/nix
+.config/opencode
 {{- end }}
 
 .prettierrc.js

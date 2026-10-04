@@ -1,27 +1,9 @@
 // vim: ft=jsonc
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": true,
+  "autoupdate": false,
   "share": "disabled",
-  "disabled_providers": ["opencode"],
-  "model": "github-copilot/claude-opus-4.6",
-  "small_model": "github-copilot/claude-haiku-4.5",
-  "mcp": {
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
-      "environment": {
-        "ASDF_NODEJS_VERSION" : "{{ .asdf_nodejs_version }}",
-      },
-      "enabled": true,
-    },
-    "chrome-devtools": {
-      "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
-      "environment": {
-        "ASDF_NODEJS_VERSION" : "{{ .asdf_nodejs_version }}",
-      },
-      "enabled": true,
-    },
-  },
+  "model": "opencode/glm-5.3",
+  "small_model": "opencode/glm-5.3-flash",
+  "mcp": {},
 }

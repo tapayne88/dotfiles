@@ -7,16 +7,17 @@
       services.upower.enable = true;
 
       environment.systemPackages = with pkgs; [
-        tmux
-        git
+        chezmoi
         curl
-        ripgrep
         fd
+        ghostty
+        git
+        kitty
+        opencode
+        ripgrep
+        tmux
         vim
         wget
-        kitty
-        ghostty
-        chezmoi
 
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
