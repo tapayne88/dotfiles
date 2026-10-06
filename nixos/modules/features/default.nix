@@ -7,6 +7,7 @@
       self.nixosModules.disko
       self.nixosModules.file-browser
       self.nixosModules.file-syncing
+      self.nixosModules.gaming
       self.nixosModules.greeter
       self.nixosModules.home-manager
       self.nixosModules.impermanence
