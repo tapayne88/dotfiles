@@ -31,5 +31,14 @@
 
       # Enable udev rules for Steam hardware like controllers
       hardware.steam-hardware.enable = true;
+
+      ### Controller support ###
+
+      # Enable standard Bluetooth support
+      hardware.bluetooth.enable = true;
+      hardware.bluetooth.powerOnBoot = true;
+
+      # Enable the xpadneo driver for Xbox One/Series controllers over Bluetooth
+      hardware.xpadneo.enable = true;
     };
 }
