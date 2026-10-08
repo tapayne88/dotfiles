@@ -9,6 +9,9 @@
 
 {{- if eq .chezmoi.os "linux" }}
 .config/nix
+{{- end }}
+
+{{- if eq .chezmoi.os "darwin" }}
 .config/opencode
 {{- end }}
 
