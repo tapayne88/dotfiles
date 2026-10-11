@@ -21,12 +21,7 @@
   };
 
   flake.homeModules.noctalia =
-    {
-      osConfig,
-      lib,
-      pkgs,
-      ...
-    }:
+    { osConfig, ... }:
     {
       imports = [
         inputs.noctalia.homeModules.default
@@ -150,28 +145,30 @@
           location = {
             auto_locate = true;
           };
-          idle.behavior = {
-            "Dim Backlight" =
-              let
-                brillo = lib.getExe pkgs.brillo;
-              in
-              {
+          idle = {
+            # Seconds to fade a fullscreen surface-tint overlay before the first action.
+            # This acts as your "dim" warning without triggering hardware backlight udev events.
+            pre_action_fade_seconds = 15.0;
+
+            behavior_order = [
+              "screen-off"
+              "lock"
+              "suspend"
+            ];
+
+            behavior = {
+              screen-off = {
                 timeout = 300;
-                action = "command";
-                command = "${brillo} -O && ${brillo} -S 10";
-                resume_command = "${brillo} -I";
+                action = "screen_off";
               };
-            lock = {
-              timeout = 600;
-              action = "lock";
-            };
-            screen-off = {
-              timeout = 600;
-              action = "screen_off";
-            };
-            suspend = {
-              timeout = 1800;
-              action = "lock_and_suspend";
+              lock = {
+                timeout = 330;
+                action = "lock";
+              };
+              suspend = {
+                timeout = 1800;
+                action = "lock_and_suspend";
+              };
             };
           };
         };
