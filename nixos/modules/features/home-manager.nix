@@ -28,6 +28,7 @@
             self.homeModules.notes
             self.homeModules.programs
             self.homeModules.shell
+            self.homeModules.video-playback
             self.homeModules.window-manager
           ];
           home = {
