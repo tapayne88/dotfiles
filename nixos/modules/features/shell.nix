@@ -437,50 +437,6 @@
               fi
             }
 
-            function git-worktree-init() {
-              if [ "$1" = "-h" ]; then
-                echo "git-worktree-init - convert a git repo to worktree setup"
-                echo ""
-                echo "Usage:"
-                echo "   gw <flags>"
-                echo ""
-                echo "Flags:"
-                echo "   -h     Help, print his help message"
-                echo ""
-                echo "\`git-worktree-init\` will convert the current git repo to a worktree."
-                return
-              fi
-
-              if [ ! -d ".git" ]; then
-                echo "not in root of git repo"
-                return 1
-              fi
-
-              REPO_DIR=$(pwd)
-              PARENT_DIR=$(dirname $REPO_DIR)
-              REPO_NAME=$(basename $REPO_DIR)
-
-              TEMP_REPO="$(mktemp -d)/$REPO_NAME"
-
-              # Remove old location files
-              echo "moving current repo to $TEMP_REPO"
-              cd ..
-              mv $REPO_NAME $TEMP_REPO
-
-              # Make new directory structure
-              echo "setting up new directory structure"
-              mkdir -p "$REPO_NAME"
-              cp -r "$TEMP_REPO/.git" "$REPO_NAME/.git"
-
-              # Setup hidden actual repo as bare to avoid accidentally checking out a branch
-              echo "setting hidden repo as bare"
-              cd "$REPO_NAME/.git"
-              git config --bool core.bare true
-
-              echo "you're ready to start managing your worktrees with worktrunk"
-              echo "https://worktrunk.dev"
-            }
-
             ${lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
               # `brew` wrapper:
               #   - `brew upgrade` = upgrade brew installed formula and bundle
