@@ -3,7 +3,6 @@
 .Brewfile
 .claude
 .config/aerospace
-.config/zsh/functions/brew.zsh
 .cursor
 {{- end }}
 

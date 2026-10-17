@@ -6,6 +6,18 @@
         type = lib.types.str;
         default = "/persist";
       };
+      dotfilesDir = lib.mkOption {
+        type = lib.types.str;
+        default = "$HOME/git/dotfiles";
+        description = ''
+          Location of the dotfiles repository on this host. Used to derive
+          NH_FLAKE for the nh CLI.
+
+          The value is exported through a double-quoted shell export, so
+          "$HOME" keeps it valid across platforms and users. Override per
+          host wherever the repository is cloned somewhere else.
+        '';
+      };
       internalMonitor = lib.mkOption {
         description = "Configuration for the internal monitor.";
         type = lib.types.submodule {
@@ -60,6 +72,18 @@
       sshPublicKey = lib.mkOption {
         type = lib.types.str;
         description = "The public SSH key string used by 1Password for Git signing on this host.";
+      };
+      dotfilesDir = lib.mkOption {
+        type = lib.types.str;
+        default = "$HOME/git/dotfiles";
+        description = ''
+          Location of the dotfiles repository on this host. Used to derive
+          NH_FLAKE for the nh CLI.
+
+          The value is exported through home.sessionVariables, so "$HOME"
+          keeps it valid across platforms. Override per host wherever the
+          repository is cloned somewhere else.
+        '';
       };
       availableSshKeys = lib.mkOption {
         description = "List of available SSH keys for 1Password to make available via the SSH agent";
