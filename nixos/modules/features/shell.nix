@@ -50,6 +50,11 @@
       # Let Home Manager install and manage itself.
       programs.home-manager.enable = true;
 
+      # Exports the XDG_* environment variables (previously done manually in
+      # initContent) via hm-session-vars, sourced from .zshenv/.zprofile so
+      # non-interactive shells and systemd user services see them too
+      xdg.enable = true;
+
       programs.zsh = {
         enable = true;
         dotDir = config.home.homeDirectory;
@@ -225,11 +230,6 @@
           '')
 
           ''
-            export XDG_CONFIG_HOME=$HOME/.config
-            export XDG_CACHE_HOME=$HOME/.cache
-            export XDG_DATA_HOME=$HOME/.local/share
-            export XDG_STATE_HOME=$HOME/.local/state
-
             export VISUAL=nvim
             export EDITOR=nvim
             export MANPAGER="sh -c 'col -bx | bat -l man -p'"
