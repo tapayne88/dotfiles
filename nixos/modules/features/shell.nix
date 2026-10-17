@@ -63,6 +63,20 @@
         MANROFFOPT = "-c";
       };
 
+      # Prepended to PATH (list order = front of PATH first), rendered in a
+      # double-quoted export so "$HOME" expands. Replaces the prepend_path
+      # function from the chezmoi-managed zsh config. ~/.local/bin is first so
+      # local scripts override nix and homebrew. NOTE: xdg.localBinInPath is
+      # deliberately not used - it appends via mkAfter, which would put
+      # ~/.local/bin behind the homebrew entries
+      home.sessionPath = [
+        "$HOME/.local/bin"
+      ]
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+        "/opt/homebrew/bin"
+        "/usr/local/bin"
+      ];
+
       programs.zsh = {
         enable = true;
         dotDir = config.home.homeDirectory;
@@ -238,22 +252,6 @@
           '')
 
           ''
-            function prepend_path {
-              for p in $@; do
-                if (test -d $p); then
-                  export PATH="$p:$PATH"
-                fi
-              done
-            }
-
-            # executable search path (last to first order)
-            ${lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
-              prepend_path "/opt/homebrew/bin" "/usr/local/bin" "/usr/local/sbin"
-            ''}
-
-            # Re-export PATH again after nix with ~/.local/bin at the front to allow overrides
-            prepend_path "$HOME/.local/bin"
-
             # Disables scroll lock shortcut (Ctrl+s)
             stty -ixon
             KEYTIMEOUT=1
