@@ -55,6 +55,14 @@
       # non-interactive shells and systemd user services see them too
       xdg.enable = true;
 
+      # Bat as manpager, sourced from .zshenv/.zprofile so man works from any
+      # shell context (not just interactive zsh). VISUAL/EDITOR are already set
+      # by programs.neovim.defaultEditor via the same mechanism
+      home.sessionVariables = {
+        MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+        MANROFFOPT = "-c";
+      };
+
       programs.zsh = {
         enable = true;
         dotDir = config.home.homeDirectory;
@@ -230,11 +238,6 @@
           '')
 
           ''
-            export VISUAL=nvim
-            export EDITOR=nvim
-            export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-            export MANROFFOPT="-c"
-
             function prepend_path {
               for p in $@; do
                 if (test -d $p); then
