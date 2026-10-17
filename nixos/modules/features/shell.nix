@@ -253,8 +253,7 @@
 
           ''
             # Disables scroll lock shortcut (Ctrl+s)
-            stty -ixon
-            KEYTIMEOUT=1
+            [[ -t 0 ]] && stty -ixon
 
             # Completions
             zmodload -i zsh/complist
