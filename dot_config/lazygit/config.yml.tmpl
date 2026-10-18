@@ -21,21 +21,16 @@ gui:
       - "#cdd6f4"
     searchingActiveBorderColor:
       - "#f9e2af"
-
-  authorColors:
-    "*": "#b4befe"
-
+    authorColors:
+      "*": "#b4befe"
 git:
   diffRenderers:
     - command: delta --dark --paging=never --features catppuccin-mocha --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --wrap-max-lines=10
-
   mainBranches:
     - master
     - main
     - develop
-
   overrideGpg: true
-
 worktree:
   defaultPath: "../.worktrees"
 
