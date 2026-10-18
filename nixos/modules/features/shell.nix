@@ -187,7 +187,30 @@
 
         # SSH_AUTH_SOCK belongs in .zshenv so non-interactive shells (editors,
         # scripts) can also reach the 1Password agent
-        envExtra = ''export SSH_AUTH_SOCK="${_1passwordSock}"'';
+        envExtra = ''
+          export SSH_AUTH_SOCK="${_1passwordSock}"
+        ''
+        # macOS has no system-level nix shell integration (NixOS uses
+        # /etc/zshenv; this mac's /etc/paths.d has no nix entry), so source
+        # nix.sh like the pre-nix zsh config did. Puts the nix and
+        # home-manager profile bins on PATH and sets NIX_PROFILES, which the
+        # fpath loop in the generated .zshrc needs for completions.
+        # hm-session-vars.sh needs no manual sourcing - home-manager adds
+        # that itself when it manages the shell
+        + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+          if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+            . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+          elif [ -e /nix/var/nix/profiles/default/etc/profile.d/nix.sh ]; then
+            . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+          fi
+
+          # envExtra runs after home.sessionPath, and nix.sh prepends to
+          # PATH, so re-assert ~/.local/bin at the front to preserve
+          # local-script overrides
+          if [ -d "$HOME/.local/bin" ]; then
+            export PATH="$HOME/.local/bin:$PATH"
+          fi
+        '';
 
         # zshrc ordering used below:
         #   550  before oh-my-zsh (800) and plugin sourcing (900)
