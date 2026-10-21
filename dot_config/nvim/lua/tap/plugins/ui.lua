@@ -116,19 +116,23 @@ return {
 
   {
     'petertriho/nvim-scrollbar',
+    branch = 'refactor/v2',
     event = 'BufReadPost',
     opts = {
-      hide_if_all_visible = true, -- Hides everything if all lines are visible
-      excluded_filetypes = {
-        -- Default config
-        'cmp_docs',
-        'cmp_menu',
-        'noice',
-        'prompt',
-        'TelescopePrompt',
-
-        'lazy',
-        'oil_preview',
+      scrollbar = {
+        thumb = {
+          -- Hides everything if all lines are visible
+          hide_if_all_visible = true,
+        },
+      },
+      providers = {
+        gitsigns = true,
+      },
+      exclude = {
+        filetypes = {
+          lazy = true,
+          oil_preview = true,
+        },
       },
     },
   },
