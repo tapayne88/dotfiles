@@ -67,11 +67,21 @@
     };
   };
 
-  flake.homeModules.host-settings = { lib, ... }: {
+  flake.homeModules.host-settings = { lib, config, ... }: {
     options.hostSettings = {
       sshPublicKey = lib.mkOption {
         type = lib.types.str;
         description = "The public SSH key string used by 1Password for Git signing on this host.";
+      };
+      agentHarness = lib.mkOption {
+        type = lib.types.str;
+        default = "opencode";
+        description = ''
+          The agent harness CLI launched in the nic tmux session.
+
+          The value is exported as AGENT_HARNESS via home.sessionVariables
+          and read by nic, falling back to opencode where unset.
+        '';
       };
       dotfilesDir = lib.mkOption {
         type = lib.types.str;
@@ -110,6 +120,10 @@
           }
         );
       };
+    };
+
+    config.home.sessionVariables = {
+      AGENT_HARNESS = config.hostSettings.agentHarness;
     };
   };
 }
