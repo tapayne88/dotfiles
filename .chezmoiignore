@@ -10,10 +10,6 @@
 .config/nix
 {{- end }}
 
-{{- if eq .chezmoi.os "darwin" }}
-.config/opencode
-{{- end }}
-
 .prettierrc.js
 misc
 public

@@ -21,6 +21,7 @@
             self.homeModules.unfree
             self.homeModules.host-settings
 
+            self.homeModules.ai
             self.homeModules.browser
             self.homeModules.darktable
             self.homeModules.linux

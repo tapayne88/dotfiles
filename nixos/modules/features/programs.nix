@@ -13,7 +13,6 @@
         ghostty
         git
         kitty
-        opencode
         ripgrep
         tmux
         vim
