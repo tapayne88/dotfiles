@@ -95,6 +95,15 @@
           repository is cloned somewhere else.
         '';
       };
+      gpgPassphraseRef = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = ''
+          1Password secret reference (e.g. "op://Work/GPG/password") holding
+          the GPG key passphrase. When set, gpg-agent uses pinentry-1password,
+          which asks 1Password for the passphrase on every use.
+        '';
+      };
       availableSshKeys = lib.mkOption {
         description = "List of available SSH keys for 1Password to make available via the SSH agent";
         default = [ ];
