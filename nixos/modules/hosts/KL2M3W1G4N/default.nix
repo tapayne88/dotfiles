@@ -15,6 +15,7 @@
           self.homeModules.host-settings
 
           self.homeModules.darwin
+          self.homeModules.gpg
           self.homeModules.neovim
           self.homeModules.nh
           self.homeModules.shell
