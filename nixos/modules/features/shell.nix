@@ -212,6 +212,15 @@
           fi
         '';
 
+        # Login shells on macOS run path_helper from /etc/zprofile after
+        # .zshenv, which moves /usr/bin and friends back in front of the nix
+        # profile (so e.g. vi resolves to /usr/bin/vi). .zprofile runs after
+        # that, so restore the intended order here
+        profileExtra = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+          export PATH="$HOME/.local/bin:$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
+          typeset -U path
+        '';
+
         # zshrc ordering used below:
         #   550  before oh-my-zsh (800) and plugin sourcing (900)
         #   850  after compinit (run by oh-my-zsh) but before zsh-vi-mode
