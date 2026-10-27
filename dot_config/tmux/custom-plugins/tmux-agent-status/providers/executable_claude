@@ -8,7 +8,9 @@
 # contract documented in ../README.md.
 #
 # Must never fail loudly: on any problem this prints "[]" and exits 0, since
-# a broken provider must not break the status bar.
+# a broken provider must not break the status bar. The one exception is when
+# Claude Code isn't installed at all: then it exits 1 with no output, so the
+# core hides the segment instead of rendering all-zero counts.
 
 set -uo pipefail
 
@@ -19,6 +21,10 @@ fail_empty() {
   echo '[]'
   exit 0
 }
+
+# Installed check: config dir first, since tmux's #() PATH often lacks
+# ~/.local/bin where the claude binary lives.
+[ -d "$CONFIG_DIR" ] || command -v claude > /dev/null 2>&1 || exit 1
 
 command -v jq > /dev/null 2>&1 || fail_empty
 [ -d "$SESSIONS_DIR" ] || fail_empty

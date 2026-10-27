@@ -64,7 +64,10 @@ exits 0:
   only aggregates on `state` today; the rest are carried through for other
   consumers (e.g. `session`, added for the television integration below)
   without a contract change.
-- Print `[]` when there are no agents.
+- Print `[]` when the harness is installed but there are no agents.
+- Exit non-zero with no output when the harness isn't installed at all. If
+  no configured provider succeeds, the segment (and the television summary)
+  is hidden entirely rather than showing all-zero counts.
 - Non-zero exit, empty output, or unparseable JSON must be treated by the
   core as "this provider contributed nothing" -- a broken provider must
   never break the status bar.
