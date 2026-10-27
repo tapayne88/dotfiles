@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+#
+# tmux-agent-status provider: Claude Code
+#
+# Reads Claude Code's native session registry (~/.claude/sessions/<pid>.json,
+# push-updated by Claude Code itself on every status transition) and emits a
+# JSON array describing each live interactive session, per the provider
+# contract documented in ../README.md.
+#
+# Must never fail loudly: on any problem this prints "[]" and exits 0, since
+# a broken provider must not break the status bar. The one exception is when
+# Claude Code isn't installed at all: then it exits 1 with no output, so the
+# core hides the segment instead of rendering all-zero counts.
+
+set -uo pipefail
+
+CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+SESSIONS_DIR="$CONFIG_DIR/sessions"
+
+fail_empty() {
+  echo '[]'
+  exit 0
+}
+
+# Installed check: config dir first, since tmux's #() PATH often lacks
+# ~/.local/bin where the claude binary lives.
+[ -d "$CONFIG_DIR" ] || command -v claude > /dev/null 2>&1 || exit 1
+
+command -v jq > /dev/null 2>&1 || fail_empty
+[ -d "$SESSIONS_DIR" ] || fail_empty
+
+live_files=()
+for f in "$SESSIONS_DIR"/*.json; do
+  [ -e "$f" ] || continue
+
+  base=$(basename "$f")
+  pid=${base%.json}
+
+  # Skip anything that isn't a bare PID filename (e.g. stray files).
+  case "$pid" in
+  '' | *[!0-9]*) continue ;;
+  esac
+
+  # Liveness: process must exist and must actually be a claude process, so a
+  # reused PID belonging to some unrelated process is never counted. (We
+  # don't compare procStart -- the registry stores it in UTC/C-locale field
+  # order which plain `ps` does not reproduce, and it's unnecessary anyway:
+  # if a PID is reused by another claude, that process overwrites the file
+  # itself.)
+  kill -0 "$pid" 2> /dev/null || continue
+  comm=$(ps -o comm= -p "$pid" 2> /dev/null) || continue
+  case "$comm" in
+  *claude*) ;;
+  *) continue ;;
+  esac
+
+  live_files+=("$f")
+done
+
+[ ${#live_files[@]} -eq 0 ] && fail_empty
+
+# State mapping: "shell" is a substate of idle (idle, with a live background
+# shell attached) -- the agent itself isn't doing anything, so it maps to
+# "done", not "running". Verified against the Claude Code binary:
+#   aM = bv==="idle" && gR ? "shell" : bv     -- shell only ever follows idle
+#   kB = bv==="busy"                          -- "working" is busy alone
+#
+# A session working via a background job (`claude bg-spare`) is recorded
+# twice: kind:interactive (the parked pane, status usually idle) and
+# kind:bg (the actual worker, status reflects the real work, and carries a
+# `jobId` that equals the interactive record's `parkedJobId` exactly). Roll
+# each interactive session up into its live worker's status when one
+# exists, so the pane reports the work actually happening rather than
+# "parked == done". Output is always exactly one entry per live interactive
+# session -- a bg worker with no live owning pane (nothing to jump to in
+# tmux) is deliberately not emitted; see the README's Harness support
+# section.
+jq -s '
+  . as $all
+  | ($all | map(select(.kind == "bg"))) as $bgs
+  | ($all | map(select(.kind == "interactive"))) as $inters
+  | def to_state(s):
+      if s == "waiting" then "waiting"
+      elif s == "busy" then "running"
+      elif s == "idle" or s == "shell" then "done"
+      else empty
+      end;
+    def pane_of(t):
+      (t // "") | split(":") | (.[1] // "") | split(".") | .[1];
+    def session_of(t):
+      (t // "") | split(":") | .[0];
+  $inters | map(
+      . as $i
+      | ($bgs | map(select($i.parkedJobId != null and .jobId == $i.parkedJobId)) | first) as $worker
+      | ($worker // $i) as $eff
+      | {
+          state: to_state($eff.status),
+          pane: pane_of($i.tmux),
+          session: session_of($i.tmux),
+          name: $i.name,
+          cwd: $i.cwd,
+          reason: $eff.waitingFor,
+          agent: "claude"
+        }
+    )
+' "${live_files[@]}" 2> /dev/null || fail_empty
