@@ -136,13 +136,19 @@ return {
     cmd = 'Zdiff',
     keys = {
       { '<leader>zd', '<cmd>Zdiff<cr>', desc = 'Zdiff (uncommitted)' },
-      { '<leader>zD', '<cmd>Zdiff main<cr>', desc = 'Zdiff (vs main)' },
     },
-    opts = {
-      keymaps = {
-        -- align with fugitive
-        toggle = '=',
-      },
-    },
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'zdiff',
+        callback = function(event)
+          local opts = { buffer = event.buf, silent = true }
+
+          -- align with fugitive
+          vim.keymap.set('n', '=', '<cmd>ZdiffToggle<cr>', opts)
+          vim.keymap.set('n', '<CR>', '<cmd>ZdiffOpen<cr>', opts)
+          vim.keymap.set('n', 'R', '<cmd>ZdiffRefresh<cr>', opts)
+        end,
+      })
+    end,
   },
 }
