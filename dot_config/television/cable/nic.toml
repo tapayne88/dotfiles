@@ -1,6 +1,6 @@
 [metadata]
 name = "nic"
-description = "Spawn new nic tmux session from zoxide directory history"
+description = "Spawn new nic tmux/rex session from zoxide directory history"
 requirements = ["zoxide", "tmux", "treehouse", "git"]
 
 [source]
@@ -16,7 +16,7 @@ enter = "actions:nic"
 alt-w = "actions:lease"
 
 [actions.nic]
-description = "Launch new nic tmux session at the selected directory"
+description = "Launch new nic tmux/rex session at the selected directory"
 command = "nic '{}'"
 mode = "execute"
 
