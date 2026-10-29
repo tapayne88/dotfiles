@@ -27,19 +27,19 @@ alt-n = "actions:new"
 ctrl-g = "actions:lazygit"
 
 [actions.nic]
-description = "Open or switch to the tmux session for this worktree"
+description = "Open or switch to the session for this worktree"
 command = "nic '{split:\t:0}'"
 mode = "execute"
 
 [actions.release]
-description = "Kill the tmux session and return the worktree to the pool"
+description = "Kill the session and return the worktree to the pool"
 command = "treehouse-tmux release '{split:\t:0}'"
 # Note: tv doesn't reload the source after an action, so the returned
 # worktree's row stays stale until you press ctrl-r (reload_source).
 mode = "fork"
 
 [actions.new]
-description = "Lease a fresh worktree from the pool and open a tmux session in it"
+description = "Lease a fresh worktree from the pool and open a session in it"
 command = "treehouse-tmux new"
 mode = "execute"
 

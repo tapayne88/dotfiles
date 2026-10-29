@@ -181,6 +181,26 @@ rex.action {
 }
 rex.bind('ctrl+b>ctrl+n', 'nic_popup')
 
+-- lease a fresh treehouse worktree for the current pane's repo and open it with nic
+rex.action {
+  name = 'treehouse_lease_popup',
+  title = 'Lease Treehouse Worktree',
+  run = function()
+    popup { command = { 'treehouse-tmux', 'lease-session', current_cwd() } }
+  end,
+}
+rex.bind('ctrl+b>alt+w', 'treehouse_lease_popup')
+
+-- switch back to the previous session, kill this one, and release its worktree lease
+rex.action {
+  name = 'treehouse_release_popup',
+  title = 'Release Treehouse Worktree',
+  run = function()
+    popup { command = { 'treehouse-tmux', 'release-current', current_cwd() } }
+  end,
+}
+rex.bind('ctrl+b>alt+x', 'treehouse_release_popup')
+
 -- Persistent popup terminal, the equivalent of the tmux "popup" session. The
 -- popup terminal is labelled 'popup' and hidden by detaching it, so it keeps
 -- running until shown again. Exit its shell to start afresh at the current path.
@@ -266,4 +286,3 @@ rex.bind('ctrl+b>shift+p', 'toggle_popup')
 -- TODO: these call tmux themselves and need Rex versions first:
 -- * prefix i       tmux-cht.sh
 -- * prefix C-w     tv treehouse
--- * prefix M-w/M-x treehouse-tmux lease-session / release-current

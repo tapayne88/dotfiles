@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# treehouse-tmux - glue between git worktrees, treehouse pool status, and tmux sessions
+# treehouse-tmux - glue between git worktrees, treehouse pool status, and tmux/rex sessions
 # Backs the "treehouse" television channel (cable/treehouse.toml).
 
 set -euo pipefail
 
 show_help() {
   cat << 'EOF'
-treehouse-tmux - glue between git worktrees, treehouse pool status, and tmux sessions
+treehouse-tmux - glue between git worktrees, treehouse pool status, and tmux/rex sessions
 
 Usage:
   treehouse-tmux list
@@ -16,15 +16,15 @@ Usage:
       for pool-name and pool-status. Silent, exit 0, if not inside a git repo.
 
   treehouse-tmux release <path>
-      Kill the tmux session for <path> (see `nic -N`) and return the
+      Kill the session for <path> (see `nic -N`) and return the
       worktree to the pool with `treehouse return --force`. Refuses if
       <path> is not a pool worktree.
 
   treehouse-tmux new
-      Lease a fresh worktree from the pool and open a tmux session in it.
+      Lease a fresh worktree from the pool and open a session in it.
 
   treehouse-tmux preview <path>
-      Print a human-readable summary of <path>: pool status, lease, tmux
+      Print a human-readable summary of <path>: pool status, lease,
       session state, HEAD, ahead/behind the base branch, dirty files,
       diffstat and recent log. Colourised unless NO_COLOR is set.
 
@@ -34,16 +34,56 @@ Usage:
       if <path> isn't a git repo, or if the lease itself fails.
 
   treehouse-tmux release-current <path>
-      Switch the client back to its previous session, kill the tmux
-      session for the pool worktree at <path>, and return that worktree to
+      Switch the client back to its previous session, kill the session
+      for the pool worktree at <path>, and return that worktree to
       the pool. Meant to be bound to a key pressed from inside the session
       being released. Refuses (after a keypress) if <path> isn't a pool
       worktree.
+
+Sessions are rex sessions when run inside a rex terminal (and not inside
+tmux), otherwise tmux sessions, matching `nic`. Switching the Rex app to
+another session needs Remote Control turned on in its settings.
 EOF
 }
 
 pool_status_json() {
   treehouse status --json 2>/dev/null || echo '[]'
+}
+
+# Same choice of multiplexer as `nic`
+use_rex() {
+  [[ -z "${TMUX:-}" && -n "${REX_SESSION:-}" ]]
+}
+
+rex_bin() {
+  echo "${REX_BIN_DIR:+$REX_BIN_DIR/}rex"
+}
+
+# $1 is a session name from `nic -N`, which nic also uses as the rex label
+mux_has_session() {
+  if use_rex; then
+    "$(rex_bin)" session inspect "$1" > /dev/null 2>&1
+  else
+    tmux has-session -t "$1" 2> /dev/null
+  fi
+}
+
+mux_kill_session() {
+  if use_rex; then
+    "$(rex_bin)" kill "$1" > /dev/null 2>&1 || true
+  else
+    tmux kill-session -t "$1" 2> /dev/null || true
+  fi
+}
+
+mux_switch_previous() {
+  if use_rex; then
+    # rex has no last-used session, so this is the previous one in the
+    # app's order
+    "$(rex_bin)" 'do' session.previous > /dev/null 2>&1 || true
+  else
+    tmux switch-client -l 2> /dev/null || true
+  fi
 }
 
 cmd_list() {
@@ -96,7 +136,7 @@ cmd_release() {
 
   local session
   session="$(nic -N "$path")"
-  tmux kill-session -t "$session" 2>/dev/null || true
+  mux_kill_session "$session"
 
   treehouse return --force "$path"
 }
@@ -160,12 +200,12 @@ cmd_preview() {
     [[ -n "$lease_holder" ]] && lease_field="$lease_holder $lease_field"
   fi
 
-  local session tmux_state
+  local session session_state
   session="$(nic -N "$path" 2> /dev/null || echo '?')"
-  if tmux has-session -t "$session" 2> /dev/null; then
-    tmux_state="live"
+  if mux_has_session "$session"; then
+    session_state="live"
   else
-    tmux_state="no session"
+    session_state="no session"
   fi
 
   local head_sha branch head_field
@@ -197,7 +237,7 @@ cmd_preview() {
   echo "${c_bold}╭─ ${name} · $(status_color "$status")${status}${c_reset}${c_bold} ──────────────────────────────${c_reset}"
   printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "lease" "$lease_field"
   printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "procs" "$procs"
-  printf '  %-*s %s (%s)\n' "$PREVIEW_LABEL_WIDTH" "tmux" "$session" "$tmux_state"
+  printf '  %-*s %s (%s)\n' "$PREVIEW_LABEL_WIDTH" "session" "$session" "$session_state"
   echo
   printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "HEAD" "$head_field"
   printf '  %-*s %s\n' "$PREVIEW_LABEL_WIDTH" "base" "$base_field"
@@ -263,17 +303,16 @@ cmd_release_current() {
   local session
   session="$(nic -N "$path")"
 
-  # Move the client off this session first, so the kill-session below
-  # doesn't detach the client or fall back to tmux's own most-recently-
-  # active pick.
-  tmux switch-client -l 2> /dev/null || true
+  # Move the client off this session first, so the kill below doesn't
+  # detach the client or fall back to the multiplexer's own pick.
+  mux_switch_previous
 
   # Release before killing: this session (or the popup hosting this
-  # script) is what we're about to kill, so anything after kill-session
+  # script) is what we're about to kill, so anything after the kill
   # would never run.
   treehouse return --force "$path"
 
-  tmux kill-session -t "$session" 2> /dev/null || true
+  mux_kill_session "$session"
 }
 
 case "${1:-}" in
