@@ -1,6 +1,8 @@
 -- Seemless vim <-> rex navigation, mirroring aserowy/tmux.nvim's navigation.
 -- The rex keymap (dot_config/rex/init.lua) passes C-hjkl through to nvim, so
 -- nvim moves between its own splits and hands off to rex at the edge.
+local rex_bin = require('tap.utils.mux').rex_bin
+
 local M = {}
 
 local directions = { h = 'left', j = 'down', k = 'up', l = 'right' }
@@ -16,13 +18,6 @@ for _, window in ipairs((view and view.windows) or {}) do
 end
 rex.session.focus_direction { direction = rex.args.direction }
 ]]
-
-local function rex_bin()
-  if vim.env.REX_BIN_DIR then
-    return vim.env.REX_BIN_DIR .. '/rex'
-  end
-  return 'rex'
-end
 
 ---@param key 'h'|'j'|'k'|'l'
 function M.move(key)

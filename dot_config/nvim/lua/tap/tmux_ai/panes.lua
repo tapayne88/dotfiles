@@ -1,9 +1,7 @@
 local config = require 'tap.tmux_ai.config'
 local notify = require 'tap.tmux_ai.notify'
 
--- Same choice of multiplexer as nic and plugins/tmux-nvim.lua
-local use_rex = vim.env.TMUX == nil and vim.env.REX_SESSION ~= nil
-local backend = require('tap.tmux_ai.backends.' .. (use_rex and 'rex' or 'tmux'))
+local backend = require('tap.tmux_ai.backends.' .. (require('tap.utils.mux').use_rex() and 'rex' or 'tmux'))
 
 local M = {}
 
