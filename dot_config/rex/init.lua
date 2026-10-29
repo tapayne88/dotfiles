@@ -171,6 +171,16 @@ rex.action {
 }
 rex.bind('ctrl+b>g', 'lazygit_popup')
 
+-- nic popup
+rex.action {
+  name = 'nic_popup',
+  title = 'Nic Popup',
+  run = function()
+    popup { command = { 'tv', 'nic' } }
+  end,
+}
+rex.bind('ctrl+b>ctrl+n', 'nic_popup')
+
 -- Persistent popup terminal, the equivalent of the tmux "popup" session. The
 -- popup terminal is labelled 'popup' and hidden by detaching it, so it keeps
 -- running until shown again. Exit its shell to start afresh at the current path.
@@ -256,5 +266,4 @@ rex.bind('ctrl+b>shift+p', 'toggle_popup')
 -- TODO: these call tmux themselves and need Rex versions first:
 -- * prefix i       tmux-cht.sh
 -- * prefix C-w     tv treehouse
--- * prefix C-n     tv nic
 -- * prefix M-w/M-x treehouse-tmux lease-session / release-current

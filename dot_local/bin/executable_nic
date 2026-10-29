@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# nic - create a development tmux session with neovim, agent harness, and terminal panes
+# nic - create a development tmux/rex session with neovim, agent harness, and terminal panes
 
 set -euo pipefail
 
@@ -7,7 +7,7 @@ AGENT_HARNESS="${AGENT_HARNESS:-opencode}"
 
 show_help() {
   cat << 'EOF'
-nic - create a development tmux session with neovim, agent harness, and terminal panes
+nic - create a development tmux/rex session with neovim, agent harness, and terminal panes
 
 Usage:
   nic [-h] [-N] [-n name] [directory]
@@ -17,8 +17,8 @@ Arguments:
 
 Flags:
   -h           Show this help message
-  -n name      Name for the tmux session (defaults to directory basename)
-  -N           Print the computed session name and exit, without touching tmux
+  -n name      Name for the session (defaults to directory basename)
+  -N           Print the computed session name and exit, without touching tmux/rex
 
 Session naming (first match wins):
   1. -n name
@@ -38,6 +38,10 @@ Layout:
   └──────────────────────────────────────┘
 
 If a session with the same name already exists, attaches to it.
+
+Uses rex when run inside a rex terminal (and not inside tmux), otherwise tmux.
+Switching the Rex app to the session needs Remote Control turned on in its
+settings.
 EOF
 }
 
@@ -89,34 +93,102 @@ if [[ "$print_name_only" == true ]]; then
   exit 0
 fi
 
-# Determine attach or switch based on whether we're in tmux
-if [[ -n "${TMUX:-}" ]]; then
-  attach_cmd="switch-client"
-else
-  attach_cmd="attach-session"
-fi
+# Find the rex session labelled $session_name, or create it with the layout
+# above, and print its ID
+rex_session() {
+  "$rex" 'do' - name="$session_name" dir="$dir" agent="$AGENT_HARNESS" << 'EOF'
+local name, dir = tostring(rex.args.name), tostring(rex.args.dir)
 
-# If session exists, just attach/switch to it
-if tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -Fqx "$session_name"; then
+local list, err = rex.call('session.list')
+if err ~= nil then error(err, 0) end
+for _, session in ipairs(list.sessions or {}) do
+  if session.label == name then return session.session_id end
+end
+
+-- Shells rather than commands, so nvim and the agent get the interactive
+-- shell environment, as with tmux send-keys
+local function shell(label, input)
+  return rex.layout.block {
+    flavor = 'com.superlogical.terminal.shell',
+    label = label,
+    options = { cwd = dir, initial_input = input },
+  }
+end
+
+local session, err = rex.call('session.create', {
+  label = name,
+  initial_windows = {
+    {
+      layout = rex.layout.vertical(0.85,
+        rex.layout.horizontal(0.7,
+          shell('nvim', 'nvim\n'),
+          shell('agent', tostring(rex.args.agent) .. '\n')),
+        shell('terminal')),
+    },
+  },
+})
+if err ~= nil then error(err, 0) end
+
+-- Focus neovim pane
+rex.session.focus_block {
+  session_id = session.session_id,
+  block_id = session.initial_windows[1].block_ids[1],
+}
+return session.session_id
+EOF
+}
+
+open_rex() {
+  local session_id
+  session_id="$(rex_session)"
+  session_id="${session_id//\"/}"
+
+  if ! "$rex" 'do' session.select session_id="$session_id"; then
+    echo "Rex session '$session_name' is ready; switch to it from the session picker." >&2
+    # Keep the message on screen when run from a popup
+    if [[ -t 0 ]]; then
+      read -r -n 1 -s -p "Press any key to continue"
+    fi
+  fi
+}
+
+open_tmux() {
+  # Determine attach or switch based on whether we're in tmux
+  if [[ -n "${TMUX:-}" ]]; then
+    attach_cmd="switch-client"
+  else
+    attach_cmd="attach-session"
+  fi
+
+  # If session exists, just attach/switch to it
+  if tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -Fqx "$session_name"; then
+    tmux $attach_cmd -t "$session_name"
+    return
+  fi
+
+  # Create new detached session
+  tmux new-session -d -s "$session_name" -c "$dir" -x "$(tput cols)" -y "$(tput lines)"
+
+  # Split bottom 15% (full width) for terminal
+  tmux split-window -v -l 15% -t "$session_name:1.0" -c "$dir"
+
+  # Split right 30% for agent harness
+  tmux split-window -h -l 30% -t "$session_name:1.0" -c "$dir"
+
+  # Start applications
+  tmux send-keys -t "$session_name:1.0" "nvim" C-m
+  tmux send-keys -t "$session_name:1.1" "$AGENT_HARNESS" C-m
+
+  # Focus neovim pane
+  tmux select-pane -t "$session_name:1.0"
+
+  # Attach/switch to the session
   tmux $attach_cmd -t "$session_name"
-  exit 0
+}
+
+if [[ -z "${TMUX:-}" && -n "${REX_SESSION:-}" ]]; then
+  rex="${REX_BIN_DIR:+$REX_BIN_DIR/}rex"
+  open_rex
+else
+  open_tmux
 fi
-
-# Create new detached session
-tmux new-session -d -s "$session_name" -c "$dir" -x "$(tput cols)" -y "$(tput lines)"
-
-# Split bottom 15% (full width) for terminal
-tmux split-window -v -l 15% -t "$session_name:1.0" -c "$dir"
-
-# Split right 30% for agent harness
-tmux split-window -h -l 30% -t "$session_name:1.0" -c "$dir"
-
-# Start applications
-tmux send-keys -t "$session_name:1.0" "nvim" C-m
-tmux send-keys -t "$session_name:1.1" "$AGENT_HARNESS" C-m
-
-# Focus neovim pane
-tmux select-pane -t "$session_name:1.0"
-
-# Attach/switch to the session
-tmux $attach_cmd -t "$session_name"
