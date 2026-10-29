@@ -1,3 +1,5 @@
+local rex_bin = require('tap.utils.mux').rex_bin
+
 local M = {}
 
 local keys = {
@@ -39,13 +41,6 @@ for _, window in ipairs(view.windows or {}) do
 end
 return panes
 ]]
-
-local function rex_bin()
-  if vim.env.REX_BIN_DIR then
-    return vim.env.REX_BIN_DIR .. '/rex'
-  end
-  return 'rex'
-end
 
 local function run(args, opts)
   table.insert(args, 1, rex_bin())

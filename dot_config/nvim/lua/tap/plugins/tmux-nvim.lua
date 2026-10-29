@@ -1,7 +1,7 @@
 -- Seemless vim <-> tmux/rex navigation
 -- tmux wins when nvim runs in tmux inside rex, as tmux owns the panes. Outside
 -- both, tmux.nvim still provides plain C-hjkl split navigation.
-local use_rex = vim.env.TMUX == nil and vim.env.REX_BLOCK ~= nil
+local use_rex = require('tap.utils.mux').use_rex()
 
 -- netrw maps <C-l> to refresh, so rebind navigation in its buffers
 local function netrw_navigation(nav)
