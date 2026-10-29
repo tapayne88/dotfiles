@@ -1,6 +1,6 @@
 local config = require 'tap.tmux_ai.config'
 local commands = require 'tap.tmux_ai.commands'
-local tmux = require 'tap.tmux_ai.tmux'
+local panes = require 'tap.tmux_ai.panes'
 local uv = vim.uv or vim.loop
 
 local M = {}
@@ -178,6 +178,7 @@ M.send = commands.send
 M.mode = commands.mode
 M.pick_target = commands.target_pick
 M.show_target = commands.target_show
-M.tmux = tmux
+M.panes = panes
+M.tmux = panes
 
 return M

@@ -1,5 +1,5 @@
 local context = require 'tap.tmux_ai.context'
-local tmux = require 'tap.tmux_ai.tmux'
+local panes = require 'tap.tmux_ai.panes'
 local notify = require 'tap.tmux_ai.notify'
 
 local M = {}
@@ -23,7 +23,7 @@ end
 local function send_prompt(prompt, opts)
   local bufnr = vim.api.nvim_get_current_buf()
   local payload = context.build_prompt(bufnr, prompt, opts.range)
-  tmux.send_text(payload, { submit = opts.submit }, function(ok, err)
+  panes.send_text(payload, { submit = opts.submit }, function(ok, err)
     if not ok then
       notify.error(err or 'Failed to send prompt to TmuxAI')
       return
@@ -128,7 +128,7 @@ end
 
 function M.mode(args)
   local mode = args.args ~= '' and args.args or 'toggle'
-  tmux.send_mode(mode, function(ok, err)
+  panes.send_mode(mode, function(ok, err)
     if not ok then
       notify.error(err or 'Failed to change TmuxAI mode')
       return
@@ -144,7 +144,7 @@ function M.mode(args)
 end
 
 function M.target(args)
-  local ok, err = tmux.set_target(args.args)
+  local ok, err = panes.set_target(args.args)
   if not ok then
     notify.error(err or 'Failed to set TmuxAI target pane')
     return
@@ -154,9 +154,9 @@ function M.target(args)
 end
 
 function M.target_show()
-  local target, err = tmux.show_target()
+  local target, err = panes.show_target()
   if not target then
-    notify.error(err or 'no TmuxAI tmux pane configured')
+    notify.error(err or 'no TmuxAI pane configured')
     return
   end
 
@@ -164,7 +164,7 @@ function M.target_show()
 end
 
 function M.target_pick()
-  tmux.pick_target()
+  panes.pick_target()
 end
 
 function M.create()
@@ -183,17 +183,17 @@ function M.create()
   })
 
   vim.api.nvim_create_user_command('TmuxAITarget', M.target, {
-    desc = 'Set the tmux pane target for TmuxAI',
+    desc = 'Set the pane target for TmuxAI',
     nargs = 1,
   })
 
   vim.api.nvim_create_user_command('TmuxAITargetShow', M.target_show, {
-    desc = 'Show the tmux pane target for TmuxAI',
+    desc = 'Show the pane target for TmuxAI',
     nargs = 0,
   })
 
   vim.api.nvim_create_user_command('TmuxAITargetPick', M.target_pick, {
-    desc = 'Pick the tmux pane target for TmuxAI',
+    desc = 'Pick the pane target for TmuxAI',
     nargs = 0,
   })
 end
