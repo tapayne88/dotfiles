@@ -155,17 +155,3 @@ rex.action {
   end,
 }
 rex.bind('ctrl+b>shift+p', 'toggle_popup')
-
--- Not ported:
--- * Terminal/server options (history-limit, escape-time, default-terminal,
---   terminal-overrides, extended-keys, focus-events, allow-rename, mode-keys)
---   live in the Rex app settings.
--- * Status bar and theme: Rex draws its own tabs and sidebar.
--- * M-{ / M-} tab navigation: covered by Rex defaults.
--- * synchronize-panes (prefix a), select-layout even-* (prefix ! / @) and
---   swap with last pane (prefix C-o): no Rex equivalent.
--- * C-y copy mode and copy-mode-vi bindings: Rex has no copy mode, so C-y
---   always reaches the terminal.
--- * Pane hide/rejoin (prefix b / j / k / M).
--- TODO: these call tmux themselves and need Rex versions first:
--- * prefix i       tmux-cht.sh
