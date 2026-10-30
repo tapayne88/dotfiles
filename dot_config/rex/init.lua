@@ -100,6 +100,16 @@ rex.action {
 }
 rex.bind('ctrl+b>ctrl+n', 'nic_popup')
 
+-- treehouse worktree switcher popup
+rex.action {
+  name = 'treehouse_popup',
+  title = 'Treehouse Worktree Switcher',
+  run = function()
+    utils.popup { command = { 'tv', 'treehouse' } }
+  end,
+}
+rex.bind('ctrl+b>ctrl+w', 'treehouse_popup')
+
 -- lease a fresh treehouse worktree for the current pane's repo and open it with nic
 rex.action {
   name = 'treehouse_lease_popup',
@@ -159,4 +169,3 @@ rex.bind('ctrl+b>shift+p', 'toggle_popup')
 -- * Pane hide/rejoin (prefix b / j / k / M).
 -- TODO: these call tmux themselves and need Rex versions first:
 -- * prefix i       tmux-cht.sh
--- * prefix C-w     tv treehouse
