@@ -1,49 +1,7 @@
 -- Port of dot_config/tmux/tmux.conf (plugins excluded). The tmux prefix is the
 -- default C-b, so prefixed bindings are written as 'ctrl+b>…' sequences.
 
-local TERM = 'com.superlogical.terminal'
-local SHELL = 'com.superlogical.terminal.shell'
-
--- Processes running in the focused terminal
-local function fg_process()
-  local proc = rex.block.call(TERM, 'process', {})
-  return proc or {}
-end
-
--- Equivalent of #{pane_current_path}
-local function current_cwd()
-  local proc = fg_process()
-  return (proc.foreground and proc.foreground.cwd) or (proc.child and proc.child.cwd)
-end
-
--- Same set as the tmux is_vim regex: g?(view|n?vim?x?)(diff)?
-local function is_vim(name)
-  if not name then
-    return false
-  end
-  local n = name:gsub('^g', ''):gsub('diff$', '')
-  return n == 'view' or n:match '^n?vim?x?$' ~= nil
-end
-
-local POPUP_BOUNDS = { 0.1, 0.1, 0.8, 0.8 }
-
--- Equivalent of display-popup -E -xC -yC -w 80% -h 80% -d "#{pane_current_path}"
----@param opts { command?: string[], label?: string, cwd?: string }
-local function popup(opts)
-  local layer, err = rex.session.new_layer {
-    bounds = POPUP_BOUNDS,
-    focus = true,
-    layout = rex.layout.block {
-      flavor = SHELL,
-      label = opts.label,
-      options = { command = opts.command, cwd = opts.cwd or current_cwd() },
-    },
-  }
-  if err ~= nil then
-    error(err, 0)
-  end
-  return layer
-end
+local utils = require 'utils'
 
 -- Tmux defaults
 rex.bind('ctrl+b>c', 'client.tab.new')
@@ -87,7 +45,7 @@ rex.action {
   name = 'clear_history',
   title = 'Clear Scrollback',
   run = function()
-    local _, err = rex.block.call(TERM, 'clear', {})
+    local _, err = rex.block.call(utils.TERM, 'clear', {})
     if err ~= nil then
       error(err, 0)
     end
@@ -110,8 +68,8 @@ rex.bind('ctrl+b>=', 'pane.balance')
 -- so nothing happens at the edge of the window.
 for key, dir in pairs { h = 'left', j = 'down', k = 'up', l = 'right' } do
   rex.bind('ctrl+' .. key, function()
-    local fg = fg_process().foreground
-    if fg and is_vim(fg.name) then
+    local fg = utils.fg_process().foreground
+    if fg and utils.is_vim(fg.name) then
       return false
     end
     rex.session.focus_direction { direction = dir }
@@ -127,7 +85,7 @@ rex.action {
   name = 'lazygit_popup',
   title = 'Lazygit Popup',
   run = function()
-    popup { command = { 'lazygit' } }
+    utils.popup { command = { 'lazygit' } }
   end,
 }
 rex.bind('ctrl+b>g', 'lazygit_popup')
@@ -137,7 +95,7 @@ rex.action {
   name = 'nic_popup',
   title = 'Nic Popup',
   run = function()
-    popup { command = { 'tv', 'nic' } }
+    utils.popup { command = { 'tv', 'nic' } }
   end,
 }
 rex.bind('ctrl+b>ctrl+n', 'nic_popup')
@@ -147,7 +105,7 @@ rex.action {
   name = 'treehouse_lease_popup',
   title = 'Lease Treehouse Worktree',
   run = function()
-    popup { command = { 'treehouse-tmux', 'lease-session', current_cwd() } }
+    utils.popup { command = { 'treehouse-tmux', 'lease-session', utils.current_cwd() } }
   end,
 }
 rex.bind('ctrl+b>alt+w', 'treehouse_lease_popup')
@@ -157,63 +115,18 @@ rex.action {
   name = 'treehouse_release_popup',
   title = 'Release Treehouse Worktree',
   run = function()
-    popup { command = { 'treehouse-tmux', 'release-current', current_cwd() } }
+    utils.popup { command = { 'treehouse-tmux', 'release-current', utils.current_cwd() } }
   end,
 }
 rex.bind('ctrl+b>alt+x', 'treehouse_release_popup')
-
--- Persistent popup terminal, the equivalent of the tmux "popup" session. The
--- popup terminal is labelled 'popup' and hidden by detaching it, so it keeps
--- running until shown again. Exit its shell to start afresh at the current path.
-local POPUP = 'popup'
-
--- The focused block and the active window
-local function focused_block()
-  local view = rex.session.view {}
-  for _, window in ipairs((view and view.windows) or {}) do
-    if window.window_id == view.active_window_id then
-      for _, layer in ipairs(window.layers or {}) do
-        for _, block in ipairs(layer.blocks or {}) do
-          if block.block_id == window.focused_block_id then
-            return block, window
-          end
-        end
-      end
-      return nil, window
-    end
-  end
-end
-
-local function find_popup()
-  local list = rex.session.list_blocks {}
-  for _, block in ipairs((list and list.blocks) or {}) do
-    if block.label == POPUP then
-      return block
-    end
-  end
-end
-
--- Place the popup beside the focused block, then float it over the window
-local function show_popup(block_id, anchor_id)
-  local _, err = rex.session.move_block { block_id = block_id, anchor_block_id = anchor_id }
-  if err == nil then
-    _, err = rex.session.float_block { block_id = block_id, bounds = POPUP_BOUNDS }
-  end
-  if err == nil then
-    _, err = rex.session.focus_block { block_id = block_id }
-  end
-  if err ~= nil then
-    error(err, 0)
-  end
-end
 
 -- toggle terminal popup
 rex.action {
   name = 'toggle_popup',
   title = 'Toggle Popup Terminal',
   run = function()
-    local focused, window = focused_block()
-    if focused and focused.label == POPUP then
+    local focused, window = utils.focused_block()
+    if focused and focused.label == utils.POPUP then
       local _, err = rex.session.detach_block { block_id = focused.block_id }
       if err ~= nil then
         error(err, 0)
@@ -221,13 +134,13 @@ rex.action {
       return
     end
 
-    local existing = find_popup()
+    local existing = utils.find_popup()
     if not existing then
-      popup { label = POPUP }
+      utils.popup { label = utils.POPUP }
     elseif existing.placement == 'placed' and window and existing.window_id == window.window_id then
       rex.session.focus_block { block_id = existing.block_id }
     elseif focused then
-      show_popup(existing.block_id, focused.block_id)
+      utils.show_popup(existing.block_id, focused.block_id)
     end
   end,
 }
