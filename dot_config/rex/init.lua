@@ -45,14 +45,6 @@ local function popup(opts)
   return layer
 end
 
--- Source local config file - if it exists
-local config_dir = (os.getenv 'XDG_CONFIG_HOME' or (os.getenv 'HOME' .. '/.config')) .. '/rex'
-local local_config = io.open(config_dir .. '/local.lua', 'r')
-if local_config then
-  local_config:close()
-  require 'local'
-end
-
 -- Tmux defaults
 rex.bind('ctrl+b>c', 'client.tab.new')
 rex.bind('ctrl+b>z', 'pane.zoom')
@@ -61,21 +53,6 @@ for i = 1, 9 do
 end
 -- Press Ctrl+B twice to send one to the terminal
 rex.bind('ctrl+b>ctrl+b', 'pane.send_key', { key = 'ctrl+b' })
-
--- New window at current path
-rex.action {
-  name = 'new_tab_here',
-  title = 'New Tab at Current Path',
-  run = function()
-    local _, err = rex.session.new_window {
-      layout = rex.layout.block { flavor = SHELL, options = { cwd = current_cwd() } },
-    }
-    if err ~= nil then
-      error(err, 0)
-    end
-  end,
-}
-rex.bind('ctrl+b>shift+.', 'new_tab_here')
 
 -- Fullscreen pane toggle
 rex.bind('ctrl+x', 'pane.zoom')
@@ -119,26 +96,10 @@ rex.action {
 rex.bind('ctrl+alt+k', 'clear_history')
 
 -- Split creation
-rex.action {
-  name = 'split_here',
-  title = 'Split Pane at Current Path',
-  args = { direction = 'string' },
-  run = function(_, args)
-    local _, err = rex.session.new_split {
-      direction = args.direction,
-      side = 'after',
-      focus = true,
-      layout = rex.layout.block { flavor = SHELL, options = { cwd = current_cwd() } },
-    }
-    if err ~= nil then
-      error(err, 0)
-    end
-  end,
-}
-rex.bind('ctrl+b>shift+\\', 'split_here', { direction = 'horizontal' })
-rex.bind('ctrl+b>\\', 'split_here', { direction = 'horizontal' })
-rex.bind('ctrl+b>-', 'split_here', { direction = 'vertical' })
-rex.bind('ctrl+b>shift+-', 'split_here', { direction = 'vertical' })
+rex.bind('ctrl+b>shift+\\', 'pane.split', { direction = 'right' })
+rex.bind('ctrl+b>\\', 'pane.split', { direction = 'right' })
+rex.bind('ctrl+b>-', 'pane.split', { direction = 'down' })
+rex.bind('ctrl+b>shift+-', 'pane.split', { direction = 'down' })
 
 -- Reset pane sizes to current layout
 rex.bind('ctrl+b>=', 'pane.balance')
