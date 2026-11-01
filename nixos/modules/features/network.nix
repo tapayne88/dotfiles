@@ -9,11 +9,6 @@
       after = [ "iwd.service" ];
     };
 
-    # Restart iwd on resume (wake from sleep) to force wifi to reconnect
-    powerManagement.resumeCommands = ''
-      ${pkgs.systemd}/bin/systemctl restart iwd.service
-    '';
-
     hardware.bluetooth.enable = true;
 
     environment.systemPackages = [
@@ -21,7 +16,9 @@
     ];
 
     environment.persistence."${config.hostSettings.persistenceMountPath}".directories = [
-      "/var/lib/iwd"
+      "/var/lib/iwd" # iwd credential copies, used for boot autoconnect
+      "/etc/NetworkManager/system-connections" # NM connection profiles (incl. wifi passphrases)
+      "/var/lib/NetworkManager" # NM internal state (seen BSSIDs, timestamps)
     ];
   };
 }
