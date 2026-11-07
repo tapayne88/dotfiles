@@ -27,12 +27,6 @@ in
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    # The tiny-power-button driver sends SIGRTMIN+4 straight to PID 1 on power
-    # button presses, bypassing logind's HandlePowerKey=ignore and powering off
-    # the machine (nixpkgs#577729). Blacklist it until the fix lands in a 6.18
-    # point release; the regular button driver still feeds logind and Hyprland.
-    boot.blacklistedKernelModules = [ "tiny_power_button" ];
-
     networking.hostName = "framework-13-pro";
 
     # This handles the login screen (if using X11-based DM) and TTY
