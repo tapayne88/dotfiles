@@ -3,6 +3,7 @@
 - Never merge; always rebase. Use `git pull --rebase` and rebase branches onto their target instead of merging.
 - Stop and ask before rebasing when it would increase complexity, e.g. the branch is shared or already pushed, there are many commits with conflicts, or the history already contains merge commits.
 - Never rewrite published history without explicit confirmation.
+- Start branch names with the Jira key, e.g. `GARI-1234-short-description`. If the key is unknown, ask before creating the branch.
 
 # Pull requests
 
