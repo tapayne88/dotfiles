@@ -21,11 +21,20 @@
   };
 
   flake.homeModules.noctalia =
-    { osConfig, ... }:
+    { lib, osConfig, ... }:
     {
       imports = [
         inputs.noctalia.homeModules.default
       ];
+
+      # Plugin files ship through Noctalia's built-in "local" source: each
+      # file is symlinked into $XDG_DATA_HOME/noctalia/plugins/<plugin>/ and
+      # discovered without any [[plugins.source]] entry. The symlinks are real
+      # store references, so the files can never be garbage-collected out
+      # from under the config (a location string in config.toml can, and did).
+      xdg.dataFile = lib.concatMapAttrs (file: _type: {
+        "noctalia/plugins/dict/${file}".source = ./noctalia-plugins/dict + "/${file}";
+      }) (builtins.readDir ./noctalia-plugins/dict);
 
       programs.noctalia = {
         enable = true;
@@ -35,6 +44,12 @@
           shell = {
             launch_apps_as_systemd_services = true;
             polkit_agent = true; # register Noctalia's native polkit authentication agent
+          };
+
+          # Each subdirectory of noctalia-plugins/ is one plugin; the files
+          # themselves are placed by xdg.dataFile above.
+          plugins = {
+            enabled = [ "tpayne/dict" ];
           };
 
           keybinds = {

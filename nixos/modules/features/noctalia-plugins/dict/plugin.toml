@@ -1,0 +1,24 @@
+id = "tpayne/dict"
+name = "Dict"
+version = "1.0.0"
+plugin_api = 42
+author = "tpayne"
+license = "MIT"
+icon = "book"
+description = "Look up word definitions from the launcher via the local dictd server (WordNet + Wiktionary)."
+tags = ["dictionary", "launcher"]
+
+[[launcher_provider]]
+id = "define"
+entry = "define.luau"
+prefix = "define"
+glyph = "book"
+debounce_ms = 200
+
+[[panel]]
+id = "dict"
+entry = "panel.luau"
+width = 480
+height = "content"
+max_height = 720
+placement = "floating"
