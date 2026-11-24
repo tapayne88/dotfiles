@@ -11,6 +11,13 @@
           messages_half_page_up = "ctrl+u";
           messages_half_page_down = "ctrl+d";
         };
+        session = {
+          sidebar = "hide";
+
+        };
+        tabs = {
+          mode = "off";
+        };
         # TODO: Remove once stylix has been updated
         theme = {
           name = "stylix";
