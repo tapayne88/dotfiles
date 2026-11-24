@@ -1,15 +1,15 @@
 --!nonstrict
--- /define <word>: definitions from the local dictd (WordNet + Wiktionary),
--- queried through the dict CLI that the NixOS dictionary module installs and
--- points at localhost via /etc/dict.conf.
+-- /define <word>: definitions from the local dictd (WordNet), queried through
+-- the dict CLI that the NixOS dictionary module installs and points at
+-- localhost via /etc/dict.conf.
 --
--- Rows: one per sense, titled with the word, subtitle "n · first clause".
--- Activating a row opens the detail panel with the full text.
+-- Rows: one per WordNet sense, titled with the word, subtitle "n · first
+-- clause". Activating any row opens the detail panel with the full text.
 --
--- Noctalia enforces a small CPU budget per script callback, and the budget
--- shrinks further on a busy or throttled machine, so the keystroke path only
--- scans and extracts — no block-level cleaning. Full template stripping
--- happens once per word, lazily, when the panel is first opened for it.
+-- Noctalia kills script callbacks that exceed a small CPU budget, and the
+-- budget shrinks further on a busy or throttled machine. WordNet responses
+-- are ~1 KB, so the whole lookup - rows and the panel's display text - is
+-- built in one cheap pass, and activation only stashes and opens the panel.
 
 local shared = require './shared.luau'
 
@@ -22,7 +22,7 @@ local MAX_STDOUT = 512 * 1024 -- truncate absurdly large dict output
 local MAX_BLOCKS = 10 -- blocks examined per lookup
 local MAX_PARSE_CHARS = 48 * 1024 -- dict output parsed per lookup
 local MAX_BLOCK_CHARS = 16 * 1024 -- per-block cap on cleaned display text
-local MAX_DISPLAY_BLOCKS = 8 -- blocks kept for the panel (matches panel's MAX_SECTIONS)
+local MAX_DISPLAY_BLOCKS = 8 -- blocks kept for the panel view
 local MAX_DISPLAY_LINES = 80 -- lines kept per block for the panel view
 local CACHE_LIMIT = 40 -- words kept in the lookup cache
 
@@ -34,7 +34,7 @@ local POS_NAMES = {
   s = 'satellite',
 }
 
-local cache = {} -- word -> lookup entry { word, rows, blocks, display }
+local cache = {} -- word -> lookup entry { word, rows, display }
 local cacheOrder = {} -- FIFO of cache keys, for the bound
 local current = nil -- lookup entry behind the rows on screen
 
@@ -84,66 +84,20 @@ local function wordnetSenses(block)
   return senses
 end
 
--- Wiktionary blocks carry "English" / "Noun" section headers and
--- "1. definition" lines. Rows need only each definition's first clause, so
--- this scans raw lines and strips templates on the few lines it shows —
--- never the whole block. A definition's wrapped continuation lines are
--- joined (up to three) until the clause can close.
-local function wiktionaryRows(word, block, bi, rows, badge)
-  local count = 0
-  for li, raw in ipairs(block.lines) do
-    if #rows >= MAX_ROWS then
-      return
-    end
-    -- Sense numbers are 1-2 digits; historical dates inside quotations
-    -- ("1754. [http://…]") must not become rows. Wiktionary sub-items
-    -- ("#", "#*", "#:") are quotations and nested senses, not definitions.
-    local num, text = raw:match '^%s*(%d%d?)%.%s+(.*)$'
-    if num and text:sub(1, 1) ~= '#' then
-      local full = shared.stripTemplates(text)
-      local j = li + 1
-      while
-        full ~= ''
-        and full:find '[;.]%s' == nil
-        and full:find '[;.]%s*$' == nil
-        and j <= li + 3
-        and j <= #block.lines
-      do
-        local nextRaw = block.lines[j]
-        local nxt = shared.stripTemplates(nextRaw)
-        local stopped = nxt == ''
-          or nxt:sub(1, 1) == '*'
-          or nxt:sub(1, 1) == '#'
-          or nextRaw:match '^%s*%d%d?%.%s'
-          or shared.isSectionHeader(nxt)
-        if stopped then
-          break
-        end
-        full = full .. ' ' .. nxt
-        j = j + 1
-      end
-      if full ~= '' then
-        count = count + 1
-        table.insert(rows, {
-          id = 'def-' .. bi .. '-' .. count,
-          title = word,
-          subtitle = count .. ' · ' .. shared.firstClause(full, MAX_CLAUSE),
-          badge = badge,
-        })
-      end
-    end
-  end
-end
-
+-- One lookup: WordNet sense rows plus the panel's cleaned display text.
 local function buildEntry(word, stdout)
   local blocks = shared.parseBlocks(stdout, MAX_BLOCKS, MAX_PARSE_CHARS)
   local rows = {}
+  local display = {}
+
   for bi, block in ipairs(blocks) do
-    if #rows >= MAX_ROWS then
-      break
-    end
+    local label = shared.dbLabel(block)
     local short = (block.db or ''):lower()
-    if short:find('wordnet', 1, true) then
+    local isWordNet = short:find('wordnet', 1, true) ~= nil
+
+    -- Rows: WordNet senses only; any other database gets a single row that
+    -- simply leads to the panel.
+    if isWordNet then
       local senses = wordnetSenses(block)
       for i, sense in ipairs(senses) do
         if #rows >= MAX_ROWS then
@@ -159,67 +113,61 @@ local function buildEntry(word, stdout)
           })
         end
       end
-    else
-      local badge = short:find('wiktionary', 1, true) and 'wikt' or nil
-      wiktionaryRows(word, block, bi, rows, badge)
-      if #rows == 0 and bi == 1 then
-        table.insert(rows, {
-          id = 'block-' .. bi,
-          title = word,
-          subtitle = '(open for full text)',
-          glyph = 'book',
-        })
-      end
+    elseif #rows < MAX_ROWS then
+      table.insert(rows, {
+        id = 'db-' .. bi,
+        title = word,
+        subtitle = label .. ' entry',
+        glyph = 'book',
+      })
     end
-  end
-  return { word = word, rows = rows, blocks = blocks, display = nil }
-end
 
--- Full text for the panel: synonym markers lifted to their own lines,
--- templates stripped per block. Runs once per word, on activation.
-local function buildDisplay(entry)
-  local display = {}
-  for _, block in ipairs(entry.blocks or {}) do
-    if #display >= MAX_DISPLAY_BLOCKS then
+    -- Display for the panel: synonym markers lifted, templates stripped,
+    -- headword skipped. Capped per block so even a future heavyweight
+    -- database cannot blow the callback budget.
+    if #display < MAX_DISPLAY_BLOCKS then
+      local rawText = table.concat(block.lines, '\n')
+      local rawSize = #rawText
+      local cleaned = shared.stripBlockLines({ shared.liftSyns(rawText) }, MAX_BLOCK_CHARS)
+      local objs = {}
+      local headwordSkipped = false
+      for _, line in ipairs(cleaned) do
+        if #objs >= MAX_DISPLAY_LINES then
+          break
+        end
+        if line:sub(1, 2) == '\001 ' then
+          local syn = shared.trim(line:sub(2))
+          if syn ~= '' then
+            table.insert(objs, { text = '', syn = syn })
+          end
+        elseif not headwordSkipped and line:lower() == word:lower() then
+          headwordSkipped = true
+        else
+          -- Unterminated templates (truncated, badly nested) can survive
+          -- stripping; cut the fragment, keep any readable prefix.
+          local text = line
+          local residue = text:find('{{', 1, true)
+          if residue then
+            text = shared.trim(text:sub(1, residue - 1))
+          end
+          if text ~= '' then
+            table.insert(objs, { text = text, syn = nil })
+          end
+        end
+      end
+      table.insert(display, {
+        label = label,
+        lines = objs,
+        truncated = #objs >= MAX_DISPLAY_LINES or rawSize > MAX_BLOCK_CHARS,
+      })
+    end
+
+    if #rows >= MAX_ROWS and #display >= MAX_DISPLAY_BLOCKS then
       break
     end
-    local rawText = table.concat(block.lines, '\n')
-    local rawSize = #rawText
-    local cleaned = shared.stripBlockLines({ shared.liftSyns(rawText) }, MAX_BLOCK_CHARS)
-    local objs = {}
-    local headwordSkipped = false
-    for _, line in ipairs(cleaned) do
-      if #objs >= MAX_DISPLAY_LINES then
-        break
-      end
-      if line:sub(1, 2) == '\001 ' then
-        local syn = shared.trim(line:sub(2))
-        if syn ~= '' then
-          table.insert(objs, { text = '', syn = syn })
-        end
-      elseif not headwordSkipped and line:lower() == entry.word:lower() then
-        -- Skip the headword line; the panel header already shows the word.
-        headwordSkipped = true
-      else
-        -- Unterminated templates (truncated, badly nested) can survive
-        -- stripping; cut the fragment, keep any readable prefix.
-        local text = line
-        local residue = text:find('{{', 1, true)
-        if residue then
-          text = shared.trim(text:sub(1, residue - 1))
-        end
-        if text ~= '' then
-          table.insert(objs, { text = text, syn = nil })
-        end
-      end
-    end
-    table.insert(display, {
-      label = shared.dbLabel(block),
-      lines = objs,
-      truncated = #objs >= MAX_DISPLAY_LINES or rawSize > MAX_BLOCK_CHARS,
-    })
   end
-  return display
+
+  return { word = word, rows = rows, display = display }
 end
 
 local function publish(query, entry)
@@ -231,7 +179,6 @@ local function nomatchEntry(word)
   return {
     word = word,
     rows = { { id = 'nomatch', title = 'No definitions found for “' .. word .. '”', glyph = 'book-off' } },
-    blocks = {},
     display = {},
   }
 end
@@ -262,7 +209,8 @@ function onQuery(text)
   -- their spaces (dict joins argv, so it must arrive as one argument).
   noctalia.runAsync({ 'dict', '-f', '--', word }, function(result)
     local entry
-    if result.exitCode == 20 then
+    -- dict exits 20 (word) or 21 (phrase) when nothing matched.
+    if result.exitCode == 20 or result.exitCode == 21 then
       entry = nomatchEntry(word)
     elseif result.exitCode ~= 0 then
       entry = {
@@ -274,7 +222,6 @@ function onQuery(text)
             glyph = 'alert-triangle',
           },
         },
-        blocks = {},
         display = {},
       }
     else
@@ -296,9 +243,6 @@ function onActivate(id)
   if not current or id == 'hint' or id == 'loading' or id == 'nomatch' or id == 'error' then
     return
   end
-  if current.display == nil then
-    current.display = buildDisplay(current)
-  end
-  noctalia.state.set('lookup', { word = current.word, display = current.display })
+  noctalia.state.set('lookup', current)
   noctalia.togglePanel(PANEL_ID)
 end

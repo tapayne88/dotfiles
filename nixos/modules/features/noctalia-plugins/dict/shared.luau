@@ -134,35 +134,23 @@ function M.firstClause(text, maxChars)
   return clause
 end
 
--- Lift synonym lists out of definition text before cleaning: WordNet's
--- "[syn: {a}, {b}]" markers (which can wrap across lines) and Wiktionary's
--- "{{syn|lang|a|b}}" templates both become \001-prefixed lines, so they
--- survive template stripping and land as their own display lines.
+-- Lift WordNet's trailing "[syn: {a}, {b}]" markers out of definition text
+-- before cleaning: they can wrap across lines, and plain per-line stripping
+-- cannot close them. Each becomes a \001-prefixed line, which survives
+-- template stripping and lands as its own display line.
 function M.liftSyns(text)
-  text = text:gsub('%[syn:%s*([^%]]*)%]', function(names)
-    local out = {}
-    for name in names:gmatch '{([^{}]*)}' do
-      table.insert(out, (name:gsub('_', ' ')))
-    end
-    if #out == 0 then
-      return ''
-    end
-    return '\n\001 ' .. table.concat(out, ', ')
-  end)
-  text = text:gsub('%{%{syn|[^|]*|([^}]*)%}%}', function(rest)
-    local out = {}
-    for raw in rest:gmatch '[^|]+' do
-      local name = M.trim(raw)
-      if name ~= '' and name:sub(1, 10) ~= 'Thesaurus:' then
-        table.insert(out, name)
+  return (
+    text:gsub('%[syn:%s*([^%]]*)%]', function(names)
+      local out = {}
+      for name in names:gmatch '{([^{}]*)}' do
+        table.insert(out, (name:gsub('_', ' ')))
       end
-    end
-    if #out == 0 then
-      return ''
-    end
-    return '\n\001 ' .. table.concat(out, ', ')
-  end)
-  return text
+      if #out == 0 then
+        return ''
+      end
+      return '\n\001 ' .. table.concat(out, ', ')
+    end)
+  )
 end
 
 return M
