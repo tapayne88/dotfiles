@@ -21,6 +21,17 @@
         brightnessctl # brightness controls
         wl-clipboard # clipboard management
         picard
+
+        (symlinkJoin {
+          name = "chiaki-ng-wrapped";
+          paths = [ chiaki-ng ];
+          nativeBuildInputs = [ makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/chiaki \
+              --set QT_QUICK_CONTROLS_STYLE Basic \
+              --set QT_STYLE_OVERRIDE Fusion
+          '';
+        })
       ];
 
       programs.git.enable = true;
